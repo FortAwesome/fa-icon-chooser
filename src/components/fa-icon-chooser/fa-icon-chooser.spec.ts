@@ -1,5 +1,5 @@
 import { newSpecPage } from '@stencil/core/testing';
-import { MyComponent } from './my-component';
+import { MyComponent } from './fa-icon-chooser';
 
 describe('my-component', () => {
   it('renders', async () => {

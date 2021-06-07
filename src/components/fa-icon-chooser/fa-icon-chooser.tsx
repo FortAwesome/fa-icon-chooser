@@ -2,11 +2,11 @@ import { Component, Prop, h } from '@stencil/core';
 import { format } from '../../utils/utils';
 
 @Component({
-  tag: 'my-component',
-  styleUrl: 'my-component.css',
+  tag: 'fa-icon-chooser',
+  styleUrl: 'fa-icon-chooser.css',
   shadow: true,
 })
-export class MyComponent {
+export class FaIconChooser {
   /**
    * The first name
    */
