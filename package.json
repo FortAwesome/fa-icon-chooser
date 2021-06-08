@@ -1,5 +1,5 @@
 {
-  "name": "fa-icon-chooser",
+  "name": "@fortawesome/fa-icon-chooser",
   "version": "0.0.1",
   "description": "Stencil Component Starter",
   "main": "dist/index.cjs.js",
@@ -24,5 +24,8 @@
   "dependencies": {
     "@stencil/core": "^2.0.1"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@stencil/react-output-target": "^0.0.9"
+  }
 }

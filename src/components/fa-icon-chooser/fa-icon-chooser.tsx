@@ -4,7 +4,7 @@ import { format } from '../../utils/utils';
 @Component({
   tag: 'fa-icon-chooser',
   styleUrl: 'fa-icon-chooser.css',
-  shadow: true,
+  shadow: false,
 })
 export class FaIconChooser {
   /**
@@ -27,6 +27,6 @@ export class FaIconChooser {
   }
 
   render() {
-    return <div>Hello, World! I'm {this.getText()}</div>;
+    return <div>Hello, World! I am {this.getText()} <i class="fas fa-beer"></i></div>;
   }
 }
