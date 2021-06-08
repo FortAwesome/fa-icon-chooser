@@ -3,12 +3,17 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
-    <title>Stencil Component Starter</title>
+    <title>Font Awesome Icon Chooser</title>
 
+    <script src="dev/runtime.js"></script>
     <script type="module" src="/build/fa-icon-chooser.esm.js"></script>
     <script nomodule src="/build/fa-icon-chooser.js"></script>
   </head>
   <body>
-    <fa-icon-chooser first="Stencil" last="'Don't call me a framework' JS"></fa-icon-chooser>
+    <div><button onClick="toggleIconChooser()">toggle</button></div>
+    <!-- Icon Chooser Results will be put here. -->
+    <div id="result"></div>
+    <!-- The fa-icon-chooser element will be injected inside this container by dev/runtime.js -->
+    <div id="fa-icon-chooser-container"></div>
   </body>
 </html>

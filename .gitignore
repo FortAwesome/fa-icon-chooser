@@ -2,6 +2,7 @@ dist/
 www/
 loader/
 
+src/dev/local.json*
 *~
 *.sw[mnpcod]
 *.log

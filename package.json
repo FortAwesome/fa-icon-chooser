@@ -16,16 +16,17 @@
   ],
   "scripts": {
     "build": "stencil build --docs",
-    "start": "stencil build --dev --watch --serve",
+    "start": "stencil build --config stencil.config.dev.ts --dev --watch --serve",
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watchAll",
     "generate": "stencil generate"
   },
   "dependencies": {
-    "@stencil/core": "^2.0.1"
+    "@stencil/core": "^2.0.1",
+    "lodash": "^4.17.21"
   },
   "license": "MIT",
   "devDependencies": {
-    "@stencil/react-output-target": "^0.0.9"
+    "@fortawesome/fontawesome-common-types": "^0.2.35"
   }
 }
