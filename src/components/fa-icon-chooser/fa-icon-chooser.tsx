@@ -38,7 +38,7 @@ export class FaIconChooser {
   /**
    * Whether pro icons should be enabled.
    */
-  @Prop() enablePro: boolean;
+  @Prop() pro: boolean;
 
   @Prop() handleQuery: QueryHandler;
 
@@ -87,7 +87,7 @@ export class FaIconChooser {
 
         const styles = membership.free
 
-        if(this.enablePro && !!membership.pro) {
+        if(this.pro && !!membership.pro) {
           membership.pro
             .filter(style => !membership.free.includes(style))
             .forEach(style => styles.push(style))

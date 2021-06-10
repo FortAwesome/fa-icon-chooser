@@ -8,15 +8,15 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { IconChooserResult, QueryHandler } from "./components/fa-icon-chooser/fa-icon-chooser";
 export namespace Components {
     interface FaIconChooser {
-        /**
-          * Whether pro icons should be enabled.
-         */
-        "enablePro": boolean;
         "handleQuery": QueryHandler;
         /**
           * A kit token identifying a kit in which to find icons. Takes precedence over the version prop if provided: the version associated with the kit will be used for searching.
          */
         "kitToken"?: string;
+        /**
+          * Whether pro icons should be enabled.
+         */
+        "pro": boolean;
         /**
           * Font Awesome version in which to find icons.
          */
@@ -36,16 +36,16 @@ declare global {
 }
 declare namespace LocalJSX {
     interface FaIconChooser {
-        /**
-          * Whether pro icons should be enabled.
-         */
-        "enablePro"?: boolean;
         "handleQuery"?: QueryHandler;
         /**
           * A kit token identifying a kit in which to find icons. Takes precedence over the version prop if provided: the version associated with the kit will be used for searching.
          */
         "kitToken"?: string;
         "onFinish"?: (event: CustomEvent<IconChooserResult>) => void;
+        /**
+          * Whether pro icons should be enabled.
+         */
+        "pro"?: boolean;
         /**
           * Font Awesome version in which to find icons.
          */
