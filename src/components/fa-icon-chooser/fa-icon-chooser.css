@@ -15,6 +15,12 @@
   display: block;
 }
 
+.wrap-search {
+  --input-with-icon-color:var(--fa-navy);
+  --input-border-color:var(--fa-navy);
+  --input-placeholder-color:var(--fa-md-gravy);
+}
+
 .icon-listing {
   margin-top: var(--spacing-lg);
   display: grid;

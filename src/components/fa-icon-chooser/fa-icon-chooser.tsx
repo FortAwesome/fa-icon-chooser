@@ -210,9 +210,13 @@ export class FaIconChooser {
 
   render() {
     return <div class="fa-icon-chooser">
-      <div>
-        <input value={ this.query } onKeyUp={ this.onKeyUp.bind(this) } placeholder="search..."></input>
-      </div>
+      <form>
+        <label htmlFor="search" class="sr-only">Search the v6 Beta Icons</label>
+        <div class="wrap-search with-icon-before">
+          <i class="fas fa-search icons-search-decorative"></i>
+          <input name="search" id="search" class="rounded" value={this.query} onKeyUp={this.onKeyUp.bind(this)} placeholder="Search for icons by name, category, or keyword" type="text"></input>
+        </div>
+      </form>
       <div class="icon-listing">
         {
           size(this.query) === 0
