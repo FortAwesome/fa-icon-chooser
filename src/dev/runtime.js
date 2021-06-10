@@ -24,7 +24,7 @@ function handleQuery(query) {
 function handleResult(result) {
   const resultElement = document.querySelector("#result")
   const preElement = document.createElement('pre')
-  const text = document.createTextNode(JSON.stringify(result))
+  const text = document.createTextNode(JSON.stringify(result.detail))
   preElement.appendChild(text)
   resultElement.appendChild(preElement)
 }
@@ -36,8 +36,8 @@ function clearResult() {
 function addIconChooser(props) {
   const container = document.querySelector('#fa-icon-chooser-container')
   const el = document.createElement('fa-icon-chooser')
-  el.onResult = handleResult
-  el.onQuery = handleQuery
+  el.handleQuery = handleQuery
+  el.addEventListener('onResult', handleResult)
 
   Object.keys(props).map(prop => {
     el.setAttribute(prop, props[prop])

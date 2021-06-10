@@ -1,4 +1,4 @@
-import { Component, Prop, State, h } from '@stencil/core';
+import { Component, Event, EventEmitter, Prop, State, h } from '@stencil/core';
 import { get, size, debounce } from 'lodash';
 import { IconLookup } from '@fortawesome/fontawesome-common-types';
 
@@ -8,8 +8,6 @@ export interface IconChooserResult extends IconLookup {
 }
 
 export type QueryHandler = (document: string) => Promise<any>;
-
-export type ResultHandler = (result: IconChooserResult) => void;
 
 @Component({
   tag: 'fa-icon-chooser',
@@ -34,9 +32,14 @@ export class FaIconChooser {
    */
   @Prop() enablePro: boolean;
 
-  @Prop() onQuery: QueryHandler;
+  @Prop() handleQuery: QueryHandler;
 
-  @Prop() onResult: ResultHandler;
+  @Event({
+    eventName: 'onResult',
+    composed: true,
+    cancelable: true,
+    bubbles: true,
+  }) onResult: EventEmitter<IconChooserResult>;
 
   @State() query: string;
 
@@ -58,7 +61,7 @@ export class FaIconChooser {
     this.isQuerying = true
     const version = '5.15.3'
     const usingPro = true
-    this.onQuery(
+    this.handleQuery(
       `
       query {
         search(version:"${version}", query: "${query}", first: 10) {
@@ -101,7 +104,7 @@ export class FaIconChooser {
             : (size(this.queryResults) > 0
                 ?  this.queryResults.map(result =>
                     <article class="wrap-icon" key={ `fas-${ result.id }`}>
-                    <button class="icon subtle display-flex flex-column flex-items-center flex-content-center" onClick={() => this.onResult({ prefix: 'fas', iconName: result.id})}>
+                    <button class="icon subtle display-flex flex-column flex-items-center flex-content-center" onClick={() => this.onResult.emit({ prefix: 'fas', iconName: result.id})}>
                         <i class={ `fas fa-2x fa-${result.id}` }></i>
                       <span class="icon-name size-xs text-truncate margin-top-lg">{`${result.id}`}</span>
                       </button>
