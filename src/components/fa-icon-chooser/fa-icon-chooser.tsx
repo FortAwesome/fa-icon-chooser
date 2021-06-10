@@ -17,6 +17,23 @@ export interface IconChooserResult extends IconLookup {
 
 export type QueryHandler = (document: string) => Promise<any>;
 
+export type IconUpload = {
+  name: string;
+  unicode: number;
+  version: number;
+  width: string;
+  height: string;
+  path: string;
+};
+
+type KitMetadata = {
+  version: string;
+  technologySelected: string;
+  licenseSelected: string;
+  name: string;
+  iconUploads: Array<IconUpload> | null;
+};
+
 @Component({
   tag: 'fa-icon-chooser',
   styleUrl: 'fa-icon-chooser.css',
@@ -57,6 +74,12 @@ export class FaIconChooser {
 
   @State() icons: IconLookup[];
 
+  kitMetadata: KitMetadata;
+
+  resolvedVersion: string;
+
+  isProEnabled: boolean;
+
   constructor() {
     const originalUpdateQueryResults = this.updateQueryResults.bind(this)
     this.updateQueryResults = debounce( query => {
@@ -64,14 +87,81 @@ export class FaIconChooser {
     }, 500 )
   }
 
-  updateQueryResults(query: string) {
-    this.hasQueried = false
-    this.isQuerying = true
-    const version = '5.15.3'
+  componentWillLoad() {
+    if(!this.kitToken) {
+      this.isProEnabled = this.pro
+
+      if(!this.version) {
+        throw new Error('invalid props: since no kitToken was specified, there must be a version')
+      }
+    }
+
     this.handleQuery(
       `
       query {
-        search(version:"${version}", query: "${query}", first: 10) {
+        me {
+          kit(token:"${ this.kitToken }") {
+            version
+            technologySelected
+            licenseSelected
+            name
+            iconUploads {
+              name
+              unicode
+              version
+              width
+              height
+              path
+            }
+          }
+        }
+      }
+      `
+    )
+    .then(response => {
+      // TODO: consider real error handling.
+      if(get(response, 'errors')) {
+        console.error('GraphQL query errors', response.errors)
+        throw new Error('GraphQL query errors')
+      }
+
+      const kit = get(response, 'data.me.kit')
+      this.kitMetadata = kit
+
+      // TODO: replace this placeholder logic with, probably, real API calls
+      // that handle resolving the version.
+      switch(get(this.kitMetadata, 'version')) {
+        case '5.x':
+        case 'latest':
+          this.resolvedVersion = '5.15.3'
+          break
+        case '6.x':
+          this.resolvedVersion = '6.0.0-beta1'
+          break
+        default:
+          this.resolvedVersion = kit.version
+      }
+
+      this.isProEnabled = this.kitMetadata.licenseSelected === 'pro'
+
+      // TODO: figure out some real error handling here.
+      if(! this.resolvedVersion ) {
+        throw new Error('invalid state: there must be a resolved version')
+      }
+    })
+    .catch(e => {
+      console.error('WHOOPS!', e)
+    })
+  }
+
+  updateQueryResults(query: string) {
+    this.hasQueried = false
+    this.isQuerying = true
+
+    this.handleQuery(
+      `
+      query {
+        search(version:"${ this.resolvedVersion }", query: "${ query }", first: 10) {
           id
           label
           membership {
@@ -87,7 +177,7 @@ export class FaIconChooser {
 
         const styles = membership.free
 
-        if(this.pro && !!membership.pro) {
+        if(this.isProEnabled && !!membership.pro) {
           membership.pro
             .filter(style => !membership.free.includes(style))
             .forEach(style => styles.push(style))
