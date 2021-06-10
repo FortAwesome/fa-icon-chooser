@@ -1,13 +1,23 @@
 function handleQuery(query) {
   return new Promise((resolve, reject) => {
-    fetch( 'https://api.fontawesome.com', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+    const headers = {
+      'Content-Type': 'application/json'
+    }
+
+    getAccessToken()
+    .then(token => {
+
+      if(token) {
+        headers['Authorization'] = `Bearer ${ token }`
+      }
+
+      return fetch( 'https://api.fontawesome.com', {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({ query })
         },
-        body: JSON.stringify({ query })
-      },
-    )
+      )
+    })
     .then(response => {
       if(response.ok) {
         response.json()
@@ -55,10 +65,16 @@ function setupHead() {
   .then(result => {
     if(result.status == 200) {
       result.json().then(obj => {
-        Object.keys(obj.head).map(elementType => {
+        const { head } = obj
+
+        if(!head) {
+          throw new Error('DEV: your local.json is missing a top-level head key')
+        }
+
+        Object.keys(head).map(elementType => {
           const el = document.createElement(elementType)
-          Object.keys(obj.head[elementType]).map(attr => {
-            el.setAttribute(attr, obj.head[elementType][attr])
+          Object.keys(head[elementType]).map(attr => {
+            el.setAttribute(attr, head[elementType][attr])
           })
           document.head.appendChild(el)
         })
@@ -80,17 +96,95 @@ function toggleIconChooser() {
   }
 }
 
-function showIconChooser() {
-  const defaultProps = { version: '5.15.3', pro: false }
+function getAccessToken(apiToken) {
+  const tokenJSON = window.localStorage.getItem('token')
+  const tokenObj = tokenJSON ? JSON.parse(tokenJSON) : undefined
 
+  if(tokenObj) {
+    if(Math.floor(Date.now() / 1000) <= tokenObj.expiresAtEpochSeconds) {
+      return Promise.resolve(tokenObj.token)
+    } else {
+      return Promise.reject('DEV: your Font Awesome API access token has expired. Refresh the page.')
+    }
+  } else {
+    if(!apiToken) {
+      // No access token has been stored, and we have no apiToken to get a fresh one,
+      // so there's no error here--but no token either.
+      return Promise.resolve(undefined)
+    }
+  }
+
+  if(!apiToken) {
+    return Promise.reject('DEV: cannot refresh access token because no apiToken was provided')
+  }
+
+  return fetch('https://api.fontawesome.com/token', {
+    method: 'POST',
+    headers: {
+      authorization: `Bearer ${ apiToken }`
+    }
+  })
+  .then(response => {
+    if(response.ok) {
+      response.json()
+      .then(obj => {
+        const expiresAtEpochSeconds = Math.floor(Date.now() / 1000) + obj['expires_in']
+
+        // WARNING: storing an access token in localStorage may not be good enough
+        // security in other situations. This is a development-only situation
+        // intended to run on a local development machine, so this seems like
+        // good enough security for that use case.
+        window.localStorage.setItem(
+          'token',
+          JSON.stringify({
+            token: obj['access_token'],
+            expiresAtEpochSeconds
+          })
+        )
+      })
+      .catch(e => {
+        throw e
+      })
+    } else {
+      const msg = 'DEV: unexpected token endpoint response'
+      console.error(msg, response)
+      throw new Error(msg)
+    }
+  })
+  .catch(e => {
+    throw e
+  })
+}
+
+function showIconChooser() {
   fetch('/dev/local.json')
   .then(result => {
     if(result.status == 200) {
       result.json().then(obj => {
-        const props = Object.assign({}, obj)
-        delete(props['head'])
+        const { props, apiToken } = obj
 
-        addIconChooser(Object.assign({}, defaultProps, props))
+        if(!props['kit-token']) {
+          if(!props.version) {
+            throw new Error('DEV: your local.json must have a props key with either a version subkey or a kit-token subkey')
+          }
+          addIconChooser(props)
+        }
+
+        // We've got a kit token, so we need to resolve an API token into access token.
+        // We'll store the access token in localStorage. That's not the most secure
+        // thing to do, but this is only a development environment scenario here.
+
+        if(!apiToken) {
+          throw new Error('DEV: you specified a kit-token in the props of your local.json but not the required accompanying top-level apiToken key.')
+        }
+
+        getAccessToken(props.apiToken)
+        .then(_token => {
+          addIconChooser(props)
+        })
+        .catch(e => {
+          throw e
+        })
       })
       .catch(e => console.error(e))
     } else {
