@@ -45,7 +45,7 @@ declare namespace LocalJSX {
           * A kit token identifying a kit in which to find icons. Takes precedence over the version prop if provided: the version associated with the kit will be used for searching.
          */
         "kitToken"?: string;
-        "onOnResult"?: (event: CustomEvent<IconChooserResult>) => void;
+        "onFinish"?: (event: CustomEvent<IconChooserResult>) => void;
         /**
           * Font Awesome version in which to find icons.
          */

@@ -37,7 +37,7 @@ function addIconChooser(props) {
   const container = document.querySelector('#fa-icon-chooser-container')
   const el = document.createElement('fa-icon-chooser')
   el.handleQuery = handleQuery
-  el.addEventListener('onResult', handleResult)
+  el.addEventListener('finish', handleResult)
 
   Object.keys(props).map(prop => {
     el.setAttribute(prop, props[prop])
@@ -81,7 +81,7 @@ function toggleIconChooser() {
 }
 
 function showIconChooser() {
-  const defaultProps = { version: '5.15.3', enablePro: false }
+  const defaultProps = { version: '5.15.3', 'enable-pro': false }
 
   fetch('/dev/local.json')
   .then(result => {

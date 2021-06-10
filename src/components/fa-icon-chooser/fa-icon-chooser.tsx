@@ -2,6 +2,14 @@ import { Component, Event, EventEmitter, Prop, State, h } from '@stencil/core';
 import { get, size, debounce } from 'lodash';
 import { IconLookup } from '@fortawesome/fontawesome-common-types';
 
+const STYLE_RESULT_TO_PREFIX = {
+  solid: 'fas',
+  duotone: 'fad',
+  regular: 'far',
+  light: 'fal',
+  thin: 'fat'
+}
+
 export interface IconChooserResult extends IconLookup {
   class?: string;
   style?: string;
@@ -35,11 +43,11 @@ export class FaIconChooser {
   @Prop() handleQuery: QueryHandler;
 
   @Event({
-    eventName: 'onResult',
+    eventName: 'finish',
     composed: true,
     cancelable: true,
     bubbles: true,
-  }) onResult: EventEmitter<IconChooserResult>;
+  }) finish: EventEmitter<IconChooserResult>;
 
   @State() query: string;
 
@@ -47,7 +55,7 @@ export class FaIconChooser {
 
   @State() hasQueried: boolean;
 
-  @State() queryResults: any[];
+  @State() icons: IconLookup[];
 
   constructor() {
     const originalUpdateQueryResults = this.updateQueryResults.bind(this)
@@ -60,7 +68,6 @@ export class FaIconChooser {
     this.hasQueried = false
     this.isQuerying = true
     const version = '5.15.3'
-    const usingPro = true
     this.handleQuery(
       `
       query {
@@ -69,13 +76,35 @@ export class FaIconChooser {
           label
           membership {
             free
-            ${ usingPro ? 'pro' : '' }
+            pro
           }
         }
       }`
     )
     .then(response => {
-      this.queryResults = get(response, 'data.search', [])
+      this.icons = get(response, 'data.search', []).reduce((acc: Array<IconLookup>, result: any) => {
+        const { id, membership } = result
+
+        const styles = membership.free
+
+        if(this.enablePro && !!membership.pro) {
+          membership.pro
+            .filter(style => !membership.free.includes(style))
+            .forEach(style => styles.push(style))
+        }
+
+        styles.map(style => {
+          const prefix = STYLE_RESULT_TO_PREFIX[style]
+
+          acc.push({
+            iconName: id,
+            prefix
+          })
+        })
+
+        return acc
+      }, [])
+
       this.hasQueried = true
       this.isQuerying = false
     })
@@ -101,12 +130,12 @@ export class FaIconChooser {
           : (
             this.isQuerying
             ? <p>searching...</p>
-            : (size(this.queryResults) > 0
-                ?  this.queryResults.map(result =>
-                    <article class="wrap-icon" key={ `fas-${ result.id }`}>
-                    <button class="icon subtle display-flex flex-column flex-items-center flex-content-center" onClick={() => this.onResult.emit({ prefix: 'fas', iconName: result.id})}>
-                        <i class={ `fas fa-2x fa-${result.id}` }></i>
-                      <span class="icon-name size-xs text-truncate margin-top-lg">{`${result.id}`}</span>
+            : (size(this.icons) > 0
+                ?  this.icons.map(icon =>
+                    <article class="wrap-icon" key={ `${icon.prefix}-${ icon.iconName }`}>
+                    <button class="icon subtle display-flex flex-column flex-items-center flex-content-center" onClick={() => this.finish.emit(icon)}>
+                        <i class={ `${ icon.prefix } fa-2x fa-${ icon.iconName }` }></i>
+                      <span class="icon-name size-xs text-truncate margin-top-lg">{`${ icon.iconName }`}</span>
                       </button>
                     </article>
                   )
