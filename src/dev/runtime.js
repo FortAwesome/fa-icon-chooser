@@ -34,13 +34,10 @@ function clearResult() {
 }
 
 function addIconChooser(props) {
-  console.log('DEBUG: addIconChooser')
   const container = document.querySelector('#fa-icon-chooser-container')
   const el = document.createElement('fa-icon-chooser')
-  el.eventHandler = {
-    handleQuery,
-    handleResult
-  };
+  el.onResult = handleResult
+  el.onQuery = handleQuery
 
   Object.keys(props).map(prop => {
     el.setAttribute(prop, props[prop])
