@@ -90,27 +90,26 @@ export class FaIconChooser {
       <div>
         <input value={ this.query } onKeyUp={ this.onKeyUp.bind(this) } placeholder="search..."></input>
       </div>
-      <div>
-        <ul class='icons'>
-          {
-            size(this.query) === 0
-            ? <p>type to search</p>
-            : (
-              this.isQuerying
-              ? <p>searching...</p>
-              : (size(this.queryResults) > 0
-                  ?  this.queryResults.map(result =>
-                      <li key={ `fas-${ result.id }`}>
-                        <button onClick={() => this.eventHandler.handleResult({ prefix: 'fas', iconName: result.id})}>
-                          <i class={ `fas fa-${result.id}` }></i>
-                        </button>
-                      </li>
-                    )
-                  : <p>(no results)</p>
-                )
-            )
-          }
-        </ul>
+      <div class="icon-listing">
+        {
+          size(this.query) === 0
+          ? <p>type to search</p>
+          : (
+            this.isQuerying
+            ? <p>searching...</p>
+            : (size(this.queryResults) > 0
+                ?  this.queryResults.map(result =>
+                    <article class="wrap-icon" key={ `fas-${ result.id }`}>
+                    <button class="icon subtle display-flex flex-column flex-items-center flex-content-center" onClick={() => this.eventHandler.handleResult({ prefix: 'fas', iconName: result.id})}>
+                        <i class={ `fas fa-2x fa-${result.id}` }></i>
+                      <span class="icon-name size-xs text-truncate margin-top-lg">{`${result.id}`}</span>
+                      </button>
+                    </article>
+                  )
+                : <p>(no results)</p>
+              )
+          )
+        }
       </div>
     </div>;
   }

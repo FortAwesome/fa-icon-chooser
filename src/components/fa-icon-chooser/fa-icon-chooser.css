@@ -1,3 +1,85 @@
+@import url(web-awesome.css);
+
+/* project settings */
+:root {
+  --icon-details-preview-font-size: 12rem; /* 192px */
+  --icon-details-preview-line-height: 1;
+  --icon-details-unicode-glyphs-label-min-width: var(--spacing-5xl);
+  --icon-listing-roomy-font-size: var(--font-size-2xl); /* 32px */
+  --icon-listing-roomy-gap-x: calc(var(--spacing-sm) * 3); /* 36px */
+  --icon-listing-roomy-gap-y: var(--spacing-xl); /* 24px */
+  --icon-listing-roomy-size: calc(var(--spacing-base) * 8); /* 128px */
+}
+
 :host {
   display: block;
+}
+
+.icon-listing {
+  margin-top: var(--spacing-lg);
+  display: grid;
+  grid-auto-flow: row dense;
+  grid-template-columns: repeat( 2, minmax(var(--icon-listing-roomy-size), 1fr) );
+  grid-gap: var(--icon-listing-roomy-gap-y) var(--icon-listing-roomy-gap-x);
+}
+
+.wrap-icon {
+  position: relative;
+}
+
+button.icon {
+  --button-padding-vertical:var(--spacing-xl);
+  --button-padding-horizontal:var(--spacing-3xl);
+  --button-font-weight:var(--font-weight-normal);
+  --button-background:var(--white);
+  --button-hover-background:var(--fa-yellow);
+  --button-color:var(--fa-md-gravy);
+  --button-hover-color:var(--fa-navy);
+
+  width: 100%;
+  height: 100%;
+}
+
+button.icon i {
+  color: var(--fa-navy);
+}
+
+.icon-listing .icon .icon-name {
+  width: 100%; /* to support text truncate */
+}
+
+
+
+/* custom > 480px */
+@media (min-width: 30rem) {
+  /* icon listings */
+  .icon-listing {
+    grid-template-columns: repeat(3, minmax(var(--icon-listing-roomy-size), 1fr));
+  }
+}
+
+/* custom > tablet */
+@media (min-width: 48rem) {
+  /* icon listings */
+  .icon-listing {
+    grid-template-columns: repeat(4, minmax(var(--icon-listing-roomy-size), 1fr));
+  }
+}
+
+
+/* custom > laptop */
+@media (min-width: 64rem) {
+  /* icon listings */
+  .icon-listing {
+    grid-template-columns: repeat(6, minmax(var(--icon-listing-roomy-size), 1fr));
+  }
+}
+
+
+/* custom > desktop */
+@media (min-width: 96rem) {
+  /* icon listings */
+  .icon-listing {
+    grid-template-columns: repeat(8, minmax(var(--icon-listing-roomy-size), 1fr));
+  }
 }
