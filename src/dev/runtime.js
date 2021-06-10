@@ -55,14 +55,12 @@ function setupHead() {
   .then(result => {
     if(result.status == 200) {
       result.json().then(obj => {
-        window.addEventListener('DOMContentLoaded', () => {
-          Object.keys(obj.head).map(elementType => {
-            const el = document.createElement(elementType)
-            Object.keys(obj.head[elementType]).map(attr => {
-              el.setAttribute(attr, obj.head[elementType][attr])
-            })
-            document.head.appendChild(el)
+        Object.keys(obj.head).map(elementType => {
+          const el = document.createElement(elementType)
+          Object.keys(obj.head[elementType]).map(attr => {
+            el.setAttribute(attr, obj.head[elementType][attr])
           })
+          document.head.appendChild(el)
         })
       })
       .catch(e => console.error(e))
