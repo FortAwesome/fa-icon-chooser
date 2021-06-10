@@ -81,7 +81,7 @@ function toggleIconChooser() {
 }
 
 function showIconChooser() {
-  const defaultProps = { version: '5.15.3', 'enable-pro': false }
+  const defaultProps = { version: '5.15.3', pro: false }
 
   fetch('/dev/local.json')
   .then(result => {
