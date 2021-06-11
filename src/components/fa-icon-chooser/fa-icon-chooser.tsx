@@ -264,6 +264,10 @@ export class FaIconChooser {
     return false
   }
 
+  showCheckedStyleIcon(style: string) {
+    return this.styleFilterEnabled && this.styleFilters[style]
+  }
+
   toggleStyleFilter(style: string): void {
     if(this.styleFilterEnabled) {
       // If we're turning "off" the last style filter, this has the effect
@@ -299,8 +303,11 @@ export class FaIconChooser {
             <input id="icons-style-solid" onChange={() => this.toggleStyleFilter('fas') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
             <label htmlFor="icons-style-solid" class="icons-style-choice margin-0 display-flex flex-column flex-items-center">
               <span class="position-relative margin-bottom-sm">
-                <i class="checked-icon fas fa-grin-tongue fa-fw fa-2x"></i>
-                <i class="unchecked-icon fas fa-smile fa-fw fa-2x"></i>
+                {
+                  this.showCheckedStyleIcon('fas')
+                  ? <span key="a"><i class="checked-icon fas fa-grin-tongue fa-fw fa-2x"></i></span>
+                  : <span key="b"><i class="unchecked-icon fas fa-smile fa-fw fa-2x"></i></span>
+                }
               </span>
               <span class="sr-only">Show </span>solid<span class="sr-only"> style icons</span>
             </label>
@@ -309,8 +316,11 @@ export class FaIconChooser {
             <input id="icons-style-regular" onChange={() => this.toggleStyleFilter('far') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
             <label htmlFor="icons-style-regular" class="icons-style-choice margin-0 display-flex flex-column flex-items-center ">
               <span class="position-relative margin-bottom-sm">
-                <i class="checked-icon far fa-grin-tongue fa-fw fa-2x"></i>
-                <i class="unchecked-icon far fa-smile fa-fw fa-2x"></i>
+                {
+                  this.showCheckedStyleIcon('far')
+                  ? <span key="a"><i class="checked-icon far fa-grin-tongue fa-fw fa-2x"></i></span>
+                  : <span key="b"><i class="unchecked-icon far fa-smile fa-fw fa-2x"></i></span>
+                }
               </span>
               <span class="sr-only">Show </span>regular<span class="sr-only"> style icons</span>
             </label>
@@ -319,8 +329,11 @@ export class FaIconChooser {
             <input id="icons-style-light" onChange={() => this.toggleStyleFilter('fal') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
             <label htmlFor="icons-style-light" class="icons-style-choice margin-0 display-flex flex-column flex-items-center ">
               <span class="position-relative margin-bottom-sm">
-                <i class="checked-icon fal fa-grin-tongue fa-fw fa-2x"></i>
-                <i class="unchecked-icon fal fa-smile fa-fw fa-2x"></i>
+                {
+                  this.showCheckedStyleIcon('fal')
+                  ? <span key="a"><i class="checked-icon fal fa-grin-tongue fa-fw fa-2x"></i></span>
+                  : <span key="b"><i class="unchecked-icon fal fa-smile fa-fw fa-2x"></i></span>
+                }
               </span>
               <span class="sr-only">Show </span>light<span class="sr-only"> style icons</span>
             </label>
@@ -329,8 +342,11 @@ export class FaIconChooser {
             <input id="icons-style-thin" onChange={() => this.toggleStyleFilter('fat') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
             <label htmlFor="icons-style-thin" class="icons-style-choice margin-0 display-flex flex-column flex-items-center ">
               <span class="position-relative margin-bottom-sm">
-                <i class="checked-icon fat fa-grin-tongue fa-fw fa-2x"></i>
-                <i class="unchecked-icon fat fa-smile fa-fw fa-2x"></i>
+                {
+                  this.showCheckedStyleIcon('fat')
+                  ? <span key="a"><i class="checked-icon fat fa-grin-tongue fa-fw fa-2x"></i></span>
+                  : <span key="b"><i class="unchecked-icon fat fa-smile fa-fw fa-2x"></i></span>
+                }
               </span>
               <span class="sr-only">Show </span>thin<span class="sr-only"> style icons</span>
             </label>
@@ -339,8 +355,11 @@ export class FaIconChooser {
             <input id="icons-style-duotone" onChange={() => this.toggleStyleFilter('fad') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
             <label htmlFor="icons-style-duotone" class="icons-style-choice margin-0 display-flex flex-column flex-items-center ">
               <span class="position-relative margin-bottom-sm">
-                <i class="checked-icon fad fa-grin-tongue fa-fw fa-2x"></i>
-                <i class="unchecked-icon fad fa-smile fa-fw fa-2x"></i>
+                {
+                  this.showCheckedStyleIcon('fad')
+                  ? <span key="a"><i class="checked-icon fad fa-grin-tongue fa-fw fa-2x"></i></span>
+                  : <span key="b"><i class="unchecked-icon fad fa-smile fa-fw fa-2x"></i></span>
+                }
               </span>
               <span class="sr-only">Show </span>duotone<span class="sr-only"> style icons</span>
             </label>
