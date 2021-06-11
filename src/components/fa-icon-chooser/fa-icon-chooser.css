@@ -74,7 +74,7 @@ button.icon i {
   width: 100%; /* to support text truncate */
 }
 
-.no-results i {
+.message-icon {
   color: var(--fa-md-gravy);
 }
 
