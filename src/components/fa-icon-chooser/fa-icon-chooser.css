@@ -74,6 +74,10 @@ button.icon i {
   width: 100%; /* to support text truncate */
 }
 
+.no-results i {
+  color: var(--fa-md-gravy);
+}
+
 
 
 /* custom > 480px */

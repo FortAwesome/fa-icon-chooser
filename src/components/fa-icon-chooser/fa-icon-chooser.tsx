@@ -421,7 +421,12 @@ export class FaIconChooser {
                       </button>
                     </article>
                   )
-                : <p>(no results)</p>
+                : <div class="no-results text-center margin-2xl">
+                    <i class="far fa-frown fa-6x margin-top-xs"></i>
+                    <h2>Sorry, we couldn't find anything for that...</h2>
+                    <p class="muted">You could try a different search or <a href="https://fontawesome.com/" target="_blank">go Pro and upload your own</a>!</p>
+
+                  </div>
               )
           )
         }
