@@ -216,6 +216,76 @@ export class FaIconChooser {
           <i class="fas fa-search icons-search-decorative"></i>
           <input name="search" id="search" class="rounded" value={this.query} onKeyUp={this.onKeyUp.bind(this)} placeholder="Search for icons by name, category, or keyword" type="text"></input>
         </div>
+        <div class="icons-style-menu-listing display-flex flex-items-center">
+          <div class="wrap-icons-style-choice margin-3xs column">
+            <input id="icons-style-solid" type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
+            <label htmlFor="icons-style-solid" class="icons-style-choice margin-0 display-flex flex-column flex-items-center">
+              <span class="position-relative margin-bottom-sm">
+                <i class="checked-icon fas fa-grin-tongue fa-fw fa-2x"></i>
+                <i class="unchecked-icon fas fa-smile fa-fw fa-2x"></i>
+              </span>
+              <span class="sr-only">Show </span>solid<span class="sr-only"> style icons</span>
+            </label>
+          </div>
+          <div class="wrap-icons-style-choice margin-3xs column">
+            <input id="icons-style-regular" type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
+            <label htmlFor="icons-style-regular" class="icons-style-choice margin-0 display-flex flex-column flex-items-center ">
+              <span class="position-relative margin-bottom-sm">
+                <i class="checked-icon far fa-grin-tongue fa-fw fa-2x"></i>
+                <i class="unchecked-icon far fa-smile fa-fw fa-2x"></i>
+              </span>
+              <span class="sr-only">Show </span>regular<span class="sr-only"> style icons</span>
+            </label>
+          </div>
+          <div class="wrap-icons-style-choice margin-3xs column">
+            <input id="icons-style-light" type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
+            <label htmlFor="icons-style-light" class="icons-style-choice margin-0 display-flex flex-column flex-items-center ">
+              <span class="position-relative margin-bottom-sm">
+                <i class="checked-icon fal fa-grin-tongue fa-fw fa-2x"></i>
+                <i class="unchecked-icon fal fa-smile fa-fw fa-2x"></i>
+              </span>
+              <span class="sr-only">Show </span>light<span class="sr-only"> style icons</span>
+            </label>
+          </div>
+          <div class="wrap-icons-style-choice margin-3xs column">
+            <input id="icons-style-thin" type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
+            <label htmlFor="icons-style-thin" class="icons-style-choice margin-0 display-flex flex-column flex-items-center ">
+              <span class="position-relative margin-bottom-sm">
+                <i class="checked-icon fat fa-grin-tongue fa-fw fa-2x"></i>
+                <i class="unchecked-icon fat fa-smile fa-fw fa-2x"></i>
+              </span>
+              <span class="sr-only">Show </span>thin<span class="sr-only"> style icons</span>
+            </label>
+          </div>
+          <div class="wrap-icons-style-choice margin-3xs column">
+            <input id="icons-style-duotone" type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
+            <label htmlFor="icons-style-duotone" class="icons-style-choice margin-0 display-flex flex-column flex-items-center ">
+              <span class="position-relative margin-bottom-sm">
+                <i class="checked-icon fad fa-grin-tongue fa-fw fa-2x"></i>
+                <i class="unchecked-icon fad fa-smile fa-fw fa-2x"></i>
+              </span>
+              <span class="sr-only">Show </span>duotone<span class="sr-only"> style icons</span>
+            </label>
+          </div>
+          <div class="wrap-icons-style-choice margin-3xs column">
+            <input id="icons-style-brands" type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
+            <label htmlFor="icons-style-brands" class="icons-style-choice margin-0 display-flex flex-column flex-items-center ">
+              <span class="position-relative margin-bottom-sm">
+                <i class="fab fa-font-awesome fa-fw fa-2x"></i>
+              </span>
+              <span class="sr-only">Show </span>brands<span class="sr-only"> style icons</span>
+            </label>
+          </div>
+          <div class="wrap-icons-style-choice margin-3xs column">
+            <input id="icons-style-uploads" type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
+            <label htmlFor="icons-style-uploads" class="icons-style-choice margin-0 display-flex flex-column flex-items-center ">
+              <span class="position-relative margin-bottom-sm">
+                <i class="fas fa-icons fa-fw fa-2x"></i>
+              </span>
+              <span class="sr-only">Show </span>Uploaded<span class="sr-only"> icons</span>
+            </label>
+          </div>
+        </div>
       </form>
       <div class="icon-listing">
         {
