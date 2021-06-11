@@ -405,7 +405,7 @@ export class FaIconChooser {
           }
         </div>
       </form>
-      <div class="icon-listing">
+      <div class="wrap-icon-listing">
         {
           size(this.query) === 0
             ? <article class="message-default text-center margin-2xl">
@@ -418,14 +418,14 @@ export class FaIconChooser {
                     <h2>Loading Icons</h2>
                   </article>
             : (size(this.filteredIcons()) > 0
-                ?  this.filteredIcons().map(icon =>
+                  ? <div class="icon-listing"> {this.filteredIcons().map(icon =>
                     <article class="wrap-icon" key={ `${icon.prefix}-${ icon.iconName }`}>
                       <button class="icon subtle display-flex flex-column flex-items-center flex-content-center" onClick={() => this.finish.emit(icon)}>
                           <i class={ `${ icon.prefix } fa-2x fa-${ icon.iconName }` }></i>
                         <span class="icon-name size-xs text-truncate margin-top-lg">{`${ icon.iconName }`}</span>
                         </button>
                       </article>
-                  )
+                  )}</div>
                   : <article class="message-noresults text-center margin-2xl">
                       <i class="message-icon far fa-frown fa-4x margin-top-xs"></i>
                       <h2>Sorry, we couldn't find anything for that...</h2>
