@@ -115,23 +115,14 @@ window.toggleIconChooser = (function () {
     const tokenJSON = window.localStorage.getItem('token')
     const tokenObj = tokenJSON ? JSON.parse(tokenJSON) : undefined
     const apiToken = localConfig && localConfig.apiToken
+    const freshToken = (tokenObj && Math.floor(Date.now() / 1000) <= tokenObj.expiresAtEpochSeconds)
+      ? tokenObj.token
+      : undefined
 
-    if(tokenObj) {
-      if(Math.floor(Date.now() / 1000) <= tokenObj.expiresAtEpochSeconds) {
-        return Promise.resolve(tokenObj.token)
-      } else {
-        return Promise.reject('DEV: your Font Awesome API access token has expired. Refresh the page.')
-      }
-    } else {
-      if(!apiToken) {
-        // No access token has been stored, and we have no apiToken to get a fresh one,
-        // so there's no error here--but no token either.
-        return Promise.resolve(undefined)
-      }
-    }
+    if(freshToken) return Promise.resolve(freshToken)
 
     if(!apiToken) {
-      return Promise.reject('DEV: cannot refresh access token because you local.json was not loaded or does not include an apiToken')
+      return Promise.reject('DEV: cannot refresh access token because your local.json was not loaded or does not include an apiToken')
     }
 
     return fetch('https://api.fontawesome.com/token', {
