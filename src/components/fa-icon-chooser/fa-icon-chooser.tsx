@@ -97,7 +97,7 @@ export class FaIconChooser {
     fak: false
   };
 
-  kitMetadata: KitMetadata;
+  @State() kitMetadata: KitMetadata;
 
   resolvedVersion: string;
 
@@ -290,7 +290,11 @@ export class FaIconChooser {
   }
 
   hasIconUploads() {
-    return this.kitToken && size(get(this, 'kitMetadata.iconUploads', [])) > 0
+    return !!(this.kitToken && this.kitMetadata && size(this.kitMetadata.iconUploads) > 0)
+  }
+
+  isLoadingKit() {
+    return !this.kitToken || !this.kitMetadata
   }
 
   onKeyUp(e: any): void {
@@ -299,6 +303,10 @@ export class FaIconChooser {
   }
 
   render() {
+    if(this.isLoadingKit()) {
+      return <div class="fa-icon-chooser">loading kit...</div>
+    }
+
     return <div class="fa-icon-chooser">
       <form>
         <label htmlFor="search" class="sr-only">Search the v6 Beta Icons</label>
