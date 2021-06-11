@@ -405,7 +405,7 @@ export class FaIconChooser {
           }
         </div>
       </form>
-      <div class="wrap-icon-listing">
+      <div class="wrap-icon-listing margin-y-lg">
         {
           size(this.query) === 0
             ? <article class="message-default text-center margin-2xl">
