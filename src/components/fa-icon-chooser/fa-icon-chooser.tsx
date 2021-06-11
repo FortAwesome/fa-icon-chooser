@@ -285,6 +285,14 @@ export class FaIconChooser {
     }
   }
 
+  isV6() {
+    return this.resolvedVersion && this.resolvedVersion[0] === '6'
+  }
+
+  hasIconUploads() {
+    return this.kitToken && size(get(this, 'kitMetadata.iconUploads', [])) > 0
+  }
+
   onKeyUp(e: any): void {
     this.query = e.target.value
     this.updateQueryResults(this.query)
@@ -338,19 +346,21 @@ export class FaIconChooser {
               <span class="sr-only">Show </span>light<span class="sr-only"> style icons</span>
             </label>
           </div>
-          <div class="wrap-icons-style-choice margin-3xs column">
-            <input id="icons-style-thin" onChange={() => this.toggleStyleFilter('fat') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
-            <label htmlFor="icons-style-thin" class="icons-style-choice margin-0 display-flex flex-column flex-items-center ">
-              <span class="position-relative margin-bottom-sm">
-                {
-                  this.showCheckedStyleIcon('fat')
-                  ? <span key="a"><i class="checked-icon fat fa-grin-tongue fa-fw fa-2x"></i></span>
-                  : <span key="b"><i class="unchecked-icon fat fa-smile fa-fw fa-2x"></i></span>
-                }
-              </span>
-              <span class="sr-only">Show </span>thin<span class="sr-only"> style icons</span>
-            </label>
-          </div>
+          { this.isV6() &&
+            <div class="wrap-icons-style-choice margin-3xs column">
+              <input id="icons-style-thin" onChange={() => this.toggleStyleFilter('fat') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
+              <label htmlFor="icons-style-thin" class="icons-style-choice margin-0 display-flex flex-column flex-items-center ">
+                <span class="position-relative margin-bottom-sm">
+                  {
+                    this.showCheckedStyleIcon('fat')
+                    ? <span key="a"><i class="checked-icon fat fa-grin-tongue fa-fw fa-2x"></i></span>
+                    : <span key="b"><i class="unchecked-icon fat fa-smile fa-fw fa-2x"></i></span>
+                  }
+                </span>
+                <span class="sr-only">Show </span>thin<span class="sr-only"> style icons</span>
+              </label>
+            </div>
+          }
           <div class="wrap-icons-style-choice margin-3xs column">
             <input id="icons-style-duotone" onChange={() => this.toggleStyleFilter('fad') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
             <label htmlFor="icons-style-duotone" class="icons-style-choice margin-0 display-flex flex-column flex-items-center ">
@@ -373,15 +383,18 @@ export class FaIconChooser {
               <span class="sr-only">Show </span>brands<span class="sr-only"> style icons</span>
             </label>
           </div>
-          <div class="wrap-icons-style-choice margin-3xs column">
-            <input id="icons-style-uploads" onChange={() => this.toggleStyleFilter('fak') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
-            <label htmlFor="icons-style-uploads" class="icons-style-choice margin-0 display-flex flex-column flex-items-center ">
-              <span class="position-relative margin-bottom-sm">
-                <i class="fas fa-icons fa-fw fa-2x"></i>
-              </span>
-              <span class="sr-only">Show </span>Uploaded<span class="sr-only"> icons</span>
-            </label>
-          </div>
+          {
+            this.hasIconUploads() &&
+            <div class="wrap-icons-style-choice margin-3xs column">
+              <input id="icons-style-uploads" onChange={() => this.toggleStyleFilter('fak') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
+              <label htmlFor="icons-style-uploads" class="icons-style-choice margin-0 display-flex flex-column flex-items-center ">
+                <span class="position-relative margin-bottom-sm">
+                  <i class="fas fa-icons fa-fw fa-2x"></i>
+                </span>
+                <span class="sr-only">Show </span>Uploaded<span class="sr-only"> icons</span>
+              </label>
+            </div>
+          }
         </div>
       </form>
       <div class="icon-listing">
