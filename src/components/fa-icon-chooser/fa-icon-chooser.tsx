@@ -1,5 +1,5 @@
 import { Component, Event, EventEmitter, Prop, State, h } from '@stencil/core';
-import { get, size, debounce } from 'lodash';
+import { get, size, debounce, sample } from 'lodash';
 import { IconLookup } from '@fortawesome/fontawesome-common-types';
 
 // TODO: figure out whether the IconPrefix type in @fortawesome/fontawesome-common-types
@@ -81,6 +81,8 @@ export class FaIconChooser {
 
   @State() isQuerying: boolean = false;
 
+  @State() isInitialLoading: boolean = false;
+
   @State() hasQueried: boolean = false;
 
   @State() icons: IconLookup[] = [];
@@ -112,16 +114,23 @@ export class FaIconChooser {
     this.toggleStyleFilter = this.toggleStyleFilter.bind(this)
   }
 
-  componentWillLoad() {
-    if(!this.kitToken) {
-      this.isProEnabled = this.pro
 
-      if(!this.version) {
-        throw new Error('invalid props: since no kitToken was specified, there must be a version')
-      }
+  // TODO: replace this placeholder logic with, probably, real API calls
+  // that handle resolving the version.
+  resolveVersion(version) {
+    switch(version) {
+      case '5.x':
+      case 'latest':
+        return '5.15.3'
+      case '6.x':
+        return '6.0.0-beta1'
+      default:
+        return version
     }
+  }
 
-    this.handleQuery(
+  async loadKitMetadata() {
+    const response = await this.handleQuery(
       `
       query {
         me {
@@ -143,97 +152,120 @@ export class FaIconChooser {
       }
       `
     )
-    .then(response => {
-      // TODO: consider real error handling.
-      if(get(response, 'errors')) {
-        console.error('GraphQL query errors', response.errors)
-        throw new Error('GraphQL query errors')
-      }
 
-      const kit = get(response, 'data.me.kit')
-      this.kitMetadata = kit
+    // TODO: consider real error handling.
+    if(get(response, 'errors')) {
+      console.error('GraphQL query errors', response.errors)
+      throw new Error('GraphQL query errors')
+    }
 
-      // TODO: replace this placeholder logic with, probably, real API calls
-      // that handle resolving the version.
-      switch(get(this.kitMetadata, 'version')) {
-        case '5.x':
-        case 'latest':
-          this.resolvedVersion = '5.15.3'
-          break
-        case '6.x':
-          this.resolvedVersion = '6.0.0-beta1'
-          break
-        default:
-          this.resolvedVersion = kit.version
-      }
+    const kit = get(response, 'data.me.kit')
+    this.kitMetadata = kit
 
-      this.isProEnabled = this.kitMetadata.licenseSelected === 'pro'
-
-      // TODO: figure out some real error handling here.
-      if(! this.resolvedVersion ) {
-        throw new Error('invalid state: there must be a resolved version')
-      }
-    })
-    .catch(e => {
-      console.error('WHOOPS!', e)
-    })
+    console.log('DEBUG: done loading kitMetadata')
   }
 
-  updateQueryResults(query: string) {
-    this.hasQueried = false
-    this.isQuerying = true
+  async preload() {
+    if(!this.kitToken) {
+      return
+    }
 
-    this.handleQuery(
-      `
-      query {
-        search(version:"${ this.resolvedVersion }", query: "${ query }", first: 10) {
-          id
-          label
-          membership {
-            free
-            pro
-          }
+    console.log('DEBUG will loadKitMetadata')
+    await this.loadKitMetadata()
+  }
+
+  componentWillLoad() {
+      this.isInitialLoading = true
+      this.query = ''
+
+      this.preload()
+      .then(() => {
+        this.resolvedVersion = this.resolveVersion(
+          get(this, 'kitMetadata.version') || this.version
+        )
+
+        this.isProEnabled = (get(this, 'kitMetadata.licenseSelected') === 'pro')
+          || this.pro
+
+        // TODO: figure out some real error handling here.
+        if(! this.resolvedVersion ) {
+          throw new Error('invalid state: there must be a resolved version')
         }
-      }`
-    )
-    .then(response => {
-      // TODO: test the case where data.search is null (which would happen if the API
-      // server returns a not_found)
 
-      const iconUploads = get(this, 'kitMetadata.iconUploads', []).map(i => {
-        return { prefix: 'fak', iconName: i.name }
+        const searchTerm = sample(['animals', 'business', 'travel', 'games', 'communication'])
+
+        return this.updateQueryResults(searchTerm)
       })
+      .then(() => {
+        console.log('DEBUG done loading')
+        this.isInitialLoading = false
+      })
+      .catch(e => {
+        console.error('WHOOPS!', e)
+      })
+  }
 
-      this.icons = (get(response, 'data.search') || [])
-        .reduce((acc: Array<IconLookup>, result: any) => {
-          const { id, membership } = result
+  updateQueryResults(query: string): Promise<void> {
+      this.hasQueried = false
+      this.isQuerying = true
 
-          const styles = membership.free
+      console.log('DEBUG: in updateQueryResults, about to query with:', query)
 
-          if(this.isProEnabled && !!membership.pro) {
-            membership.pro
-              .filter(style => !membership.free.includes(style))
-              .forEach(style => styles.push(style))
+      return this.handleQuery(
+        `
+        query {
+          search(version:"${ this.resolvedVersion }", query: "${ query }", first: 10) {
+            id
+            label
+            membership {
+              free
+              pro
+            }
           }
+        }`
+      )
+      .then(response => {
+        console.log('DEBUG: query got response:', response)
 
-          styles.map(style => {
-            const prefix = STYLE_RESULT_TO_PREFIX[style]
+        // TODO: test the case where data.search is null (which would happen if the API
+        // server returns a not_found)
+        const iconUploads = get(this, 'kitMetadata.iconUploads', []).map(i => {
+          return { prefix: 'fak', iconName: i.name }
+        })
 
-            acc.push({
-              iconName: id,
-              prefix
+        this.icons = (get(response, 'data.search') || [])
+          .reduce((acc: Array<IconLookup>, result: any) => {
+            const { id, membership } = result
+
+            const styles = membership.free
+
+            if(this.isProEnabled && !!membership.pro) {
+              membership.pro
+                .filter(style => !membership.free.includes(style))
+                .forEach(style => styles.push(style))
+            }
+
+            styles.map(style => {
+              const prefix = STYLE_RESULT_TO_PREFIX[style]
+
+              acc.push({
+                iconName: id,
+                prefix
+              })
             })
-          })
 
-          return acc
-      }, iconUploads)
+            return acc
+        }, iconUploads)
 
-      this.hasQueried = true
-      this.isQuerying = false
-    })
-    .catch(e => {
-      console.error('WHOOPS!', e)
-    })
+        this.hasQueried = true
+        this.isQuerying = false
+
+        console.log('DEBUG: query updated with icons')
+      })
+      .catch(e => {
+        // TODO: put in some real error handling
+        console.error('WHOOPS!', e)
+      })
   }
 
   filteredIcons(): IconLookup[] {
@@ -293,18 +325,16 @@ export class FaIconChooser {
     return !!(this.kitToken && this.kitMetadata && size(this.kitMetadata.iconUploads) > 0)
   }
 
-  isLoadingKit() {
-    return !this.kitToken || !this.kitMetadata
-  }
-
   onKeyUp(e: any): void {
     this.query = e.target.value
-    this.updateQueryResults(this.query)
+    this.updateQueryResults(this.query).catch(e => {
+      console.error(e)
+    })
   }
 
   render() {
-    if(this.isLoadingKit()) {
-      return <div class="fa-icon-chooser">loading kit...</div>
+    if(this.isInitialLoading) {
+      return <div class="fa-icon-chooser">loading...</div>
     }
 
     return <div class="fa-icon-chooser">
@@ -407,32 +437,26 @@ export class FaIconChooser {
       </form>
       <div class="wrap-icon-listing margin-y-lg">
         {
-          size(this.query) === 0
-            ? <article class="message-default text-center margin-2xl">
-                <p class="size-lg muted">Search for an icon by name, category, or keyword, like arrow, chat, or shop.</p>
-              </article>
-          : (
-            this.isQuerying
-                ? <article class="message-loading text-center margin-2xl">
-                    <i class="message-icon far fa-compass fa-spin fa-4x margin-top-xs" />
-                    <h2>Loading Icons</h2>
-                  </article>
-            : (size(this.filteredIcons()) > 0
-                  ? <div class="icon-listing"> {this.filteredIcons().map(icon =>
-                    <article class="wrap-icon" key={ `${icon.prefix}-${ icon.iconName }`}>
-                      <button class="icon subtle display-flex flex-column flex-items-center flex-content-center" onClick={() => this.finish.emit(icon)}>
-                          <i class={ `${ icon.prefix } fa-2x fa-${ icon.iconName }` }></i>
-                        <span class="icon-name size-xs text-truncate margin-top-lg">{`${ icon.iconName }`}</span>
-                        </button>
-                      </article>
-                  )}</div>
-                  : <article class="message-noresults text-center margin-2xl">
-                      <i class="message-icon far fa-frown fa-4x margin-top-xs"></i>
-                      <h2>Sorry, we couldn't find anything for that...</h2>
-                      <p class="muted">You could try a different search or <a href="https://fontawesome.com/" target="_blank">go Pro and upload your own</a>!</p>
+          this.isQuerying
+              ? <article class="message-loading text-center margin-2xl">
+                  <i class="message-icon far fa-compass fa-spin fa-4x margin-top-xs" />
+                  <h2>Loading Icons</h2>
+                </article>
+          : (size(this.filteredIcons()) > 0
+                ? <div class="icon-listing"> {this.filteredIcons().map(icon =>
+                  <article class="wrap-icon" key={ `${icon.prefix}-${ icon.iconName }`}>
+                    <button class="icon subtle display-flex flex-column flex-items-center flex-content-center" onClick={() => this.finish.emit(icon)}>
+                        <i class={ `${ icon.prefix } fa-2x fa-${ icon.iconName }` }></i>
+                      <span class="icon-name size-xs text-truncate margin-top-lg">{`${ icon.iconName }`}</span>
+                      </button>
                     </article>
-              )
-          )
+                )}</div>
+                : <article class="message-noresults text-center margin-2xl">
+                    <i class="message-icon far fa-frown fa-4x margin-top-xs"></i>
+                    <h2>Sorry, we couldn't find anything for that...</h2>
+                    <p class="muted">You could try a different search or <a href="https://fontawesome.com/" target="_blank">go Pro and upload your own</a>!</p>
+                  </article>
+            )
         }
       </div>
     </div>;
