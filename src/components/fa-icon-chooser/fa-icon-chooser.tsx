@@ -364,19 +364,22 @@ export class FaIconChooser {
               <span class="sr-only">Show </span>regular<span class="sr-only"> style icons</span>
             </label>
           </div>
-          <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
-            <input id="icons-style-light" onChange={() => this.toggleStyleFilter('fal') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
-            <label htmlFor="icons-style-light" class="icons-style-choice padding-y-xl padding-x-md margin-0 display-flex flex-column flex-items-center ">
-              <span class="position-relative margin-bottom-sm">
-                {
-                  this.showCheckedStyleIcon('fal')
-                  ? <span key="a"><i class="checked-icon fal fa-grin-tongue fa-fw fa-2x"></i></span>
-                  : <span key="b"><i class="unchecked-icon fal fa-smile fa-fw fa-2x"></i></span>
-                }
-              </span>
-              <span class="sr-only">Show </span>light<span class="sr-only"> style icons</span>
-            </label>
-          </div>
+          {
+            this.isProEnabled &&
+            <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
+              <input id="icons-style-light" onChange={() => this.toggleStyleFilter('fal') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
+              <label htmlFor="icons-style-light" class="icons-style-choice padding-y-xl padding-x-md margin-0 display-flex flex-column flex-items-center ">
+                <span class="position-relative margin-bottom-sm">
+                  {
+                    this.showCheckedStyleIcon('fal')
+                    ? <span key="a"><i class="checked-icon fal fa-grin-tongue fa-fw fa-2x"></i></span>
+                    : <span key="b"><i class="unchecked-icon fal fa-smile fa-fw fa-2x"></i></span>
+                  }
+                </span>
+                <span class="sr-only">Show </span>light<span class="sr-only"> style icons</span>
+              </label>
+            </div>
+          }
           { this.isV6() &&
             <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
               <input id="icons-style-thin" onChange={() => this.toggleStyleFilter('fat') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
@@ -392,19 +395,22 @@ export class FaIconChooser {
               </label>
             </div>
           }
-          <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
-            <input id="icons-style-duotone" onChange={() => this.toggleStyleFilter('fad') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
-            <label htmlFor="icons-style-duotone" class="icons-style-choice padding-y-xl padding-x-md margin-0 display-flex flex-column flex-items-center ">
-              <span class="position-relative margin-bottom-sm">
-                {
-                  this.showCheckedStyleIcon('fad')
-                  ? <span key="a"><i class="checked-icon fad fa-grin-tongue fa-fw fa-2x"></i></span>
-                  : <span key="b"><i class="unchecked-icon fad fa-smile fa-fw fa-2x"></i></span>
-                }
-              </span>
-              <span class="sr-only">Show </span>duotone<span class="sr-only"> style icons</span>
-            </label>
-          </div>
+          {
+            this.isProEnabled &&
+            <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
+              <input id="icons-style-duotone" onChange={() => this.toggleStyleFilter('fad') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
+              <label htmlFor="icons-style-duotone" class="icons-style-choice padding-y-xl padding-x-md margin-0 display-flex flex-column flex-items-center ">
+                <span class="position-relative margin-bottom-sm">
+                  {
+                    this.showCheckedStyleIcon('fad')
+                    ? <span key="a"><i class="checked-icon fad fa-grin-tongue fa-fw fa-2x"></i></span>
+                    : <span key="b"><i class="unchecked-icon fad fa-smile fa-fw fa-2x"></i></span>
+                  }
+                </span>
+                <span class="sr-only">Show </span>duotone<span class="sr-only"> style icons</span>
+              </label>
+            </div>
+          }
           <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
             <input id="icons-style-brands" onChange={() => this.toggleStyleFilter('fab') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
             <label htmlFor="icons-style-brands" class="icons-style-choice padding-y-xl padding-x-md margin-0 display-flex flex-column flex-items-center ">
