@@ -169,11 +169,12 @@ export class FaIconChooser {
     await this.loadKitMetadata()
   }
 
-  componentWillLoad() {
+  async componentWillLoad() {
       this.query = ''
 
-      this.preload()
-      .then(() => {
+      try {
+        await this.preload()
+
         this.resolvedVersion = this.resolveVersion(
           get(this, 'kitMetadata.version') || this.version
         )
@@ -188,17 +189,14 @@ export class FaIconChooser {
 
         const searchTerm = sample(['animals', 'business', 'travel', 'games', 'communication'])
 
-        const p = this.updateQueryResults(searchTerm)
-        console.log('DEBUG: p', p)
+        await this.updateQueryResults(searchTerm)
 
-        p.then(() => {
-          console.log('DEBUG done loading')
-          this.isInitialLoading = false
-        })
-      })
-      .catch(e => {
+        console.log('DEBUG done loading')
+        this.isInitialLoading = false
+      } catch (e) {
+        // TODO: implement real error handling
         console.error('WHOOPS!', e)
-      })
+      }
   }
 
   updateQueryResults(query: string) {
