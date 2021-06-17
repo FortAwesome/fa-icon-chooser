@@ -81,7 +81,7 @@ export class FaIconChooser {
 
   @State() isQuerying: boolean = false;
 
-  @State() isInitialLoading: boolean = false;
+  @State() isInitialLoading: boolean = true;
 
   @State() hasQueried: boolean = false;
 
@@ -106,11 +106,6 @@ export class FaIconChooser {
   isProEnabled: boolean;
 
   constructor() {
-    const originalUpdateQueryResults = this.updateQueryResults.bind(this)
-    this.updateQueryResults = debounce( query => {
-      originalUpdateQueryResults(query)
-    }, 500 )
-
     this.toggleStyleFilter = this.toggleStyleFilter.bind(this)
   }
 
@@ -175,7 +170,6 @@ export class FaIconChooser {
   }
 
   componentWillLoad() {
-      this.isInitialLoading = true
       this.query = ''
 
       this.preload()
@@ -194,79 +188,93 @@ export class FaIconChooser {
 
         const searchTerm = sample(['animals', 'business', 'travel', 'games', 'communication'])
 
-        return this.updateQueryResults(searchTerm)
-      })
-      .then(() => {
-        console.log('DEBUG done loading')
-        this.isInitialLoading = false
-      })
-      .catch(e => {
-        console.error('WHOOPS!', e)
-      })
-  }
+        const p = this.updateQueryResults(searchTerm)
+        console.log('DEBUG: p', p)
 
-  updateQueryResults(query: string): Promise<void> {
-      this.hasQueried = false
-      this.isQuerying = true
-
-      console.log('DEBUG: in updateQueryResults, about to query with:', query)
-
-      return this.handleQuery(
-        `
-        query {
-          search(version:"${ this.resolvedVersion }", query: "${ query }", first: 10) {
-            id
-            label
-            membership {
-              free
-              pro
-            }
-          }
-        }`
-      )
-      .then(response => {
-        console.log('DEBUG: query got response:', response)
-
-        // TODO: test the case where data.search is null (which would happen if the API
-        // server returns a not_found)
-        const iconUploads = get(this, 'kitMetadata.iconUploads', []).map(i => {
-          return { prefix: 'fak', iconName: i.name }
+        p.then(() => {
+          console.log('DEBUG done loading')
+          this.isInitialLoading = false
         })
-
-        this.icons = (get(response, 'data.search') || [])
-          .reduce((acc: Array<IconLookup>, result: any) => {
-            const { id, membership } = result
-
-            const styles = membership.free
-
-            if(this.isProEnabled && !!membership.pro) {
-              membership.pro
-                .filter(style => !membership.free.includes(style))
-                .forEach(style => styles.push(style))
-            }
-
-            styles.map(style => {
-              const prefix = STYLE_RESULT_TO_PREFIX[style]
-
-              acc.push({
-                iconName: id,
-                prefix
-              })
-            })
-
-            return acc
-        }, iconUploads)
-
-        this.hasQueried = true
-        this.isQuerying = false
-
-        console.log('DEBUG: query updated with icons')
       })
       .catch(e => {
-        // TODO: put in some real error handling
         console.error('WHOOPS!', e)
       })
   }
+
+  updateQueryResults(query: string) {
+      return new Promise((resolve, reject) => {
+        this.hasQueried = false
+        this.isQuerying = true
+
+        console.log('DEBUG: in updateQueryResults, about to query with:', query)
+
+        this.handleQuery(
+          `
+          query {
+            search(version:"${ this.resolvedVersion }", query: "${ query }", first: 10) {
+              id
+              label
+              membership {
+                free
+                pro
+              }
+            }
+          }`
+        )
+        .then(response => {
+          console.log('DEBUG: query got response:', response)
+
+          // TODO: test the case where data.search is null (which would happen if the API
+          // server returns a not_found)
+          const iconUploads = get(this, 'kitMetadata.iconUploads', []).map(i => {
+            return { prefix: 'fak', iconName: i.name }
+          })
+
+          this.icons = (get(response, 'data.search') || [])
+            .reduce((acc: Array<IconLookup>, result: any) => {
+              const { id, membership } = result
+
+              const styles = membership.free
+
+              if(this.isProEnabled && !!membership.pro) {
+                membership.pro
+                  .filter(style => !membership.free.includes(style))
+                  .forEach(style => styles.push(style))
+              }
+
+              styles.map(style => {
+                const prefix = STYLE_RESULT_TO_PREFIX[style]
+
+                acc.push({
+                  iconName: id,
+                  prefix
+                })
+              })
+
+              return acc
+          }, iconUploads)
+
+          this.hasQueried = true
+          this.isQuerying = false
+
+          console.log('DEBUG: query updated with icons')
+          resolve(true)
+        })
+        .catch(e => {
+          // TODO: put in some real error handling
+          console.error('WHOOPS!', e)
+          reject(e)
+        })
+      })
+  }
+
+  updateQueryResultsWithDebounce = debounce( query => {
+      this.updateQueryResults(query)
+      .catch(e => {
+        // TODO: implement real error handling
+        console.error(e)
+      })
+  }, 500 )
 
   filteredIcons(): IconLookup[] {
     if(!this.styleFilterEnabled) return this.icons
@@ -327,9 +335,7 @@ export class FaIconChooser {
 
   onKeyUp(e: any): void {
     this.query = e.target.value
-    this.updateQueryResults(this.query).catch(e => {
-      console.error(e)
-    })
+    this.updateQueryResultsWithDebounce(this.query)
   }
 
   render() {
