@@ -156,8 +156,6 @@ export class FaIconChooser {
 
     const kit = get(response, 'data.me.kit')
     this.kitMetadata = kit
-
-    console.log('DEBUG: done loading kitMetadata')
   }
 
   async preload() {
@@ -165,7 +163,6 @@ export class FaIconChooser {
       return
     }
 
-    console.log('DEBUG will loadKitMetadata')
     await this.loadKitMetadata()
   }
 
@@ -191,7 +188,6 @@ export class FaIconChooser {
 
         await this.updateQueryResults(searchTerm)
 
-        console.log('DEBUG done loading')
         this.isInitialLoading = false
       } catch (e) {
         // TODO: implement real error handling
@@ -203,8 +199,6 @@ export class FaIconChooser {
     if(size(query) === 0) return
 
     this.isQuerying = true
-
-    console.log('DEBUG: in updateQueryResults, about to query with:', query)
 
     const response = await this.handleQuery(
       `
@@ -219,8 +213,6 @@ export class FaIconChooser {
         }
       }`
     )
-
-    console.log('DEBUG: query got response:', response)
 
     // TODO: test the case where data.search is null (which would happen if the API
     // server returns a not_found)
@@ -254,8 +246,6 @@ export class FaIconChooser {
 
     this.hasQueried = true
     this.isQuerying = false
-
-    console.log('DEBUG: query updated with icons')
   }
 
   updateQueryResultsWithDebounce = debounce( query => {
