@@ -309,6 +309,10 @@ export class FaIconChooser {
     return this.resolvedVersion && this.resolvedVersion[0] === '6'
   }
 
+  isDuotoneAvailable() {
+    return this.isProEnabled && !!this.resolvedVersion.match('/5\.[1-9][0-9]+\./')
+  }
+
   hasIconUploads() {
     return !!(this.kitToken && this.kitMetadata && size(this.kitMetadata.iconUploads) > 0)
   }
@@ -396,7 +400,7 @@ export class FaIconChooser {
             </div>
           }
           {
-            this.isProEnabled &&
+            this.isDuotoneAvailable() &&
             <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
               <input id="icons-style-duotone" onChange={() => this.toggleStyleFilter('fad') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
               <label htmlFor="icons-style-duotone" class="icons-style-choice padding-y-xl padding-x-md margin-0 display-flex flex-column flex-items-center ">
