@@ -1,6 +1,9 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { MyComponent } from './fa-icon-chooser';
 
+// TODO: tests
+// - remove contents from query field after having had some contents: what should happen in that state?
+
 describe('my-component', () => {
   it('renders', async () => {
     const { root } = await newSpecPage({
