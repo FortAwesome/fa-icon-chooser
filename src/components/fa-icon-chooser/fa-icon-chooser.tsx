@@ -446,6 +446,15 @@ export class FaIconChooser {
         </div>
       </form>
       <div class="wrap-icon-listing margin-y-lg">
+        { !this.isQuerying &&
+          this.mayHaveIconUploads() &&
+          !this.hasIconUploads() &&
+          this.styleFilterEnabled &&
+          this.styleFilters.fak &&
+          <article class="text-center margin-2xl">
+            This kit contains no uploaded icons.
+          </article>
+        }
         {
           this.isQuerying
           ? <article class="message-loading text-center margin-2xl">
@@ -454,9 +463,6 @@ export class FaIconChooser {
             </article>
           : (size(this.filteredIcons()) > 0
               ? <div class="icon-listing">
-                  {(this.mayHaveIconUploads() && !this.hasIconUploads()) &&
-                  <article>you coulda uploaded icons.</article>
-                  }
                   {this.filteredIcons().map(icon =>
                   <article class="wrap-icon" key={ `${icon.prefix}-${ icon.iconName }`}>
                     <button class="icon subtle display-flex flex-column flex-items-center flex-content-center" onClick={() => this.finish.emit(icon)}>
