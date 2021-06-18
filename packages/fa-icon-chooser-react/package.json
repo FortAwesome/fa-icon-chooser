@@ -1,0 +1,50 @@
+{
+  "name": "@fortawesome/fa-icon-chooser-react",
+  "sideEffects": false,
+  "version": "0.0.1",
+  "private": true,
+  "description": "React specific wrapper for @fortawesome/fa-icon-chooser",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FortAwesome/fa-icon-chooser.git"
+  },
+  "scripts": {
+    "build": "npm run clean && npm run compile",
+    "clean": "rm -rf dist",
+    "compile": "npm run tsc",
+    "tsc": "tsc -p .",
+    "rollup": "rollup -c"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/"
+  ],
+  "devDependencies": {
+    "@types/jest": "23.3.9",
+    "@types/node": "^14",
+    "@types/react": "^16",
+    "@types/react-dom": "^16",
+    "jest": "^23.0.0",
+    "jest-dom": "^3.0.2",
+    "np": "^3.1.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "typescript": "^4.3.2"
+  },
+  "dependencies": {
+    "@fortawesome/fa-icon-chooser": "^0.0.1"
+  },
+  "peerDependencies": {
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "setupTestFrameworkScriptFile": "<rootDir>/jest.setup.js",
+    "testPathIgnorePatterns": [
+      "node_modules",
+      "dist"
+    ]
+  }
+}
