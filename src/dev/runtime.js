@@ -174,6 +174,7 @@ window.toggleIconChooser = (function () {
         throw new Error('DEV: your local.json must have a props key with either a version subkey or a kit-token subkey')
       }
       addIconChooser(props)
+      return
     }
 
     getAccessToken()
