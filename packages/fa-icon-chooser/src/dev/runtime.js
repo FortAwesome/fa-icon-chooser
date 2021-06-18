@@ -1,4 +1,4 @@
-window.toggleIconChooser = (function () {
+window.FaIconChooserDev = (function () {
   let showingIconChooser = false
   let localConfig = undefined
   const localDevMissingMsg = 'DEV: your local dev config in local.json is required but has not yet been loaded.'
@@ -190,5 +190,17 @@ window.toggleIconChooser = (function () {
     throw e
   })
 
-  return toggleIconChooser
+  document.addEventListener('DOMContentLoaded', function() {
+    const toggle = document.querySelector('#fa-icon-chooser-toggle')
+
+    if(toggle) {
+      toggle.addEventListener('click', toggleIconChooser)
+    }
+  })
+
+  return {
+    toggleIconChooser,
+    handleQuery,
+    handleResult
+  }
 })()
