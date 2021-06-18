@@ -175,12 +175,11 @@ export class FaIconChooser {
     }
   }
 
-  async componentWillLoad() {
+  componentWillLoad() {
       this.query = ''
 
-      try {
-        await this.preload()
-
+      this.preload()
+      .then(() => {
         this.resolvedVersion = this.resolveVersion(
           get(this, 'kitMetadata.version') || this.version
         )
@@ -195,15 +194,17 @@ export class FaIconChooser {
 
         const searchTerm = sample(['animals', 'business', 'travel', 'games', 'communication'])
 
-        await this.updateQueryResults(searchTerm)
-
+        return this.updateQueryResults(searchTerm)
+      })
+      .then(() => {
         this.activateDefaultStyleFilters()
 
         this.isInitialLoading = false
-      } catch (e) {
+      })
+      .catch(e => {
         // TODO: implement real error handling
         console.error('WHOOPS!', e)
-      }
+      })
   }
 
   async updateQueryResults(query: string) {
