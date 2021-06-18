@@ -1,0 +1,12 @@
+{
+  "head": {
+    "script": {
+      "src": "https://kit.fontawesome.com/69316ea7ed.js",
+      "crossorigin": "anonymous"
+    }
+  },
+  "apiToken": "533D7BF8-3F6E-4BE0-80DB-486827261EC4",
+  "props": {
+    "kit-token": "69316ea7ed"
+  }
+}
