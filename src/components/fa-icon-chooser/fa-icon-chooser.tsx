@@ -314,10 +314,7 @@ export class FaIconChooser {
   }
 
   mayHaveIconUploads() {
-    //return !!this.kitToken && this.isProEnabled
-    const val = !!this.kitToken && this.isProEnabled
-    console.log(`DEBUG: mayHaveIconUploads: ${val}`)
-    return val
+    return !!this.kitToken && this.isProEnabled
   }
 
   hasIconUploads() {
