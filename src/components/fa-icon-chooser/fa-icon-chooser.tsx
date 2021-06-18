@@ -166,6 +166,15 @@ export class FaIconChooser {
     await this.loadKitMetadata()
   }
 
+  activateDefaultStyleFilters() {
+    this.styleFilterEnabled = true
+    this.styleFilters.fas = true
+    this.styleFilters.fab = true
+    if(this.mayHaveIconUploads()) {
+      this.styleFilters.fak = true
+    }
+  }
+
   async componentWillLoad() {
       this.query = ''
 
@@ -187,6 +196,8 @@ export class FaIconChooser {
         const searchTerm = sample(['animals', 'business', 'travel', 'games', 'communication'])
 
         await this.updateQueryResults(searchTerm)
+
+        this.activateDefaultStyleFilters()
 
         this.isInitialLoading = false
       } catch (e) {
@@ -347,7 +358,7 @@ export class FaIconChooser {
         </div>
         <div class="icons-style-menu-listing display-flex flex-items-center">
           <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
-            <input id="icons-style-solid" onChange={() => this.toggleStyleFilter('fas') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
+            <input id="icons-style-solid" checked={ this.styleFilterEnabled && this.styleFilters.fas } onChange={() => this.toggleStyleFilter('fas') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
             <label htmlFor="icons-style-solid" class="icons-style-choice padding-y-xl padding-x-md margin-0 display-flex flex-column flex-items-center">
               <span class="position-relative margin-bottom-sm">
                 {
@@ -360,7 +371,7 @@ export class FaIconChooser {
             </label>
           </div>
           <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
-            <input id="icons-style-regular" onChange={() => this.toggleStyleFilter('far') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
+            <input id="icons-style-regular" checked={ this.styleFilterEnabled && this.styleFilters.far } onChange={() => this.toggleStyleFilter('far') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
             <label htmlFor="icons-style-regular" class="icons-style-choice padding-y-xl padding-x-md margin-0 display-flex flex-column flex-items-center ">
               <span class="position-relative margin-bottom-sm">
                 {
@@ -375,7 +386,7 @@ export class FaIconChooser {
           {
             this.isProEnabled &&
             <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
-              <input id="icons-style-light" onChange={() => this.toggleStyleFilter('fal') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
+              <input id="icons-style-light" checked={ this.styleFilterEnabled && this.styleFilters.fal } onChange={() => this.toggleStyleFilter('fal') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
               <label htmlFor="icons-style-light" class="icons-style-choice padding-y-xl padding-x-md margin-0 display-flex flex-column flex-items-center ">
                 <span class="position-relative margin-bottom-sm">
                   {
@@ -390,7 +401,7 @@ export class FaIconChooser {
           }
           { this.isV6() &&
             <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
-              <input id="icons-style-thin" onChange={() => this.toggleStyleFilter('fat') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
+              <input id="icons-style-thin" checked={ this.styleFilterEnabled && this.styleFilters.fat } onChange={() => this.toggleStyleFilter('fat') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
               <label htmlFor="icons-style-thin" class="icons-style-choice padding-y-xl padding-x-md margin-0 display-flex flex-column flex-items-center ">
                 <span class="position-relative margin-bottom-sm">
                   {
@@ -406,7 +417,7 @@ export class FaIconChooser {
           {
             this.isDuotoneAvailable() &&
             <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
-              <input id="icons-style-duotone" onChange={() => this.toggleStyleFilter('fad') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
+              <input id="icons-style-duotone" checked={ this.styleFilterEnabled && this.styleFilters.fad } onChange={() => this.toggleStyleFilter('fad') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
               <label htmlFor="icons-style-duotone" class="icons-style-choice padding-y-xl padding-x-md margin-0 display-flex flex-column flex-items-center ">
                 <span class="position-relative margin-bottom-sm">
                   {
@@ -420,7 +431,7 @@ export class FaIconChooser {
             </div>
           }
           <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
-            <input id="icons-style-brands" onChange={() => this.toggleStyleFilter('fab') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
+            <input id="icons-style-brands" checked={ this.styleFilterEnabled && this.styleFilters.fab } onChange={() => this.toggleStyleFilter('fab') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
             <label htmlFor="icons-style-brands" class="icons-style-choice padding-y-xl padding-x-md margin-0 display-flex flex-column flex-items-center ">
               <span class="position-relative margin-bottom-sm">
                 <i class="fab fa-font-awesome fa-fw fa-2x"></i>
@@ -431,7 +442,7 @@ export class FaIconChooser {
           {
             this.mayHaveIconUploads() &&
             <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
-              <input id="icons-style-uploads" onChange={() => this.toggleStyleFilter('fak') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
+              <input id="icons-style-uploads" checked={ this.styleFilterEnabled && this.styleFilters.fak } onChange={() => this.toggleStyleFilter('fak') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
               <label htmlFor="icons-style-uploads" class="icons-style-choice padding-y-xl padding-x-md margin-0 display-flex flex-column flex-items-center ">
                 <span class="position-relative margin-bottom-sm">
                   <i class="fas fa-icons fa-fw fa-2x"></i>
