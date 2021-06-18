@@ -310,11 +310,18 @@ export class FaIconChooser {
   }
 
   isDuotoneAvailable() {
-    return this.isProEnabled && !!this.resolvedVersion.match('/5\.[1-9][0-9]+\./')
+    return this.isProEnabled && !!this.resolvedVersion.match('(5\.[1-9][0-9]+\.)|^6\.')
+  }
+
+  mayHaveIconUploads() {
+    //return !!this.kitToken && this.isProEnabled
+    const val = !!this.kitToken && this.isProEnabled
+    console.log(`DEBUG: mayHaveIconUploads: ${val}`)
+    return val
   }
 
   hasIconUploads() {
-    return !!(this.kitToken && this.kitMetadata && size(this.kitMetadata.iconUploads) > 0)
+    return size(get(this, 'kitMetadata.iconUploads'))
   }
 
   onKeyUp(e: any): void {
@@ -425,7 +432,7 @@ export class FaIconChooser {
             </label>
           </div>
           {
-            this.hasIconUploads() &&
+            this.mayHaveIconUploads() &&
             <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
               <input id="icons-style-uploads" onChange={() => this.toggleStyleFilter('fak') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
               <label htmlFor="icons-style-uploads" class="icons-style-choice padding-y-xl padding-x-md margin-0 display-flex flex-column flex-items-center ">
@@ -441,24 +448,29 @@ export class FaIconChooser {
       <div class="wrap-icon-listing margin-y-lg">
         {
           this.isQuerying
-              ? <article class="message-loading text-center margin-2xl">
-                  <i class="message-icon far fa-compass fa-spin fa-4x margin-top-xs" />
-                  <h2>Loading Icons</h2>
-                </article>
+          ? <article class="message-loading text-center margin-2xl">
+              <i class="message-icon far fa-compass fa-spin fa-4x margin-top-xs" />
+              <h2>Loading Icons</h2>
+            </article>
           : (size(this.filteredIcons()) > 0
-                ? <div class="icon-listing"> {this.filteredIcons().map(icon =>
+              ? <div class="icon-listing">
+                  {(this.mayHaveIconUploads() && !this.hasIconUploads()) &&
+                  <article>you coulda uploaded icons.</article>
+                  }
+                  {this.filteredIcons().map(icon =>
                   <article class="wrap-icon" key={ `${icon.prefix}-${ icon.iconName }`}>
                     <button class="icon subtle display-flex flex-column flex-items-center flex-content-center" onClick={() => this.finish.emit(icon)}>
                         <i class={ `${ icon.prefix } fa-2x fa-${ icon.iconName }` }></i>
                       <span class="icon-name size-xs text-truncate margin-top-lg">{`${ icon.iconName }`}</span>
                       </button>
-                    </article>
-                )}</div>
-                : <article class="message-noresults text-center margin-2xl">
-                    <i class="message-icon far fa-frown fa-4x margin-top-xs"></i>
-                    <h2>Sorry, we couldn't find anything for that...</h2>
-                    <p class="muted">You could try a different search or <a href="https://fontawesome.com/" target="_blank">go Pro and upload your own</a>!</p>
                   </article>
+                  )}
+                </div>
+              : <article class="message-noresults text-center margin-2xl">
+                  <i class="message-icon far fa-frown fa-4x margin-top-xs"></i>
+                  <h2>Sorry, we couldn't find anything for that...</h2>
+                  <p class="muted">You could try a different search or <a href="https://fontawesome.com/" target="_blank">go Pro and upload your own</a>!</p>
+                </article>
             )
         }
       </div>
