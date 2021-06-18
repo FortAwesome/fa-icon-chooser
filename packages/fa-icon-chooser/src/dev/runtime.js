@@ -1,4 +1,4 @@
-window.FaIconChooserDev = (function () {
+const FaIconChooserDevExports = (function () {
   let showingIconChooser = false
   let localConfig = undefined
   const localDevMissingMsg = 'DEV: your local dev config in local.json is required but has not yet been loaded.'
@@ -204,3 +204,7 @@ window.FaIconChooserDev = (function () {
     handleResult
   }
 })()
+
+if('undefined' !== typeof module) {
+  module.exports = FaIconChooserDevExports
+}
