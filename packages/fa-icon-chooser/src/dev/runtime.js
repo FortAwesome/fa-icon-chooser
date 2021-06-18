@@ -14,6 +14,9 @@ const FaIconChooserDevExports = (function () {
 
         if(token) {
           headers['Authorization'] = `Bearer ${ token }`
+          console.log('handleQuery: using fresh access token to issue authorized request')
+        } else {
+          console.log('handleQuery: no access token found -- sending an unauthorized request')
         }
 
         return fetch( 'https://api.fontawesome.com', {
@@ -184,6 +187,10 @@ const FaIconChooserDevExports = (function () {
     })
   }
 
+  function getLocalConfig() {
+    return localConfig
+  }
+
   loadLocalConfig()
   .then(setupHead)
   .catch(e => {
@@ -201,7 +208,8 @@ const FaIconChooserDevExports = (function () {
   return {
     toggleIconChooser,
     handleQuery,
-    handleResult
+    handleResult,
+    getLocalConfig
   }
 })()
 
