@@ -1,4 +1,4 @@
-window.toggleIconChooser = (function () {
+const FaIconChooserDevExports = (function () {
   let showingIconChooser = false
   let localConfig = undefined
   const localDevMissingMsg = 'DEV: your local dev config in local.json is required but has not yet been loaded.'
@@ -14,6 +14,9 @@ window.toggleIconChooser = (function () {
 
         if(token) {
           headers['Authorization'] = `Bearer ${ token }`
+          console.log('handleQuery: using fresh access token to issue authorized request')
+        } else {
+          console.log('handleQuery: no access token found -- sending an unauthorized request')
         }
 
         return fetch( 'https://api.fontawesome.com', {
@@ -184,11 +187,32 @@ window.toggleIconChooser = (function () {
     })
   }
 
+  function getLocalConfig() {
+    return localConfig
+  }
+
   loadLocalConfig()
   .then(setupHead)
   .catch(e => {
     throw e
   })
 
-  return toggleIconChooser
+  document.addEventListener('DOMContentLoaded', function() {
+    const toggle = document.querySelector('#fa-icon-chooser-toggle')
+
+    if(toggle) {
+      toggle.addEventListener('click', toggleIconChooser)
+    }
+  })
+
+  return {
+    toggleIconChooser,
+    handleQuery,
+    handleResult,
+    getLocalConfig
+  }
 })()
+
+if('undefined' !== typeof module) {
+  module.exports = FaIconChooserDevExports
+}
