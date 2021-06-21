@@ -203,7 +203,7 @@ export class FaIconChooser {
       })
       .catch(e => {
         // TODO: implement real error handling
-        console.error('WHOOPS!', e)
+        console.error('WHOOPS!', e.toString())
       })
   }
 

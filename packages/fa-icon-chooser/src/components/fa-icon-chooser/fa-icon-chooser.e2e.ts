@@ -1,32 +1,29 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newE2EPage } from '@stencil/core/testing'
 
-describe('my-component', () => {
+describe('fa-icon-chooser', () => {
   it('renders', async () => {
-    const page = await newE2EPage();
+    const page = await newE2EPage()
 
-    await page.setContent('<my-component></my-component>');
-    const element = await page.find('my-component');
-    expect(element).toHaveClass('hydrated');
-  });
+    await page.setContent('<div id="container"></div>')
 
-  it('renders changes to the name data', async () => {
-    const page = await newE2EPage();
+    const attrs = {
+      version: '5.15.3'
+    }
 
-    await page.setContent('<my-component></my-component>');
-    const component = await page.find('my-component');
-    const element = await page.find('my-component >>> div');
-    expect(element.textContent).toEqual(`Hello, World! I'm `);
+    await page.$eval('#container', (elm: any, attrs) => {
+      const ic = document.createElement('fa-icon-chooser')
+      ic.handleQuery = () => Promise.resolve()
+      ic.addEventListener('finish', () => {})
+      for (const attr in attrs) {
+        ic.setAttribute(attr, attrs[attr])
+      }
+      elm.appendChild(ic)
+    }, attrs)
 
-    component.setProperty('first', 'James');
-    await page.waitForChanges();
-    expect(element.textContent).toEqual(`Hello, World! I'm James`);
+    await page.waitForChanges()
 
-    component.setProperty('last', 'Quincy');
-    await page.waitForChanges();
-    expect(element.textContent).toEqual(`Hello, World! I'm James Quincy`);
+    const element = await page.find('fa-icon-chooser')
 
-    component.setProperty('middle', 'Earl');
-    await page.waitForChanges();
-    expect(element.textContent).toEqual(`Hello, World! I'm James Earl Quincy`);
-  });
-});
+    expect(element).toHaveClass('hydrated')
+  })
+})
