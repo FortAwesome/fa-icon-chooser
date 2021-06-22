@@ -1,6 +1,7 @@
-import { Component, Event, EventEmitter, Prop, State, h } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Prop, State, h } from '@stencil/core';
 import { get, size, debounce, sample } from 'lodash';
 import { IconLookup } from '@fortawesome/fontawesome-common-types';
+import { setupCdnSvg, setupCdnWebfont, setupKit } from '../../utils/utils'
 
 // TODO: figure out whether the IconPrefix type in @fortawesome/fontawesome-common-types
 // should have 'fat' in it.
@@ -48,9 +49,15 @@ type KitMetadata = {
 @Component({
   tag: 'fa-icon-chooser',
   styleUrl: 'fa-icon-chooser.css',
-  shadow: false,
+  shadow: true,
 })
 export class FaIconChooser {
+
+  /**
+   * The host element for this component's Shadow DOM.
+   */
+  @Element() host: HTMLElement;
+
   /**
    * Font Awesome version in which to find icons.
    */
@@ -67,6 +74,14 @@ export class FaIconChooser {
    * Whether pro icons should be enabled.
    */
   @Prop() pro: boolean;
+
+  /**
+   * A URL for loading Font Awesome within the icon chooser from the Font Awesome
+   * Free or Pro CDN, instead of a kit.
+   *
+   * If a kitToken is provided, kit loading will be preferred over this.
+   */
+  @Prop() cdnUrl?: string;
 
   @Prop() handleQuery: QueryHandler;
 
@@ -108,7 +123,6 @@ export class FaIconChooser {
   constructor() {
     this.toggleStyleFilter = this.toggleStyleFilter.bind(this)
   }
-
 
   // TODO: replace this placeholder logic with, probably, real API calls
   // that handle resolving the version.
@@ -175,8 +189,26 @@ export class FaIconChooser {
     }
   }
 
+  setupFontAwesome() {
+    if(this.kitToken) {
+      setupKit(document, this.host.shadowRoot, this.kitToken)
+    } else if (!!this.cdnUrl && 'string' === typeof this.cdnUrl) {
+      if(this.cdnUrl.match('\.js$')) {
+        setupCdnSvg(document, this.host.shadowRoot, this.cdnUrl)
+      } else if (this.cdnUrl.match('\.css$')) {
+        setupCdnWebfont(document, this.host.shadowRoot, this.cdnUrl)
+      } else {
+        throw new Error(`Unrecognized cdn-url provided to fa-icon-chooser. Expected something ending .js or .css, but got: ${ this.cdnUrl }`)
+      }
+    } else {
+      throw new Error("missing kitToken or url for loading Font Awesome inside fa-icon-chooser")
+    }
+  }
+
   componentWillLoad() {
       this.query = ''
+
+      this.setupFontAwesome()
 
       this.preload()
       .then(() => {
