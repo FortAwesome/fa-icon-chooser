@@ -1,6 +1,6 @@
 /* vendor.css */
 /* stylelint-disable */
-:root {
+:host {
   --oc-white: #fff;
   --oc-black: #000;
   --oc-gray-0: #f8f9fa;
@@ -194,7 +194,7 @@ select {
   }
 }
 /* setting.css */
-:root {
+:host {
   /* viewports */
   --viewport-tablet: 48rem; /* 768px */
   --viewport-laptop: 64rem; /* 1024px */

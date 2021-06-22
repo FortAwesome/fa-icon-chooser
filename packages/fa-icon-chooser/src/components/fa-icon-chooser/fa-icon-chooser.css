@@ -1,7 +1,7 @@
 @import url(web-awesome.css);
 
 /* project settings */
-:root {
+:host {
   --icon-details-preview-font-size: 12rem; /* 192px */
   --icon-details-preview-line-height: 1;
   --icon-details-unicode-glyphs-label-min-width: var(--spacing-5xl);
