@@ -201,7 +201,7 @@ export class FaIconChooser {
         throw new Error(`Unrecognized cdn-url provided to fa-icon-chooser. Expected something ending .js or .css, but got: ${ this.cdnUrl }`)
       }
     } else {
-      throw new Error("missing kitToken or url for loading Font Awesome inside fa-icon-chooser")
+      throw new Error("missing kitToken or cdnUrl for loading Font Awesome inside fa-icon-chooser")
     }
   }
 
