@@ -30,4 +30,11 @@ export function setupKit(document: HTMLDocument, shadow: ShadowRoot, kitToken: s
   setCrossOrigin(el)
   el.setAttribute('src', `https://kit.fontawesome.com/${kitToken}.js`)
   shadow.appendChild(el)
+  fakeSetupKit(document, shadow)
+}
+
+function fakeSetupKit(document: HTMLDocument, shadow: ShadowRoot) {
+  const el = document.createElement('script')
+  el.setAttribute('src', `/dev/fakeKit.js`)
+  shadow.appendChild(el)
 }
