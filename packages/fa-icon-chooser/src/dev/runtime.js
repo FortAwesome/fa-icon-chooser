@@ -115,18 +115,18 @@ const FaIconChooserDevExports = (function () {
   }
 
   function getAccessToken() {
+    const apiToken = localConfig && localConfig.apiToken
+    if(!apiToken) {
+      // If there's no apiToken, then it's not an error to resolve an undefined access token.
+      return Promise.resolve(undefined)
+    }
     const tokenJSON = window.localStorage.getItem('token')
     const tokenObj = tokenJSON ? JSON.parse(tokenJSON) : undefined
-    const apiToken = localConfig && localConfig.apiToken
     const freshToken = (tokenObj && Math.floor(Date.now() / 1000) <= tokenObj.expiresAtEpochSeconds)
       ? tokenObj.token
       : undefined
 
     if(freshToken) return Promise.resolve(freshToken)
-
-    if(!apiToken) {
-      return Promise.reject('DEV: cannot refresh access token because your local.json was not loaded or does not include an apiToken')
-    }
 
     return fetch('https://api.fontawesome.com/token', {
       method: 'POST',
@@ -192,7 +192,7 @@ const FaIconChooserDevExports = (function () {
   }
 
   loadLocalConfig()
-  .then(setupHead)
+  //.then(setupHead)
   .catch(e => {
     throw e
   })
