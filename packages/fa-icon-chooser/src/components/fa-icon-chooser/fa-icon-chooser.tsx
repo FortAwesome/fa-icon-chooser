@@ -1,7 +1,6 @@
-import { Component, Element, Event, EventEmitter, Prop, State, h } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, Prop, State, h } from '@stencil/core';
 import { get, size, debounce, sample } from 'lodash';
 import { IconLookup } from '@fortawesome/fontawesome-common-types';
-import { setupCdnSvg, setupCdnWebfont, setupKit } from '../../utils/utils'
 
 // TODO: figure out whether the IconPrefix type in @fortawesome/fontawesome-common-types
 // should have 'fat' in it.
@@ -122,8 +121,34 @@ export class FaIconChooser {
 
   watchingForSvgReplacements: boolean = false;
 
+  isSvg: boolean = false;
+
+  isWebfont: boolean = false;
+
+  cdnSubdomain?: string;
+
   constructor() {
     this.toggleStyleFilter = this.toggleStyleFilter.bind(this)
+
+    if(!this.kitToken) {
+      if(this.cdnUrl && 'string' === typeof this.cdnUrl) {
+        if(this.pro) {
+          this.cdnSubdomain = 'pro'
+        } else {
+          this.cdnSubdomain = 'use'
+        }
+
+        if(this.cdnUrl.match('\.js$')) {
+          this.isSvg = true
+        } else if (this.cdnUrl.match('\.css$')) {
+          this.isWebfont = true
+        } else {
+          throw new Error(`Unrecognized cdn-url provided to fa-icon-chooser. Expected something ending .js or .css, but got: ${ this.cdnUrl }`)
+        }
+      } else {
+        throw new Error("missing a kit-token or cdn-url attribute for loading Font Awesome inside fa-icon-chooser")
+      }
+    }
   }
 
   // TODO: replace this placeholder logic with, probably, real API calls
@@ -191,29 +216,10 @@ export class FaIconChooser {
     }
   }
 
-  setupFontAwesome() {
-
-    if(this.kitToken) {
-      setupKit(document, this.host.shadowRoot, this.kitToken)
-    } else if (!!this.cdnUrl && 'string' === typeof this.cdnUrl) {
-      if(this.cdnUrl.match('\.js$')) {
-        setupCdnSvg(document, this.host.shadowRoot, this.cdnUrl)
-      } else if (this.cdnUrl.match('\.css$')) {
-        setupCdnWebfont(document, this.host.shadowRoot, this.cdnUrl)
-      } else {
-        throw new Error(`Unrecognized cdn-url provided to fa-icon-chooser. Expected something ending .js or .css, but got: ${ this.cdnUrl }`)
-      }
-    } else {
-      throw new Error("missing kitToken or cdnUrl for loading Font Awesome inside fa-icon-chooser")
-    }
-
-    this.maybeWatchSvg()
-  }
-
   componentWillLoad() {
       this.query = ''
 
-      this.setupFontAwesome()
+      this.maybeWatchSvg()
 
       this.preload()
       .then(() => {
@@ -417,7 +423,16 @@ export class FaIconChooser {
       return <div class="fa-icon-chooser">loading...</div>
     }
 
-    return <div class="fa-icon-chooser">
+    // TODO: add integrity attribute to link and script elements
+    return <Host>
+      {
+        this.kitToken
+        ? <script crossorigin="anonymous" src={`https://kit.fontawesome.com/${this.kitToken}.js`}></script>
+        : this.isSvg
+          ? <script crossorigin="anonymous" src={`https://${ this.cdnSubdomain }.fontawesome.com/releases/v${this.resolvedVersion}/js/all.js`}></script>
+          : <link rel="stylesheet" href={`https://${ this.cdnSubdomain }.fontawesome.com/releases/v${this.resolvedVersion}/css/all.css`}/>
+      }
+      <div class="fa-icon-chooser">
       <form id="search-form" onSubmit={ this.preventDefaultFormSubmit }>
         <label htmlFor="search" class="sr-only">Search the v6 Beta Icons</label>
         <div class="wrap-search with-icon-before">
@@ -556,6 +571,7 @@ export class FaIconChooser {
             )
         }
       </div>
-    </div>;
+    </div>
+    </Host>;
   }
 }
