@@ -120,6 +120,8 @@ export class FaIconChooser {
 
   isProEnabled: boolean;
 
+  watchingForSvgReplacements: boolean = false;
+
   constructor() {
     this.toggleStyleFilter = this.toggleStyleFilter.bind(this)
   }
@@ -190,6 +192,7 @@ export class FaIconChooser {
   }
 
   setupFontAwesome() {
+
     if(this.kitToken) {
       setupKit(document, this.host.shadowRoot, this.kitToken)
     } else if (!!this.cdnUrl && 'string' === typeof this.cdnUrl) {
@@ -203,6 +206,8 @@ export class FaIconChooser {
     } else {
       throw new Error("missing kitToken or cdnUrl for loading Font Awesome inside fa-icon-chooser")
     }
+
+    this.maybeWatchSvg()
   }
 
   componentWillLoad() {
@@ -375,6 +380,36 @@ export class FaIconChooser {
   preventDefaultFormSubmit(e) {
     e.preventDefault()
     e.stopPropagation()
+  }
+
+  maybeWatchSvg() {
+    // TODO: maybe set up some types for the FontAwesome config.
+    const config: any = (window as any).FontAwesome
+
+    // If there's no global config, then this is not Font Awesome SVG/JS, so
+    // we have nothing more to do here.
+    if(!config) return
+
+    // If we've already been hooked up for auto replacement on this element,
+    // don't set it up again.
+    if(this.watchingForSvgReplacements) return
+
+    const dom: any = config.dom
+    const watch: Function = dom.watch
+
+    this.watchingForSvgReplacements = true
+
+    const style = document.createElement('style')
+    style.setAttribute('type', 'text/css')
+    var textNode = document.createTextNode((dom.css as Function)());
+    style.appendChild(textNode);
+    style.media = 'all';
+    this.host.shadowRoot.appendChild(style)
+
+    watch({
+      autoReplaceSvgRoot: this.host.shadowRoot,
+      observeMutationsRoot: this.host.shadowRoot
+    })
   }
 
   render() {
