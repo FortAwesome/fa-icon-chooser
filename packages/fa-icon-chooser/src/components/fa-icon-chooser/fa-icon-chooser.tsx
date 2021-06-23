@@ -17,6 +17,13 @@ const STYLE_RESULT_TO_PREFIX = {
   brands: 'fab'
 }
 
+enum FaTechnology {
+  KitSvg,
+  KitWebfont,
+  CdnSvg,
+  CdnWebfont,
+}
+
 export interface IconChooserResult extends IconLookup {
   class?: string;
   style?: string;
@@ -121,9 +128,7 @@ export class FaIconChooser {
 
   watchingForSvgReplacements: boolean = false;
 
-  isSvg: boolean = false;
-
-  isWebfont: boolean = false;
+  technology: FaTechnology;
 
   cdnSubdomain?: string;
 
@@ -139,9 +144,9 @@ export class FaIconChooser {
         }
 
         if(this.cdnUrl.match('\.js$')) {
-          this.isSvg = true
+          this.technology = FaTechnology.CdnSvg
         } else if (this.cdnUrl.match('\.css$')) {
-          this.isWebfont = true
+          this.technology = FaTechnology.CdnWebfont
         } else {
           throw new Error(`Unrecognized cdn-url provided to fa-icon-chooser. Expected something ending .js or .css, but got: ${ this.cdnUrl }`)
         }
@@ -426,11 +431,8 @@ export class FaIconChooser {
     // TODO: add integrity attribute to link and script elements
     return <Host>
       {
-        this.kitToken
-        ? <script crossorigin="anonymous" src={`https://kit.fontawesome.com/${this.kitToken}.js`}></script>
-        : this.isSvg
-          ? <script crossorigin="anonymous" src={`https://${ this.cdnSubdomain }.fontawesome.com/releases/v${this.resolvedVersion}/js/all.js`}></script>
-          : <link rel="stylesheet" href={`https://${ this.cdnSubdomain }.fontawesome.com/releases/v${this.resolvedVersion}/css/all.css`}/>
+        this.technology && this.technology === FaTechnology.CdnWebfont
+        && <link rel="stylesheet" href={`https://${ this.cdnSubdomain }.fontawesome.com/releases/v${this.resolvedVersion}/css/all.css`}/>
       }
       <div class="fa-icon-chooser">
       <form id="search-form" onSubmit={ this.preventDefaultFormSubmit }>
