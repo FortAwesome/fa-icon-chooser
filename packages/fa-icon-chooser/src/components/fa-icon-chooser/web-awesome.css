@@ -143,6 +143,7 @@
           box-sizing: border-box;
 }
 /* Remove default margin */
+:host,
 body,
 h1,
 h2,
@@ -158,6 +159,7 @@ dd {
   margin: 0;
 }
 /* Set core body defaults */
+:host,
 body {
   min-height: 100vh;
   scroll-behavior: smooth;
@@ -2028,6 +2030,7 @@ html {
     font-size: var(--font-size-root-tablet);
   }
 }
+:host,
 body {
   margin: 0;
   padding: 0;
@@ -2133,6 +2136,7 @@ button,
   cursor: pointer;
   font-family: inherit;
 }
+:host,
 body {
   background-color: #f0f1f3;
   background-color: var(--body-background);
