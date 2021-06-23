@@ -192,7 +192,7 @@ const FaIconChooserDevExports = (function () {
   }
 
   loadLocalConfig()
-  //.then(setupHead)
+  .then(setupHead)
   .catch(e => {
     throw e
   })
