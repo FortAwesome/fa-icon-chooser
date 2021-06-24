@@ -70,7 +70,8 @@ const FaIconChooserDevExports = (function () {
 
   function setupHead() {
     if(!localConfig) throw new Error(localDevMissingMsg)
-    if(!localConfig.head) throw new Error('DEV: missing head key in your local.json')
+    // If there's no head config, we have nothing left to do here.
+    if(!localConfig.head) return
 
     const { head } = localConfig
 
