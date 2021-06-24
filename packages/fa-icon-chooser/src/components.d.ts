@@ -14,7 +14,7 @@ export namespace Components {
         "cdnUrl"?: string;
         "handleQuery": QueryHandler;
         /**
-          * CDN integrity attribute required when not using a kit.
+          * Optional CDN integrity attribute. When set the crossorigin="anonymous" attribute will also be added to the <script> or <link> tag that loads Font Awesome from the CDN, causing that resource's integrity to be checked.
          */
         "integrity"?: string;
         /**
@@ -50,7 +50,7 @@ declare namespace LocalJSX {
         "cdnUrl"?: string;
         "handleQuery"?: QueryHandler;
         /**
-          * CDN integrity attribute required when not using a kit.
+          * Optional CDN integrity attribute. When set the crossorigin="anonymous" attribute will also be added to the <script> or <link> tag that loads Font Awesome from the CDN, causing that resource's integrity to be checked.
          */
         "integrity"?: string;
         /**
