@@ -412,6 +412,7 @@ export class FaIconChooser {
 
       if('css' === kitTechnology) {
         this.technology = FaTechnology.KitWebfont
+        this.addKitStyleElements()
       }
     }
 
@@ -425,7 +426,7 @@ export class FaIconChooser {
     }
 
     if( this.technology === FaTechnology.CdnSvg ) {
-      this.addKitStyleElement()
+      this.addKitStyleElements()
       this.setupFaSvg()
     }
 
@@ -474,7 +475,28 @@ export class FaIconChooser {
     this.host.shadowRoot.appendChild(link)
   }
 
-  addKitStyleElement() {
+  addKitStyleElements() {
+    // TODO: figure out if there's a more efficient way to do this than just copying
+    const mainKitStyle = document.querySelector('style#fa-main') as HTMLStyleElement
+
+    if(mainKitStyle) {
+      const newStyleEl = document.createElement('style')
+      const cssText = document.createTextNode(mainKitStyle.innerText)
+      newStyleEl.setAttribute('type', 'text/css')
+      newStyleEl.appendChild(cssText)
+      this.host.shadowRoot.appendChild(newStyleEl)
+    }
+
+    const kitUploadStyle = document.querySelector('style#fa-kit-upload') as HTMLStyleElement
+
+    if(kitUploadStyle) {
+      const newStyleEl = document.createElement('style')
+      const cssText = document.createTextNode(kitUploadStyle.innerText)
+      newStyleEl.setAttribute('type', 'text/css')
+      newStyleEl.appendChild(cssText)
+      this.host.shadowRoot.appendChild(newStyleEl)
+    }
+
     return
   }
 
