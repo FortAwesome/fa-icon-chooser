@@ -70,7 +70,8 @@ const FaIconChooserDevExports = (function () {
 
   function setupHead() {
     if(!localConfig) throw new Error(localDevMissingMsg)
-    if(!localConfig.head) throw new Error('DEV: missing head key in your local.json')
+    // If there's no head config, we have nothing left to do here.
+    if(!localConfig.head) return
 
     const { head } = localConfig
 
@@ -86,10 +87,32 @@ const FaIconChooserDevExports = (function () {
   function toggleIconChooser() {
     if(showingIconChooser) {
       closeIconChooser()
+
+      const toggleIconContainer = document.querySelector('#toggle-icon-container')
+      if(toggleIconContainer) {
+        while (toggleIconContainer.firstChild) {
+          toggleIconContainer.removeChild(toggleIconContainer.firstChild)
+        }
+        const newIcon = document.createElement('i')
+        newIcon.setAttribute('class', 'fas fa-toggle-off')
+        toggleIconContainer.appendChild(newIcon)
+      }
+
       clearResult()
       showingIconChooser = false
     } else {
       showIconChooser()
+
+      const toggleIconContainer = document.querySelector('#toggle-icon-container')
+      if(toggleIconContainer) {
+        while (toggleIconContainer.firstChild) {
+          toggleIconContainer.removeChild(toggleIconContainer.firstChild)
+        }
+        const newIcon = document.createElement('i')
+        newIcon.setAttribute('class', 'fas fa-toggle-on')
+        toggleIconContainer.appendChild(newIcon)
+      }
+
       showingIconChooser = true
     }
   }
@@ -115,18 +138,18 @@ const FaIconChooserDevExports = (function () {
   }
 
   function getAccessToken() {
+    const apiToken = localConfig && localConfig.apiToken
+    if(!apiToken) {
+      // If there's no apiToken, then it's not an error to resolve an undefined access token.
+      return Promise.resolve(undefined)
+    }
     const tokenJSON = window.localStorage.getItem('token')
     const tokenObj = tokenJSON ? JSON.parse(tokenJSON) : undefined
-    const apiToken = localConfig && localConfig.apiToken
     const freshToken = (tokenObj && Math.floor(Date.now() / 1000) <= tokenObj.expiresAtEpochSeconds)
       ? tokenObj.token
       : undefined
 
     if(freshToken) return Promise.resolve(freshToken)
-
-    if(!apiToken) {
-      return Promise.reject('DEV: cannot refresh access token because your local.json was not loaded or does not include an apiToken')
-    }
 
     return fetch('https://api.fontawesome.com/token', {
       method: 'POST',

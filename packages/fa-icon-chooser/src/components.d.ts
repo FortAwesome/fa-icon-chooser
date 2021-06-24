@@ -8,7 +8,15 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { IconChooserResult, QueryHandler } from "./components/fa-icon-chooser/fa-icon-chooser";
 export namespace Components {
     interface FaIconChooser {
+        /**
+          * A URL for loading Font Awesome within the icon chooser from the Font Awesome Free or Pro CDN, instead of a kit.  If a kitToken is provided, kit loading will be preferred over this.
+         */
+        "cdnUrl"?: string;
         "handleQuery": QueryHandler;
+        /**
+          * Optional CDN integrity attribute. When set the crossorigin="anonymous" attribute will also be added to the <script> or <link> tag that loads Font Awesome from the CDN, causing that resource's integrity to be checked.
+         */
+        "integrity"?: string;
         /**
           * A kit token identifying a kit in which to find icons. Takes precedence over the version prop if provided: the version associated with the kit will be used for searching.
          */
@@ -36,7 +44,15 @@ declare global {
 }
 declare namespace LocalJSX {
     interface FaIconChooser {
+        /**
+          * A URL for loading Font Awesome within the icon chooser from the Font Awesome Free or Pro CDN, instead of a kit.  If a kitToken is provided, kit loading will be preferred over this.
+         */
+        "cdnUrl"?: string;
         "handleQuery"?: QueryHandler;
+        /**
+          * Optional CDN integrity attribute. When set the crossorigin="anonymous" attribute will also be added to the <script> or <link> tag that loads Font Awesome from the CDN, causing that resource's integrity to be checked.
+         */
+        "integrity"?: string;
         /**
           * A kit token identifying a kit in which to find icons. Takes precedence over the version prop if provided: the version associated with the kit will be used for searching.
          */

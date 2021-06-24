@@ -1,6 +1,6 @@
 /* vendor.css */
 /* stylelint-disable */
-:root {
+:host {
   --oc-white: #fff;
   --oc-black: #000;
   --oc-gray-0: #f8f9fa;
@@ -143,6 +143,7 @@
           box-sizing: border-box;
 }
 /* Remove default margin */
+:host,
 body,
 h1,
 h2,
@@ -158,6 +159,7 @@ dd {
   margin: 0;
 }
 /* Set core body defaults */
+:host,
 body {
   min-height: 100vh;
   scroll-behavior: smooth;
@@ -194,7 +196,7 @@ select {
   }
 }
 /* setting.css */
-:root {
+:host {
   /* viewports */
   --viewport-tablet: 48rem; /* 768px */
   --viewport-laptop: 64rem; /* 1024px */
@@ -2028,6 +2030,7 @@ html {
     font-size: var(--font-size-root-tablet);
   }
 }
+:host,
 body {
   margin: 0;
   padding: 0;
@@ -2133,6 +2136,7 @@ button,
   cursor: pointer;
   font-family: inherit;
 }
+:host,
 body {
   background-color: #f0f1f3;
   background-color: var(--body-background);
