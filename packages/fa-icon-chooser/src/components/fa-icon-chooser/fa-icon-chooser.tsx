@@ -387,6 +387,16 @@ export class FaIconChooser {
     e.stopPropagation()
   }
 
+  // TODO: add better handling for the case where this componnet needs to be
+  // more self-sufficient--loading from CDN or Kit itself when it's not already
+  // available in the outer DOM. And yet, when loading, it needs to be done in
+  // such a way that minimizes global effects. For example, if this component
+  // adds a <script> to load FA SVG/JS, it should disable autoReplaceSvg so that
+  // behavior is not suddenly activated globally on the outer DOM.
+  // But what about the webfont case? Somehow, we'd need to get the appropriate
+  // @font-face rules added to the outer DOM, but only if they're not already
+  // present. We may need to put in hooks to track what fonts are loaded in
+  // the outer DOM, similar to the kit loader e2e testing.
   setupFontAwesome() {
     if(this.kitToken) {
       const kitTechnology = get(window, 'FontAwesomeKitConfig.method')
