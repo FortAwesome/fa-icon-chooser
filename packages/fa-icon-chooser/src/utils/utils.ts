@@ -1,40 +1,13 @@
-function setCrossOrigin(el: HTMLElement) {
-  el.setAttribute('crossorigin', 'anonymous')
-}
-
-function maybeSetIntegrity(el: HTMLElement, integrity?: string) {
-  if(integrity) {
-    el.setAttribute('integrity', integrity)
+// TODO: replace this placeholder logic with, probably, real API calls
+// that handle resolving the version.
+export function resolveVersion(version: string): string {
+  switch(version) {
+    case '5.x':
+    case 'latest':
+      return '5.15.3'
+    case '6.x':
+      return '6.0.0-beta1'
+    default:
+      return version
   }
-}
-
-export function setupCdnSvg(document: HTMLDocument, shadow: ShadowRoot, url: string, integrity?: string) {
-  const el = document.createElement('script')
-  setCrossOrigin(el)
-  el.setAttribute('src', url)
-  maybeSetIntegrity(el, integrity)
-  shadow.appendChild(el)
-}
-
-export function setupCdnWebfont(document: HTMLDocument, shadow: ShadowRoot, url: string, integrity?: string) {
-  const el = document.createElement('link')
-  el.setAttribute('rel', 'stylesheet')
-  el.setAttribute('href', url)
-  setCrossOrigin(el)
-  maybeSetIntegrity(el, integrity)
-  shadow.appendChild(el)
-}
-
-export function setupKit(document: HTMLDocument, shadow: ShadowRoot, kitToken: string) {
-  const el = document.createElement('script')
-  setCrossOrigin(el)
-  el.setAttribute('src', `https://kit.fontawesome.com/${kitToken}.js`)
-  shadow.appendChild(el)
-  fakeSetupKit(document, shadow)
-}
-
-function fakeSetupKit(document: HTMLDocument, shadow: ShadowRoot) {
-  const el = document.createElement('script')
-  el.setAttribute('src', `/dev/fakeKit.js`)
-  shadow.appendChild(el)
 }

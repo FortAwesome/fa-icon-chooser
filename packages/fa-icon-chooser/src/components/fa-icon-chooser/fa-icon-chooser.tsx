@@ -1,6 +1,7 @@
-import { Component, Element, Event, EventEmitter, Prop, State, h } from '@stencil/core';
-import { get, size, debounce, sample } from 'lodash';
-import { IconLookup } from '@fortawesome/fontawesome-common-types';
+import { Component, Element, Event, EventEmitter, Prop, State, h } from '@stencil/core'
+import { get, size, debounce, sample } from 'lodash'
+import { IconLookup } from '@fortawesome/fontawesome-common-types'
+import { resolveVersion } from '../../utils/utils'
 
 // TODO: figure out whether the IconPrefix type in @fortawesome/fontawesome-common-types
 // should have 'fat' in it.
@@ -163,20 +164,6 @@ export class FaIconChooser {
     }
   }
 
-  // TODO: replace this placeholder logic with, probably, real API calls
-  // that handle resolving the version.
-  resolveVersion(version) {
-    switch(version) {
-      case '5.x':
-      case 'latest':
-        return '5.15.3'
-      case '6.x':
-        return '6.0.0-beta1'
-      default:
-        return version
-    }
-  }
-
   async loadKitMetadata() {
     const response = await this.handleQuery(
       `
@@ -233,7 +220,7 @@ export class FaIconChooser {
 
       this.preload()
       .then(() => {
-        this.resolvedVersion = this.resolveVersion(
+        this.resolvedVersion = resolveVersion(
           get(this, 'kitMetadata.version') || this.version
         )
 
