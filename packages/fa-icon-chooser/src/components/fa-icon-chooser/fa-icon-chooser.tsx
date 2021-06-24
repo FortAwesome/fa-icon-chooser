@@ -403,6 +403,18 @@ export class FaIconChooser {
   }
 
   setupFontAwesome() {
+    if(this.kitToken) {
+      const kitTechnology = get(window, 'FontAwesomeKitConfig.method')
+
+      if('js' === kitTechnology) {
+        this.technology = FaTechnology.KitSvg
+      }
+
+      if('css' === kitTechnology) {
+        this.technology = FaTechnology.KitWebfont
+      }
+    }
+
     if(!this.technology) {
       // We should never get this error, because the constructor should have already validated inputs.
       throw new Error('could not determine which Font Awesome technology is in use')
