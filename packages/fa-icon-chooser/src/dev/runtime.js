@@ -86,10 +86,32 @@ const FaIconChooserDevExports = (function () {
   function toggleIconChooser() {
     if(showingIconChooser) {
       closeIconChooser()
+
+      const toggleIconContainer = document.querySelector('#toggle-icon-container')
+      if(toggleIconContainer) {
+        while (toggleIconContainer.firstChild) {
+          toggleIconContainer.removeChild(toggleIconContainer.firstChild)
+        }
+        const newIcon = document.createElement('i')
+        newIcon.setAttribute('class', 'fas fa-toggle-off')
+        toggleIconContainer.appendChild(newIcon)
+      }
+
       clearResult()
       showingIconChooser = false
     } else {
       showIconChooser()
+
+      const toggleIconContainer = document.querySelector('#toggle-icon-container')
+      if(toggleIconContainer) {
+        while (toggleIconContainer.firstChild) {
+          toggleIconContainer.removeChild(toggleIconContainer.firstChild)
+        }
+        const newIcon = document.createElement('i')
+        newIcon.setAttribute('class', 'fas fa-toggle-on')
+        toggleIconContainer.appendChild(newIcon)
+      }
+
       showingIconChooser = true
     }
   }
