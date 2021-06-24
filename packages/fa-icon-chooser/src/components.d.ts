@@ -14,6 +14,10 @@ export namespace Components {
         "cdnUrl"?: string;
         "handleQuery": QueryHandler;
         /**
+          * CDN integrity attribute required when not using a kit.
+         */
+        "integrity"?: string;
+        /**
           * A kit token identifying a kit in which to find icons. Takes precedence over the version prop if provided: the version associated with the kit will be used for searching.
          */
         "kitToken"?: string;
@@ -45,6 +49,10 @@ declare namespace LocalJSX {
          */
         "cdnUrl"?: string;
         "handleQuery"?: QueryHandler;
+        /**
+          * CDN integrity attribute required when not using a kit.
+         */
+        "integrity"?: string;
         /**
           * A kit token identifying a kit in which to find icons. Takes precedence over the version prop if provided: the version associated with the kit will be used for searching.
          */

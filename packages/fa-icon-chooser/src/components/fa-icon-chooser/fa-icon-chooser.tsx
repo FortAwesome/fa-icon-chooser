@@ -1,4 +1,4 @@
-import { Component, Element, Event, EventEmitter, Host, Prop, State, h } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Prop, State, h } from '@stencil/core';
 import { get, size, debounce, sample } from 'lodash';
 import { IconLookup } from '@fortawesome/fontawesome-common-types';
 
@@ -18,7 +18,7 @@ const STYLE_RESULT_TO_PREFIX = {
 }
 
 enum FaTechnology {
-  KitSvg,
+  KitSvg = 1,
   KitWebfont,
   CdnSvg,
   CdnWebfont,
@@ -68,6 +68,11 @@ export class FaIconChooser {
    * Font Awesome version in which to find icons.
    */
   @Prop() version?: string;
+
+  /**
+   * CDN integrity attribute required when not using a kit.
+   */
+  @Prop() integrity?: string;
 
   /**
    * A kit token identifying a kit in which to find icons. Takes precedence over
@@ -137,6 +142,10 @@ export class FaIconChooser {
 
     if(!this.kitToken) {
       if(this.cdnUrl && 'string' === typeof this.cdnUrl) {
+        if(!this.integrity) {
+          throw new Error("integrity attribute is required when not using a kit")
+        }
+
         if(this.pro) {
           this.cdnSubdomain = 'pro'
         } else {
@@ -224,8 +233,6 @@ export class FaIconChooser {
   componentWillLoad() {
       this.query = ''
 
-      this.maybeWatchSvg()
-
       this.preload()
       .then(() => {
         this.resolvedVersion = this.resolveVersion(
@@ -234,6 +241,8 @@ export class FaIconChooser {
 
         this.isProEnabled = (get(this, 'kitMetadata.licenseSelected') === 'pro')
           || this.pro
+
+        this.setupFontAwesome()
 
         // TODO: figure out some real error handling here.
         if(! this.resolvedVersion ) {
@@ -393,7 +402,27 @@ export class FaIconChooser {
     e.stopPropagation()
   }
 
-  maybeWatchSvg() {
+  setupFontAwesome() {
+    if(!this.technology) {
+      // We should never get this error, because the constructor should have already validated inputs.
+      throw new Error('could not determine which Font Awesome technology is in use')
+    }
+
+    if( this.technology === FaTechnology.CdnWebfont ) {
+      this.addCdnLinkElement()
+    }
+
+    if( this.technology === FaTechnology.CdnSvg ) {
+      this.addKitStyleElement()
+      this.setupFaSvg()
+    }
+
+    if( this.technology === FaTechnology.KitSvg ) {
+      this.setupFaSvg()
+    }
+  }
+
+  setupFaSvg() {
     // TODO: maybe set up some types for the FontAwesome config.
     const config: any = (window as any).FontAwesome
 
@@ -423,18 +452,26 @@ export class FaIconChooser {
     })
   }
 
+  addCdnLinkElement() {
+    const link = document.createElement('link')
+    link.setAttribute('href', `https://${ this.cdnSubdomain }.fontawesome.com/releases/v${this.resolvedVersion}/css/all.css`)
+    link.setAttribute('rel', 'stylesheet')
+    link.setAttribute('integrity', this.integrity)
+    link.setAttribute('crossorigin', 'anonymous')
+
+    this.host.shadowRoot.appendChild(link)
+  }
+
+  addKitStyleElement() {
+    return
+  }
+
   render() {
     if(this.isInitialLoading) {
       return <div class="fa-icon-chooser">loading...</div>
     }
 
-    // TODO: add integrity attribute to link and script elements
-    return <Host>
-      {
-        this.technology && this.technology === FaTechnology.CdnWebfont
-        && <link rel="stylesheet" href={`https://${ this.cdnSubdomain }.fontawesome.com/releases/v${this.resolvedVersion}/css/all.css`}/>
-      }
-      <div class="fa-icon-chooser">
+    return <div class="fa-icon-chooser">
       <form id="search-form" onSubmit={ this.preventDefaultFormSubmit }>
         <label htmlFor="search" class="sr-only">Search the v6 Beta Icons</label>
         <div class="wrap-search with-icon-before">
@@ -574,6 +611,5 @@ export class FaIconChooser {
         }
       </div>
     </div>
-    </Host>;
   }
 }
