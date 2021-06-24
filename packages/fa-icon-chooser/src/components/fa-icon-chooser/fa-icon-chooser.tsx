@@ -70,7 +70,9 @@ export class FaIconChooser {
   @Prop() version?: string;
 
   /**
-   * CDN integrity attribute required when not using a kit.
+   * Optional CDN integrity attribute. When set the crossorigin="anonymous" attribute
+   * will also be added to the <script> or <link> tag that loads Font Awesome from
+   * the CDN, causing that resource's integrity to be checked.
    */
   @Prop() integrity?: string;
 
@@ -142,10 +144,6 @@ export class FaIconChooser {
 
     if(!this.kitToken) {
       if(this.cdnUrl && 'string' === typeof this.cdnUrl) {
-        if(!this.integrity) {
-          throw new Error("integrity attribute is required when not using a kit")
-        }
-
         if(this.pro) {
           this.cdnSubdomain = 'pro'
         } else {
@@ -469,8 +467,11 @@ export class FaIconChooser {
     const link = document.createElement('link')
     link.setAttribute('href', `https://${ this.cdnSubdomain }.fontawesome.com/releases/v${this.resolvedVersion}/css/all.css`)
     link.setAttribute('rel', 'stylesheet')
-    link.setAttribute('integrity', this.integrity)
-    link.setAttribute('crossorigin', 'anonymous')
+
+    if(this.integrity) {
+      link.setAttribute('integrity', this.integrity)
+      link.setAttribute('crossorigin', 'anonymous')
+    }
 
     this.host.shadowRoot.appendChild(link)
   }
