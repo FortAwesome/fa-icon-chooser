@@ -142,26 +142,6 @@ export class FaIconChooser {
 
   constructor() {
     this.toggleStyleFilter = this.toggleStyleFilter.bind(this)
-
-    if(!this.kitToken) {
-      if(this.cdnUrl && 'string' === typeof this.cdnUrl) {
-        if(this.pro) {
-          this.cdnSubdomain = 'pro'
-        } else {
-          this.cdnSubdomain = 'use'
-        }
-
-        if(this.cdnUrl.match('\.js$')) {
-          this.technology = FaTechnology.CdnSvg
-        } else if (this.cdnUrl.match('\.css$')) {
-          this.technology = FaTechnology.CdnWebfont
-        } else {
-          throw new Error(`Unrecognized cdn-url provided to fa-icon-chooser. Expected something ending .js or .css, but got: ${ this.cdnUrl }`)
-        }
-      } else {
-        throw new Error("missing a kit-token or cdn-url attribute for loading Font Awesome inside fa-icon-chooser")
-      }
-    }
   }
 
   async loadKitMetadata() {
@@ -217,6 +197,26 @@ export class FaIconChooser {
 
   componentWillLoad() {
       this.query = ''
+
+      if(!this.kitToken) {
+        if(this.cdnUrl && 'string' === typeof this.cdnUrl) {
+          if(this.pro) {
+            this.cdnSubdomain = 'pro'
+          } else {
+            this.cdnSubdomain = 'use'
+          }
+
+          if(this.cdnUrl.match('\.js$')) {
+            this.technology = FaTechnology.CdnSvg
+          } else if (this.cdnUrl.match('\.css$')) {
+            this.technology = FaTechnology.CdnWebfont
+          } else {
+            throw new Error(`Unrecognized cdn-url provided to fa-icon-chooser. Expected something ending .js or .css, but got: ${ this.cdnUrl }`)
+          }
+        } else {
+          throw new Error("missing a kit-token or cdn-url attribute for loading Font Awesome inside fa-icon-chooser")
+        }
+      }
 
       this.preload()
       .then(() => {
