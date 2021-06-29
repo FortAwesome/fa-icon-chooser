@@ -159,7 +159,6 @@ dd {
   margin: 0;
 }
 /* Set core body defaults */
-:host,
 body {
   min-height: 100vh;
   scroll-behavior: smooth;
@@ -2030,7 +2029,6 @@ html {
     font-size: var(--font-size-root-tablet);
   }
 }
-:host,
 body {
   margin: 0;
   padding: 0;

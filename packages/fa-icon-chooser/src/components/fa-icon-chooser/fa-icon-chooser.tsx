@@ -620,8 +620,8 @@ export class FaIconChooser {
         {
           this.isQuerying
           ? <article class="message-loading text-center margin-2xl">
-              <i class="message-icon far fa-compass fa-spin fa-4x margin-top-xs" />
-              <h2>Loading Icons</h2>
+              <i class="message-icon fas fa-circle-notch fa-spin fa-2x margin-top-xs" />
+              <h2 class="message-title margin-top-sm">Loading Icons</h2>
             </article>
           : (size(this.filteredIcons()) > 0
               ? <div class="icon-listing">
@@ -634,10 +634,11 @@ export class FaIconChooser {
                   </article>
                   )}
                 </div>
-              : <article class="message-noresults text-center margin-2xl">
-                  <i class="message-icon far fa-frown fa-4x margin-top-xs"></i>
-                  <h2>Sorry, we couldn't find anything for that...</h2>
-                  <p class="muted">You could try a different search or <a href="https://fontawesome.com/" target="_blank">go Pro and upload your own</a>!</p>
+              : <article class="message message-noresults text-center margin-2xl">
+                  <i class="message-icon fas fa-frown fa-3x margin-top-xs"></i>
+                  <h2 class="message-title margin-top-lg">Sorry, we couldn't find anything for that.</h2>
+                  <p class="size-lg">You might try a different search...</p>
+                <p class="muted size-sm display-block">Or <a href="https://fontawesome.com/" target="_blank">get Font Awesome Pro</a> and upload your own icon!</p>
                 </article>
             )
         }

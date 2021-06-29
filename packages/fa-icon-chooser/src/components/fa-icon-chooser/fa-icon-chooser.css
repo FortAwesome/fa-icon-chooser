@@ -14,6 +14,8 @@
 :host {
   display: block;
   width: 90vw;
+  margin: 0 auto;
+  padding: var(--spacing-sm);
 }
 
 .wrap-search {
@@ -31,18 +33,18 @@
   cursor: pointer;
   text-transform: capitalize;
   border-radius: var(--border-radius-md);
+  color: var(--fa-dk-blue);
 }
 
 .icons-style-menu-listing .input-checkbox-custom:checked ~ .icons-style-choice {
-  color: var(--white);
-  background-color: var(--fa-navy);
+  color: var(--fa-navy);
   font-weight: var(--font-weight-bold) !important;
 }
 
 .icon-listing {
   display: grid;
   grid-auto-flow: row dense;
-  grid-template-columns: repeat(auto-fit, minmax(var(--icon-listing-roomy-size), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(var(--icon-listing-roomy-size), 1fr));
   grid-gap: var(--icon-listing-roomy-gap-y) var(--icon-listing-roomy-gap-x);
   justify-content: center;
   justify-items: center;
@@ -74,8 +76,13 @@ button.icon i {
   width: 100%; /* to support text truncate */
 }
 
-.message-icon {
-  color: var(--fa-md-gravy);
+.message {
+  color: var(--fa-navy);
+}
+
+.message-title+p {
+  --paragraph-margin-bottom: var(--spacing-md);
+  --paragraph-margin-top: var(--spacing-2xl);
 }
 
 
@@ -85,4 +92,3 @@ button.icon i {
     flex-wrap: wrap;
   }
 }
-
