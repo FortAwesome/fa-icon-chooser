@@ -75,8 +75,13 @@ button.icon i {
   width: 100%; /* to support text truncate */
 }
 
-.message-icon {
-  color: var(--fa-md-gravy);
+.message {
+  color: var(--fa-navy);
+}
+
+.message-title+p {
+  --paragraph-margin-bottom: var(--spacing-md);
+  --paragraph-margin-top: var(--spacing-2xl);
 }
 
 
