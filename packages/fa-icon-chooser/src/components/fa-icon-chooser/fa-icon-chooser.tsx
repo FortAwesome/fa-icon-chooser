@@ -140,6 +140,8 @@ export class FaIconChooser {
 
   cdnSubdomain?: string;
 
+  runSvgReplacementAfterRender: boolean = false;
+
   constructor() {
     this.toggleStyleFilter = this.toggleStyleFilter.bind(this)
   }
@@ -486,12 +488,31 @@ export class FaIconChooser {
         // We must disable autoReplaceSvg and autoInsertCss because this JavaScript
         // will run in global space and by default will operate on the outer DOM,
         // even though we're adding the <script> to the Shadow DOM.
-        script.setAttribute('data-auto-replace-svg', 'false')
-        script.setAttribute('data-auto-add-css', 'false')
-        this.host.shadowRoot.appendChild(script)
-      }
+        window['FontAwesomeConfig'] = {
+          autoAddCss: false,
+          autoReplaceSvg: false
+        }
 
-      this.setupFaSvgStyleAndWatchInShadowDom()
+        const set = newValue => {
+          window['__FontAwesome__IconChooser'] = newValue
+          this.setupSvgStyleInShadowDom()
+        }
+
+        // We need to intercept the assignment to the global Font Awesome and
+        // only trigger the rest of the Shadow DOM setup after that.
+        Object.defineProperty(window, 'FontAwesome', {
+          enumerable: true,
+          configurable: false,
+          get() { return window['__FontAwesome__IconChooser'] },
+          set
+        })
+
+        this.runSvgReplacementAfterRender = true
+        this.host.shadowRoot.appendChild(script)
+      } else {
+        this.setupSvgStyleInShadowDom()
+        this.setupSvgWatchInShadowDom()
+      }
     }
 
     if( this.technology === FaTechnology.KitSvg ) {
@@ -510,7 +531,7 @@ export class FaIconChooser {
 
         const set = newValue => {
           window['__FontAwesome__IconChooser'] = newValue
-          this.setupFaSvgStyleAndWatchInShadowDom()
+          this.setupSvgStyleInShadowDom()
         }
 
         // We need to intercept the assignment to the global Font Awesome and
@@ -522,9 +543,11 @@ export class FaIconChooser {
           set
         })
 
+        this.runSvgReplacementAfterRender = true
         this.host.shadowRoot.appendChild(script)
       } else {
-        this.setupFaSvgStyleAndWatchInShadowDom()
+        this.setupSvgStyleInShadowDom()
+        this.setupSvgWatchInShadowDom()
       }
     }
 
@@ -554,7 +577,7 @@ export class FaIconChooser {
     return script
   }
 
-  setupFaSvgStyleAndWatchInShadowDom() {
+  setupSvgStyleInShadowDom() {
     // TODO: maybe set up some types for the FontAwesome config.
     const config: any = (window as any).FontAwesome
 
@@ -567,9 +590,6 @@ export class FaIconChooser {
     if(this.watchingForSvgReplacements) return
 
     const dom: any = config.dom
-    const watch: Function = dom.watch
-
-    this.watchingForSvgReplacements = true
 
     const style = document.createElement('style')
     style.setAttribute('type', 'text/css')
@@ -577,6 +597,14 @@ export class FaIconChooser {
     style.appendChild(textNode);
     style.media = 'all';
     this.host.shadowRoot.appendChild(style)
+  }
+
+  setupSvgWatchInShadowDom() {
+    const watch: Function | undefined = get(window, 'FontAwesome.dom.watch')
+
+    if(!watch) return
+
+    this.watchingForSvgReplacements = true
 
     watch({
       autoReplaceSvgRoot: this.host.shadowRoot,
@@ -620,6 +648,16 @@ export class FaIconChooser {
     }
 
     return
+  }
+
+  componentDidRender() {
+    if(this.runSvgReplacementAfterRender) {
+      const i2svg: Function | undefined = get(window, 'FontAwesome.dom.i2svg')
+
+      if(i2svg) {
+        i2svg({ node: this.host.shadowRoot })
+      }
+    }
   }
 
   render() {
