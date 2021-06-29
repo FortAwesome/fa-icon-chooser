@@ -23,7 +23,8 @@
   },
   "dependencies": {
     "@stencil/core": "^2.0.1",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "npm": "^7.19.0"
   },
   "license": "MIT",
   "devDependencies": {
