@@ -192,9 +192,6 @@ export class FaIconChooser {
     this.styleFilterEnabled = true
     this.styleFilters.fas = true
     this.styleFilters.fab = true
-    if(this.mayHaveIconUploads()) {
-      this.styleFilters.fak = true
-    }
   }
 
   componentWillLoad() {
@@ -249,6 +246,10 @@ export class FaIconChooser {
       })
       .then(() => {
         this.activateDefaultStyleFilters()
+
+        if(this.mayHaveIconUploads() && size(get(this, 'kitMetadata.iconUploads')) > 0) {
+          this.styleFilters.fak = true
+        }
 
         this.isInitialLoading = false
       })
