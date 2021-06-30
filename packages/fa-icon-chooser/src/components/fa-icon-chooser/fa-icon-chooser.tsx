@@ -140,6 +140,8 @@ export class FaIconChooser {
 
   cdnSubdomain?: string;
 
+  runSvgReplacementAfterRender: boolean = false;
+
   constructor() {
     this.toggleStyleFilter = this.toggleStyleFilter.bind(this)
   }
@@ -226,6 +228,13 @@ export class FaIconChooser {
 
         this.isProEnabled = (get(this, 'kitMetadata.licenseSelected') === 'pro')
           || this.pro
+
+        if(this.kitToken) {
+          const kitTechnology = this.kitTechnology()
+          if(kitTechnology) {
+            this.technology = kitTechnology
+          }
+        }
 
         this.setupFontAwesome()
 
@@ -387,6 +396,15 @@ export class FaIconChooser {
     e.stopPropagation()
   }
 
+  kitTechnology(): FaTechnology | undefined {
+    switch( get(this, 'kitMetadata.technologySelected') ) {
+      case 'webfonts':
+        return FaTechnology.KitWebfont
+      case 'svg':
+        return FaTechnology.KitSvg
+    }
+  }
+
   // TODO: add better handling for the case where this componnet needs to be
   // more self-sufficient--loading from CDN or Kit itself when it's not already
   // available in the outer DOM. And yet, when loading, it needs to be done in
@@ -398,18 +416,26 @@ export class FaIconChooser {
   // present. We may need to put in hooks to track what fonts are loaded in
   // the outer DOM, similar to the kit loader e2e testing.
   setupFontAwesome() {
-    if(this.kitToken) {
-      const kitTechnology = get(window, 'FontAwesomeKitConfig.method')
+    const isKitAlreadySetupInOuterDom = this.kitToken && !!get(window, 'FontAwesomeKitConfig')
 
-      if('js' === kitTechnology) {
-        this.technology = FaTechnology.KitSvg
-      }
+    const isFaSvgJsAlreadySetupInOuterDom =
+      (isKitAlreadySetupInOuterDom && this.technology == FaTechnology.KitSvg)
+      || ( this.technology === FaTechnology.CdnSvg && !!get(window, 'FontAwesome'))
 
-      if('css' === kitTechnology) {
-        this.technology = FaTechnology.KitWebfont
-        this.addKitStyleElements()
+    let faLinks = []
+    document.querySelectorAll('link').forEach(l => {
+      if(
+        ('string' === typeof l.href)
+        && (
+          !!l.href.toString().match('fontawesome\.com/\.+\.css')
+          || !!l.href.toString().match('fontawesome\.com/\.+\.css\?')
+        )
+      ) {
+        faLinks.push(l)
       }
-    }
+    })
+
+    const isFaWebfontCdnAlreadSetupInOuterDom = faLinks.length > 0
 
     if(!this.technology) {
       // We should never get this error, because the constructor should have already validated inputs.
@@ -417,20 +443,141 @@ export class FaIconChooser {
     }
 
     if( this.technology === FaTechnology.CdnWebfont ) {
-      this.addCdnLinkElement()
+      if(!isFaWebfontCdnAlreadSetupInOuterDom) {
+        // In this case, we're setting up Webfont via CDN, and the outer DOM
+        // does not have a <link> to the CDN CSS resource. That means the outer
+        // DOM will not have the @font-face rules that must be present in the outer
+        // DOM. @font-face rules must be present in the outer DOM, in order to
+        // trigger the loading of the webfont file resources. A @font-face rule
+        // appearing in the Shadow DOM has no effect. So it's not enough to add
+        // the <link> to the Shadow DOM. It also needs to be added to the outer
+        // DOM.
+
+        // For now, we're being a bit heavy-handed about it, and just linking to
+        // all.css in either case. A more granular way to load just @font-face
+        // rules and not ALL of the style rules would be to link to each style
+        // individually, like regular.css or solid.css. Those assets include
+        // just the corresponding @font-face rule.
+
+        // However, an icon chooser is all about seeing the available options,
+        // across any available styles. So assuming that we should always be working
+        // with all.css in this context isn't terrible.
+
+        const link = this.createCdnLinkElement()
+        document.head.appendChild(link)
+      }
+
+      // We need to add the CDN <link> to the web component's Shadow DOM, regardless
+      // of whether it is present in the outer DOM, because even if it's in the
+      // outer DOM, it will only inherit the @font-face rules, not the rest of
+      // the style rules.
+      const link = this.createCdnLinkElement()
+      this.host.shadowRoot.appendChild(link)
     }
 
     if( this.technology === FaTechnology.CdnSvg ) {
-      this.addKitStyleElements()
-      this.setupFaSvg()
+      if(!isFaSvgJsAlreadySetupInOuterDom) {
+        const script = document.createElement('script')
+        script.setAttribute('src', `https://${ this.cdnSubdomain }.fontawesome.com/releases/v${this.resolvedVersion}/js/all.js`)
+
+        if(this.integrity) {
+          script.setAttribute('integrity', this.integrity)
+          script.setAttribute('crossorigin', 'anonymous')
+        }
+
+        // We must disable autoReplaceSvg and autoInsertCss because this JavaScript
+        // will run in global space and by default will operate on the outer DOM,
+        // even though we're adding the <script> to the Shadow DOM.
+        window['FontAwesomeConfig'] = {
+          autoAddCss: false,
+          autoReplaceSvg: false
+        }
+
+        const set = newValue => {
+          window['__FontAwesome__IconChooser'] = newValue
+          this.setupSvgStyleInShadowDom()
+        }
+
+        // We need to intercept the assignment to the global Font Awesome and
+        // only trigger the rest of the Shadow DOM setup after that.
+        Object.defineProperty(window, 'FontAwesome', {
+          enumerable: true,
+          configurable: false,
+          get() { return window['__FontAwesome__IconChooser'] },
+          set
+        })
+
+        this.runSvgReplacementAfterRender = true
+        this.host.shadowRoot.appendChild(script)
+      } else {
+        this.setupSvgStyleInShadowDom()
+        this.setupSvgWatchInShadowDom()
+      }
     }
 
     if( this.technology === FaTechnology.KitSvg ) {
-      this.setupFaSvg()
+      if(!isKitAlreadySetupInOuterDom) {
+        const script = this.createKitScriptElement()
+
+        // We're adding a <script> to load the kit, which will in turn load
+        // Font Awesome SVG/JS. When FA SVG/JS is loaded, it will run in global
+        // space and we want to make sure it's not impacting the outer DOM by default
+        // So we'll disable the automation features and then enable them only
+        // within the Shadow DOM.
+        window['FontAwesomeConfig'] = {
+          autoAddCss: false,
+          autoReplaceSvg: false
+        }
+
+        const set = newValue => {
+          window['__FontAwesome__IconChooser'] = newValue
+          this.setupSvgStyleInShadowDom()
+        }
+
+        // We need to intercept the assignment to the global Font Awesome and
+        // only trigger the rest of the Shadow DOM setup after that.
+        Object.defineProperty(window, 'FontAwesome', {
+          enumerable: true,
+          configurable: false,
+          get() { return window['__FontAwesome__IconChooser'] },
+          set
+        })
+
+        this.runSvgReplacementAfterRender = true
+        this.host.shadowRoot.appendChild(script)
+      } else {
+        this.setupSvgStyleInShadowDom()
+        this.setupSvgWatchInShadowDom()
+      }
+    }
+
+    if( this.technology === FaTechnology.KitWebfont ) {
+      if(!isKitAlreadySetupInOuterDom) {
+        // CAVEAT! In this scenario, we're setting up a Webfont Kit whose <script>
+        // has not already been loaded in the outer DOM. So we have to add it
+        // within the Shadow DOM. However, there's no way currently stop it from
+        // applying its styles to the outer DOM, because the kit will inject
+        // set of <style> elements into the outer DOM.
+        //
+        // This might mean that we need a way to configure how a kit is loaded
+        // to prevent some things from happening
+        const script = this.createKitScriptElement()
+        this.host.shadowRoot.appendChild(script)
+      }
+
+      this.copyWebfontKitStyleElementsToShadowDom()
     }
   }
 
-  setupFaSvg() {
+  createKitScriptElement() {
+    const script = document.createElement('script')
+    script.setAttribute('src', `https://kit.fontawesome.com/${this.kitToken}.js`)
+    script.setAttribute('crossorigin', 'anonymous')
+
+    return script
+  }
+
+  setupSvgStyleInShadowDom() {
     // TODO: maybe set up some types for the FontAwesome config.
     const config: any = (window as any).FontAwesome
 
@@ -443,9 +590,6 @@ export class FaIconChooser {
     if(this.watchingForSvgReplacements) return
 
     const dom: any = config.dom
-    const watch: Function = dom.watch
-
-    this.watchingForSvgReplacements = true
 
     const style = document.createElement('style')
     style.setAttribute('type', 'text/css')
@@ -453,6 +597,14 @@ export class FaIconChooser {
     style.appendChild(textNode);
     style.media = 'all';
     this.host.shadowRoot.appendChild(style)
+  }
+
+  setupSvgWatchInShadowDom() {
+    const watch: Function | undefined = get(window, 'FontAwesome.dom.watch')
+
+    if(!watch) return
+
+    this.watchingForSvgReplacements = true
 
     watch({
       autoReplaceSvgRoot: this.host.shadowRoot,
@@ -460,7 +612,7 @@ export class FaIconChooser {
     })
   }
 
-  addCdnLinkElement() {
+  createCdnLinkElement() {
     const link = document.createElement('link')
     link.setAttribute('href', `https://${ this.cdnSubdomain }.fontawesome.com/releases/v${this.resolvedVersion}/css/all.css`)
     link.setAttribute('rel', 'stylesheet')
@@ -470,10 +622,10 @@ export class FaIconChooser {
       link.setAttribute('crossorigin', 'anonymous')
     }
 
-    this.host.shadowRoot.appendChild(link)
+    return link
   }
 
-  addKitStyleElements() {
+  copyWebfontKitStyleElementsToShadowDom() {
     // TODO: figure out if there's a more efficient way to do this than just copying
     const mainKitStyle = document.querySelector('style#fa-main') as HTMLStyleElement
 
@@ -496,6 +648,16 @@ export class FaIconChooser {
     }
 
     return
+  }
+
+  componentDidRender() {
+    if(this.runSvgReplacementAfterRender) {
+      const i2svg: Function | undefined = get(window, 'FontAwesome.dom.i2svg')
+
+      if(i2svg) {
+        i2svg({ node: this.host.shadowRoot })
+      }
+    }
   }
 
   render() {
@@ -620,7 +782,7 @@ export class FaIconChooser {
         {
           this.isQuerying
           ? <article class="message-loading text-center margin-2xl">
-              <i class="message-icon fas fa-circle-notch fa-spin fa-2x margin-top-xs" />
+              <span key="a"><i class="message-icon fas fa-circle-notch fa-spin fa-2x margin-top-xs" /></span>
               <h2 class="message-title margin-top-sm">Loading Icons</h2>
             </article>
           : (size(this.filteredIcons()) > 0
@@ -635,7 +797,7 @@ export class FaIconChooser {
                   )}
                 </div>
               : <article class="message message-noresults text-center margin-2xl">
-                  <i class="message-icon fas fa-frown fa-3x margin-top-xs"></i>
+                  <span key="b"><i class="message-icon fas fa-frown fa-3x margin-top-xs"></i></span>
                   <h2 class="message-title margin-top-lg">Sorry, we couldn't find anything for that.</h2>
                   <p class="size-lg">You might try a different search...</p>
                 <p class="muted size-sm display-block">Or <a href="https://fontawesome.com/" target="_blank">get Font Awesome Pro</a> and upload your own icon!</p>
