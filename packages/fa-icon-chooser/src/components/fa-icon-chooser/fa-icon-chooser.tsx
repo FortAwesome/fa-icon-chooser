@@ -787,15 +787,18 @@ export class FaIconChooser {
               <h2 class="message-title margin-top-sm">Loading Icons</h2>
             </article>
           : (size(this.filteredIcons()) > 0
-              ? <div class="icon-listing">
-                  {this.filteredIcons().map(icon =>
-                  <article class="wrap-icon" key={ `${icon.prefix}-${ icon.iconName }`}>
-                    <button class="icon subtle display-flex flex-column flex-items-center flex-content-center" onClick={() => this.finish.emit(icon)}>
-                        <i class={ `${ icon.prefix } fa-2x fa-${ icon.iconName }` }></i>
-                      <span class="icon-name size-xs text-truncate margin-top-lg">{`${ icon.iconName }`}</span>
-                      </button>
-                  </article>
-                  )}
+              ? <div>
+                  <div class="icon-listing">
+                    {this.filteredIcons().map(icon =>
+                    <article class="wrap-icon" key={ `${icon.prefix}-${ icon.iconName }`}>
+                      <button class="icon subtle display-flex flex-column flex-items-center flex-content-center" onClick={() => this.finish.emit(icon)}>
+                          <i class={ `${ icon.prefix } fa-2x fa-${ icon.iconName }` }></i>
+                        <span class="icon-name size-xs text-truncate margin-top-lg">{`${ icon.iconName }`}</span>
+                        </button>
+                    </article>
+                    )}
+                  </div>
+                  <div class="pagination"></div>
                 </div>
               : <article class="message message-noresults text-center margin-2xl">
                   <span key="b"><i class="message-icon fas fa-frown fa-3x margin-top-xs"></i></span>
