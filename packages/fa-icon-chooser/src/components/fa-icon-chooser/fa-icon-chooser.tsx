@@ -267,7 +267,7 @@ export class FaIconChooser {
     const response = await this.handleQuery(
       `
       query {
-        search(version:"${ this.resolvedVersion }", query: "${ query }", first: 10) {
+        search(version:"${ this.resolvedVersion }", query: "${ query }") {
           id
           label
           membership {
