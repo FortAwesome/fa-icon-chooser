@@ -782,7 +782,7 @@ export class FaIconChooser {
         {
           this.isQuerying
           ? <article class="message-loading text-center margin-2xl">
-              <i class="message-icon fas fa-circle-notch fa-spin fa-2x margin-top-xs" />
+              <span key="a"><i class="message-icon fas fa-circle-notch fa-spin fa-2x margin-top-xs" /></span>
               <h2 class="message-title margin-top-sm">Loading Icons</h2>
             </article>
           : (size(this.filteredIcons()) > 0
@@ -797,7 +797,7 @@ export class FaIconChooser {
                   )}
                 </div>
               : <article class="message message-noresults text-center margin-2xl">
-                  <i class="message-icon fas fa-frown fa-3x margin-top-xs"></i>
+                  <span key="b"><i class="message-icon fas fa-frown fa-3x margin-top-xs"></i></span>
                   <h2 class="message-title margin-top-lg">Sorry, we couldn't find anything for that.</h2>
                   <p class="size-lg">You might try a different search...</p>
                 <p class="muted size-sm display-block">Or <a href="https://fontawesome.com/" target="_blank">get Font Awesome Pro</a> and upload your own icon!</p>
