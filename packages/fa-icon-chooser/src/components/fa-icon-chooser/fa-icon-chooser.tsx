@@ -663,7 +663,12 @@ export class FaIconChooser {
 
   render() {
     if(this.isInitialLoading) {
-      return <div class="fa-icon-chooser">loading...</div>
+      return <div class="fa-icon-chooser">
+        <div class="message-loading text-center margin-2xl">
+          <h3>Fetching icons</h3>
+          <p class="margin-y-md muted">When this thing gets up to 88 mph...</p>
+        </div>
+      </div>
     }
 
     return <div class="fa-icon-chooser">
