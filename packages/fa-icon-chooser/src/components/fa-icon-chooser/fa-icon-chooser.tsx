@@ -777,7 +777,7 @@ export class FaIconChooser {
           this.styleFilterEnabled &&
           this.styleFilters.fak &&
           <article class="text-center margin-2xl">
-            This kit contains no uploaded icons.
+            <p class="muted size-sm">This kit contains no uploaded icons.</p>
           </article>
         }
         {
