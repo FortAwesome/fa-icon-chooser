@@ -29,16 +29,27 @@
 }
 
 .icons-style-menu-listing .icons-style-choice {
-  display: flex;
+  display: block;
   cursor: pointer;
-  text-transform: capitalize;
   border-radius: var(--border-radius-md);
   color: var(--fa-dk-blue);
+  text-transform: capitalize;
+  text-align: center;
+}
+
+.icons-style-menu-listing .icons-style-choice:hover {
+  background-color: var(--white);
 }
 
 .icons-style-menu-listing .input-checkbox-custom:checked ~ .icons-style-choice {
-  color: var(--fa-navy);
+  color: var(--white);
+  background-color: var(--fa-navy);
   font-weight: var(--font-weight-bold) !important;
+}
+
+.icons-style-menu-listing .icons-style-choice > span {
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .icon-listing {
@@ -68,7 +79,7 @@ button.icon {
   height: 100%;
 }
 
-button.icon i {
+button.icon fa-icon {
   color: var(--fa-navy);
 }
 
