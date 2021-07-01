@@ -663,7 +663,12 @@ export class FaIconChooser {
 
   render() {
     if(this.isInitialLoading) {
-      return <div class="fa-icon-chooser">loading...</div>
+      return <div class="fa-icon-chooser">
+        <div class="message-loading text-center margin-2xl">
+          <h3>Fetching icons</h3>
+          <p class="margin-y-md muted">When this thing gets up to 88 mph...</p>
+        </div>
+      </div>
     }
 
     return <div class="fa-icon-chooser">
@@ -784,7 +789,7 @@ export class FaIconChooser {
           this.isQuerying
           ? <article class="message-loading text-center margin-2xl">
               <span key="a"><i class="message-icon fas fa-circle-notch fa-spin fa-2x margin-top-xs" /></span>
-              <h2 class="message-title margin-top-sm">Loading Icons</h2>
+              <h4 class="message-title margin-top-sm">Loading icons</h4>
             </article>
           : (size(this.filteredIcons()) > 0
               ? <div class="icon-listing">
@@ -798,7 +803,7 @@ export class FaIconChooser {
                   )}
                 </div>
               : <article class="message message-noresults text-center margin-2xl">
-                  <span key="b"><i class="message-icon fas fa-frown fa-3x margin-top-xs"></i></span>
+                  <span key="b"><i class="message-icon far fa-frown fa-3x margin-top-xs"></i></span>
                   <h2 class="message-title margin-top-lg">Sorry, we couldn't find anything for that.</h2>
                   <p class="size-lg">You might try a different search...</p>
                 <p class="muted size-sm display-block">Or <a href="https://fontawesome.com/" target="_blank">get Font Awesome Pro</a> and upload your own icon!</p>
