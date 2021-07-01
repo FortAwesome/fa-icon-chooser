@@ -13,9 +13,11 @@
 
 :host {
   display: block;
+  height: 80vw;
   width: 90vw;
   margin: 0 auto;
   padding: var(--spacing-sm);
+  overflow: scroll;
 }
 
 .wrap-search {
