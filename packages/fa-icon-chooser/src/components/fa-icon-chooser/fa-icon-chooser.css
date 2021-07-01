@@ -85,6 +85,19 @@ button.icon i {
   --paragraph-margin-top: var(--spacing-2xl);
 }
 
+.nav-link {
+  display: inline-block;
+  margin: var(--spacing-sm);
+  padding: var(--spacing-md) var(--spacing-lg);
+  background-color: var(--white);
+  border-radius: var(--border-radius-circle);
+  text-align: center;
+}
+
+.nav-link:hover {
+  color: var(--white);
+  background-color: var(--fa-dk-blue);
+}
 
 /* custom > 480px */
 @media (max-width: 30rem) {

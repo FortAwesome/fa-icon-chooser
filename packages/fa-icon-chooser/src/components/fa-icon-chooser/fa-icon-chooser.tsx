@@ -798,7 +798,18 @@ export class FaIconChooser {
                     </article>
                     )}
                   </div>
-                  <div class="pagination"></div>
+                  <div class="pagination margin-y-lg text-center">
+                    <nav>
+                      <a href="" class="nav-link">
+                        <i class="fas fa-fw fa-chevron-left"></i>
+                        <span class="sr-only">Previous</span>
+                      </a>
+                      <a href="" class="nav-link">
+                        <span class="sr-only">Next</span>
+                        <i class="fas fa-fw fa-chevron-right"></i>
+                      </a>
+                    </nav>
+                  </div>
                 </div>
               : <article class="message message-noresults text-center margin-2xl">
                   <span key="b"><i class="message-icon fas fa-frown fa-3x margin-top-xs"></i></span>
