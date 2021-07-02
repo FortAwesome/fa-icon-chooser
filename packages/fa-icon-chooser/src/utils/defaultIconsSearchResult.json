@@ -1,0 +1,1442 @@
+{
+  "data": {
+    "search": [
+      {
+        "id": "user",
+        "label": "User",
+        "membership": {
+          "free": [
+            "solid",
+            "regular"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "facebook",
+        "label": "Facebook",
+        "membership": {
+          "free": [
+            "brands"
+          ],
+          "pro": [
+            "brands"
+          ]
+        }
+      },
+      {
+        "id": "check",
+        "label": "Check",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "phone",
+        "label": "Phone",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "plus",
+        "label": "plus",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "twitter",
+        "label": "Twitter",
+        "membership": {
+          "free": [
+            "brands"
+          ],
+          "pro": [
+            "brands"
+          ]
+        }
+      },
+      {
+        "id": "info",
+        "label": "Info",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "list",
+        "label": "List",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "star",
+        "label": "Star",
+        "membership": {
+          "free": [
+            "solid",
+            "regular"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "cart-plus",
+        "label": "Add to Shopping Cart",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "book",
+        "label": "book",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "heart",
+        "label": "Heart",
+        "membership": {
+          "free": [
+            "solid",
+            "regular"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "calendar",
+        "label": "Calendar",
+        "membership": {
+          "free": [
+            "solid",
+            "regular"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "trash",
+        "label": "Trash",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "download",
+        "label": "Download",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "youtube",
+        "label": "YouTube",
+        "membership": {
+          "free": [
+            "brands"
+          ],
+          "pro": [
+            "brands"
+          ]
+        }
+      },
+      {
+        "id": "circle",
+        "label": "Circle",
+        "membership": {
+          "free": [
+            "solid",
+            "regular"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "cross",
+        "label": "Cross",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "linkedin",
+        "label": "LinkedIn",
+        "membership": {
+          "free": [
+            "brands"
+          ],
+          "pro": [
+            "brands"
+          ]
+        }
+      },
+      {
+        "id": "play",
+        "label": "play",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "lock",
+        "label": "lock",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "car-building",
+        "label": "Car and Building",
+        "membership": {
+          "free": [],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "question",
+        "label": "Question",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "google",
+        "label": "Google Logo",
+        "membership": {
+          "free": [
+            "brands"
+          ],
+          "pro": [
+            "brands"
+          ]
+        }
+      },
+      {
+        "id": "video",
+        "label": "Video",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "paper-plane",
+        "label": "Paper Plane",
+        "membership": {
+          "free": [
+            "solid",
+            "regular"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "street-view",
+        "label": "Street View",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "share",
+        "label": "Share",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "code",
+        "label": "Code",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "house",
+        "label": "House",
+        "membership": {
+          "free": [],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "bell",
+        "label": "bell",
+        "membership": {
+          "free": [
+            "solid",
+            "regular"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "upload",
+        "label": "Upload",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "computer-speaker",
+        "label": "Computer Speaker",
+        "membership": {
+          "free": [],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "minus",
+        "label": "minus",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "bars",
+        "label": "Bars",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "github",
+        "label": "GitHub",
+        "membership": {
+          "free": [
+            "brands"
+          ],
+          "pro": [
+            "brands"
+          ]
+        }
+      },
+      {
+        "id": "comment",
+        "label": "comment",
+        "membership": {
+          "free": [
+            "solid",
+            "regular"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "image",
+        "label": "Image",
+        "membership": {
+          "free": [
+            "solid",
+            "regular"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "folder",
+        "label": "Folder",
+        "membership": {
+          "free": [
+            "solid",
+            "regular"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "square",
+        "label": "Square",
+        "membership": {
+          "free": [
+            "solid",
+            "regular"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "key",
+        "label": "key",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "mobile",
+        "label": "Mobile Phone",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "camera",
+        "label": "camera",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "globe",
+        "label": "Globe",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "openid",
+        "label": "OpenID",
+        "membership": {
+          "free": [
+            "brands"
+          ],
+          "pro": [
+            "brands"
+          ]
+        }
+      },
+      {
+        "id": "text",
+        "label": "Text",
+        "membership": {
+          "free": [],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "file-excel",
+        "label": "Excel File",
+        "membership": {
+          "free": [
+            "solid",
+            "regular"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "building",
+        "label": "Building",
+        "membership": {
+          "free": [
+            "solid",
+            "regular"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "print",
+        "label": "print",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "sort",
+        "label": "Sort",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "flag",
+        "label": "flag",
+        "membership": {
+          "free": [
+            "solid",
+            "regular"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "network-wired",
+        "label": "Wired Network",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "pencil",
+        "label": "pencil",
+        "membership": {
+          "free": [],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "pagelines",
+        "label": "Pagelines",
+        "membership": {
+          "free": [
+            "brands"
+          ],
+          "pro": [
+            "brands"
+          ]
+        }
+      },
+      {
+        "id": "html5",
+        "label": "HTML 5 Logo",
+        "membership": {
+          "free": [
+            "brands"
+          ],
+          "pro": [
+            "brands"
+          ]
+        }
+      },
+      {
+        "id": "quote-right",
+        "label": "quote-right",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "truck",
+        "label": "truck",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "stop",
+        "label": "stop",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "teamspeak",
+        "label": "TeamSpeak",
+        "membership": {
+          "free": [
+            "brands"
+          ],
+          "pro": [
+            "brands"
+          ]
+        }
+      },
+      {
+        "id": "file-export",
+        "label": "File Export",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "table",
+        "label": "table",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "internet-explorer",
+        "label": "Internet-explorer",
+        "membership": {
+          "free": [
+            "brands"
+          ],
+          "pro": [
+            "brands"
+          ]
+        }
+      },
+      {
+        "id": "file-invoice",
+        "label": "File Invoice",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "restroom",
+        "label": "Restroom",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "moon-stars",
+        "label": "Moon with Stars",
+        "membership": {
+          "free": [],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "cloud",
+        "label": "Cloud",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "caret-down",
+        "label": "Caret Down",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "tty",
+        "label": "TTY",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "shield",
+        "label": "shield",
+        "membership": {
+          "free": [],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "registered",
+        "label": "Registered Trademark",
+        "membership": {
+          "free": [
+            "solid",
+            "regular"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "phone-office",
+        "label": "Office Phone",
+        "membership": {
+          "free": [],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "video-slash",
+        "label": "Video Slash",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "empty-set",
+        "label": "Empty Set",
+        "membership": {
+          "free": [],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "person-dolly-empty",
+        "label": "Person and Empty Dolly",
+        "membership": {
+          "free": [],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "signature",
+        "label": "Signature",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "store",
+        "label": "Store",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "projector",
+        "label": "Projector",
+        "membership": {
+          "free": [],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "loveseat",
+        "label": "Loveseat",
+        "membership": {
+          "free": [],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "arrow-right",
+        "label": "arrow-right",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "music",
+        "label": "Music",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "icons",
+        "label": "Icons",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "basketball-hoop",
+        "label": "Basketball Hoop",
+        "membership": {
+          "free": [],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "power-off",
+        "label": "Power Off",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "telegram",
+        "label": "Telegram",
+        "membership": {
+          "free": [
+            "brands"
+          ],
+          "pro": [
+            "brands"
+          ]
+        }
+      },
+      {
+        "id": "wifi",
+        "label": "WiFi",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "vials",
+        "label": "Vials",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "door-open",
+        "label": "Door Open",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "shield-check",
+        "label": "shield",
+        "membership": {
+          "free": [],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "calendar-week",
+        "label": "Calendar with Week Focus",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "line-height",
+        "label": "Line Height",
+        "membership": {
+          "free": [],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "expand",
+        "label": "Expand",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "walkie-talkie",
+        "label": "Walkie Talkie",
+        "membership": {
+          "free": [],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "free-code-camp",
+        "label": "freeCodeCamp",
+        "membership": {
+          "free": [
+            "brands"
+          ],
+          "pro": [
+            "brands"
+          ]
+        }
+      },
+      {
+        "id": "connectdevelop",
+        "label": "Connect Develop",
+        "membership": {
+          "free": [
+            "brands"
+          ],
+          "pro": [
+            "brands"
+          ]
+        }
+      },
+      {
+        "id": "arrow-down",
+        "label": "arrow-down",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "mailbox",
+        "label": "Mailbox",
+        "membership": {
+          "free": [],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "star-of-life",
+        "label": "Star of Life",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "shower",
+        "label": "Shower",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "discord",
+        "label": "Discord",
+        "membership": {
+          "free": [
+            "brands"
+          ],
+          "pro": [
+            "brands"
+          ]
+        }
+      },
+      {
+        "id": "file-import",
+        "label": "File Import",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "duotone"
+          ]
+        }
+      }
+    ]
+  }
+}

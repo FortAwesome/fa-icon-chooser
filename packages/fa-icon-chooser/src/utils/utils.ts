@@ -1,3 +1,7 @@
+import defaultIconsSearchResult from './defaultIconsSearchResult.json'
+
+export const defaultIcons: any = defaultIconsSearchResult
+
 // TODO: replace this placeholder logic with, probably, real API calls
 // that handle resolving the version.
 export function resolveVersion(version: string): string {
