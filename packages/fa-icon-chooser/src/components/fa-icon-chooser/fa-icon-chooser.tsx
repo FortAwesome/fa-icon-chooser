@@ -1,7 +1,7 @@
 import { Component, Element, Event, EventEmitter, Prop, State, h } from '@stencil/core'
-import { get, size, debounce, sample } from 'lodash'
+import { get, size, debounce } from 'lodash'
 import { IconLookup } from '@fortawesome/fontawesome-common-types'
-import { resolveVersion } from '../../utils/utils'
+import { resolveVersion, defaultIcons } from '../../utils/utils'
 
 // TODO: figure out whether the IconPrefix type in @fortawesome/fontawesome-common-types
 // should have 'fat' in it.
@@ -240,11 +240,8 @@ export class FaIconChooser {
           throw new Error('invalid state: there must be a resolved version')
         }
 
-        const searchTerm = sample(['animals', 'business', 'travel', 'games', 'communication'])
+        this.setIcons(defaultIcons, this.iconUploadsAsIconLookups())
 
-        return this.updateQueryResults(searchTerm)
-      })
-      .then(() => {
         this.activateDefaultStyleFilters()
 
         if(this.mayHaveIconUploads() && size(get(this, 'kitMetadata.iconUploads')) > 0) {
@@ -267,7 +264,7 @@ export class FaIconChooser {
     const response = await this.handleQuery(
       `
       query {
-        search(version:"${ this.resolvedVersion }", query: "${ query }", first: 10) {
+        search(version:"${ this.resolvedVersion }", query: "${ query }", first: 100) {
           id
           label
           membership {
@@ -278,13 +275,23 @@ export class FaIconChooser {
       }`
     )
 
+    this.setIcons(response, this.iconUploadsAsIconLookups())
+
     // TODO: test the case where data.search is null (which would happen if the API
     // server returns a not_found)
-    const iconUploads = get(this, 'kitMetadata.iconUploads', []).map(i => {
+
+    this.hasQueried = true
+    this.isQuerying = false
+  }
+
+  iconUploadsAsIconLookups(): Array<IconLookup> {
+    return get(this, 'kitMetadata.iconUploads', []).map(i => {
       return { prefix: 'fak', iconName: i.name }
     })
+  }
 
-    this.icons = (get(response, 'data.search') || [])
+  setIcons(searchResultIcons: Array<any>, iconUploads: Array<any>) {
+    this.icons = (get(searchResultIcons, 'data.search') || [])
       .reduce((acc: Array<IconLookup>, result: any) => {
         const { id, membership } = result
 
@@ -307,9 +314,6 @@ export class FaIconChooser {
 
         return acc
     }, iconUploads)
-
-    this.hasQueried = true
-    this.isQuerying = false
   }
 
   updateQueryResultsWithDebounce = debounce( query => {
@@ -387,7 +391,9 @@ export class FaIconChooser {
 
   onKeyUp(e: any): void {
     this.query = e.target.value
-    if(size(this.query) > 0) {
+    if(size(this.query) === 0) {
+      this.setIcons(defaultIcons, this.iconUploadsAsIconLookups())
+    } else {
       this.updateQueryResultsWithDebounce(this.query)
     }
   }
