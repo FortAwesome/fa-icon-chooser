@@ -391,7 +391,9 @@ export class FaIconChooser {
 
   onKeyUp(e: any): void {
     this.query = e.target.value
-    if(size(this.query) > 0) {
+    if(size(this.query) === 0) {
+      this.setIcons(defaultIcons, this.iconUploadsAsIconLookups())
+    } else {
       this.updateQueryResultsWithDebounce(this.query)
     }
   }
