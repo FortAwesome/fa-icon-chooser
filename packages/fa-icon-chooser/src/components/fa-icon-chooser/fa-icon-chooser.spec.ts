@@ -1,5 +1,7 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { FaIconChooser } from './fa-icon-chooser';
+import { defaultIcons } from '../../utils/utils'
+import { get } from 'lodash'
 
 // TODO: tests
 // - remove contents from query field after having had some contents: what should happen in that state?
@@ -32,15 +34,16 @@ async function mountWith(params) {
 }
 
 describe('fa-icon-chooser', () => {
-  const handleQuery = jest.fn().mockReturnValueOnce(Promise.resolve(
-    {"data":{"search":[{"id":"business-time","label":"Business Time","membership":{"free":["solid"],"pro":["solid","regular","light","duotone"]}},{"id":"socks","label":"Socks","membership":{"free":["solid"],"pro":["solid","regular","light","duotone"]}},{"id":"print-slash","label":"Print Slash","membership":{"free":[],"pro":["solid","regular","light","duotone"]}},{"id":"print-search","label":"Print Search","membership":{"free":[],"pro":["solid","regular","light","duotone"]}},{"id":"print","label":"print","membership":{"free":["solid"],"pro":["solid","regular","light","duotone"]}},{"id":"fax","label":"Fax","membership":{"free":["solid"],"pro":["solid","regular","light","duotone"]}},{"id":"user-tie","label":"User Tie","membership":{"free":["solid"],"pro":["solid","regular","light","duotone"]}},{"id":"building","label":"Building","membership":{"free":["solid","regular"],"pro":["solid","regular","light","duotone"]}},{"id":"briefcase","label":"Briefcase","membership":{"free":["solid"],"pro":["solid","regular","light","duotone"]}}]}}
-  ))
+  const handleQuery = jest.fn().mockReturnValueOnce(Promise.resolve())
 
   it('renders with initial icons', async () => {
     const page = await mountWith({ handleQuery, attrs: { version: '5.15.3', 'cdn-url': 'https://example.com/all.js', pro: true } })
-    expect(handleQuery.mock.calls.length).toBe(1)
+    // No initial query is necessary
+    expect(handleQuery.mock.calls.length).toBe(0)
     expect(page.root.shadowRoot.innerHTML).toMatch('<div class="fa-icon-chooser">')
-    expect(page.root.shadowRoot.innerHTML).toMatch('fa-business-time')
-    expect(page.root.shadowRoot.innerHTML).toMatch('fa-socks')
+
+    get(defaultIcons, 'data.search', []).forEach(({ id }) => {
+      expect(page.root.shadowRoot.innerHTML).toMatch(`fa-${id}`)
+    })
   })
 })
