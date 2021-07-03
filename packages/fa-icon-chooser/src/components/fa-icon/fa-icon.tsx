@@ -1,43 +1,6 @@
 import { Component, Host, Prop, State, h } from '@stencil/core'
-import { IconPrefix, IconUpload, FaTechnology, PREFIX_TO_STYLE } from '../../utils/utils'
-
-// TODO: do we want to include this code in this project?
-const viewBoxRe = /viewBox="0 0 ([0-9]+) ([0-9]+)"/
-const singlePathRe = /path d="([^"]+)"/
-const duotonePathRe = [
-  /path d="([^"]+)".*path d="([^"]+)"/,
-  /path class="([^"]+)".*d="([^"]+)".*path class="([^"]+)".*d="([^"]+)"/
-]
-
-function parseSvgText(svgText) {
-  let val = null
-  let path = null
-  const viewBox = svgText.match(viewBoxRe)
-  const singlePath = svgText.match(singlePathRe)
-  const duotonePath = svgText.match(duotonePathRe[0]) || svgText.match(duotonePathRe[1])
-
-  if (duotonePath && duotonePath.length === 3) {
-    path = [duotonePath[1], duotonePath[2]]
-  } else if (duotonePath && duotonePath.length === 5) {
-    path = (duotonePath[1].indexOf('primary') > -1)
-      ? [duotonePath[4], duotonePath[2]]
-      : [duotonePath[2], duotonePath[4]]
-  } else if (singlePath) {
-    path = singlePath[1]
-  }
-
-  if (viewBox && path) {
-    val = [
-      parseInt(viewBox[1], 10),
-      parseInt(viewBox[2], 10),
-      [],
-      null,
-      path
-    ]
-  }
-
-  return val
-}
+import { IconPrefix, IconUpload, FaTechnology, PREFIX_TO_STYLE, parseSvgText } from '../../utils/utils'
+import { get } from 'lodash'
 
 @Component({
   tag: 'fa-icon',
@@ -97,29 +60,53 @@ export class FaIcon {
 
         const fullUrl = this.kitToken ? `${iconUrl}?token=${this.kitToken}` : iconUrl
 
+        const library = get(this, 'svgApi.library')
+
         // TODO: do we need to support more than fetch?
+        // TODO: what do we want to do about these error conditions?
         fetch(fullUrl).then((response) => {
           if (response.ok) {
             response.text().then((svg) => {
-              this.iconDefinition = {
+              const iconDefinition = {
                 iconName: this.name,
                 prefix: this.stylePrefix,
                 icon: parseSvgText(svg)
               }
-              this.loading = false
+              library && library.add(iconDefinition)
+              this.iconDefinition = {...iconDefinition}
             })
+            .catch(e => {
+              console.error(`DEBUG: bad response text for icon: ${this.name} with style: ${this.stylePrefix}`, e)
+            })
+          } else {
+            console.log(`DEBUG: response not ok for icon: ${this.name}`, response)
           }
+        })
+        .catch(e => {
+          console.error(`DEBUG: caught error for icon: ${this.name}`, e)
+        })
+        .finally(() => {
+          this.loading = false
         })
       }
     }
   }
 
   buildSvg(iconDefinition) {
-    const { icon: [ width, height,,, svgPathData ] } = iconDefinition
+    if(!iconDefinition) return
 
-    return (<svg xmlns="http://www.w3.org/2000/svg" viewBox={`0 0 ${width} ${height}`}>
-      <path d={ svgPathData }/>
-    </svg>)
+    const [ width, height,,, svgPathData ] = get(iconDefinition, 'icon', [])
+
+    if(Array.isArray(svgPathData)) {
+      return (<svg xmlns="http://www.w3.org/2000/svg" viewBox={`0 0 ${width} ${height}`}>
+        <path class="fa-primary" d={ svgPathData[0] }/>
+        <path class="fa-secondary" d={ svgPathData[1] }/>
+      </svg>)
+    } else {
+      return (<svg xmlns="http://www.w3.org/2000/svg" viewBox={`0 0 ${width} ${height}`}>
+        <path d={ svgPathData }/>
+      </svg>)
+    }
   }
 
   render() {
@@ -147,7 +134,7 @@ export class FaIcon {
       )
     }
 
-    if(FaTechnology.KitSvg === this.technology && this.pro && this.pro && this.iconDefinition) {
+    if((FaTechnology.KitSvg === this.technology) && this.pro && this.iconDefinition) {
       return (
         <Host>
           { this.buildSvg( this.iconDefinition ) }

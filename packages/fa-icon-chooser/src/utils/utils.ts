@@ -66,3 +66,52 @@ export function resolveVersion(version: string): string {
       return version
   }
 }
+
+// TODO: do we want to include this code in this project?
+const viewBoxRe = /viewBox="0 0 ([0-9]+) ([0-9]+)"/
+const singlePathRe = /path d="([^"]+)"/
+
+const duotonePathDuoClasslessRe = /path d="([^"]+)".*path d="([^"]+)"/
+const duotonePathDuoClassedRe = /path class="([^"]+)".*d="([^"]+)".*path class="([^"]+)".*d="([^"]+)"/
+const duotonePathOnlyPrimaryRe = /path class="(fa-primary)".*d="([^"]+)"/
+const duotonePathOnlySecondaryRe = /path class="(fa-secondary)".*d="([^"]+)"/
+
+export function parseSvgText(svgText) {
+  let val = null
+  let path = null
+  const viewBox = svgText.match(viewBoxRe)
+  const singlePath = svgText.match(singlePathRe)
+  const duotonePath =
+    svgText.match(duotonePathDuoClasslessRe)
+    || svgText.match(duotonePathDuoClassedRe)
+    || svgText.match(duotonePathOnlyPrimaryRe)
+    || svgText.match(duotonePathOnlySecondaryRe)
+
+  if (duotonePath && duotonePath.length === 3) {
+    if(duotonePath[1].indexOf('primary') > -1) {
+      path = [duotonePath[2], '']
+    } else if (duotonePath[1].indexOf('secondary') > -1) {
+      path = ['', duotonePath[2]]
+    } else {
+      path = [duotonePath[1], duotonePath[2]]
+    }
+  } else if (duotonePath && duotonePath.length === 5) {
+    path = (duotonePath[1].indexOf('primary') > -1)
+      ? [duotonePath[2], duotonePath[4]]
+      : [duotonePath[4], duotonePath[2]]
+  } else if (singlePath) {
+    path = singlePath[1]
+  }
+
+  if (viewBox && path) {
+    val = [
+      parseInt(viewBox[1], 10),
+      parseInt(viewBox[2], 10),
+      [],
+      null,
+      path
+    ]
+  }
+
+  return val
+}
