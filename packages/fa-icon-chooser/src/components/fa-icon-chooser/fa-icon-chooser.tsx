@@ -115,6 +115,8 @@ export class FaIconChooser {
 
   svgFetchBaseUrl?: string;
 
+  commonFaIconProps: any;
+
   constructor() {
     this.toggleStyleFilter = this.toggleStyleFilter.bind(this)
   }
@@ -229,6 +231,14 @@ export class FaIconChooser {
 
         if(this.mayHaveIconUploads() && size(get(this, 'kitMetadata.iconUploads')) > 0) {
           this.styleFilters.fak = true
+        }
+
+        this.commonFaIconProps = {
+          technology: this.technology,
+          svgApi: this.svgApi,
+          pro: this.pro,
+          svgFetchBaseUrl: this.svgFetchBaseUrl,
+          kitToken: this.kitToken
         }
 
         this.isInitialLoading = false
@@ -786,14 +796,10 @@ export class FaIconChooser {
                   <article class="wrap-icon" key={ `${icon.prefix}-${ icon.iconName }`}>
                     <button class="icon subtle display-flex flex-column flex-items-center flex-content-center" onClick={() => this.finish.emit(icon)}>
                       <fa-icon
-                        technology={ this.technology }
-                        svgApi={ this.svgApi }
+                        {...this.commonFaIconProps}
                         class='fa-2x'
                         stylePrefix={ icon.prefix }
                         name={ icon.iconName }
-                        pro={ this.pro }
-                        svgFetchBaseUrl={ this.svgFetchBaseUrl }
-                        kitToken={ this.kitToken }
                       />
 
                       <span class="icon-name size-xs text-truncate margin-top-lg">{`${ icon.iconName }`}</span>
