@@ -1,7 +1,6 @@
-:host {
-  display: inline-block;
-}
-
+/*
+TODO: do we want to hard code these rules here?
+*/
 svg {
   display: inline-block;
   font-size: inherit;
