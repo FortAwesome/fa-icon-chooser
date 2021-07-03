@@ -115,6 +115,8 @@ export class FaIconChooser {
 
   commonFaIconProps: any;
 
+  defaultIcons: any
+
   constructor() {
     this.toggleStyleFilter = this.toggleStyleFilter.bind(this)
   }
@@ -223,7 +225,24 @@ export class FaIconChooser {
           throw new Error('invalid state: there must be a resolved version')
         }
 
-        this.setIcons(defaultIcons, this.iconUploadsAsIconLookups())
+        // If we're in pro v6, then we need to add the thin style as being available
+        // because our defaultIcons fixture doesn't include thin.
+        const adjustedDefaultIcons = (this.pro && this.isV6())
+          ? get(defaultIcons, 'data.search', []).map(i => {
+            const proStyles = get(i, 'membership.pro', [])
+
+            if(size(proStyles) > 1) {
+              proStyles.push('thin')
+              i.membership.pro = proStyles
+            }
+
+            return i
+          })
+          : get(defaultIcons, 'data.search', [])
+
+        this.defaultIcons = { data: { search: adjustedDefaultIcons } }
+
+        this.setIcons(this.defaultIcons, this.iconUploadsAsIconLookups())
 
         this.activateDefaultStyleFilters()
 
@@ -383,7 +402,7 @@ export class FaIconChooser {
   onKeyUp(e: any): void {
     this.query = e.target.value
     if(size(this.query) === 0) {
-      this.setIcons(defaultIcons, this.iconUploadsAsIconLookups())
+      this.setIcons(this.defaultIcons, this.iconUploadsAsIconLookups())
     } else {
       this.updateQueryResultsWithDebounce(this.query)
     }
