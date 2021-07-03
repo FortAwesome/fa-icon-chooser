@@ -1,29 +1,7 @@
 import { Component, Element, Event, EventEmitter, Prop, State, h } from '@stencil/core'
 import { get, size, debounce } from 'lodash'
 import { IconLookup } from '@fortawesome/fontawesome-common-types'
-import { resolveVersion, defaultIcons } from '../../utils/utils'
-
-// TODO: figure out whether the IconPrefix type in @fortawesome/fontawesome-common-types
-// should have 'fat' in it.
-// But this also needs to include "fak" for icon uploads. Does that even belong in the IconPrefix type?
-export type IconPrefix = "fas" | "fab" | "far" | "fal" | "fat" | "fad" | "fak";
-
-const STYLE_RESULT_TO_PREFIX = {
-  solid: 'fas',
-  duotone: 'fad',
-  regular: 'far',
-  light: 'fal',
-  thin: 'fat',
-  kit: 'fak',
-  brands: 'fab'
-}
-
-enum FaTechnology {
-  KitSvg = 1,
-  KitWebfont,
-  CdnSvg,
-  CdnWebfont,
-}
+import { IconUpload, FaTechnology, resolveVersion, defaultIcons, IconPrefix, STYLE_TO_PREFIX } from '../../utils/utils'
 
 export interface IconChooserResult extends IconLookup {
   class?: string;
@@ -31,15 +9,6 @@ export interface IconChooserResult extends IconLookup {
 }
 
 export type QueryHandler = (document: string) => Promise<any>;
-
-export type IconUpload = {
-  name: string;
-  unicode: number;
-  version: number;
-  width: string;
-  height: string;
-  path: string;
-};
 
 export type StyleFilters = {
   [prefix in IconPrefix]: boolean;
@@ -142,6 +111,10 @@ export class FaIconChooser {
 
   runSvgReplacementAfterRender: boolean = false;
 
+  svgApi?: any;
+
+  svgFetchBaseUrl?: string;
+
   constructor() {
     this.toggleStyleFilter = this.toggleStyleFilter.bind(this)
   }
@@ -197,14 +170,16 @@ export class FaIconChooser {
   componentWillLoad() {
       this.query = ''
 
+      this.svgApi = get(window, 'FontAwesome')
+
+      if(this.pro) {
+        this.cdnSubdomain = 'pro'
+      } else {
+        this.cdnSubdomain = 'use'
+      }
+
       if(!this.kitToken) {
         if(this.cdnUrl && 'string' === typeof this.cdnUrl) {
-          if(this.pro) {
-            this.cdnSubdomain = 'pro'
-          } else {
-            this.cdnSubdomain = 'use'
-          }
-
           if(this.cdnUrl.match('\.js$')) {
             this.technology = FaTechnology.CdnSvg
           } else if (this.cdnUrl.match('\.css$')) {
@@ -231,6 +206,14 @@ export class FaIconChooser {
           if(kitTechnology) {
             this.technology = kitTechnology
           }
+        }
+
+        // Pro SVG Kits involve autoFetch
+        if( this.technology === FaTechnology.KitSvg && this.pro ) {
+          const baseUrl = get(window, 'FontAwesomeKitConfig.baseUrl')
+
+          //https://ka-p.fontawesome.com/releases/v6.0.0-beta1/svgs/solid/wheat-awn.svg?token=53bd08c0a0
+          this.svgFetchBaseUrl = `${ baseUrl }/releases/v${this.resolvedVersion}/svgs`
         }
 
         this.setupFontAwesome()
@@ -304,7 +287,7 @@ export class FaIconChooser {
         }
 
         styles.map(style => {
-          const prefix = STYLE_RESULT_TO_PREFIX[style]
+          const prefix = STYLE_TO_PREFIX[style]
 
           acc.push({
             iconName: id,
@@ -802,7 +785,17 @@ export class FaIconChooser {
                   {this.filteredIcons().map(icon =>
                   <article class="wrap-icon" key={ `${icon.prefix}-${ icon.iconName }`}>
                     <button class="icon subtle display-flex flex-column flex-items-center flex-content-center" onClick={() => this.finish.emit(icon)}>
-                        <i class={ `${ icon.prefix } fa-2x fa-${ icon.iconName }` }></i>
+                      <fa-icon
+                        technology={ this.technology }
+                        svgApi={ this.svgApi }
+                        class='fa-2x'
+                        stylePrefix={ icon.prefix }
+                        name={ icon.iconName }
+                        pro={ this.pro }
+                        svgFetchBaseUrl={ this.svgFetchBaseUrl }
+                        kitToken={ this.kitToken }
+                      />
+
                       <span class="icon-name size-xs text-truncate margin-top-lg">{`${ icon.iconName }`}</span>
                       </button>
                   </article>

@@ -5,8 +5,20 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { FaTechnology, IconPrefix, IconUpload } from "./utils/utils";
 import { IconChooserResult, QueryHandler } from "./components/fa-icon-chooser/fa-icon-chooser";
 export namespace Components {
+    interface FaIcon {
+        "class": string;
+        "iconUpload"?: IconUpload;
+        "kitToken"?: string;
+        "name": string;
+        "pro": boolean;
+        "stylePrefix": IconPrefix;
+        "svgApi": any;
+        "svgFetchBaseUrl"?: string;
+        "technology": FaTechnology;
+    }
     interface FaIconChooser {
         /**
           * A URL for loading Font Awesome within the icon chooser from the Font Awesome Free or Pro CDN, instead of a kit.  If a kitToken is provided, kit loading will be preferred over this.
@@ -32,6 +44,12 @@ export namespace Components {
     }
 }
 declare global {
+    interface HTMLFaIconElement extends Components.FaIcon, HTMLStencilElement {
+    }
+    var HTMLFaIconElement: {
+        prototype: HTMLFaIconElement;
+        new (): HTMLFaIconElement;
+    };
     interface HTMLFaIconChooserElement extends Components.FaIconChooser, HTMLStencilElement {
     }
     var HTMLFaIconChooserElement: {
@@ -39,10 +57,22 @@ declare global {
         new (): HTMLFaIconChooserElement;
     };
     interface HTMLElementTagNameMap {
+        "fa-icon": HTMLFaIconElement;
         "fa-icon-chooser": HTMLFaIconChooserElement;
     }
 }
 declare namespace LocalJSX {
+    interface FaIcon {
+        "class"?: string;
+        "iconUpload"?: IconUpload;
+        "kitToken"?: string;
+        "name"?: string;
+        "pro"?: boolean;
+        "stylePrefix"?: IconPrefix;
+        "svgApi"?: any;
+        "svgFetchBaseUrl"?: string;
+        "technology"?: FaTechnology;
+    }
     interface FaIconChooser {
         /**
           * A URL for loading Font Awesome within the icon chooser from the Font Awesome Free or Pro CDN, instead of a kit.  If a kitToken is provided, kit loading will be preferred over this.
@@ -68,6 +98,7 @@ declare namespace LocalJSX {
         "version"?: string;
     }
     interface IntrinsicElements {
+        "fa-icon": FaIcon;
         "fa-icon-chooser": FaIconChooser;
     }
 }
@@ -75,6 +106,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "fa-icon": LocalJSX.FaIcon & JSXBase.HTMLAttributes<HTMLFaIconElement>;
             "fa-icon-chooser": LocalJSX.FaIconChooser & JSXBase.HTMLAttributes<HTMLFaIconChooserElement>;
         }
     }
