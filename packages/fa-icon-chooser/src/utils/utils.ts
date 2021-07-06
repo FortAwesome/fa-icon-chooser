@@ -37,13 +37,6 @@ export const PREFIX_TO_STYLE: IconPrefixToStyle = {
   fab: 'brands'
 }
 
-export enum FaTechnology {
-  KitSvg = 1,
-  KitWebfont,
-  CdnSvg,
-  CdnWebfont,
-}
-
 export type IconUpload = {
   name: string;
   unicode: number;
@@ -114,4 +107,36 @@ export function parseSvgText(svgText) {
   }
 
   return val
+}
+
+export function assetsBaseUrl(pro: boolean): string {
+  return pro
+    ? 'https://ka-p.fontawesome.com'
+    : 'https://ka-f.fontawesome.com'
+}
+
+export async function createFontAwesomeScriptElement(pro: boolean, version: string, baseUrl: string, kitToken: string): Promise<HTMLElement> {
+    const license = pro ? 'pro' : 'free'
+    const assetUrl = `${baseUrl}/releases/v${version}/js/${license}.min.js?token=${kitToken}`
+
+    try {
+      const response = await fetch(assetUrl)
+
+      if (!response.ok) {
+        throw new Error('Font Awesome Icon Chooser: unexpected response from CDN')
+      }
+
+      const scriptContent = await response.text()
+      const script = document.createElement('SCRIPT')
+      const text = document.createTextNode(scriptContent)
+      script.appendChild(text)
+      script.setAttribute('data-auto-replace-svg', 'false')
+      script.setAttribute('type', 'text/javascript')
+
+      return script
+    }
+    catch(e) {
+      console.error(e)
+      throw new Error(e)
+    }
 }

@@ -1,5 +1,5 @@
 import { Component, Host, Prop, State, h } from '@stencil/core'
-import { IconPrefix, IconUpload, FaTechnology, PREFIX_TO_STYLE, parseSvgText } from '../../utils/utils'
+import { IconPrefix, IconUpload, PREFIX_TO_STYLE, parseSvgText } from '../../utils/utils'
 import { get } from 'lodash'
 
 @Component({
@@ -18,78 +18,69 @@ export class FaIcon {
 
   @Prop() iconUpload?: IconUpload
 
-  @Prop() technology: FaTechnology
-
   @Prop() class: string
 
   @Prop() svgFetchBaseUrl?: string
 
-  @Prop() kitToken?: string
+  @Prop() kitToken: string
 
   @State() loading: boolean = false;
 
   @State() iconDefinition: any;
 
   componentWillLoad() {
-    if(this.technology === FaTechnology.KitSvg || this.technology === FaTechnology.CdnSvg) {
-      // TODO: what do we do if technology is Svg, but not factory is provided?
-      if(!this.svgApi) return
+    if(!this.svgApi) return
 
-      const { findIconDefinition } = this.svgApi
+    const { findIconDefinition } = this.svgApi
 
-      const iconDefinition = findIconDefinition && findIconDefinition({
-        prefix: this.stylePrefix,
-        iconName: this.name
-      })
+    const iconDefinition = findIconDefinition && findIconDefinition({
+      prefix: this.stylePrefix,
+      iconName: this.name
+    })
 
-      if(iconDefinition) {
-        this.iconDefinition = iconDefinition
-        return
-      }
+    if(iconDefinition) {
+      this.iconDefinition = iconDefinition
+      return
+    }
 
-      // TODO: what should we do in this situation?
-      if(!iconDefinition && this.technology === FaTechnology.CdnSvg) return
+    // TODO: what should we do in this situation?
+    if(!this.pro) return
 
-      // TODO: what should we do in this situation?
-      if(!this.svgFetchBaseUrl) return
+    // TODO: what should we do in this situation?
+    if(!this.svgFetchBaseUrl) return
 
-      if( this.technology === FaTechnology.KitSvg && this.pro ) {
-        this.loading = true
+    this.loading = true
 
-        const iconUrl = `${this.svgFetchBaseUrl}/${ PREFIX_TO_STYLE[this.stylePrefix]}/${this.name}.svg`;
+    const iconUrl = `${this.svgFetchBaseUrl}/${ PREFIX_TO_STYLE[this.stylePrefix]}/${this.name}.svg?token=${this.kitToken}`;
 
-        const fullUrl = this.kitToken ? `${iconUrl}?token=${this.kitToken}` : iconUrl
+    const library = get(this, 'svgApi.library')
 
-        const library = get(this, 'svgApi.library')
-
-        // TODO: do we need to support more than fetch?
-        // TODO: what do we want to do about these error conditions?
-        fetch(fullUrl).then((response) => {
-          if (response.ok) {
-            response.text().then((svg) => {
-              const iconDefinition = {
-                iconName: this.name,
-                prefix: this.stylePrefix,
-                icon: parseSvgText(svg)
-              }
-              library && library.add(iconDefinition)
-              this.iconDefinition = {...iconDefinition}
-            })
-            .catch(e => {
-              console.error(`DEBUG: bad response text for icon: ${this.name} with style: ${this.stylePrefix}`, e)
-            })
-          } else {
-            console.log(`DEBUG: response not ok for icon: ${this.name}`, response)
+    // TODO: do we need to support more than fetch?
+    // TODO: what do we want to do about these error conditions?
+    fetch(iconUrl).then((response) => {
+      if (response.ok) {
+        response.text().then((svg) => {
+          const iconDefinition = {
+            iconName: this.name,
+            prefix: this.stylePrefix,
+            icon: parseSvgText(svg)
           }
+          library && library.add(iconDefinition)
+          this.iconDefinition = {...iconDefinition}
         })
         .catch(e => {
-          console.error(`DEBUG: caught error for icon: ${this.name}`, e)
+          console.error(`DEBUG: bad response text for icon: ${this.name} with style: ${this.stylePrefix}`, e)
         })
-        .finally(() => {
-          this.loading = false
-        })
+      } else {
+        console.log(`DEBUG: response not ok for icon: ${this.name}`, response)
       }
-    }
+    })
+    .catch(e => {
+      console.error(`DEBUG: caught error for icon: ${this.name}`, e)
+    })
+    .finally(() => {
+      this.loading = false
+    })
   }
 
   buildSvg(iconDefinition) {
@@ -118,22 +109,8 @@ export class FaIcon {
       )
     }
 
-    if(this.technology === FaTechnology.CdnWebfont || this.technology === FaTechnology.KitWebfont) {
-      return (
-        <Host>
-          <i class={ `${this.class} ${ this.stylePrefix  } fa-${this.name}` }></i>
-        </Host>
-      )
-    }
-
-    if(this.iconDefinition) {
-      return (
-        <Host>
-          { this.buildSvg( this.iconDefinition ) }
-        </Host>
-      )
-    }
-
-    return (<Host></Host>)
+    return this.iconDefinition
+    ? this.buildSvg( this.iconDefinition )
+    : (<Host></Host>)
   }
 }

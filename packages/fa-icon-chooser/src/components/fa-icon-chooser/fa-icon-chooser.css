@@ -1,7 +1,7 @@
 @import url(web-awesome.css);
 
 /* project settings */
-:host {
+:root {
   --icon-details-preview-font-size: 12rem; /* 192px */
   --icon-details-preview-line-height: 1;
   --icon-details-unicode-glyphs-label-min-width: var(--spacing-5xl);
@@ -11,7 +11,7 @@
   --icon-listing-roomy-size: calc(var(--spacing-base) * 8); /* 128px */
 }
 
-:host {
+:root {
   display: block;
   width: 90vw;
   margin: 0 auto;
