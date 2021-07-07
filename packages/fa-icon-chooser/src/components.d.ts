@@ -21,9 +21,13 @@ export namespace Components {
     interface FaIconChooser {
         "handleQuery": QueryHandler;
         /**
-          * A kit token identifying a kit in which to find icons.
+          * A kit token identifying a kit in which to find icons. Takes precedent over version prop if both are present.
          */
-        "kitToken": string;
+        "kitToken"?: string;
+        /**
+          * Version to use for finding and loading icons when kitToken is not provided.
+         */
+        "version"?: string;
     }
 }
 declare global {
@@ -58,10 +62,14 @@ declare namespace LocalJSX {
     interface FaIconChooser {
         "handleQuery"?: QueryHandler;
         /**
-          * A kit token identifying a kit in which to find icons.
+          * A kit token identifying a kit in which to find icons. Takes precedent over version prop if both are present.
          */
         "kitToken"?: string;
         "onFinish"?: (event: CustomEvent<IconChooserResult>) => void;
+        /**
+          * Version to use for finding and loading icons when kitToken is not provided.
+         */
+        "version"?: string;
     }
     interface IntrinsicElements {
         "fa-icon": FaIcon;

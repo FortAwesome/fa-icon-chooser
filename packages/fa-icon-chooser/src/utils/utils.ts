@@ -110,15 +110,21 @@ export function parseSvgText(svgText) {
   return val
 }
 
-export function assetsBaseUrl(pro: boolean): string {
+export function freeCdnBaseUrl(): string {
+  return 'https://use.fontawesome.com'
+}
+
+export function kitAssetsBaseUrl(pro: boolean): string {
   return pro
     ? 'https://ka-p.fontawesome.com'
     : 'https://ka-f.fontawesome.com'
 }
 
-export async function createFontAwesomeScriptElement(pro: boolean, version: string, baseUrl: string, kitToken: string): Promise<HTMLElement> {
+export async function createFontAwesomeScriptElement(pro: boolean, version: string, baseUrl: string, kitToken: string | undefined): Promise<HTMLElement> {
     const license = pro ? 'pro' : 'free'
-    const assetUrl = `${baseUrl}/releases/v${version}/js/${license}.min.js?token=${kitToken}`
+    const assetUrl = kitToken
+      ? `${baseUrl}/releases/v${version}/js/${license}.min.js?token=${kitToken}`
+      : `${baseUrl}/releases/v${version}/js/all.js`
 
     try {
       const response = await fetch(assetUrl)

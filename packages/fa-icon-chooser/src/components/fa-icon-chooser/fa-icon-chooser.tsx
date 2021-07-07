@@ -1,7 +1,7 @@
 import { Component, Event, Element, EventEmitter, Prop, State, h } from '@stencil/core'
 import { get, size, debounce } from 'lodash'
 import { IconLookup } from '@fortawesome/fontawesome-common-types'
-import { assetsBaseUrl, buildIconChooserResult, createFontAwesomeScriptElement, IconUpload, defaultIcons, IconPrefix, STYLE_TO_PREFIX } from '../../utils/utils'
+import { freeCdnBaseUrl, kitAssetsBaseUrl, buildIconChooserResult, createFontAwesomeScriptElement, IconUpload, defaultIcons, IconPrefix, STYLE_TO_PREFIX } from '../../utils/utils'
 
 export interface IconChooserResult extends IconLookup {
   class?: string;
@@ -38,9 +38,15 @@ export class FaIconChooser {
    @Element() host: HTMLElement;
 
   /**
-   * A kit token identifying a kit in which to find icons.
+   * A kit token identifying a kit in which to find icons. Takes precedent over
+   * version prop if both are present.
    */
-  @Prop() kitToken: string;
+  @Prop() kitToken?: string;
+
+  /**
+   * Version to use for finding and loading icons when kitToken is not provided.
+   */
+  @Prop() version?: string;
 
   @Prop() handleQuery: QueryHandler;
 
@@ -55,7 +61,7 @@ export class FaIconChooser {
 
   @State() isQuerying: boolean = false;
 
-  @State() isInitialLoading: boolean = true;
+  @State() isInitialLoading: boolean = false;
 
   @State() hasQueried: boolean = false;
 
@@ -85,6 +91,10 @@ export class FaIconChooser {
 
   constructor() {
     this.toggleStyleFilter = this.toggleStyleFilter.bind(this)
+
+    if(!this.kitToken && !this.version) {
+      throw new Error('Font Awesome Icon Chooser requires either kit-token or version prop')
+    }
   }
 
   async loadKitMetadata() {
@@ -130,26 +140,35 @@ export class FaIconChooser {
     this.styleFilters.fab = true
   }
 
-  version() {
-    return get(this, 'kitMetadata.release.version')
+  resolvedVersion() {
+    return get(this, 'kitMetadata.release.version') || this.version
   }
 
   pro() {
     return get(this, 'kitMetadata.licenseSelected') === 'pro'
   }
 
+  async preload() {
+    if(this.kitToken) {
+      return this.loadKitMetadata()
+    } else {
+      return Promise.resolve()
+    }
+  }
+
   componentWillLoad() {
       this.query = ''
 
-      this.loadKitMetadata()
+      this.isInitialLoading = true
+
+      this.preload()
       .then(() => {
         const pro = this.pro()
 
-        const baseUrl = assetsBaseUrl(pro)
+        const baseUrl = this.kitToken ? kitAssetsBaseUrl(pro) : freeCdnBaseUrl()
 
         if(pro) {
-          //https://ka-p.fontawesome.com/releases/v6.0.0-beta1/svgs/solid/wheat-awn.svg?token=deadbeefa0
-          this.svgFetchBaseUrl = `${ baseUrl }/releases/v${this.version()}/svgs`
+          this.svgFetchBaseUrl = `${ baseUrl }/releases/v${this.resolvedVersion()}/svgs`
         }
 
         const svgApi = get(window, "FontAwesome")
@@ -161,7 +180,7 @@ export class FaIconChooser {
           // Otherwise, we'll add it to the outer DOM, but disable it from doing
           // anything automated that would have global affect--ther than assigning
           // itself to the global window.FontAwesome.
-          return createFontAwesomeScriptElement(pro, this.version(), baseUrl, this.kitToken)
+          return createFontAwesomeScriptElement(pro, this.resolvedVersion(), baseUrl, this.kitToken)
             .then(scriptElement => {
               document.head.appendChild(scriptElement)
               return get(window, 'FontAwesome')
@@ -225,7 +244,7 @@ export class FaIconChooser {
     const response = await this.handleQuery(
       `
       query {
-        search(version:"${ this.version() }", query: "${ query }", first: 100) {
+        search(version:"${ this.resolvedVersion() }", query: "${ query }", first: 100) {
           id
           label
           membership {
@@ -335,12 +354,12 @@ export class FaIconChooser {
   }
 
   isV6() {
-    const version = this.version()
+    const version = this.resolvedVersion()
     return version && version[0] === '6'
   }
 
   isDuotoneAvailable() {
-    return this.pro() && !!this.version().match('(5\.[1-9][0-9]+\.)|^6\.')
+    return this.pro() && !!this.resolvedVersion().match('(5\.[1-9][0-9]+\.)|^6\.')
   }
 
   mayHaveIconUploads() {
