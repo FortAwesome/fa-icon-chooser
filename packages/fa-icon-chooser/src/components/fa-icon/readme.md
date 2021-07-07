@@ -15,6 +15,7 @@
 | `kitToken`        | `kit-token`          |             | `string`                                                                                           | `undefined` |
 | `name`            | `name`               |             | `string`                                                                                           | `undefined` |
 | `pro`             | `pro`                |             | `boolean`                                                                                          | `false`     |
+| `size`            | `size`               |             | `string`                                                                                           | `undefined` |
 | `stylePrefix`     | `style-prefix`       |             | `"fab" \| "fad" \| "fak" \| "fal" \| "far" \| "fas" \| "fat"`                                      | `undefined` |
 | `svgApi`          | `svg-api`            |             | `any`                                                                                              | `undefined` |
 | `svgFetchBaseUrl` | `svg-fetch-base-url` |             | `string`                                                                                           | `undefined` |

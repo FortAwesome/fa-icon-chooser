@@ -179,7 +179,7 @@ export class FaIconChooser {
           return Promise.resolve(svgApi)
         } else {
           // Otherwise, we'll add it to the outer DOM, but disable it from doing
-          // anything automated that would have global affect--ther than assigning
+          // anything automated that would have global affect--other than assigning
           // itself to the global window.FontAwesome.
           return createFontAwesomeScriptElement(pro, this.resolvedVersion(), baseUrl, this.kitToken)
             .then(scriptElement => {
@@ -409,8 +409,8 @@ export class FaIconChooser {
               <span class="position-relative margin-bottom-sm">
                 {
                   this.showCheckedStyleIcon('fas')
-                  ? <fa-icon key="a" {...this.commonFaIconProps} name="grin-tongue" stylePrefix="fas" class="checked-icon fa-fw fa-2x"/>
-                  : <fa-icon key="b" {...this.commonFaIconProps} name="smile" stylePrefix="fas" class="unchecked-icon fa-fw fa-2x"/>
+                  ? <fa-icon key="a" {...this.commonFaIconProps} name="grin-tongue" stylePrefix="fas" size="2x" class="checked-icon fa-fw"/>
+                  : <fa-icon key="b" {...this.commonFaIconProps} name="smile" stylePrefix="fas" size="2x" class="unchecked-icon fa-fw"/>
                 }
               </span>
               <span class="sr-only">Show </span>solid<span class="sr-only"> style icons</span>
@@ -422,8 +422,8 @@ export class FaIconChooser {
               <span class="position-relative margin-bottom-sm">
                 {
                   this.showCheckedStyleIcon('far')
-                  ? <fa-icon key="a" {...this.commonFaIconProps} name="grin-tongue" stylePrefix="far" class="checked-icon fa-fw fa-2x"/>
-                  : <fa-icon key="b" {...this.commonFaIconProps} name="smile" stylePrefix="far" class="unchecked-icon fa-fw fa-2x"/>
+                  ? <fa-icon key="a" {...this.commonFaIconProps} name="grin-tongue" stylePrefix="far" size="2x" class="checked-icon fa-fw"/>
+                  : <fa-icon key="b" {...this.commonFaIconProps} name="smile" stylePrefix="far" size="2x" class="unchecked-icon fa-fw"/>
                 }
               </span>
               <span class="sr-only">Show </span>regular<span class="sr-only"> style icons</span>
@@ -437,8 +437,8 @@ export class FaIconChooser {
                 <span class="position-relative margin-bottom-sm">
                   {
                     this.showCheckedStyleIcon('fal')
-                    ? <fa-icon key="a" {...this.commonFaIconProps} name="grin-tongue" stylePrefix="fal" class="checked-icon fa-fw fa-2x"/>
-                    : <fa-icon key="b" {...this.commonFaIconProps} name="smile" stylePrefix="fal" class="unchecked-icon fa-fw fa-2x"/>
+                    ? <fa-icon key="a" {...this.commonFaIconProps} name="grin-tongue" stylePrefix="fal" size="2x" class="checked-icon fa-fw"/>
+                    : <fa-icon key="b" {...this.commonFaIconProps} name="smile" stylePrefix="fal" size="2x" class="unchecked-icon fa-fw"/>
                   }
                 </span>
                 <span class="sr-only">Show </span>light<span class="sr-only"> style icons</span>
@@ -452,8 +452,8 @@ export class FaIconChooser {
                 <span class="position-relative margin-bottom-sm">
                   {
                     this.showCheckedStyleIcon('fat')
-                    ? <fa-icon key="a" {...this.commonFaIconProps} name="grin-tongue" stylePrefix="fat" class="checked-icon fa-fw fa-2x"/>
-                    : <fa-icon key="b" {...this.commonFaIconProps} name="smile" stylePrefix="fat" class="unchecked-icon fa-fw fa-2x"/>
+                    ? <fa-icon key="a" {...this.commonFaIconProps} name="grin-tongue" stylePrefix="fat" size="2x" class="checked-icon fa-fw"/>
+                    : <fa-icon key="b" {...this.commonFaIconProps} name="smile" stylePrefix="fat" size="2x" class="unchecked-icon fa-fw"/>
                   }
                 </span>
                 <span class="sr-only">Show </span>thin<span class="sr-only"> style icons</span>
@@ -468,8 +468,8 @@ export class FaIconChooser {
                 <span class="position-relative margin-bottom-sm">
                   {
                     this.showCheckedStyleIcon('fad')
-                    ? <fa-icon key="a" {...this.commonFaIconProps} name="grin-tongue" stylePrefix="fad" class="checked-icon fa-fw fa-2x"/>
-                    : <fa-icon key="b" {...this.commonFaIconProps} name="smile" stylePrefix="fad" class="unchecked-icon fa-fw fa-2x"/>
+                    ? <fa-icon key="a" {...this.commonFaIconProps} name="grin-tongue" stylePrefix="fad" size="2x" class="checked-icon fa-fw"/>
+                    : <fa-icon key="b" {...this.commonFaIconProps} name="smile" stylePrefix="fad" size="2x" class="unchecked-icon fa-fw"/>
                   }
                 </span>
                 <span class="sr-only">Show </span>duotone<span class="sr-only"> style icons</span>
@@ -480,7 +480,7 @@ export class FaIconChooser {
             <input id="icons-style-brands" checked={ this.styleFilterEnabled && this.styleFilters.fab } onChange={() => this.toggleStyleFilter('fab') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
             <label htmlFor="icons-style-brands" class="icons-style-choice padding-y-xl padding-x-md margin-0 display-flex flex-column flex-items-center ">
               <span class="position-relative margin-bottom-sm">
-                <fa-icon {...this.commonFaIconProps} stylePrefix="fab" name="font-awesome" class="fa-fw fa-2x"/>
+                <fa-icon {...this.commonFaIconProps} stylePrefix="fab" name="font-awesome" size="2x" class="fa-fw"/>
               </span>
               <span class="sr-only">Show </span>brands<span class="sr-only"> style icons</span>
             </label>
@@ -491,7 +491,7 @@ export class FaIconChooser {
               <input id="icons-style-uploads" checked={ this.styleFilterEnabled && this.styleFilters.fak } onChange={() => this.toggleStyleFilter('fak') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
               <label htmlFor="icons-style-uploads" class="icons-style-choice padding-y-xl padding-x-md margin-0 display-flex flex-column flex-items-center ">
                 <span class="position-relative margin-bottom-sm">
-                  <fa-icon {...this.commonFaIconProps} stylePrefix="fas" name="icons" class="fa-fw fa-2x"/>
+                  <fa-icon {...this.commonFaIconProps} stylePrefix="fas" name="icons" size="2x" class="fa-fw"/>
                 </span>
                 <span class="sr-only">Show </span>Uploaded<span class="sr-only"> icons</span>
               </label>
@@ -512,7 +512,7 @@ export class FaIconChooser {
         {
           this.isQuerying
           ? <article class="message-loading text-center margin-2xl">
-              <fa-icon {...this.commonFaIconProps} name="circle-notch" stylePrefix="fas" class="message-icon fa-spin fa-2x margin-top-xs" />
+              <fa-icon {...this.commonFaIconProps} name="circle-notch" stylePrefix="fas" size="2x" class="message-icon fa-spin margin-top-xs" />
               <h4 class="message-title margin-top-sm">Loading icons</h4>
             </article>
           : (size(this.filteredIcons()) > 0
@@ -522,7 +522,7 @@ export class FaIconChooser {
                     <button class="icon subtle display-flex flex-column flex-items-center flex-content-center" onClick={() => this.finish.emit(buildIconChooserResult(icon))}>
                       <fa-icon
                         {...this.commonFaIconProps}
-                        class='fa-2x'
+                        size='2x'
                         stylePrefix={ icon.prefix }
                         name={ icon.iconName }
                         iconUpload={ get(icon, 'iconUpload') }

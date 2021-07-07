@@ -16,6 +16,7 @@ export namespace Components {
         "kitToken"?: string;
         "name"?: string;
         "pro": boolean;
+        "size"?: string;
         "stylePrefix"?: IconPrefix;
         "svgApi": any;
         "svgFetchBaseUrl"?: string;
@@ -58,6 +59,7 @@ declare namespace LocalJSX {
         "kitToken"?: string;
         "name"?: string;
         "pro"?: boolean;
+        "size"?: string;
         "stylePrefix"?: IconPrefix;
         "svgApi"?: any;
         "svgFetchBaseUrl"?: string;

@@ -28,6 +28,8 @@ export class FaIcon {
 
   @Prop() icon?: IconDefinition
 
+  @Prop() size?: string
+
   @State() loading: boolean = false;
 
   @State() iconDefinition: any;
@@ -94,7 +96,7 @@ export class FaIcon {
     // TODO: what do we want to do about these error conditions?
     fetch(iconUrl).then((response) => {
       if (response.ok) {
-        response.text().then((svg) => {
+        return response.text().then((svg) => {
           const iconDefinition = {
             iconName: this.name,
             prefix: this.stylePrefix,
@@ -103,18 +105,14 @@ export class FaIcon {
           library && library.add(iconDefinition)
           this.iconDefinition = {...iconDefinition}
         })
-        .catch(e => {
-          console.error(`DEBUG: bad response text for icon: ${this.name} with style: ${this.stylePrefix}`, e)
-        })
       } else {
-        console.log(`DEBUG: response not ok for icon: ${this.name}`, response)
+        throw response
       }
     })
     .catch(e => {
-      console.error(`DEBUG: caught error for icon: ${this.name}`, e)
+      console.error('Font Awesome Icon Chooser: failed when fetching an individual SVG icon', e)
     })
     .finally(() => {
-      debugger
       this.loading = false
     })
   }
@@ -124,15 +122,29 @@ export class FaIcon {
 
     const [ width, height,,, svgPathData ] = get(iconDefinition, 'icon', [])
 
-    const classes = `svg-inline--fa ${this.class} ${extraClasses}`
+    const classes = ['svg-inline--fa']
+
+    if(this.class) {
+      classes.push(this.class)
+    }
+
+    if(extraClasses) {
+      classes.push(extraClasses)
+    }
+
+    if(this.size) {
+      classes.push(`fa-${this.size}`)
+    }
+
+    const allClasses = classes.join(' ')
 
     if(Array.isArray(svgPathData)) {
-      return (<svg class={ classes } xmlns="http://www.w3.org/2000/svg" viewBox={`0 0 ${width} ${height}`}>
+      return (<svg class={ allClasses } xmlns="http://www.w3.org/2000/svg" viewBox={`0 0 ${width} ${height}`}>
         <path fill="currentColor" class="fa-primary" d={ svgPathData[0] }/>
         <path fill="currentColor" class="fa-secondary" d={ svgPathData[1] }/>
       </svg>)
     } else {
-      return (<svg class={ classes } xmlns="http://www.w3.org/2000/svg" viewBox={`0 0 ${width} ${height}`}>
+      return (<svg class={ allClasses } xmlns="http://www.w3.org/2000/svg" viewBox={`0 0 ${width} ${height}`}>
         <path fill="currentColor" d={ svgPathData }/>
       </svg>)
     }
