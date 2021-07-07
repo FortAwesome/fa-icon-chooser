@@ -1,29 +1,7 @@
-import { Component, Element, Event, EventEmitter, Prop, State, h } from '@stencil/core'
+import { Component, Event, Element, EventEmitter, Prop, State, h } from '@stencil/core'
 import { get, size, debounce } from 'lodash'
 import { IconLookup } from '@fortawesome/fontawesome-common-types'
-import { resolveVersion, defaultIcons } from '../../utils/utils'
-
-// TODO: figure out whether the IconPrefix type in @fortawesome/fontawesome-common-types
-// should have 'fat' in it.
-// But this also needs to include "fak" for icon uploads. Does that even belong in the IconPrefix type?
-export type IconPrefix = "fas" | "fab" | "far" | "fal" | "fat" | "fad" | "fak";
-
-const STYLE_RESULT_TO_PREFIX = {
-  solid: 'fas',
-  duotone: 'fad',
-  regular: 'far',
-  light: 'fal',
-  thin: 'fat',
-  kit: 'fak',
-  brands: 'fab'
-}
-
-enum FaTechnology {
-  KitSvg = 1,
-  KitWebfont,
-  CdnSvg,
-  CdnWebfont,
-}
+import { assetsBaseUrl, buildIconChooserResult, createFontAwesomeScriptElement, IconUpload, defaultIcons, IconPrefix, STYLE_TO_PREFIX } from '../../utils/utils'
 
 export interface IconChooserResult extends IconLookup {
   class?: string;
@@ -31,15 +9,6 @@ export interface IconChooserResult extends IconLookup {
 }
 
 export type QueryHandler = (document: string) => Promise<any>;
-
-export type IconUpload = {
-  name: string;
-  unicode: number;
-  version: number;
-  width: string;
-  height: string;
-  path: string;
-};
 
 export type StyleFilters = {
   [prefix in IconPrefix]: boolean;
@@ -51,7 +20,11 @@ type KitMetadata = {
   licenseSelected: string;
   name: string;
   iconUploads: Array<IconUpload> | null;
-};
+}
+
+interface IconUploadLookup extends IconLookup {
+  iconUpload: IconUpload
+}
 
 @Component({
   tag: 'fa-icon-chooser',
@@ -59,43 +32,15 @@ type KitMetadata = {
   shadow: true,
 })
 export class FaIconChooser {
-
   /**
    * The host element for this component's Shadow DOM.
    */
-  @Element() host: HTMLElement;
+   @Element() host: HTMLElement;
 
   /**
-   * Font Awesome version in which to find icons.
+   * A kit token identifying a kit in which to find icons.
    */
-  @Prop() version?: string;
-
-  /**
-   * Optional CDN integrity attribute. When set the crossorigin="anonymous" attribute
-   * will also be added to the <script> or <link> tag that loads Font Awesome from
-   * the CDN, causing that resource's integrity to be checked.
-   */
-  @Prop() integrity?: string;
-
-  /**
-   * A kit token identifying a kit in which to find icons. Takes precedence over
-   * the version prop if provided: the version associated with the kit will be used
-   * for searching.
-   */
-  @Prop() kitToken?: string;
-
-  /**
-   * Whether pro icons should be enabled.
-   */
-  @Prop() pro: boolean;
-
-  /**
-   * A URL for loading Font Awesome within the icon chooser from the Font Awesome
-   * Free or Pro CDN, instead of a kit.
-   *
-   * If a kitToken is provided, kit loading will be preferred over this.
-   */
-  @Prop() cdnUrl?: string;
+  @Prop() kitToken: string;
 
   @Prop() handleQuery: QueryHandler;
 
@@ -130,17 +75,13 @@ export class FaIconChooser {
 
   @State() kitMetadata: KitMetadata;
 
-  resolvedVersion: string;
+  svgApi?: any;
 
-  isProEnabled: boolean;
+  svgFetchBaseUrl?: string;
 
-  watchingForSvgReplacements: boolean = false;
+  commonFaIconProps: any;
 
-  technology: FaTechnology;
-
-  cdnSubdomain?: string;
-
-  runSvgReplacementAfterRender: boolean = false;
+  defaultIcons: any
 
   constructor() {
     this.toggleStyleFilter = this.toggleStyleFilter.bind(this)
@@ -156,6 +97,9 @@ export class FaIconChooser {
             technologySelected
             licenseSelected
             name
+            release {
+              version
+            }
             iconUploads {
               name
               unicode
@@ -180,72 +124,89 @@ export class FaIconChooser {
     this.kitMetadata = kit
   }
 
-  async preload() {
-    if(!this.kitToken) {
-      return
-    }
-
-    await this.loadKitMetadata()
-  }
-
   activateDefaultStyleFilters() {
     this.styleFilterEnabled = true
     this.styleFilters.fas = true
     this.styleFilters.fab = true
   }
 
+  version() {
+    return get(this, 'kitMetadata.release.version')
+  }
+
+  pro() {
+    return get(this, 'kitMetadata.licenseSelected') === 'pro'
+  }
+
   componentWillLoad() {
       this.query = ''
 
-      if(!this.kitToken) {
-        if(this.cdnUrl && 'string' === typeof this.cdnUrl) {
-          if(this.pro) {
-            this.cdnSubdomain = 'pro'
-          } else {
-            this.cdnSubdomain = 'use'
-          }
-
-          if(this.cdnUrl.match('\.js$')) {
-            this.technology = FaTechnology.CdnSvg
-          } else if (this.cdnUrl.match('\.css$')) {
-            this.technology = FaTechnology.CdnWebfont
-          } else {
-            throw new Error(`Unrecognized cdn-url provided to fa-icon-chooser. Expected something ending .js or .css, but got: ${ this.cdnUrl }`)
-          }
-        } else {
-          throw new Error("missing a kit-token or cdn-url attribute for loading Font Awesome inside fa-icon-chooser")
-        }
-      }
-
-      this.preload()
+      this.loadKitMetadata()
       .then(() => {
-        this.resolvedVersion = resolveVersion(
-          get(this, 'kitMetadata.version') || this.version
-        )
+        const pro = this.pro()
 
-        this.isProEnabled = (get(this, 'kitMetadata.licenseSelected') === 'pro')
-          || this.pro
+        const baseUrl = assetsBaseUrl(pro)
 
-        if(this.kitToken) {
-          const kitTechnology = this.kitTechnology()
-          if(kitTechnology) {
-            this.technology = kitTechnology
-          }
+        if(pro) {
+          //https://ka-p.fontawesome.com/releases/v6.0.0-beta1/svgs/solid/wheat-awn.svg?token=deadbeefa0
+          this.svgFetchBaseUrl = `${ baseUrl }/releases/v${this.version()}/svgs`
         }
 
-        this.setupFontAwesome()
+        const svgApi = get(window, "FontAwesome")
 
-        // TODO: figure out some real error handling here.
-        if(! this.resolvedVersion ) {
-          throw new Error('invalid state: there must be a resolved version')
+        if(svgApi) {
+          // If FA SVG/JS is already present in the outer DOM, just use it.
+          return Promise.resolve(svgApi)
+        } else {
+          // Otherwise, we'll add it to the outer DOM, but disable it from doing
+          // anything automated that would have global affect--ther than assigning
+          // itself to the global window.FontAwesome.
+          return createFontAwesomeScriptElement(pro, this.version(), baseUrl, this.kitToken)
+            .then(scriptElement => {
+              document.head.appendChild(scriptElement)
+              return get(window, 'FontAwesome')
+            })
         }
+      })
+      .then(svgApi  => {
+        this.svgApi = svgApi
+        const dom = get(window, 'FontAwesome.dom')
+        const style = document.createElement('STYLE')
+        style.setAttribute('type', 'text/css')
+        const css = document.createTextNode(dom.css())
+        style.appendChild(css)
+        this.host.shadowRoot.appendChild(style)
 
-        this.setIcons(defaultIcons, this.iconUploadsAsIconLookups())
+        // If we're in pro v6, then we need to add the thin style as being available
+        // because our defaultIcons fixture doesn't include thin.
+        const adjustedDefaultIcons = (this.pro && this.isV6())
+          ? get(defaultIcons, 'data.search', []).map(i => {
+            const proStyles = get(i, 'membership.pro', [])
+
+            if(size(proStyles) > 1) {
+              proStyles.push('thin')
+              i.membership.pro = proStyles
+            }
+
+            return i
+          })
+          : get(defaultIcons, 'data.search', [])
+
+        this.defaultIcons = { data: { search: adjustedDefaultIcons } }
+
+        this.setIcons(this.defaultIcons, this.iconUploadsAsIconUploadLookups())
 
         this.activateDefaultStyleFilters()
 
         if(this.mayHaveIconUploads() && size(get(this, 'kitMetadata.iconUploads')) > 0) {
           this.styleFilters.fak = true
+        }
+
+        this.commonFaIconProps = {
+          svgApi: get(window, 'FontAwesome'),
+          pro: this.pro(),
+          svgFetchBaseUrl: this.svgFetchBaseUrl,
+          kitToken: this.kitToken
         }
 
         this.isInitialLoading = false
@@ -264,7 +225,7 @@ export class FaIconChooser {
     const response = await this.handleQuery(
       `
       query {
-        search(version:"${ this.resolvedVersion }", query: "${ query }", first: 100) {
+        search(version:"${ this.version() }", query: "${ query }", first: 100) {
           id
           label
           membership {
@@ -275,7 +236,7 @@ export class FaIconChooser {
       }`
     )
 
-    this.setIcons(response, this.iconUploadsAsIconLookups())
+    this.setIcons(response, this.iconUploadsAsIconUploadLookups())
 
     // TODO: test the case where data.search is null (which would happen if the API
     // server returns a not_found)
@@ -284,27 +245,27 @@ export class FaIconChooser {
     this.isQuerying = false
   }
 
-  iconUploadsAsIconLookups(): Array<IconLookup> {
+  iconUploadsAsIconUploadLookups(): Array<IconUploadLookup> {
     return get(this, 'kitMetadata.iconUploads', []).map(i => {
-      return { prefix: 'fak', iconName: i.name }
+      return { prefix: 'fak', iconName: i.name, iconUpload: i }
     })
   }
 
-  setIcons(searchResultIcons: Array<any>, iconUploads: Array<any>) {
+  setIcons(searchResultIcons: Array<any>, iconUploads: Array<IconUploadLookup>) {
     this.icons = (get(searchResultIcons, 'data.search') || [])
       .reduce((acc: Array<IconLookup>, result: any) => {
         const { id, membership } = result
 
         const styles = membership.free
 
-        if(this.isProEnabled && !!membership.pro) {
+        if(this.pro() && !!membership.pro) {
           membership.pro
             .filter(style => !membership.free.includes(style))
             .forEach(style => styles.push(style))
         }
 
         styles.map(style => {
-          const prefix = STYLE_RESULT_TO_PREFIX[style]
+          const prefix = STYLE_TO_PREFIX[style]
 
           acc.push({
             iconName: id,
@@ -374,15 +335,16 @@ export class FaIconChooser {
   }
 
   isV6() {
-    return this.resolvedVersion && this.resolvedVersion[0] === '6'
+    const version = this.version()
+    return version && version[0] === '6'
   }
 
   isDuotoneAvailable() {
-    return this.isProEnabled && !!this.resolvedVersion.match('(5\.[1-9][0-9]+\.)|^6\.')
+    return this.pro() && !!this.version().match('(5\.[1-9][0-9]+\.)|^6\.')
   }
 
   mayHaveIconUploads() {
-    return !!this.kitToken && this.isProEnabled
+    return this.pro()
   }
 
   hasIconUploads() {
@@ -392,7 +354,7 @@ export class FaIconChooser {
   onKeyUp(e: any): void {
     this.query = e.target.value
     if(size(this.query) === 0) {
-      this.setIcons(defaultIcons, this.iconUploadsAsIconLookups())
+      this.setIcons(this.defaultIcons, this.iconUploadsAsIconUploadLookups())
     } else {
       this.updateQueryResultsWithDebounce(this.query)
     }
@@ -401,270 +363,6 @@ export class FaIconChooser {
   preventDefaultFormSubmit(e) {
     e.preventDefault()
     e.stopPropagation()
-  }
-
-  kitTechnology(): FaTechnology | undefined {
-    switch( get(this, 'kitMetadata.technologySelected') ) {
-      case 'webfonts':
-        return FaTechnology.KitWebfont
-      case 'svg':
-        return FaTechnology.KitSvg
-    }
-  }
-
-  // TODO: add better handling for the case where this componnet needs to be
-  // more self-sufficient--loading from CDN or Kit itself when it's not already
-  // available in the outer DOM. And yet, when loading, it needs to be done in
-  // such a way that minimizes global effects. For example, if this component
-  // adds a <script> to load FA SVG/JS, it should disable autoReplaceSvg so that
-  // behavior is not suddenly activated globally on the outer DOM.
-  // But what about the webfont case? Somehow, we'd need to get the appropriate
-  // @font-face rules added to the outer DOM, but only if they're not already
-  // present. We may need to put in hooks to track what fonts are loaded in
-  // the outer DOM, similar to the kit loader e2e testing.
-  setupFontAwesome() {
-    const isKitAlreadySetupInOuterDom = this.kitToken && !!get(window, 'FontAwesomeKitConfig')
-
-    const isFaSvgJsAlreadySetupInOuterDom =
-      (isKitAlreadySetupInOuterDom && this.technology == FaTechnology.KitSvg)
-      || ( this.technology === FaTechnology.CdnSvg && !!get(window, 'FontAwesome'))
-
-    let faLinks = []
-    document.querySelectorAll('link').forEach(l => {
-      if(
-        ('string' === typeof l.href)
-        && (
-          !!l.href.toString().match('fontawesome\.com/\.+\.css')
-          || !!l.href.toString().match('fontawesome\.com/\.+\.css\?')
-        )
-      ) {
-        faLinks.push(l)
-      }
-    })
-
-    const isFaWebfontCdnAlreadSetupInOuterDom = faLinks.length > 0
-
-    if(!this.technology) {
-      // We should never get this error, because the constructor should have already validated inputs.
-      throw new Error('could not determine which Font Awesome technology is in use')
-    }
-
-    if( this.technology === FaTechnology.CdnWebfont ) {
-      if(!isFaWebfontCdnAlreadSetupInOuterDom) {
-        // In this case, we're setting up Webfont via CDN, and the outer DOM
-        // does not have a <link> to the CDN CSS resource. That means the outer
-        // DOM will not have the @font-face rules that must be present in the outer
-        // DOM. @font-face rules must be present in the outer DOM, in order to
-        // trigger the loading of the webfont file resources. A @font-face rule
-        // appearing in the Shadow DOM has no effect. So it's not enough to add
-        // the <link> to the Shadow DOM. It also needs to be added to the outer
-        // DOM.
-
-        // For now, we're being a bit heavy-handed about it, and just linking to
-        // all.css in either case. A more granular way to load just @font-face
-        // rules and not ALL of the style rules would be to link to each style
-        // individually, like regular.css or solid.css. Those assets include
-        // just the corresponding @font-face rule.
-
-        // However, an icon chooser is all about seeing the available options,
-        // across any available styles. So assuming that we should always be working
-        // with all.css in this context isn't terrible.
-
-        const link = this.createCdnLinkElement()
-        document.head.appendChild(link)
-      }
-
-      // We need to add the CDN <link> to the web component's Shadow DOM, regardless
-      // of whether it is present in the outer DOM, because even if it's in the
-      // outer DOM, it will only inherit the @font-face rules, not the rest of
-      // the style rules.
-      const link = this.createCdnLinkElement()
-      this.host.shadowRoot.appendChild(link)
-    }
-
-    if( this.technology === FaTechnology.CdnSvg ) {
-      if(!isFaSvgJsAlreadySetupInOuterDom) {
-        const script = document.createElement('script')
-        script.setAttribute('src', `https://${ this.cdnSubdomain }.fontawesome.com/releases/v${this.resolvedVersion}/js/all.js`)
-
-        if(this.integrity) {
-          script.setAttribute('integrity', this.integrity)
-          script.setAttribute('crossorigin', 'anonymous')
-        }
-
-        // We must disable autoReplaceSvg and autoInsertCss because this JavaScript
-        // will run in global space and by default will operate on the outer DOM,
-        // even though we're adding the <script> to the Shadow DOM.
-        window['FontAwesomeConfig'] = {
-          autoAddCss: false,
-          autoReplaceSvg: false
-        }
-
-        const set = newValue => {
-          window['__FontAwesome__IconChooser'] = newValue
-          this.setupSvgStyleInShadowDom()
-        }
-
-        // We need to intercept the assignment to the global Font Awesome and
-        // only trigger the rest of the Shadow DOM setup after that.
-        Object.defineProperty(window, 'FontAwesome', {
-          enumerable: true,
-          configurable: false,
-          get() { return window['__FontAwesome__IconChooser'] },
-          set
-        })
-
-        this.runSvgReplacementAfterRender = true
-        this.host.shadowRoot.appendChild(script)
-      } else {
-        this.setupSvgStyleInShadowDom()
-        this.setupSvgWatchInShadowDom()
-      }
-    }
-
-    if( this.technology === FaTechnology.KitSvg ) {
-      if(!isKitAlreadySetupInOuterDom) {
-        const script = this.createKitScriptElement()
-
-        // We're adding a <script> to load the kit, which will in turn load
-        // Font Awesome SVG/JS. When FA SVG/JS is loaded, it will run in global
-        // space and we want to make sure it's not impacting the outer DOM by default
-        // So we'll disable the automation features and then enable them only
-        // within the Shadow DOM.
-        window['FontAwesomeConfig'] = {
-          autoAddCss: false,
-          autoReplaceSvg: false
-        }
-
-        const set = newValue => {
-          window['__FontAwesome__IconChooser'] = newValue
-          this.setupSvgStyleInShadowDom()
-        }
-
-        // We need to intercept the assignment to the global Font Awesome and
-        // only trigger the rest of the Shadow DOM setup after that.
-        Object.defineProperty(window, 'FontAwesome', {
-          enumerable: true,
-          configurable: false,
-          get() { return window['__FontAwesome__IconChooser'] },
-          set
-        })
-
-        this.runSvgReplacementAfterRender = true
-        this.host.shadowRoot.appendChild(script)
-      } else {
-        this.setupSvgStyleInShadowDom()
-        this.setupSvgWatchInShadowDom()
-      }
-    }
-
-    if( this.technology === FaTechnology.KitWebfont ) {
-      if(!isKitAlreadySetupInOuterDom) {
-        // CAVEAT! In this scenario, we're setting up a Webfont Kit whose <script>
-        // has not already been loaded in the outer DOM. So we have to add it
-        // within the Shadow DOM. However, there's no way currently stop it from
-        // applying its styles to the outer DOM, because the kit will inject
-        // set of <style> elements into the outer DOM.
-        //
-        // This might mean that we need a way to configure how a kit is loaded
-        // to prevent some things from happening
-        const script = this.createKitScriptElement()
-        this.host.shadowRoot.appendChild(script)
-      }
-
-      this.copyWebfontKitStyleElementsToShadowDom()
-    }
-  }
-
-  createKitScriptElement() {
-    const script = document.createElement('script')
-    script.setAttribute('src', `https://kit.fontawesome.com/${this.kitToken}.js`)
-    script.setAttribute('crossorigin', 'anonymous')
-
-    return script
-  }
-
-  setupSvgStyleInShadowDom() {
-    // TODO: maybe set up some types for the FontAwesome config.
-    const config: any = (window as any).FontAwesome
-
-    // If there's no global config, then this is not Font Awesome SVG/JS, so
-    // we have nothing more to do here.
-    if(!config) return
-
-    // If we've already been hooked up for auto replacement on this element,
-    // don't set it up again.
-    if(this.watchingForSvgReplacements) return
-
-    const dom: any = config.dom
-
-    const style = document.createElement('style')
-    style.setAttribute('type', 'text/css')
-    var textNode = document.createTextNode((dom.css as Function)());
-    style.appendChild(textNode);
-    style.media = 'all';
-    this.host.shadowRoot.appendChild(style)
-  }
-
-  setupSvgWatchInShadowDom() {
-    const watch: Function | undefined = get(window, 'FontAwesome.dom.watch')
-
-    if(!watch) return
-
-    this.watchingForSvgReplacements = true
-
-    watch({
-      autoReplaceSvgRoot: this.host.shadowRoot,
-      observeMutationsRoot: this.host.shadowRoot
-    })
-  }
-
-  createCdnLinkElement() {
-    const link = document.createElement('link')
-    link.setAttribute('href', `https://${ this.cdnSubdomain }.fontawesome.com/releases/v${this.resolvedVersion}/css/all.css`)
-    link.setAttribute('rel', 'stylesheet')
-
-    if(this.integrity) {
-      link.setAttribute('integrity', this.integrity)
-      link.setAttribute('crossorigin', 'anonymous')
-    }
-
-    return link
-  }
-
-  copyWebfontKitStyleElementsToShadowDom() {
-    // TODO: figure out if there's a more efficient way to do this than just copying
-    const mainKitStyle = document.querySelector('style#fa-main') as HTMLStyleElement
-
-    if(mainKitStyle) {
-      const newStyleEl = document.createElement('style')
-      const cssText = document.createTextNode(mainKitStyle.innerText)
-      newStyleEl.setAttribute('type', 'text/css')
-      newStyleEl.appendChild(cssText)
-      this.host.shadowRoot.appendChild(newStyleEl)
-    }
-
-    const kitUploadStyle = document.querySelector('style#fa-kit-upload') as HTMLStyleElement
-
-    if(kitUploadStyle) {
-      const newStyleEl = document.createElement('style')
-      const cssText = document.createTextNode(kitUploadStyle.innerText)
-      newStyleEl.setAttribute('type', 'text/css')
-      newStyleEl.appendChild(cssText)
-      this.host.shadowRoot.appendChild(newStyleEl)
-    }
-
-    return
-  }
-
-  componentDidRender() {
-    if(this.runSvgReplacementAfterRender) {
-      const i2svg: Function | undefined = get(window, 'FontAwesome.dom.i2svg')
-
-      if(i2svg) {
-        i2svg({ node: this.host.shadowRoot })
-      }
-    }
   }
 
   render() {
@@ -691,8 +389,8 @@ export class FaIconChooser {
               <span class="position-relative margin-bottom-sm">
                 {
                   this.showCheckedStyleIcon('fas')
-                  ? <span key="a"><i class="checked-icon fas fa-grin-tongue fa-fw fa-2x"></i></span>
-                  : <span key="b"><i class="unchecked-icon fas fa-smile fa-fw fa-2x"></i></span>
+                  ? <fa-icon key="a" {...this.commonFaIconProps} name="grin-tongue" stylePrefix="fas" class="checked-icon fa-fw fa-2x"/>
+                  : <fa-icon key="b" {...this.commonFaIconProps} name="smile" stylePrefix="fas" class="unchecked-icon fa-fw fa-2x"/>
                 }
               </span>
               <span class="sr-only">Show </span>solid<span class="sr-only"> style icons</span>
@@ -704,23 +402,23 @@ export class FaIconChooser {
               <span class="position-relative margin-bottom-sm">
                 {
                   this.showCheckedStyleIcon('far')
-                  ? <span key="a"><i class="checked-icon far fa-grin-tongue fa-fw fa-2x"></i></span>
-                  : <span key="b"><i class="unchecked-icon far fa-smile fa-fw fa-2x"></i></span>
+                  ? <fa-icon key="a" {...this.commonFaIconProps} name="grin-tongue" stylePrefix="far" class="checked-icon fa-fw fa-2x"/>
+                  : <fa-icon key="b" {...this.commonFaIconProps} name="smile" stylePrefix="far" class="unchecked-icon fa-fw fa-2x"/>
                 }
               </span>
               <span class="sr-only">Show </span>regular<span class="sr-only"> style icons</span>
             </label>
           </div>
           {
-            this.isProEnabled &&
+            this.pro() &&
             <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
               <input id="icons-style-light" checked={ this.styleFilterEnabled && this.styleFilters.fal } onChange={() => this.toggleStyleFilter('fal') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
               <label htmlFor="icons-style-light" class="icons-style-choice padding-y-xl padding-x-md margin-0 display-flex flex-column flex-items-center ">
                 <span class="position-relative margin-bottom-sm">
                   {
                     this.showCheckedStyleIcon('fal')
-                    ? <span key="a"><i class="checked-icon fal fa-grin-tongue fa-fw fa-2x"></i></span>
-                    : <span key="b"><i class="unchecked-icon fal fa-smile fa-fw fa-2x"></i></span>
+                    ? <fa-icon key="a" {...this.commonFaIconProps} name="grin-tongue" stylePrefix="fal" class="checked-icon fa-fw fa-2x"/>
+                    : <fa-icon key="b" {...this.commonFaIconProps} name="smile" stylePrefix="fal" class="unchecked-icon fa-fw fa-2x"/>
                   }
                 </span>
                 <span class="sr-only">Show </span>light<span class="sr-only"> style icons</span>
@@ -734,8 +432,8 @@ export class FaIconChooser {
                 <span class="position-relative margin-bottom-sm">
                   {
                     this.showCheckedStyleIcon('fat')
-                    ? <span key="a"><i class="checked-icon fat fa-grin-tongue fa-fw fa-2x"></i></span>
-                    : <span key="b"><i class="unchecked-icon fat fa-smile fa-fw fa-2x"></i></span>
+                    ? <fa-icon key="a" {...this.commonFaIconProps} name="grin-tongue" stylePrefix="fat" class="checked-icon fa-fw fa-2x"/>
+                    : <fa-icon key="b" {...this.commonFaIconProps} name="smile" stylePrefix="fat" class="unchecked-icon fa-fw fa-2x"/>
                   }
                 </span>
                 <span class="sr-only">Show </span>thin<span class="sr-only"> style icons</span>
@@ -750,8 +448,8 @@ export class FaIconChooser {
                 <span class="position-relative margin-bottom-sm">
                   {
                     this.showCheckedStyleIcon('fad')
-                    ? <span key="a"><i class="checked-icon fad fa-grin-tongue fa-fw fa-2x"></i></span>
-                    : <span key="b"><i class="unchecked-icon fad fa-smile fa-fw fa-2x"></i></span>
+                    ? <fa-icon key="a" {...this.commonFaIconProps} name="grin-tongue" stylePrefix="fad" class="checked-icon fa-fw fa-2x"/>
+                    : <fa-icon key="b" {...this.commonFaIconProps} name="smile" stylePrefix="fad" class="unchecked-icon fa-fw fa-2x"/>
                   }
                 </span>
                 <span class="sr-only">Show </span>duotone<span class="sr-only"> style icons</span>
@@ -762,7 +460,7 @@ export class FaIconChooser {
             <input id="icons-style-brands" checked={ this.styleFilterEnabled && this.styleFilters.fab } onChange={() => this.toggleStyleFilter('fab') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
             <label htmlFor="icons-style-brands" class="icons-style-choice padding-y-xl padding-x-md margin-0 display-flex flex-column flex-items-center ">
               <span class="position-relative margin-bottom-sm">
-                <i class="fab fa-font-awesome fa-fw fa-2x"></i>
+                <fa-icon {...this.commonFaIconProps} stylePrefix="fab" name="font-awesome" class="fa-fw fa-2x"/>
               </span>
               <span class="sr-only">Show </span>brands<span class="sr-only"> style icons</span>
             </label>
@@ -773,7 +471,7 @@ export class FaIconChooser {
               <input id="icons-style-uploads" checked={ this.styleFilterEnabled && this.styleFilters.fak } onChange={() => this.toggleStyleFilter('fak') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
               <label htmlFor="icons-style-uploads" class="icons-style-choice padding-y-xl padding-x-md margin-0 display-flex flex-column flex-items-center ">
                 <span class="position-relative margin-bottom-sm">
-                  <i class="fas fa-icons fa-fw fa-2x"></i>
+                  <fa-icon {...this.commonFaIconProps} stylePrefix="fas" name="icons" class="fa-fw fa-2x"/>
                 </span>
                 <span class="sr-only">Show </span>Uploaded<span class="sr-only"> icons</span>
               </label>
@@ -794,15 +492,22 @@ export class FaIconChooser {
         {
           this.isQuerying
           ? <article class="message-loading text-center margin-2xl">
-              <span key="a"><i class="message-icon fas fa-circle-notch fa-spin fa-2x margin-top-xs" /></span>
+              <fa-icon {...this.commonFaIconProps} name="circle-notch" stylePrefix="fas" class="message-icon fa-spin fa-2x margin-top-xs" />
               <h4 class="message-title margin-top-sm">Loading icons</h4>
             </article>
           : (size(this.filteredIcons()) > 0
               ? <div class="icon-listing">
                   {this.filteredIcons().map(icon =>
                   <article class="wrap-icon" key={ `${icon.prefix}-${ icon.iconName }`}>
-                    <button class="icon subtle display-flex flex-column flex-items-center flex-content-center" onClick={() => this.finish.emit(icon)}>
-                        <i class={ `${ icon.prefix } fa-2x fa-${ icon.iconName }` }></i>
+                    <button class="icon subtle display-flex flex-column flex-items-center flex-content-center" onClick={() => this.finish.emit(buildIconChooserResult(icon))}>
+                      <fa-icon
+                        {...this.commonFaIconProps}
+                        class='fa-2x'
+                        stylePrefix={ icon.prefix }
+                        name={ icon.iconName }
+                        iconUpload={ get(icon, 'iconUpload') }
+                      />
+
                       <span class="icon-name size-xs text-truncate margin-top-lg">{`${ icon.iconName }`}</span>
                       </button>
                   </article>

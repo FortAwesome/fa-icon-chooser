@@ -5,33 +5,34 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { IconPrefix, IconUpload } from "./utils/utils";
 import { IconChooserResult, QueryHandler } from "./components/fa-icon-chooser/fa-icon-chooser";
 export namespace Components {
+    interface FaIcon {
+        "class": string;
+        "iconUpload"?: IconUpload;
+        "kitToken": string;
+        "name": string;
+        "pro": boolean;
+        "stylePrefix": IconPrefix;
+        "svgApi": any;
+        "svgFetchBaseUrl"?: string;
+    }
     interface FaIconChooser {
-        /**
-          * A URL for loading Font Awesome within the icon chooser from the Font Awesome Free or Pro CDN, instead of a kit.  If a kitToken is provided, kit loading will be preferred over this.
-         */
-        "cdnUrl"?: string;
         "handleQuery": QueryHandler;
         /**
-          * Optional CDN integrity attribute. When set the crossorigin="anonymous" attribute will also be added to the <script> or <link> tag that loads Font Awesome from the CDN, causing that resource's integrity to be checked.
+          * A kit token identifying a kit in which to find icons.
          */
-        "integrity"?: string;
-        /**
-          * A kit token identifying a kit in which to find icons. Takes precedence over the version prop if provided: the version associated with the kit will be used for searching.
-         */
-        "kitToken"?: string;
-        /**
-          * Whether pro icons should be enabled.
-         */
-        "pro": boolean;
-        /**
-          * Font Awesome version in which to find icons.
-         */
-        "version"?: string;
+        "kitToken": string;
     }
 }
 declare global {
+    interface HTMLFaIconElement extends Components.FaIcon, HTMLStencilElement {
+    }
+    var HTMLFaIconElement: {
+        prototype: HTMLFaIconElement;
+        new (): HTMLFaIconElement;
+    };
     interface HTMLFaIconChooserElement extends Components.FaIconChooser, HTMLStencilElement {
     }
     var HTMLFaIconChooserElement: {
@@ -39,35 +40,31 @@ declare global {
         new (): HTMLFaIconChooserElement;
     };
     interface HTMLElementTagNameMap {
+        "fa-icon": HTMLFaIconElement;
         "fa-icon-chooser": HTMLFaIconChooserElement;
     }
 }
 declare namespace LocalJSX {
+    interface FaIcon {
+        "class"?: string;
+        "iconUpload"?: IconUpload;
+        "kitToken"?: string;
+        "name"?: string;
+        "pro"?: boolean;
+        "stylePrefix"?: IconPrefix;
+        "svgApi"?: any;
+        "svgFetchBaseUrl"?: string;
+    }
     interface FaIconChooser {
-        /**
-          * A URL for loading Font Awesome within the icon chooser from the Font Awesome Free or Pro CDN, instead of a kit.  If a kitToken is provided, kit loading will be preferred over this.
-         */
-        "cdnUrl"?: string;
         "handleQuery"?: QueryHandler;
         /**
-          * Optional CDN integrity attribute. When set the crossorigin="anonymous" attribute will also be added to the <script> or <link> tag that loads Font Awesome from the CDN, causing that resource's integrity to be checked.
-         */
-        "integrity"?: string;
-        /**
-          * A kit token identifying a kit in which to find icons. Takes precedence over the version prop if provided: the version associated with the kit will be used for searching.
+          * A kit token identifying a kit in which to find icons.
          */
         "kitToken"?: string;
         "onFinish"?: (event: CustomEvent<IconChooserResult>) => void;
-        /**
-          * Whether pro icons should be enabled.
-         */
-        "pro"?: boolean;
-        /**
-          * Font Awesome version in which to find icons.
-         */
-        "version"?: string;
     }
     interface IntrinsicElements {
+        "fa-icon": FaIcon;
         "fa-icon-chooser": FaIconChooser;
     }
 }
@@ -75,6 +72,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "fa-icon": LocalJSX.FaIcon & JSXBase.HTMLAttributes<HTMLFaIconElement>;
             "fa-icon-chooser": LocalJSX.FaIconChooser & JSXBase.HTMLAttributes<HTMLFaIconChooserElement>;
         }
     }
