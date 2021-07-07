@@ -1,6 +1,6 @@
 /* vendor.css */
 /* stylelint-disable */
-:root {
+:host {
   --oc-white: #fff;
   --oc-black: #000;
   --oc-gray-0: #f8f9fa;
@@ -143,7 +143,7 @@
           box-sizing: border-box;
 }
 /* Remove default margin */
-:root,
+:host,
 body,
 h1,
 h2,
@@ -195,7 +195,7 @@ select {
   }
 }
 /* setting.css */
-:root {
+:host {
   /* viewports */
   --viewport-tablet: 48rem; /* 768px */
   --viewport-laptop: 64rem; /* 1024px */
@@ -2134,7 +2134,7 @@ button,
   cursor: pointer;
   font-family: inherit;
 }
-:root,
+:host,
 body {
   background-color: #f0f1f3;
   background-color: var(--body-background);

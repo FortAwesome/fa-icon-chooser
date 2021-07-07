@@ -1,4 +1,4 @@
-import { Component, Event, EventEmitter, Prop, State, h } from '@stencil/core'
+import { Component, Event, Element, EventEmitter, Prop, State, h } from '@stencil/core'
 import { get, size, debounce } from 'lodash'
 import { IconLookup } from '@fortawesome/fontawesome-common-types'
 import { assetsBaseUrl, createFontAwesomeScriptElement, IconUpload, defaultIcons, IconPrefix, STYLE_TO_PREFIX } from '../../utils/utils'
@@ -25,9 +25,14 @@ type KitMetadata = {
 @Component({
   tag: 'fa-icon-chooser',
   styleUrl: 'fa-icon-chooser.css',
-  shadow: false,
+  shadow: true,
 })
 export class FaIconChooser {
+  /**
+   * The host element for this component's Shadow DOM.
+   */
+   @Element() host: HTMLElement;
+
   /**
    * A kit token identifying a kit in which to find icons.
    */
@@ -143,14 +148,30 @@ export class FaIconChooser {
           this.svgFetchBaseUrl = `${ baseUrl }/releases/v${this.version()}/svgs`
         }
 
-        return createFontAwesomeScriptElement(pro, this.version(), baseUrl, this.kitToken)
+        const svgApi = get(window, "FontAwesome")
+
+        if(svgApi) {
+          // If FA SVG/JS is already present in the outer DOM, just use it.
+          return Promise.resolve(svgApi)
+        } else {
+          // Otherwise, we'll add it to the outer DOM, but disable it from doing
+          // anything automated that would have global affect--ther than assigning
+          // itself to the global window.FontAwesome.
+          return createFontAwesomeScriptElement(pro, this.version(), baseUrl, this.kitToken)
+            .then(scriptElement => {
+              document.head.appendChild(scriptElement)
+              return get(window, 'FontAwesome')
+            })
+        }
       })
-      .then(scriptElement => {
-        document.head.appendChild(scriptElement)
-
+      .then(svgApi  => {
+        this.svgApi = svgApi
         const dom = get(window, 'FontAwesome.dom')
-
-        dom && dom.insertCss(dom.css())
+        const style = document.createElement('STYLE')
+        style.setAttribute('type', 'text/css')
+        const css = document.createTextNode(dom.css())
+        style.appendChild(css)
+        this.host.shadowRoot.appendChild(style)
 
         // If we're in pro v6, then we need to add the thin style as being available
         // because our defaultIcons fixture doesn't include thin.

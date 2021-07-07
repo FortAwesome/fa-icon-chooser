@@ -131,6 +131,7 @@ export async function createFontAwesomeScriptElement(pro: boolean, version: stri
       const text = document.createTextNode(scriptContent)
       script.appendChild(text)
       script.setAttribute('data-auto-replace-svg', 'false')
+      script.setAttribute('data-auto-add-css', 'false')
       script.setAttribute('type', 'text/javascript')
 
       return script
