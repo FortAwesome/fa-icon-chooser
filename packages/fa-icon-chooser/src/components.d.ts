@@ -6,15 +6,17 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { IconPrefix, IconUpload } from "./utils/utils";
+import { IconDefinition } from "@fortawesome/fontawesome-common-types";
 import { IconChooserResult, QueryHandler } from "./components/fa-icon-chooser/fa-icon-chooser";
 export namespace Components {
     interface FaIcon {
         "class": string;
+        "icon"?: IconDefinition;
         "iconUpload"?: IconUpload;
-        "kitToken": string;
-        "name": string;
+        "kitToken"?: string;
+        "name"?: string;
         "pro": boolean;
-        "stylePrefix": IconPrefix;
+        "stylePrefix"?: IconPrefix;
         "svgApi": any;
         "svgFetchBaseUrl"?: string;
     }
@@ -51,6 +53,7 @@ declare global {
 declare namespace LocalJSX {
     interface FaIcon {
         "class"?: string;
+        "icon"?: IconDefinition;
         "iconUpload"?: IconUpload;
         "kitToken"?: string;
         "name"?: string;
