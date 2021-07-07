@@ -445,7 +445,7 @@ export class FaIconChooser {
               </label>
             </div>
           }
-          { this.isV6() &&
+          { this.isV6() && this.pro() &&
             <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
               <input id="icons-style-thin" checked={ this.styleFilterEnabled && this.styleFilters.fat } onChange={() => this.toggleStyleFilter('fat') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
               <label htmlFor="icons-style-thin" class="icons-style-choice padding-y-xl padding-x-md margin-0 display-flex flex-column flex-items-center ">
