@@ -1,7 +1,7 @@
 import { Component, Event, Element, EventEmitter, Prop, State, h } from '@stencil/core'
 import { get, size, debounce } from 'lodash'
 import { IconLookup } from '@fortawesome/fontawesome-common-types'
-import { assetsBaseUrl, createFontAwesomeScriptElement, IconUpload, defaultIcons, IconPrefix, STYLE_TO_PREFIX } from '../../utils/utils'
+import { assetsBaseUrl, buildIconChooserResult, createFontAwesomeScriptElement, IconUpload, defaultIcons, IconPrefix, STYLE_TO_PREFIX } from '../../utils/utils'
 
 export interface IconChooserResult extends IconLookup {
   class?: string;
@@ -20,7 +20,11 @@ type KitMetadata = {
   licenseSelected: string;
   name: string;
   iconUploads: Array<IconUpload> | null;
-};
+}
+
+interface IconUploadLookup extends IconLookup {
+  iconUpload: IconUpload
+}
 
 @Component({
   tag: 'fa-icon-chooser',
@@ -190,7 +194,7 @@ export class FaIconChooser {
 
         this.defaultIcons = { data: { search: adjustedDefaultIcons } }
 
-        this.setIcons(this.defaultIcons, this.iconUploadsAsIconLookups())
+        this.setIcons(this.defaultIcons, this.iconUploadsAsIconUploadLookups())
 
         this.activateDefaultStyleFilters()
 
@@ -232,7 +236,7 @@ export class FaIconChooser {
       }`
     )
 
-    this.setIcons(response, this.iconUploadsAsIconLookups())
+    this.setIcons(response, this.iconUploadsAsIconUploadLookups())
 
     // TODO: test the case where data.search is null (which would happen if the API
     // server returns a not_found)
@@ -241,13 +245,13 @@ export class FaIconChooser {
     this.isQuerying = false
   }
 
-  iconUploadsAsIconLookups(): Array<IconLookup> {
+  iconUploadsAsIconUploadLookups(): Array<IconUploadLookup> {
     return get(this, 'kitMetadata.iconUploads', []).map(i => {
-      return { prefix: 'fak', iconName: i.name }
+      return { prefix: 'fak', iconName: i.name, iconUpload: i }
     })
   }
 
-  setIcons(searchResultIcons: Array<any>, iconUploads: Array<any>) {
+  setIcons(searchResultIcons: Array<any>, iconUploads: Array<IconUploadLookup>) {
     this.icons = (get(searchResultIcons, 'data.search') || [])
       .reduce((acc: Array<IconLookup>, result: any) => {
         const { id, membership } = result
@@ -350,7 +354,7 @@ export class FaIconChooser {
   onKeyUp(e: any): void {
     this.query = e.target.value
     if(size(this.query) === 0) {
-      this.setIcons(this.defaultIcons, this.iconUploadsAsIconLookups())
+      this.setIcons(this.defaultIcons, this.iconUploadsAsIconUploadLookups())
     } else {
       this.updateQueryResultsWithDebounce(this.query)
     }
@@ -495,12 +499,13 @@ export class FaIconChooser {
               ? <div class="icon-listing">
                   {this.filteredIcons().map(icon =>
                   <article class="wrap-icon" key={ `${icon.prefix}-${ icon.iconName }`}>
-                    <button class="icon subtle display-flex flex-column flex-items-center flex-content-center" onClick={() => this.finish.emit(icon)}>
+                    <button class="icon subtle display-flex flex-column flex-items-center flex-content-center" onClick={() => this.finish.emit(buildIconChooserResult(icon))}>
                       <fa-icon
                         {...this.commonFaIconProps}
                         class='fa-2x'
                         stylePrefix={ icon.prefix }
                         name={ icon.iconName }
+                        iconUpload={ get(icon, 'iconUpload') }
                       />
 
                       <span class="icon-name size-xs text-truncate margin-top-lg">{`${ icon.iconName }`}</span>

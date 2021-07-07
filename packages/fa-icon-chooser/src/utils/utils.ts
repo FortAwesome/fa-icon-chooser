@@ -1,4 +1,5 @@
 import defaultIconsSearchResult from './defaultIconsSearchResult.json'
+import { IconLookup } from '@fortawesome/fontawesome-common-types'
 
 export const defaultIcons: any = defaultIconsSearchResult
 
@@ -140,4 +141,10 @@ export async function createFontAwesomeScriptElement(pro: boolean, version: stri
       console.error(e)
       throw new Error(e)
     }
+}
+
+export function buildIconChooserResult(icon: IconLookup) {
+  const { prefix, iconName} = icon
+
+  return { prefix, iconName }
 }
