@@ -31,6 +31,22 @@ export class FaIcon {
   componentWillLoad() {
     if(!this.svgApi) return
 
+    if(this.iconUpload) {
+      this.iconDefinition = {
+        prefix: 'fak',
+        iconName: this.iconUpload.name,
+        icon: [
+          this.iconUpload.width,
+          this.iconUpload.height,
+          [],
+          this.iconUpload.unicode,
+          this.iconUpload.path
+        ]
+      }
+
+      return
+    }
+
     const { findIconDefinition } = this.svgApi
 
     const iconDefinition = findIconDefinition && findIconDefinition({
