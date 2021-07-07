@@ -2,6 +2,7 @@ import { Component, Event, Element, EventEmitter, Prop, State, h } from '@stenci
 import { get, size, debounce } from 'lodash'
 import { IconLookup } from '@fortawesome/fontawesome-common-types'
 import { freeCdnBaseUrl, kitAssetsBaseUrl, buildIconChooserResult, createFontAwesomeScriptElement, IconUpload, defaultIcons, IconPrefix, STYLE_TO_PREFIX } from '../../utils/utils'
+import { faSadTear } from '../../utils/icons'
 
 export interface IconChooserResult extends IconLookup {
   class?: string;
@@ -533,7 +534,7 @@ export class FaIconChooser {
                   )}
                 </div>
               : <article class="message message-noresults text-center margin-2xl">
-                  <span key="b"><fa-icon {...this.commonFaIconProps} stylePrefix="far" name="frown" class="message-icon fa-3x margin-top-xs"></fa-icon></span>
+                  <span key="b"><fa-icon {...this.commonFaIconProps} icon={ faSadTear } class="message-icon fa-3x margin-top-xs"></fa-icon></span>
                   <h2 class="message-title margin-top-lg">Sorry, we couldn't find anything for that.</h2>
                   <p class="size-lg">You might try a different search...</p>
                 <p class="muted size-sm display-block">Or <a href="https://fontawesome.com/" target="_blank">get Font Awesome Pro</a> and upload your own icon!</p>

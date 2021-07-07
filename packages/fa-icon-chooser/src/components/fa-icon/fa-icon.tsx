@@ -1,5 +1,6 @@
 import { Component, Host, Prop, State, h } from '@stencil/core'
 import { IconPrefix, IconUpload, PREFIX_TO_STYLE, parseSvgText } from '../../utils/utils'
+import { IconDefinition } from '@fortawesome/fontawesome-common-types'
 import { get } from 'lodash'
 
 @Component({
@@ -8,9 +9,9 @@ import { get } from 'lodash'
   shadow: false,
 })
 export class FaIcon {
-  @Prop() name: string
+  @Prop() name?: string
 
-  @Prop() stylePrefix: IconPrefix = 'fas'
+  @Prop() stylePrefix?: IconPrefix
 
   @Prop() svgApi: any
 
@@ -22,11 +23,20 @@ export class FaIcon {
 
   @Prop() svgFetchBaseUrl?: string
 
-  @Prop() kitToken: string
+  @Prop() kitToken?: string
+
+  @Prop() icon?: IconDefinition
 
   @State() loading: boolean = false;
 
   @State() iconDefinition: any;
+
+  constructor() {
+    if(!(this.icon || (this.stylePrefix && this.name))) {
+      // TODO: how do we want to handle this error?
+      throw new Error('fa-icon component requires either `icon` prop or `style-prefix` and `name` props')
+    }
+  }
 
   componentWillLoad() {
     if(!this.svgApi) return
@@ -47,6 +57,11 @@ export class FaIcon {
       return
     }
 
+    if(this.icon) {
+      this.iconDefinition = this.icon
+      return
+    }
+
     const { findIconDefinition } = this.svgApi
 
     const iconDefinition = findIconDefinition && findIconDefinition({
@@ -64,6 +79,9 @@ export class FaIcon {
 
     // TODO: what should we do in this situation?
     if(!this.svgFetchBaseUrl) return
+
+    // TODO: what should we do in this situation?
+    if(!this.kitToken) return
 
     this.loading = true
 
