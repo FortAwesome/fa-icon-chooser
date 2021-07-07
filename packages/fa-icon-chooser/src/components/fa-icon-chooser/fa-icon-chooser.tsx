@@ -379,7 +379,7 @@ export class FaIconChooser {
       <form id="search-form" onSubmit={ this.preventDefaultFormSubmit }>
         <label htmlFor="search" class="sr-only">Search the v6 Beta Icons</label>
         <div class="wrap-search with-icon-before">
-          <i class="fas fa-search icons-search-decorative"></i>
+          <fa-icon {...this.commonFaIconProps} stylePrefix="fas" name="search" class="icons-search-decorative"></fa-icon>
           <input type="text" name="search" id="search" class="rounded" value={this.query} onKeyUp={this.onKeyUp.bind(this)} placeholder="Search for icons by name, category, or keyword"></input>
         </div>
         <div class="icons-style-menu-listing display-flex flex-items-center">
@@ -514,7 +514,7 @@ export class FaIconChooser {
                   )}
                 </div>
               : <article class="message message-noresults text-center margin-2xl">
-                  <span key="b"><i class="message-icon far fa-frown fa-3x margin-top-xs"></i></span>
+                  <span key="b"><fa-icon {...this.commonFaIconProps} stylePrefix="far" name="frown" class="message-icon fa-3x margin-top-xs"></fa-icon></span>
                   <h2 class="message-title margin-top-lg">Sorry, we couldn't find anything for that.</h2>
                   <p class="size-lg">You might try a different search...</p>
                 <p class="muted size-sm display-block">Or <a href="https://fontawesome.com/" target="_blank">get Font Awesome Pro</a> and upload your own icon!</p>
