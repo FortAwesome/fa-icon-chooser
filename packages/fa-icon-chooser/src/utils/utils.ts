@@ -47,6 +47,27 @@ export type IconUpload = {
   path: string;
 }
 
+export interface IconUploadLookup extends IconLookup {
+  iconUpload: IconUpload
+}
+
+export interface Customizable {
+  class?: string;
+  style?: string;
+  transform?: string;
+}
+
+export interface Element extends Customizable {
+  tag: string;
+  children?: Array<Element | Icon>
+}
+
+export interface Icon extends IconLookup, Customizable {
+  mask?: string;
+}
+
+export type IconChooserResult = Icon | Element;
+
 // TODO: replace this placeholder logic with, probably, real API calls
 // that handle resolving the version.
 export function resolveVersion(version: string): string {
@@ -149,8 +170,8 @@ export async function createFontAwesomeScriptElement(pro: boolean, version: stri
     }
 }
 
-export function buildIconChooserResult(icon: IconLookup) {
-  const { prefix, iconName} = icon
+export function buildIconChooserResult(iconLookup: IconLookup | IconUploadLookup): IconChooserResult {
+  const { prefix, iconName} = iconLookup
 
   return { prefix, iconName }
 }
