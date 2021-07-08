@@ -4,6 +4,9 @@ const FaIconChooserDevExports = (function () {
   const localDevMissingMsg = 'DEV: your local dev config in local.json is required but has not yet been loaded.'
 
   function getUrlText(url) {
+    // To simulate a fatal error, uncomment the following line:
+    //return Promise.reject('simulated fatal error')
+
     return fetch(url)
     .then(response => {
       if(response.ok) {
