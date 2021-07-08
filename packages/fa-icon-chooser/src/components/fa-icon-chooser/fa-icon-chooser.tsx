@@ -1,13 +1,8 @@
 import { Component, Event, Element, EventEmitter, Prop, State, h } from '@stencil/core'
 import { get, size, debounce } from 'lodash'
 import { IconLookup } from '@fortawesome/fontawesome-common-types'
-import { freeCdnBaseUrl, kitAssetsBaseUrl, buildIconChooserResult, createFontAwesomeScriptElement, IconUpload, defaultIcons, IconPrefix, STYLE_TO_PREFIX } from '../../utils/utils'
+import { freeCdnBaseUrl, kitAssetsBaseUrl, buildIconChooserResult, createFontAwesomeScriptElement, IconUpload, defaultIcons, IconPrefix, STYLE_TO_PREFIX, IconUploadLookup, IconChooserResult } from '../../utils/utils'
 import { faSadTear, faTire } from '../../utils/icons'
-
-export interface IconChooserResult extends IconLookup {
-  class?: string;
-  style?: string;
-}
 
 export type QueryHandler = (document: string) => Promise<any>;
 
@@ -21,10 +16,6 @@ type KitMetadata = {
   licenseSelected: string;
   name: string;
   iconUploads: Array<IconUpload> | null;
-}
-
-interface IconUploadLookup extends IconLookup {
-  iconUpload: IconUpload
 }
 
 @Component({
@@ -305,7 +296,7 @@ export class FaIconChooser {
       })
   }, 500 )
 
-  filteredIcons(): IconLookup[] {
+  filteredIcons(): Array<IconLookup | IconUploadLookup> {
     if(!this.styleFilterEnabled) return this.icons
 
     return this.icons.filter(({ prefix }) => this.styleFilters[prefix])
@@ -531,18 +522,18 @@ export class FaIconChooser {
             </article>
           : (size(this.filteredIcons()) > 0
               ? <div class="icon-listing">
-                  {this.filteredIcons().map(icon =>
-                  <article class="wrap-icon" key={ `${icon.prefix}-${ icon.iconName }`}>
-                    <button class="icon subtle display-flex flex-column flex-items-center flex-content-center" onClick={() => this.finish.emit(buildIconChooserResult(icon))}>
+                  {this.filteredIcons().map(iconLookup =>
+                  <article class="wrap-icon" key={ `${iconLookup.prefix}-${ iconLookup.iconName }`}>
+                    <button class="icon subtle display-flex flex-column flex-items-center flex-content-center" onClick={() => this.finish.emit(buildIconChooserResult(iconLookup))}>
                       <fa-icon
                         {...this.commonFaIconProps}
                         size='2x'
-                        stylePrefix={ icon.prefix }
-                        name={ icon.iconName }
-                        iconUpload={ get(icon, 'iconUpload') }
+                        stylePrefix={ iconLookup.prefix }
+                        name={ iconLookup.iconName }
+                        iconUpload={ get(iconLookup, 'iconUpload') }
                       />
 
-                      <span class="icon-name size-sm text-truncate margin-top-lg">{`${ icon.iconName }`}</span>
+                      <span class="icon-name size-sm text-truncate margin-top-lg">{`${ iconLookup.iconName }`}</span>
                       </button>
                   </article>
                   )}

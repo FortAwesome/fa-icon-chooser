@@ -16,9 +16,9 @@
 
 ## Events
 
-| Event    | Description | Type                             |
-| -------- | ----------- | -------------------------------- |
-| `finish` |             | `CustomEvent<IconChooserResult>` |
+| Event    | Description | Type                           |
+| -------- | ----------- | ------------------------------ |
+| `finish` |             | `CustomEvent<Element \| Icon>` |
 
 
 ## Dependencies
