@@ -402,7 +402,7 @@ export class FaIconChooser {
             <fa-icon {...this.commonFaIconProps} stylePrefix="fas" name="search" class="icons-search-decorative"></fa-icon>
             <input type="text" name="search" id="search" class="rounded" value={this.query} onKeyUp={this.onKeyUp.bind(this)} placeholder="Search for icons by name, category, or keyword"></input>
           </div>
-          <span class="column-12 tablet:column-1 text-center margin-bottom-xs muted size-sm tablet:text-right">Searching v5.15</span>
+          <span class="column-12 tablet:column-1 text-center margin-bottom-xs muted size-sm tablet:text-right">Searching v{this.resolvedVersion()}</span>
         </div>
 
         <div class="icons-style-menu-listing display-flex flex-items-center align-between margin-bottom-xl">
