@@ -126,10 +126,9 @@ export class FaIconChooser {
       `
     )
 
-    // TODO: consider real error handling.
     if(get(response, 'errors')) {
-      console.error('GraphQL query errors', response.errors)
-      throw new Error('GraphQL query errors')
+      console.error('Font Awesome Icon Chooser GraphQL query errors', response.errors)
+      throw new Error()
     }
 
     const kit = get(response, 'data.me.kit')
