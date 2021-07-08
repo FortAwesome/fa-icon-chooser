@@ -2,7 +2,7 @@ import { Component, Event, Element, EventEmitter, Prop, State, h } from '@stenci
 import { get, size, debounce } from 'lodash'
 import { IconLookup } from '@fortawesome/fontawesome-common-types'
 import { freeCdnBaseUrl, kitAssetsBaseUrl, buildIconChooserResult, createFontAwesomeScriptElement, IconUpload, defaultIcons, IconPrefix, STYLE_TO_PREFIX } from '../../utils/utils'
-import { faSadTear } from '../../utils/icons'
+import { faSadTear, faTire } from '../../utils/icons'
 
 export interface IconChooserResult extends IconLookup {
   class?: string;
@@ -389,8 +389,7 @@ export class FaIconChooser {
     if(this.isInitialLoading) {
       return <div class="fa-icon-chooser">
         <div class="message-loading text-center margin-2xl">
-          <h3>Fetching icons</h3>
-          <p class="margin-y-md muted">When this thing gets up to 88 mph...</p>
+          <h3>Loading...</h3>
         </div>
       </div>
     }
@@ -400,63 +399,71 @@ export class FaIconChooser {
         <label htmlFor="search" class="sr-only">Search the v6 Beta Icons</label>
         <div class="wrap-search with-icon-before">
           <fa-icon {...this.commonFaIconProps} stylePrefix="fas" name="search" class="icons-search-decorative"></fa-icon>
-          <input type="text" name="search" id="search" class="rounded" value={this.query} onKeyUp={this.onKeyUp.bind(this)} placeholder="Search for icons by name, category, or keyword"></input>
+          <input type="text" name="search" id="search" class="rounded margin-bottom-xl" value={this.query} onKeyUp={this.onKeyUp.bind(this)} placeholder="Search for icons by name, category, or keyword"></input>
         </div>
-        <div class="icons-style-menu-listing display-flex flex-items-center">
+        <div class="icons-style-menu-listing display-flex flex-items-center align-between margin-bottom-xl">
           <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
             <input id="icons-style-solid" checked={ this.styleFilterEnabled && this.styleFilters.fas } onChange={() => this.toggleStyleFilter('fas') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
-            <label htmlFor="icons-style-solid" class="icons-style-choice padding-y-xl padding-x-md margin-0 display-flex flex-column flex-items-center">
-              <span class="position-relative margin-bottom-sm">
+            <label htmlFor="icons-style-solid" class="icons-style-choice padding-y-md padding-x-md margin-0 display-flex flex-column flex-items-center">
+              <span class="position-relative margin-right-sm">
                 {
                   this.showCheckedStyleIcon('fas')
                   ? <fa-icon key="a" {...this.commonFaIconProps} name="grin-tongue" stylePrefix="fas" size="2x" class="checked-icon fa-fw"/>
                   : <fa-icon key="b" {...this.commonFaIconProps} name="smile" stylePrefix="fas" size="2x" class="unchecked-icon fa-fw"/>
                 }
               </span>
-              <span class="sr-only">Show </span>solid<span class="sr-only"> style icons</span>
+              <span class="">
+                <span class="sr-only">Show </span>solid<span class="sr-only"> style icons</span>
+              </span>
             </label>
           </div>
           <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
             <input id="icons-style-regular" checked={ this.styleFilterEnabled && this.styleFilters.far } onChange={() => this.toggleStyleFilter('far') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
-            <label htmlFor="icons-style-regular" class="icons-style-choice padding-y-xl padding-x-md margin-0 display-flex flex-column flex-items-center ">
-              <span class="position-relative margin-bottom-sm">
+            <label htmlFor="icons-style-regular" class="icons-style-choice padding-y-md padding-x-md margin-0 display-flex flex-column flex-items-center ">
+              <span class="position-relative margin-right-sm">
                 {
                   this.showCheckedStyleIcon('far')
                   ? <fa-icon key="a" {...this.commonFaIconProps} name="grin-tongue" stylePrefix="far" size="2x" class="checked-icon fa-fw"/>
                   : <fa-icon key="b" {...this.commonFaIconProps} name="smile" stylePrefix="far" size="2x" class="unchecked-icon fa-fw"/>
                 }
               </span>
-              <span class="sr-only">Show </span>regular<span class="sr-only"> style icons</span>
+              <span>
+                <span class="sr-only">Show </span>regular<span class="sr-only"> style icons</span>
+              </span>
             </label>
           </div>
           {
             this.pro() &&
             <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
               <input id="icons-style-light" checked={ this.styleFilterEnabled && this.styleFilters.fal } onChange={() => this.toggleStyleFilter('fal') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
-              <label htmlFor="icons-style-light" class="icons-style-choice padding-y-xl padding-x-md margin-0 display-flex flex-column flex-items-center ">
-                <span class="position-relative margin-bottom-sm">
+              <label htmlFor="icons-style-light" class="icons-style-choice padding-y-md padding-x-md margin-0 display-flex flex-column flex-items-center ">
+                <span class="position-relative margin-right-sm">
                   {
                     this.showCheckedStyleIcon('fal')
                     ? <fa-icon key="a" {...this.commonFaIconProps} name="grin-tongue" stylePrefix="fal" size="2x" class="checked-icon fa-fw"/>
                     : <fa-icon key="b" {...this.commonFaIconProps} name="smile" stylePrefix="fal" size="2x" class="unchecked-icon fa-fw"/>
                   }
                 </span>
-                <span class="sr-only">Show </span>light<span class="sr-only"> style icons</span>
+                <span>
+                  <span class="sr-only">Show </span>light<span class="sr-only"> style icons</span>
+                </span>
               </label>
             </div>
           }
           { this.isV6() && this.pro() &&
             <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
               <input id="icons-style-thin" checked={ this.styleFilterEnabled && this.styleFilters.fat } onChange={() => this.toggleStyleFilter('fat') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
-              <label htmlFor="icons-style-thin" class="icons-style-choice padding-y-xl padding-x-md margin-0 display-flex flex-column flex-items-center ">
-                <span class="position-relative margin-bottom-sm">
+              <label htmlFor="icons-style-thin" class="icons-style-choice padding-y-md padding-x-md margin-0 display-flex flex-column flex-items-center ">
+                <span class="position-relative margin-right-sm">
                   {
                     this.showCheckedStyleIcon('fat')
                     ? <fa-icon key="a" {...this.commonFaIconProps} name="grin-tongue" stylePrefix="fat" size="2x" class="checked-icon fa-fw"/>
                     : <fa-icon key="b" {...this.commonFaIconProps} name="smile" stylePrefix="fat" size="2x" class="unchecked-icon fa-fw"/>
                   }
                 </span>
-                <span class="sr-only">Show </span>thin<span class="sr-only"> style icons</span>
+                <span>
+                  <span class="sr-only">Show </span>thin<span class="sr-only"> style icons</span>
+                </span>
               </label>
             </div>
           }
@@ -464,36 +471,42 @@ export class FaIconChooser {
             this.isDuotoneAvailable() &&
             <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
               <input id="icons-style-duotone" checked={ this.styleFilterEnabled && this.styleFilters.fad } onChange={() => this.toggleStyleFilter('fad') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
-              <label htmlFor="icons-style-duotone" class="icons-style-choice padding-y-xl padding-x-md margin-0 display-flex flex-column flex-items-center ">
-                <span class="position-relative margin-bottom-sm">
+              <label htmlFor="icons-style-duotone" class="icons-style-choice padding-y-md padding-x-md margin-0 display-flex flex-column flex-items-center ">
+                <span class="position-relative margin-right-sm">
                   {
                     this.showCheckedStyleIcon('fad')
                     ? <fa-icon key="a" {...this.commonFaIconProps} name="grin-tongue" stylePrefix="fad" size="2x" class="checked-icon fa-fw"/>
                     : <fa-icon key="b" {...this.commonFaIconProps} name="smile" stylePrefix="fad" size="2x" class="unchecked-icon fa-fw"/>
                   }
                 </span>
-                <span class="sr-only">Show </span>duotone<span class="sr-only"> style icons</span>
+                <span>
+                  <span class="sr-only">Show </span>duotone<span class="sr-only"> style icons</span>
+                </span>
               </label>
             </div>
           }
           <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
             <input id="icons-style-brands" checked={ this.styleFilterEnabled && this.styleFilters.fab } onChange={() => this.toggleStyleFilter('fab') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
-            <label htmlFor="icons-style-brands" class="icons-style-choice padding-y-xl padding-x-md margin-0 display-flex flex-column flex-items-center ">
-              <span class="position-relative margin-bottom-sm">
+            <label htmlFor="icons-style-brands" class="icons-style-choice padding-y-md padding-x-md margin-0 display-flex flex-column flex-items-center ">
+              <span class="position-relative margin-right-sm">
                 <fa-icon {...this.commonFaIconProps} stylePrefix="fab" name="font-awesome" size="2x" class="fa-fw"/>
               </span>
-              <span class="sr-only">Show </span>brands<span class="sr-only"> style icons</span>
+              <span>
+                <span class="sr-only">Show </span>brands<span class="sr-only"> style icons</span>
+              </span>
             </label>
           </div>
           {
             this.mayHaveIconUploads() &&
             <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
               <input id="icons-style-uploads" checked={ this.styleFilterEnabled && this.styleFilters.fak } onChange={() => this.toggleStyleFilter('fak') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
-              <label htmlFor="icons-style-uploads" class="icons-style-choice padding-y-xl padding-x-md margin-0 display-flex flex-column flex-items-center ">
-                <span class="position-relative margin-bottom-sm">
-                  <fa-icon {...this.commonFaIconProps} stylePrefix="fas" name="icons" size="2x" class="fa-fw"/>
+              <label htmlFor="icons-style-uploads" class="icons-style-choice padding-y-md padding-x-md margin-0 display-flex flex-column flex-items-center ">
+                <span class="position-relative margin-right-sm">
+                  <fa-icon {...this.commonFaIconProps} stylePrefix="fas" name="cloud" size="2x" class="fa-fw"/>
                 </span>
-                <span class="sr-only">Show </span>Uploaded<span class="sr-only"> icons</span>
+                <span>
+                  <span class="sr-only">Show </span>Custom<span class="sr-only"> icons</span>
+                </span>
               </label>
             </div>
           }
@@ -512,8 +525,9 @@ export class FaIconChooser {
         {
           this.isQuerying
           ? <article class="message-loading text-center margin-2xl">
-              <fa-icon {...this.commonFaIconProps} name="circle-notch" stylePrefix="fas" size="2x" class="message-icon fa-spin margin-top-xs" />
-              <h4 class="message-title margin-top-sm">Loading icons</h4>
+              <fa-icon {...this.commonFaIconProps} icon={faTire} class="message-icon fa-2x margin-top-xs fa-spin fa-fw"></fa-icon>
+              <h3>Fetching icons</h3>
+              <p class="margin-y-md muted">When this thing gets up to 88 mph...</p>
             </article>
           : (size(this.filteredIcons()) > 0
               ? <div class="icon-listing">
@@ -528,16 +542,16 @@ export class FaIconChooser {
                         iconUpload={ get(icon, 'iconUpload') }
                       />
 
-                      <span class="icon-name size-xs text-truncate margin-top-lg">{`${ icon.iconName }`}</span>
+                      <span class="icon-name size-sm text-truncate margin-top-lg">{`${ icon.iconName }`}</span>
                       </button>
                   </article>
                   )}
                 </div>
               : <article class="message message-noresults text-center margin-2xl">
-                  <span key="b"><fa-icon {...this.commonFaIconProps} icon={ faSadTear } class="message-icon fa-3x margin-top-xs"></fa-icon></span>
+                  <span key="b"><fa-icon {...this.commonFaIconProps} icon={ faSadTear } class="message-icon fa-2x margin-top-xs"></fa-icon></span>
                   <h2 class="message-title margin-top-lg">Sorry, we couldn't find anything for that.</h2>
                   <p class="size-lg">You might try a different search...</p>
-                <p class="muted size-sm display-block">Or <a href="https://fontawesome.com/" target="_blank">get Font Awesome Pro</a> and upload your own icon!</p>
+                <p class="muted display-block">Or <a href="https://fontawesome.com/" target="_blank">get Font Awesome Pro</a> and upload your own icon!</p>
                 </article>
             )
         }

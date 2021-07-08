@@ -12,10 +12,14 @@
 }
 
 :host {
+  --background-color: var(--white);
+
   display: block;
   width: 90vw;
+  height: 75vw;
   margin: 0 auto;
   padding: var(--spacing-sm);
+  font-size: 15px;
 }
 
 .wrap-search {
@@ -29,16 +33,36 @@
 }
 
 .icons-style-menu-listing .icons-style-choice {
-  display: flex;
+  display: block;
   cursor: pointer;
-  text-transform: capitalize;
+  border: 2px solid var(--fa-lt-gravy);
   border-radius: var(--border-radius-md);
   color: var(--fa-dk-blue);
+  text-transform: capitalize;
+  text-align: center;
+}
+
+.icons-style-menu-listing .icons-style-choice:hover {
+  border-color: var(--fa-dk-blue);
+  background-color: var(--fa-dk-blue);
+  color: var(--white);
 }
 
 .icons-style-menu-listing .input-checkbox-custom:checked ~ .icons-style-choice {
-  color: var(--fa-navy);
-  font-weight: var(--font-weight-bold) !important;
+  color: var(--white);
+  background-color: var(--fa-navy);
+  border: 2px solid var(--fa-navy);
+}
+
+.icons-style-menu-listing .icons-style-choice > span,
+.icons-style-menu-listing .icons-style-choice > .svg-inline--fa {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.wrap-icon-listing {
+  background: var(--fa-lt-gravy);
+  padding: var(--spacing-lg) var(--spacing-md);
 }
 
 .icon-listing {
@@ -68,7 +92,7 @@ button.icon {
   height: 100%;
 }
 
-button.icon i {
+button.icon fa-icon {
   color: var(--fa-navy);
 }
 
