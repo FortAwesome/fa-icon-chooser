@@ -42,8 +42,6 @@ export class FaIcon {
   }
 
   componentWillLoad() {
-    if(!this.svgApi) return
-
     if(this.iconUpload) {
       this.iconDefinition = {
         prefix: 'fak',
@@ -64,6 +62,8 @@ export class FaIcon {
       this.iconDefinition = this.icon
       return
     }
+
+    if(!this.svgApi) return
 
     const { findIconDefinition } = this.svgApi
 
