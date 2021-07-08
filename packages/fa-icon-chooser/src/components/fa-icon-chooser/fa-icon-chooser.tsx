@@ -234,6 +234,7 @@ export class FaIconChooser {
         this.isInitialLoading = false
       })
       .catch(e => {
+        console.error(e)
         this.isInitialLoading = false
         this.fatalError = 'Unable to load. Check the console for any additional error information.'
       })

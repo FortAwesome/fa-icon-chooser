@@ -3,6 +3,17 @@ const FaIconChooserDevExports = (function () {
   let localConfig = undefined
   const localDevMissingMsg = 'DEV: your local dev config in local.json is required but has not yet been loaded.'
 
+  function getUrlText(url) {
+    return fetch(url)
+    .then(response => {
+      if(response.ok) {
+        return response.text()
+      } else {
+        throw new Error(`DEBUG: bad query for url: ${url}`)
+      }
+    })
+  }
+
   function handleQuery(query) {
     return new Promise((resolve, reject) => {
       const headers = {
@@ -55,6 +66,7 @@ const FaIconChooserDevExports = (function () {
     const container = document.querySelector('#fa-icon-chooser-container')
     const el = document.createElement('fa-icon-chooser')
     el.handleQuery = handleQuery
+    el.getUrlText = getUrlText
     el.addEventListener('finish', handleResult)
 
     Object.keys(props).map(prop => {
