@@ -12,10 +12,13 @@
 }
 
 :host {
+  --background-color: var(--white);
+
   display: block;
   width: 90vw;
   margin: 0 auto;
   padding: var(--spacing-sm);
+  font-size: 15px;
 }
 
 .wrap-search {
@@ -31,6 +34,7 @@
 .icons-style-menu-listing .icons-style-choice {
   display: block;
   cursor: pointer;
+  border: 2px solid var(--fa-lt-gravy);
   border-radius: var(--border-radius-md);
   color: var(--fa-dk-blue);
   text-transform: capitalize;
@@ -38,18 +42,26 @@
 }
 
 .icons-style-menu-listing .icons-style-choice:hover {
-  background-color: var(--white);
+  border-color: var(--fa-dk-blue);
+  background-color: var(--fa-dk-blue);
+  color: var(--white);
 }
 
 .icons-style-menu-listing .input-checkbox-custom:checked ~ .icons-style-choice {
   color: var(--white);
   background-color: var(--fa-navy);
-  font-weight: var(--font-weight-bold) !important;
+  border: 2px solid var(--fa-navy);
 }
 
-.icons-style-menu-listing .icons-style-choice > span {
+.icons-style-menu-listing .icons-style-choice > span,
+.icons-style-menu-listing .icons-style-choice > .svg-inline--fa {
   display: inline-block;
   vertical-align: middle;
+}
+
+.wrap-icon-listing {
+  background: var(--fa-lt-gravy);
+  padding: var(--spacing-lg) var(--spacing-md);
 }
 
 .icon-listing {

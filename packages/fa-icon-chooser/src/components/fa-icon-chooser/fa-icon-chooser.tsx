@@ -400,9 +400,9 @@ export class FaIconChooser {
         <label htmlFor="search" class="sr-only">Search the v6 Beta Icons</label>
         <div class="wrap-search with-icon-before">
           <fa-icon {...this.commonFaIconProps} stylePrefix="fas" name="search" class="icons-search-decorative"></fa-icon>
-          <input type="text" name="search" id="search" class="rounded" value={this.query} onKeyUp={this.onKeyUp.bind(this)} placeholder="Search for icons by name, category, or keyword"></input>
+          <input type="text" name="search" id="search" class="rounded margin-bottom-xl" value={this.query} onKeyUp={this.onKeyUp.bind(this)} placeholder="Search for icons by name, category, or keyword"></input>
         </div>
-        <div class="icons-style-menu-listing display-flex flex-items-center align-between">
+        <div class="icons-style-menu-listing display-flex flex-items-center align-between margin-bottom-xl">
           <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
             <input id="icons-style-solid" checked={ this.styleFilterEnabled && this.styleFilters.fas } onChange={() => this.toggleStyleFilter('fas') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
             <label htmlFor="icons-style-solid" class="icons-style-choice padding-y-md padding-x-md margin-0 display-flex flex-column flex-items-center">
@@ -542,7 +542,7 @@ export class FaIconChooser {
                         iconUpload={ get(icon, 'iconUpload') }
                       />
 
-                      <span class="icon-name size-xs text-truncate margin-top-lg">{`${ icon.iconName }`}</span>
+                      <span class="icon-name size-sm text-truncate margin-top-lg">{`${ icon.iconName }`}</span>
                       </button>
                   </article>
                   )}
