@@ -525,6 +525,12 @@ export class FaIconChooser {
             <p class="muted size-sm">This kit contains no uploaded icons.</p>
           </article>
         }
+        { !this.isQuerying &&
+          this.query === '' &&
+          <article class="text-center margin-2xl">
+            <p class="muted size-sm">Here are some faves, but you can search for others.</p>
+          </article>
+        }
         {
           this.isQuerying
           ? <article class="message-loading text-center margin-2xl">
