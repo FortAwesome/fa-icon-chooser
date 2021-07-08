@@ -388,10 +388,14 @@ export class FaIconChooser {
     return <div class="fa-icon-chooser">
       <form id="search-form" onSubmit={ this.preventDefaultFormSubmit }>
         <label htmlFor="search" class="sr-only">Search the v6 Beta Icons</label>
-        <div class="wrap-search with-icon-before">
-          <fa-icon {...this.commonFaIconProps} stylePrefix="fas" name="search" class="icons-search-decorative"></fa-icon>
-          <input type="text" name="search" id="search" class="rounded margin-bottom-xl" value={this.query} onKeyUp={this.onKeyUp.bind(this)} placeholder="Search for icons by name, category, or keyword"></input>
+        <div class="row align-middle tablet:margin-bottom-xl">
+          <div class="wrap-search column-12 tablet:column-11 margin-bottom-xs with-icon-before">
+            <fa-icon {...this.commonFaIconProps} stylePrefix="fas" name="search" class="icons-search-decorative"></fa-icon>
+            <input type="text" name="search" id="search" class="rounded" value={this.query} onKeyUp={this.onKeyUp.bind(this)} placeholder="Search for icons by name, category, or keyword"></input>
+          </div>
+          <span class="column-12 tablet:column-1 text-center margin-bottom-xs muted size-sm tablet:text-right">Searching v{this.resolvedVersion()}</span>
         </div>
+
         <div class="icons-style-menu-listing display-flex flex-items-center align-between margin-bottom-xl">
           <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
             <input id="icons-style-solid" checked={ this.styleFilterEnabled && this.styleFilters.fas } onChange={() => this.toggleStyleFilter('fas') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
