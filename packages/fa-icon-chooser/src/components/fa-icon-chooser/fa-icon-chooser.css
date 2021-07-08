@@ -16,6 +16,7 @@
 
   display: block;
   width: 90vw;
+  height: 75vw;
   margin: 0 auto;
   padding: var(--spacing-sm);
   font-size: 15px;
