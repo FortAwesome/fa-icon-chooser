@@ -2,7 +2,6 @@ import { Component, Host, Prop, State, h } from '@stencil/core'
 import { IconPrefix, IconUpload, PREFIX_TO_STYLE, parseSvgText } from '../../utils/utils'
 import { IconDefinition } from '@fortawesome/fontawesome-common-types'
 import { get } from 'lodash'
-import { faCircleNotch } from '../../utils/icons'
 
 @Component({
   tag: 'fa-icon',
@@ -60,6 +59,7 @@ export class FaIcon {
 
     if(this.icon) {
       this.iconDefinition = this.icon
+
       return
     }
 
@@ -151,9 +151,6 @@ export class FaIcon {
   }
 
   render() {
-    if(this.loading) {
-      return this.buildSvg( faCircleNotch, 'fa-spin' )
-    }
 
     return this.iconDefinition
     ? this.buildSvg( this.iconDefinition )

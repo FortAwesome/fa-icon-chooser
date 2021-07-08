@@ -2,7 +2,7 @@ import { Component, Event, Element, EventEmitter, Prop, State, h } from '@stenci
 import { get, size, debounce } from 'lodash'
 import { IconLookup } from '@fortawesome/fontawesome-common-types'
 import { freeCdnBaseUrl, kitAssetsBaseUrl, buildIconChooserResult, createFontAwesomeScriptElement, IconUpload, defaultIcons, IconPrefix, STYLE_TO_PREFIX } from '../../utils/utils'
-import { faSadTear } from '../../utils/icons'
+import { faSadTear, faTire } from '../../utils/icons'
 
 export interface IconChooserResult extends IconLookup {
   class?: string;
@@ -389,8 +389,7 @@ export class FaIconChooser {
     if(this.isInitialLoading) {
       return <div class="fa-icon-chooser">
         <div class="message-loading text-center margin-2xl">
-          <h3>Fetching icons</h3>
-          <p class="margin-y-md muted">When this thing gets up to 88 mph...</p>
+          <h3>Loading...</h3>
         </div>
       </div>
     }
@@ -526,8 +525,9 @@ export class FaIconChooser {
         {
           this.isQuerying
           ? <article class="message-loading text-center margin-2xl">
-              <fa-icon {...this.commonFaIconProps} name="circle-notch" stylePrefix="fas" size="2x" class="message-icon fa-spin margin-top-xs" />
-              <h4 class="message-title margin-top-sm">Loading icons</h4>
+              <fa-icon {...this.commonFaIconProps} icon={faTire} class="message-icon fa-2x margin-top-xs fa-spin fa-fw"></fa-icon>
+              <h3>Fetching icons</h3>
+              <p class="margin-y-md muted">When this thing gets up to 88 mph...</p>
             </article>
           : (size(this.filteredIcons()) > 0
               ? <div class="icon-listing">
