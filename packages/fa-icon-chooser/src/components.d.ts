@@ -5,12 +5,13 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { IconChooserResult, IconPrefix, IconUpload } from "./utils/utils";
+import { IconChooserResult, IconPrefix, IconUpload, UrlTextFetcher } from "./utils/utils";
 import { IconDefinition } from "@fortawesome/fontawesome-common-types";
 import { QueryHandler } from "./components/fa-icon-chooser/fa-icon-chooser";
 export namespace Components {
     interface FaIcon {
         "class": string;
+        "getUrlText"?: UrlTextFetcher;
         "icon"?: IconDefinition;
         "iconUpload"?: IconUpload;
         "kitToken"?: string;
@@ -22,6 +23,10 @@ export namespace Components {
         "svgFetchBaseUrl"?: string;
     }
     interface FaIconChooser {
+        /**
+          * Callback function that makes returns the text body of a response that corresponds to an HTTP GET request for the given URL.
+         */
+        "getUrlText": UrlTextFetcher;
         "handleQuery": QueryHandler;
         /**
           * A kit token identifying a kit in which to find icons. Takes precedent over version prop if both are present.
@@ -54,6 +59,7 @@ declare global {
 declare namespace LocalJSX {
     interface FaIcon {
         "class"?: string;
+        "getUrlText"?: UrlTextFetcher;
         "icon"?: IconDefinition;
         "iconUpload"?: IconUpload;
         "kitToken"?: string;
@@ -65,6 +71,10 @@ declare namespace LocalJSX {
         "svgFetchBaseUrl"?: string;
     }
     interface FaIconChooser {
+        /**
+          * Callback function that makes returns the text body of a response that corresponds to an HTTP GET request for the given URL.
+         */
+        "getUrlText"?: UrlTextFetcher;
         "handleQuery"?: QueryHandler;
         /**
           * A kit token identifying a kit in which to find icons. Takes precedent over version prop if both are present.

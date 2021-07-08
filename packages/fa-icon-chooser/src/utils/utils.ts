@@ -1,6 +1,8 @@
 import defaultIconsSearchResult from './defaultIconsSearchResult.json'
 import { IconLookup } from '@fortawesome/fontawesome-common-types'
 
+export type UrlTextFetcher = (url: string) => Promise<string>
+
 export const defaultIcons: any = defaultIconsSearchResult
 
 // TODO: figure out whether the IconPrefix type in @fortawesome/fontawesome-common-types
@@ -141,20 +143,16 @@ export function kitAssetsBaseUrl(pro: boolean): string {
     : 'https://ka-f.fontawesome.com'
 }
 
-export async function createFontAwesomeScriptElement(pro: boolean, version: string, baseUrl: string, kitToken: string | undefined): Promise<HTMLElement> {
+export async function createFontAwesomeScriptElement(getUrlText: UrlTextFetcher, pro: boolean, version: string, baseUrl: string, kitToken: string | undefined): Promise<HTMLElement> {
     const license = pro ? 'pro' : 'free'
     const assetUrl = kitToken
       ? `${baseUrl}/releases/v${version}/js/${license}.min.js?token=${kitToken}`
       : `${baseUrl}/releases/v${version}/js/all.js`
 
     try {
-      const response = await fetch(assetUrl)
+      if('function' !== typeof getUrlText) throw new Error('Font Awesome Icon Chooser: expected getUrlText to be a function but it wasn\'t')
 
-      if (!response.ok) {
-        throw new Error('Font Awesome Icon Chooser: unexpected response from CDN')
-      }
-
-      const scriptContent = await response.text()
+      const scriptContent = await getUrlText(assetUrl)
       const script = document.createElement('SCRIPT')
       const text = document.createTextNode(scriptContent)
       script.appendChild(text)

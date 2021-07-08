@@ -1,7 +1,7 @@
 import { Component, Event, Element, EventEmitter, Prop, State, h } from '@stencil/core'
 import { get, size, debounce } from 'lodash'
 import { IconLookup } from '@fortawesome/fontawesome-common-types'
-import { freeCdnBaseUrl, kitAssetsBaseUrl, buildIconChooserResult, createFontAwesomeScriptElement, IconUpload, defaultIcons, IconPrefix, STYLE_TO_PREFIX, IconUploadLookup, IconChooserResult } from '../../utils/utils'
+import { freeCdnBaseUrl, kitAssetsBaseUrl, buildIconChooserResult, createFontAwesomeScriptElement, IconUpload, defaultIcons, IconPrefix, STYLE_TO_PREFIX, IconUploadLookup, IconChooserResult, UrlTextFetcher } from '../../utils/utils'
 import { faSadTear, faTire } from '../../utils/icons'
 
 export type QueryHandler = (document: string) => Promise<any>;
@@ -35,14 +35,20 @@ export class FaIconChooser {
    * A kit token identifying a kit in which to find icons. Takes precedent over
    * version prop if both are present.
    */
-  @Prop() kitToken?: string;
+  @Prop() kitToken?: string
 
   /**
    * Version to use for finding and loading icons when kitToken is not provided.
    */
-  @Prop() version?: string;
+  @Prop() version?: string
 
-  @Prop() handleQuery: QueryHandler;
+  @Prop() handleQuery: QueryHandler
+
+  /**
+   * Callback function that makes returns the text body of a response that
+   * corresponds to an HTTP GET request for the given URL.
+   */
+  @Prop() getUrlText: UrlTextFetcher
 
   @Event({
     eventName: 'finish',
@@ -74,6 +80,8 @@ export class FaIconChooser {
   };
 
   @State() kitMetadata: KitMetadata;
+
+  @State() fatalError: string
 
   svgApi?: any;
 
@@ -174,7 +182,7 @@ export class FaIconChooser {
           // Otherwise, we'll add it to the outer DOM, but disable it from doing
           // anything automated that would have global affect--other than assigning
           // itself to the global window.FontAwesome.
-          return createFontAwesomeScriptElement(pro, this.resolvedVersion(), baseUrl, this.kitToken)
+          return createFontAwesomeScriptElement(this.getUrlText, pro, this.resolvedVersion(), baseUrl, this.kitToken)
             .then(scriptElement => {
               document.head.appendChild(scriptElement)
               return get(window, 'FontAwesome')
@@ -219,14 +227,15 @@ export class FaIconChooser {
           svgApi: get(window, 'FontAwesome'),
           pro: this.pro(),
           svgFetchBaseUrl: this.svgFetchBaseUrl,
-          kitToken: this.kitToken
+          kitToken: this.kitToken,
+          getUrlText: this.getUrlText
         }
 
         this.isInitialLoading = false
       })
       .catch(e => {
-        // TODO: implement real error handling
-        console.error('WHOOPS!', e.toString())
+        this.isInitialLoading = false
+        this.fatalError = 'Unable to load. Check the console for any additional error information.'
       })
   }
 
@@ -388,6 +397,15 @@ export class FaIconChooser {
     const fatDisabled = !(this.isV6() && this.pro())
     const fadDisabled = !this.isDuotoneAvailable()
     const fakDisabled = !this.mayHaveIconUploads()
+
+    if(this.fatalError) {
+      return <div class="fa-icon-chooser">
+        <div class="message-loading text-center margin-2xl">
+          <h3>Fatal Error</h3>
+          <p>{ this.fatalError }</p>
+        </div>
+      </div>
+    }
 
     if(this.isInitialLoading) {
       return <div class="fa-icon-chooser">
