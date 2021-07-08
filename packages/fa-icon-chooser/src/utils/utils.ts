@@ -59,11 +59,11 @@ export interface Customizable {
 
 export interface Element extends Customizable {
   tag: string;
-  children?: Array<Element | Icon>
+  children?: Array<Element | Icon | string>
 }
 
 export interface Icon extends IconLookup, Customizable {
-  mask?: string;
+  mask?: IconLookup;
 }
 
 export type IconChooserResult = Icon | Element;
