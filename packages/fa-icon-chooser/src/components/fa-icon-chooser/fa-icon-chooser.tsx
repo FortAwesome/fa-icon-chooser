@@ -434,6 +434,7 @@ export class FaIconChooser {
                 <span class="sr-only">Show </span>light<span class="sr-only"> style icons</span>
               </span>
             </label>
+            <span class="disabled-tooltip size-sm">You need to use a Pro kit to get Light icons.</span>
           </div>
           <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
             <input disabled={ fatDisabled } id="icons-style-thin" checked={ this.styleFilterEnabled && this.styleFilters.fat } onChange={() => this.toggleStyleFilter('fat') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
@@ -452,6 +453,7 @@ export class FaIconChooser {
                 <span class="sr-only">Show </span>thin<span class="sr-only"> style icons</span>
               </span>
             </label>
+            <span class="disabled-tooltip size-sm">You need to use a Pro kit with Version 6 to get Thin icons.</span>
           </div>
           <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
             <input disabled={ fadDisabled } id="icons-style-duotone" checked={ this.styleFilterEnabled && this.styleFilters.fad } onChange={() => this.toggleStyleFilter('fad') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
@@ -470,6 +472,7 @@ export class FaIconChooser {
                 <span class="sr-only">Show </span>duotone<span class="sr-only"> style icons</span>
               </span>
             </label>
+            <span class="disabled-tooltip size-sm">You need to use a Pro kit with Version 5.10 or later to get Duotone icons.</span>
           </div>
           <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
             <input id="icons-style-brands" checked={ this.styleFilterEnabled && this.styleFilters.fab } onChange={() => this.toggleStyleFilter('fab') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
@@ -496,6 +499,7 @@ export class FaIconChooser {
                 <span class="sr-only">Show </span>Custom<span class="sr-only"> icons</span>
               </span>
             </label>
+            <span class="disabled-tooltip size-sm">You need to use a Pro kit with Version 6 to get Custom icons.</span>
           </div>
         </div>
       </form>
