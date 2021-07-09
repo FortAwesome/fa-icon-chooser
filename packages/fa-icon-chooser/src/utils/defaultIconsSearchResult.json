@@ -5,340 +5,176 @@
         "id": "user",
         "label": "User",
         "membership": {
-          "free": [
-            "solid",
-            "regular"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid", "regular"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "facebook",
         "label": "Facebook",
         "membership": {
-          "free": [
-            "brands"
-          ],
-          "pro": [
-            "brands"
-          ]
+          "free": ["brands"],
+          "pro": ["brands"]
         }
       },
       {
         "id": "check",
         "label": "Check",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "phone",
         "label": "Phone",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "plus",
         "label": "plus",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "twitter",
         "label": "Twitter",
         "membership": {
-          "free": [
-            "brands"
-          ],
-          "pro": [
-            "brands"
-          ]
+          "free": ["brands"],
+          "pro": ["brands"]
         }
       },
       {
         "id": "user-secret",
         "label": "User Secret",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "info",
         "label": "Info",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "list",
         "label": "List",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "star",
         "label": "Star",
         "membership": {
-          "free": [
-            "solid",
-            "regular"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid", "regular"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "cart-plus",
         "label": "Add to Shopping Cart",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "book",
         "label": "book",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "heart",
         "label": "Heart",
         "membership": {
-          "free": [
-            "solid",
-            "regular"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid", "regular"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "calendar",
         "label": "Calendar",
         "membership": {
-          "free": [
-            "solid",
-            "regular"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid", "regular"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "trash",
         "label": "Trash",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "download",
         "label": "Download",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "youtube",
         "label": "YouTube",
         "membership": {
-          "free": [
-            "brands"
-          ],
-          "pro": [
-            "brands"
-          ]
+          "free": ["brands"],
+          "pro": ["brands"]
         }
       },
       {
         "id": "cross",
         "label": "Cross",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "meteor",
         "label": "Meteor",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "linkedin",
         "label": "LinkedIn",
         "membership": {
-          "free": [
-            "brands"
-          ],
-          "pro": [
-            "brands"
-          ]
+          "free": ["brands"],
+          "pro": ["brands"]
         }
       },
       {
         "id": "play",
         "label": "play",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "lock",
         "label": "lock",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
@@ -346,122 +182,63 @@
         "label": "Car and Building",
         "membership": {
           "free": [],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "question",
         "label": "Question",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "google",
         "label": "Google Logo",
         "membership": {
-          "free": [
-            "brands"
-          ],
-          "pro": [
-            "brands"
-          ]
+          "free": ["brands"],
+          "pro": ["brands"]
         }
       },
       {
         "id": "video",
         "label": "Video",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "paper-plane",
         "label": "Paper Plane",
         "membership": {
-          "free": [
-            "solid",
-            "regular"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid", "regular"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "street-view",
         "label": "Street View",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "share",
         "label": "Share",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "code",
         "label": "Code",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
@@ -469,46 +246,23 @@
         "label": "House",
         "membership": {
           "free": [],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "bell",
         "label": "bell",
         "membership": {
-          "free": [
-            "solid",
-            "regular"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid", "regular"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "coffee",
         "label": "Coffee",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
@@ -516,140 +270,71 @@
         "label": "Computer Speaker",
         "membership": {
           "free": [],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "bars",
         "label": "Bars",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "github",
         "label": "GitHub",
         "membership": {
-          "free": [
-            "brands"
-          ],
-          "pro": [
-            "brands"
-          ]
+          "free": ["brands"],
+          "pro": ["brands"]
         }
       },
       {
         "id": "comment",
         "label": "comment",
         "membership": {
-          "free": [
-            "solid",
-            "regular"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid", "regular"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "image",
         "label": "Image",
         "membership": {
-          "free": [
-            "solid",
-            "regular"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid", "regular"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "folder",
         "label": "Folder",
         "membership": {
-          "free": [
-            "solid",
-            "regular"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid", "regular"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "key",
         "label": "key",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "mobile",
         "label": "Mobile Phone",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "camera",
         "label": "camera",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
@@ -657,111 +342,55 @@
         "label": "Text",
         "membership": {
           "free": [],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "umbrella-beach",
         "label": "Umbrella Beach",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "building",
         "label": "Building",
         "membership": {
-          "free": [
-            "solid",
-            "regular"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid", "regular"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "print",
         "label": "print",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "sort",
         "label": "Sort",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "flag",
         "label": "flag",
         "membership": {
-          "free": [
-            "solid",
-            "regular"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid", "regular"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "network-wired",
         "label": "Wired Network",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
@@ -769,109 +398,55 @@
         "label": "pencil",
         "membership": {
           "free": [],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "quote-right",
         "label": "quote-right",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "truck",
         "label": "truck",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "pepper-hot",
         "label": "Pepper Hot",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "file-export",
         "label": "File Export",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "table",
         "label": "table",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "file-invoice",
         "label": "File Invoice",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
@@ -879,46 +454,23 @@
         "label": "Moon with Stars",
         "membership": {
           "free": [],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "tty",
         "label": "TTY",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "registered",
         "label": "Registered Trademark",
         "membership": {
-          "free": [
-            "solid",
-            "regular"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid", "regular"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
@@ -926,29 +478,15 @@
         "label": "Office Phone",
         "membership": {
           "free": [],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "video-slash",
         "label": "Video Slash",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
@@ -956,45 +494,23 @@
         "label": "Person and Empty Dolly",
         "membership": {
           "free": [],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "signature",
         "label": "Signature",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "store",
         "label": "Store",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
@@ -1002,13 +518,7 @@
         "label": "Projector",
         "membership": {
           "free": [],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
@@ -1016,125 +526,63 @@
         "label": "Loveseat",
         "membership": {
           "free": [],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "arrow-right",
         "label": "arrow-right",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "music",
         "label": "Music",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "icons",
         "label": "Icons",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "power-off",
         "label": "Power Off",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "wifi",
         "label": "WiFi",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "vials",
         "label": "Vials",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "door-open",
         "label": "Door Open",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
@@ -1142,13 +590,7 @@
         "label": "shield",
         "membership": {
           "free": [],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
@@ -1156,29 +598,15 @@
         "label": "Line Height",
         "membership": {
           "free": [],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
         "id": "expand",
         "label": "Expand",
         "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "free": ["solid"],
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
@@ -1186,13 +614,7 @@
         "label": "Walkie Talkie",
         "membership": {
           "free": [],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       },
       {
@@ -1200,13 +622,7 @@
         "label": "Mailbox",
         "membership": {
           "free": [],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
+          "pro": ["solid", "regular", "light", "thin", "duotone"]
         }
       }
     ]

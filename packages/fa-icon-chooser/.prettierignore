@@ -1,0 +1,7 @@
+dist/
+loader/
+www/
+node_modules/
+src/dev/
+src/components/fa-icon-chooser/web-awesome.css
+src/components.d.ts

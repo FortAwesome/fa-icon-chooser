@@ -1,12 +1,12 @@
 # fa-icon
 
 ## CAVEAT: Not For Use Outside this Repo
+
 This `fa-icon` component isn't THE `fa-icon` component. It's just a convenience
 component to help with displaying icons within this Icon Chooser. It's API
 may change as suits the needs of the Icon Chooser.
 
 <!-- Auto Generated Below -->
-
 
 ## Properties
 
@@ -24,20 +24,20 @@ may change as suits the needs of the Icon Chooser.
 | `svgApi`          | `svg-api`            |             | `any`                                                                                              | `undefined` |
 | `svgFetchBaseUrl` | `svg-fetch-base-url` |             | `string`                                                                                           | `undefined` |
 
-
 ## Dependencies
 
 ### Used by
 
- - [fa-icon-chooser](../fa-icon-chooser)
+- [fa-icon-chooser](../fa-icon-chooser)
 
 ### Graph
+
 ```mermaid
 graph TD;
   fa-icon-chooser --> fa-icon
   style fa-icon fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
-----------------------------------------------
+---
 
-*Built with [StencilJS](https://stenciljs.com/)*
+_Built with [StencilJS](https://stenciljs.com/)_
