@@ -1,6 +1,6 @@
 # FaIconChooser React Component
 
-Find API References for the required callback functions in the [`fa-icon-chooser` component documentation over here](../fa-icon-chooser).
+Find API References for the required callback functions in the [`fa-icon-chooser` component documentation over here](../fa-icon-chooser/src/components/fa-icon-chooser/readme.md).
 
 ## Usage
 
