@@ -5,25 +5,40 @@
 A Web Component built with [Stencil](https://stenciljs.com/), for use in other
 projects that want to provide a Font Awesome Icon search and discovery experience.
 
-It's powered by the same Algolia search that used in the [Font Awesome Icon Gallery](https://fontawesome.com/icons).
+It's powered by the same Algolia search as the [Font Awesome Icon Gallery](https://fontawesome.com/icons).
 
 Used, for example, in the [Font Awesome official WordPress plugin](https://github.com/FortAwesome/wordpress-fontawesome).
 
+Using this component requires front end development directly in JavaScript
+and the DOM. It's intended for developers integrating Font Awesome into their apps
+and components.
+
 ## Overview
 
-The Icon Chooser can be wired up to a Font Awesome Kit, using that kit's unique token,
-or without a kit, given just a Font Awesome version number.
+The Icon Chooser can be configured to work with a Font Awesome Kit, using that
+kit's unique token, or without a kit, given just a Font Awesome version number.
 
 In non-kit mode, only Font Awesome Free is available.
 
-When used with a kit, everything is avaiable, according to that kit's configuration.
+When used with a kit, everything is available, according to that kit's configuration.
 - Font Awesome Pro
 - Font Awesome 6 (currently in beta, but if the given kit is set to FA6, the Icon Chooser knows what to do)
-- Kit Icon Uploads: any icons uploaded to the kit are available 
+- Kit Icon Uploads: any icons uploaded to the kit are available in the chooser
 
-## Basic Interaction
-1. User takes some action in your app to insert a Font Awesome Icon.
-2. Your code mounts this Icon Chooser and listens for the `finish` event to be fired in the DOM.
+A user configures their own kit on that kit's settings page on fontawesome.com and
+generates an API Token that authorizes access to their kit's settings via the GraphQL API.
+
+The user provides that kit token and API token to your code. Your code provides the
+kit token as a prop to `fa-icon-chooser`. Your code uses the API Token to get an
+[access token from the token endpoint](https://fontawesome.com/v5.15/how-to-use/graphql-api/auth/token-endpoint), and then uses that resulting access token to authorize any
+queries in your `handleQuery()` callback function. 
+
+You provide your own implementations of a few different callback functions for
+handling queries and the results of the user's interaction with the Icon Chooser.
+
+## Example Interaction
+1. User takes some action in your app to insert a Font Awesome Icon, like clicking an "insert icon" buton.
+2. Your code mounts this Icon Chooser providing the various required props and listens for the `finish` event to be fired in the DOM.
 3. Your code uses the `IconChooserResult` object delivered by that event to render the results of the user's choice.
 
 For example, an `IconChooserResult` might be:
@@ -54,15 +69,9 @@ the assumptions you make about the shape of that `IconChooserResult` object.
 
 ## Setup
 
-Using this component requires front end development work directly in JavaScript
-and the DOM. It's intended for developers integrating Font Awesome into their apps
-and components.
+Choose one of the following:
 
-Using the `fa-icon-chooser` web component directly requires some wiring up. Some
-required props cannot be passed using HTML attribute syntax, such as the `handleQuery`
-callback function.
-
-Find those [setup instructions in that component's package](packages/fa-icon-chooser).
-
-Or you could use a JavaScript framework integration. Currently, the only one available is
-for [React](packages/fa-icon-chooser-react).
+1. Use the `fa-icon-chooser` web component directly.
+    Find those [setup instructions in that component's package](packages/fa-icon-chooser).
+1. Use a JavaScript framework integration.
+    Currently, the only one available is for [React](packages/fa-icon-chooser-react).
