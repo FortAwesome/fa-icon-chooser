@@ -5,9 +5,8 @@ export type UrlTextFetcher = (url: string) => Promise<string>
 
 export const defaultIcons: any = defaultIconsSearchResult
 
-// TODO: figure out whether the IconPrefix type in @fortawesome/fontawesome-common-types
-// should have 'fat' in it.
-// But this also needs to include "fak" for icon uploads. Does that even belong in the IconPrefix type?
+// The IconPrefix type in @fortawesome/fontawesome-common-types corresponding to
+// FA v5 does not include 'fat', nor 'fak', so we'll make our own type here temporarily.
 export type IconPrefix = 'fas' | 'fab' | 'far' | 'fal' | 'fat' | 'fad' | 'fak'
 
 export type IconStyle = 'solid' | 'duotone' | 'regular' | 'light' | 'thin' | 'kit' | 'brands'
