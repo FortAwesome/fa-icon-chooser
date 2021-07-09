@@ -22,8 +22,9 @@ In non-kit mode, only Font Awesome Free is available.
 
 When used with a kit, everything is available, according to that kit's configuration.
 - Font Awesome Pro
-- Font Awesome 6 (currently in beta, but if the given kit is set to FA6, the Icon Chooser knows what to do)
-- Kit Icon Uploads: any icons uploaded to the kit are available in the chooser
+- Font Awesome 6
+    Font Awesome 6 is currently in beta, but if the given kit is set to a version like `6.x` or `6.0.0-beta1`, the Icon Chooser knows what to do!
+- Kit Icon Uploads: any icons uploaded to the kit are available in the chooser.
 
 A user configures their own kit on that kit's settings page on fontawesome.com and
 generates an API Token that authorizes access to their kit's settings via the GraphQL API.
