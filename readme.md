@@ -13,6 +13,8 @@ Using this component requires front end development directly in JavaScript
 and the DOM. It's intended for developers integrating Font Awesome into their apps
 and components.
 
+![Font Awesome Icon Chooser Screenshot](/images/screenshot1.png)
+
 ## Overview
 
 The Icon Chooser can be configured to work with a Font Awesome Kit, using that
