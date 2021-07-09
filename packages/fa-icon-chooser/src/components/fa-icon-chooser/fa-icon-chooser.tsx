@@ -499,7 +499,7 @@ export class FaIconChooser {
                 <span class="sr-only">Show </span>Custom<span class="sr-only"> icons</span>
               </span>
             </label>
-            <span class="disabled-tooltip size-sm">You need to use a Pro kit with Version 6 to get Custom icons.</span>
+            <span class="disabled-tooltip size-sm">You need to use a Pro kit to get Custom icons.</span>
           </div>
         </div>
       </form>
