@@ -4,13 +4,11 @@ import { defaultIcons } from '../../utils/utils'
 import { get } from 'lodash'
 
 // TODO: tests
-// - remove contents from query field after having had some contents: what should happen in that state?
-// - when pro is not enabled, style filter buttons should not be display for Light or Duotone
-// - duotone style filter button is only shown for Pro >= 5.10.0
+// - remove contents from query field after having had some contents: return to default state
+// - when pro is not enabled, style filter buttons should be disabled
+// - duotone style filter button is only enabled for Pro >= 5.10.0
 // - test the full matrix of scenarios involving:
-//   - whether FA is set up already in the outer DOM vs. being introduced by the web component
-//   - whether tech is SVG/JS or Webfont/CSS
-//   - whether CDN or Kit
+//   - whether FA SVG/JS is set up already in the outer DOM vs. being introduced by the web component
 
 async function mountWith(params) {
   const { attrs, handleQuery, handleResult } = params
