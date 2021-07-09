@@ -19,6 +19,7 @@ type KitMetadata = {
 }
 
 const DISPLAY_NONE = { display: 'none' }
+const DEFAULT_FATAL_ERROR_MESSAGE = 'Check the console for additional error information.'
 
 @Component({
   tag: 'fa-icon-chooser',
@@ -235,7 +236,7 @@ export class FaIconChooser {
       .catch(e => {
         console.error(e)
         this.isInitialLoading = false
-        this.fatalError = 'Unable to load. Check the console for any additional error information.'
+        this.fatalError = DEFAULT_FATAL_ERROR_MESSAGE
       })
   }
 
@@ -307,8 +308,8 @@ export class FaIconChooser {
   updateQueryResultsWithDebounce = debounce( query => {
       this.updateQueryResults(query)
       .catch(e => {
-        // TODO: implement real error handling
         console.error(e)
+        this.fatalError = DEFAULT_FATAL_ERROR_MESSAGE
       })
   }, 500 )
 
@@ -401,8 +402,8 @@ export class FaIconChooser {
     if(this.fatalError) {
       return <div class="fa-icon-chooser">
         <div class="message-loading text-center margin-2xl">
-          <h3>Fatal Error</h3>
-          <p>{ this.fatalError }</p>
+          <h3>Well, this is awkward...</h3>
+          <p>Something has gone horribly wrong. { this.fatalError }</p>
         </div>
       </div>
     }
