@@ -24,7 +24,7 @@ export namespace Components {
     }
     interface FaIconChooser {
         /**
-          * Callback function that makes returns the text body of a response that corresponds to an HTTP GET request for the given URL.
+          * Callback function that returns the text body of a response that corresponds to an HTTP GET request for the given URL. For example, it would be the result of [Response.text()](https://developer.mozilla.org/en-US/docs/Web/API/Response/text).
          */
         "getUrlText": UrlTextFetcher;
         "handleQuery": QueryHandler;
@@ -72,7 +72,7 @@ declare namespace LocalJSX {
     }
     interface FaIconChooser {
         /**
-          * Callback function that makes returns the text body of a response that corresponds to an HTTP GET request for the given URL.
+          * Callback function that returns the text body of a response that corresponds to an HTTP GET request for the given URL. For example, it would be the result of [Response.text()](https://developer.mozilla.org/en-US/docs/Web/API/Response/text).
          */
         "getUrlText"?: UrlTextFetcher;
         "handleQuery"?: QueryHandler;
