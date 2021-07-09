@@ -33,7 +33,7 @@ export namespace Components {
          */
         "kitToken"?: string;
         /**
-          * Version to use for finding and loading icons when kitToken is not provided.
+          * Version to use for finding and loading icons when kitToken is not provided. Must be a valid semantic version, as parsed by the [semver NPM](https://www.npmjs.com/package/semver), like 5.5.13 or 6.0.0-beta1.
          */
         "version"?: string;
     }
@@ -82,7 +82,7 @@ declare namespace LocalJSX {
         "kitToken"?: string;
         "onFinish"?: (event: CustomEvent<IconChooserResult>) => void;
         /**
-          * Version to use for finding and loading icons when kitToken is not provided.
+          * Version to use for finding and loading icons when kitToken is not provided. Must be a valid semantic version, as parsed by the [semver NPM](https://www.npmjs.com/package/semver), like 5.5.13 or 6.0.0-beta1.
          */
         "version"?: string;
     }

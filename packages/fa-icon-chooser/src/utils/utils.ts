@@ -1,5 +1,6 @@
 import defaultIconsSearchResult from './defaultIconsSearchResult.json'
 import { IconLookup } from '@fortawesome/fontawesome-common-types'
+import { valid as validSemver } from 'semver'
 
 export type UrlTextFetcher = (url: string) => Promise<string>
 
@@ -159,4 +160,8 @@ export function buildIconChooserResult(iconLookup: IconLookup | IconUploadLookup
   const { prefix, iconName} = iconLookup
 
   return { prefix, iconName }
+}
+
+export function isValidSemver(val: string): boolean {
+  return !!validSemver(val)
 }

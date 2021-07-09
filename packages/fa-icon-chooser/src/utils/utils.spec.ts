@@ -2,7 +2,8 @@ import {
   parseSvgText,
   Icon,
   IconChooserResult,
-  Element
+  Element,
+  isValidSemver
 } from './utils'
 
 describe('parseSvgText', () => {
@@ -138,5 +139,17 @@ describe('IconChooserResult typing', () => {
     const result: IconChooserResult = maskedPencil
 
     expect((result as Icon).mask.iconName).toEqual('comment')
+  })
+})
+
+describe('isSemver', () => {
+  test('when valid', () => {
+    expect(isValidSemver('5.13.5')).toBe(true)
+    expect(isValidSemver('6.0.0-beta1')).toBe(true)
+  })
+
+  test('when invalid', () => {
+    expect(isValidSemver('5.x')).toBe(false)
+    expect(isValidSemver('5.13.5.foo.bar')).toBe(false)
   })
 })

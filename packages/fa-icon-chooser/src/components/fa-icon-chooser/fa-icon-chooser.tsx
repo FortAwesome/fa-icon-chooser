@@ -1,7 +1,7 @@
 import { Component, Event, Element, EventEmitter, Prop, State, h } from '@stencil/core'
 import { get, size, debounce } from 'lodash'
 import { IconLookup } from '@fortawesome/fontawesome-common-types'
-import { freeCdnBaseUrl, kitAssetsBaseUrl, buildIconChooserResult, createFontAwesomeScriptElement, IconUpload, defaultIcons, IconPrefix, STYLE_TO_PREFIX, IconUploadLookup, IconChooserResult, UrlTextFetcher, CONSOLE_MESSAGE_PREFIX } from '../../utils/utils'
+import { freeCdnBaseUrl, kitAssetsBaseUrl, buildIconChooserResult, createFontAwesomeScriptElement, IconUpload, defaultIcons, IconPrefix, STYLE_TO_PREFIX, IconUploadLookup, IconChooserResult, UrlTextFetcher, CONSOLE_MESSAGE_PREFIX, isValidSemver } from '../../utils/utils'
 import { faSadTear, faTire } from '../../utils/icons'
 
 export type QueryHandler = (document: string) => Promise<any>;
@@ -40,6 +40,8 @@ export class FaIconChooser {
 
   /**
    * Version to use for finding and loading icons when kitToken is not provided.
+   * Must be a valid semantic version, as parsed by the [semver NPM](https://www.npmjs.com/package/semver),
+   * like 5.5.13 or 6.0.0-beta1.
    */
   @Prop() version?: string
 
@@ -95,10 +97,6 @@ export class FaIconChooser {
 
   constructor() {
     this.toggleStyleFilter = this.toggleStyleFilter.bind(this)
-
-    if(!this.kitToken && !this.version) {
-      throw new Error('Font Awesome Icon Chooser requires either kit-token or version prop')
-    }
   }
 
   async loadKitMetadata() {
@@ -160,6 +158,12 @@ export class FaIconChooser {
   }
 
   componentWillLoad() {
+      if(!this.kitToken && !isValidSemver(this.version)) {
+        console.error(`${CONSOLE_MESSAGE_PREFIX}: either a kit-token or valid semantic version is required.`, this)
+        this.fatalError = DEFAULT_FATAL_ERROR_MESSAGE
+        return
+      }
+
       this.query = ''
 
       this.isInitialLoading = true
