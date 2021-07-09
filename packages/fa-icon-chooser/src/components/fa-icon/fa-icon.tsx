@@ -1,5 +1,5 @@
 import { Component, Host, Prop, State, h } from '@stencil/core'
-import { IconPrefix, IconUpload, PREFIX_TO_STYLE, parseSvgText, UrlTextFetcher } from '../../utils/utils'
+import { IconPrefix, IconUpload, PREFIX_TO_STYLE, parseSvgText, UrlTextFetcher, CONSOLE_MESSAGE_PREFIX } from '../../utils/utils'
 import { IconDefinition } from '@fortawesome/fontawesome-common-types'
 import { get } from 'lodash'
 
@@ -35,13 +35,6 @@ export class FaIcon {
 
   @State() iconDefinition: any;
 
-  constructor() {
-    if(!(this.icon || (this.stylePrefix && this.name))) {
-      // TODO: how do we want to handle this error?
-      throw new Error('fa-icon component requires either `icon` prop or `style-prefix` and `name` props')
-    }
-  }
-
   componentWillLoad() {
     if(this.iconUpload) {
       this.iconDefinition = {
@@ -65,7 +58,15 @@ export class FaIcon {
       return
     }
 
-    if(!this.svgApi) return
+    if(!this.svgApi) {
+      console.error(`${CONSOLE_MESSAGE_PREFIX}: fa-icon: svgApi prop is needed but is missing`, this)
+      return
+    }
+
+    if(!(this.stylePrefix && this.name)) {
+      console.error(`${CONSOLE_MESSAGE_PREFIX}: fa-icon: the 'stylePrefix' and 'name' props are needed to render this icon but not provided.`, this)
+      return
+    }
 
     const { findIconDefinition } = this.svgApi
 
@@ -79,14 +80,20 @@ export class FaIcon {
       return
     }
 
-    // TODO: what should we do in this situation?
-    if(!this.pro) return
+    if(!this.pro) {
+      console.error(`${CONSOLE_MESSAGE_PREFIX}: fa-icon: 'pro' prop is false but no free icon is avaialble`, this)
+      return
+    }
 
-    // TODO: what should we do in this situation?
-    if(!this.svgFetchBaseUrl) return
+    if(!this.svgFetchBaseUrl) {
+      console.error(`${CONSOLE_MESSAGE_PREFIX}: fa-icon: 'svgFetchBaseUrl' prop is absent but is necessary for fetching icon`, this)
+      return
+    }
 
-    // TODO: what should we do in this situation?
-    if(!this.kitToken) return
+    if(!this.kitToken) {
+      console.error(`${CONSOLE_MESSAGE_PREFIX}: fa-icon: 'kitToken' prop is absent but is necessary for accessing icon`, this)
+      return
+    }
 
     this.loading = true
 
@@ -94,8 +101,10 @@ export class FaIcon {
 
     const library = get(this, 'svgApi.library')
 
-    // TODO: what should we do in this situation?
-    if('function' !== typeof this.getUrlText) return
+    if('function' !== typeof this.getUrlText) {
+      console.error(`${CONSOLE_MESSAGE_PREFIX}: fa-icon: 'getUrlText' prop is absent but is necessary for fetching icon`, this)
+      return
+    }
 
     this.getUrlText(iconUrl).then(svg => {
       const iconDefinition = {
@@ -107,7 +116,7 @@ export class FaIcon {
       this.iconDefinition = {...iconDefinition}
     })
     .catch(e => {
-      console.error('Font Awesome Icon Chooser: failed when fetching an individual SVG icon', e)
+      console.error(`${CONSOLE_MESSAGE_PREFIX}: fa-icon: failed when using 'getUrlText' to fetch icon`, e, this)
     })
     .finally(() => {
       this.loading = false

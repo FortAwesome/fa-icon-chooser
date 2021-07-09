@@ -92,6 +92,8 @@ const duotonePathDuoClassedRe = /path class="([^"]+)".*d="([^"]+)".*path class="
 const duotonePathOnlyPrimaryRe = /path class="(fa-primary)".*d="([^"]+)"/
 const duotonePathOnlySecondaryRe = /path class="(fa-secondary)".*d="([^"]+)"/
 
+export const CONSOLE_MESSAGE_PREFIX = 'Font Awesome Icon Chooser'
+
 export function parseSvgText(svgText) {
   let val = null
   let path = null
