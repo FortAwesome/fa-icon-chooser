@@ -247,7 +247,12 @@ export class FaIconChooser {
       }`
     )
 
-    this.setIcons(response, this.iconUploadsAsIconUploadLookups())
+    const filteredIconUploads = this.iconUploadsAsIconUploadLookups()
+      .filter(({ iconName }) => {
+        return iconName.indexOf(query) > -1
+      })
+
+    this.setIcons(response, filteredIconUploads)
 
     // TODO: test the case where data.search is null (which would happen if the API
     // server returns a not_found)
