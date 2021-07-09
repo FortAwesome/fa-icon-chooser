@@ -66,9 +66,7 @@
 }
 
 .wrap-icons-style-choice .disabled-tooltip {
-  transition: opacity .25s ease-in-out;
   transform: translate(-50%, -50%);
-  opacity: 0;
   position: absolute;
   top: -2.5rem;
   left: 50%;
@@ -79,10 +77,11 @@
   text-align: center;
   line-height: 1.3;
   width: 160%;
+  display: none;
 }
 
 .wrap-icons-style-choice .input-checkbox-custom:disabled ~ .icons-style-choice:hover + .disabled-tooltip {
-  opacity: 1;
+  display: block;
 }
 
 .icons-style-menu-listing .icons-style-choice > span,
