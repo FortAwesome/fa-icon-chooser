@@ -498,6 +498,7 @@ export class FaIconChooser {
               </span>
             </label>
           </div>
+<<<<<<< HEAD
           <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
             <input disabled={ fakDisabled } id="icons-style-uploads" checked={ this.styleFilterEnabled && this.styleFilters.fak } onChange={() => this.toggleStyleFilter('fak') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
             <label htmlFor="icons-style-uploads" class="icons-style-choice padding-y-md padding-x-md margin-0 display-flex flex-column flex-items-center ">
@@ -513,6 +514,22 @@ export class FaIconChooser {
               </span>
             </label>
           </div>
+=======
+          {
+            this.mayHaveIconUploads() &&
+            <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
+              <input id="icons-style-uploads" checked={ this.styleFilterEnabled && this.styleFilters.fak } onChange={() => this.toggleStyleFilter('fak') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
+              <label htmlFor="icons-style-uploads" class="icons-style-choice padding-y-md padding-x-md margin-0 display-flex flex-column flex-items-center ">
+                <span class="position-relative margin-right-sm">
+                  <fa-icon {...this.commonFaIconProps} stylePrefix="far" name="cloud" size="2x" class="fa-fw"/>
+                </span>
+                <span>
+                  <span class="sr-only">Show </span>Custom<span class="sr-only"> icons</span>
+                </span>
+              </label>
+            </div>
+          }
+>>>>>>> a1620d8 (switch up the cloud)
         </div>
       </form>
       <div class="wrap-icon-listing margin-y-lg">
@@ -529,7 +546,7 @@ export class FaIconChooser {
           this.query === '' &&
           <article class="text-center margin-y-2xl line-length-lg margin-auto">
             <h3 class="margin-bottom-md">Font Awesome is the web's most popular icon set, with tons of icons in a variety of styles.</h3>
-          <p class="margin-bottom-3xl">Not sure where to start? Here are some favorites, or try a search for spinners, animals, food, or whatever you're looking for.</p>
+          <p class="margin-bottom-3xl">Not sure where to start? Here are some favorites, or try a search for <strong>spinners</strong>, <strong>animals</strong>, <strong>food</strong>, or <strong>whatever you're looking for</strong>.</p>
           </article>
         }
         {
