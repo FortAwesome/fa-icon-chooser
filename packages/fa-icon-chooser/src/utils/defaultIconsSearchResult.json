@@ -512,22 +512,6 @@
         }
       },
       {
-        "id": "upload",
-        "label": "Upload",
-        "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
-        }
-      },
-      {
         "id": "computer-speaker",
         "label": "Computer Speaker",
         "membership": {
@@ -895,22 +879,6 @@
         "label": "Moon with Stars",
         "membership": {
           "free": [],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "thin",
-            "duotone"
-          ]
-        }
-      },
-      {
-        "id": "cloud",
-        "label": "Cloud",
-        "membership": {
-          "free": [
-            "solid"
-          ],
           "pro": [
             "solid",
             "regular",
