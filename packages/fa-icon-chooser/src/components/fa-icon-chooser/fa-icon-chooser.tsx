@@ -1,7 +1,7 @@
 import { Component, Event, Element, EventEmitter, Prop, State, h } from '@stencil/core'
 import { get, size, debounce } from 'lodash'
 import { IconLookup } from '@fortawesome/fontawesome-common-types'
-import { freeCdnBaseUrl, kitAssetsBaseUrl, buildIconChooserResult, createFontAwesomeScriptElement, IconUpload, defaultIcons, IconPrefix, STYLE_TO_PREFIX, IconUploadLookup, IconChooserResult } from '../../utils/utils'
+import { freeCdnBaseUrl, kitAssetsBaseUrl, buildIconChooserResult, createFontAwesomeScriptElement, IconUpload, defaultIcons, IconPrefix, STYLE_TO_PREFIX, IconUploadLookup, IconChooserResult, UrlTextFetcher } from '../../utils/utils'
 import { faSadTear, faTire } from '../../utils/icons'
 
 export type QueryHandler = (document: string) => Promise<any>;
@@ -19,6 +19,7 @@ type KitMetadata = {
 }
 
 const DISPLAY_NONE = { display: 'none' }
+const DEFAULT_FATAL_ERROR_MESSAGE = 'Check the console for additional error information.'
 
 @Component({
   tag: 'fa-icon-chooser',
@@ -35,14 +36,21 @@ export class FaIconChooser {
    * A kit token identifying a kit in which to find icons. Takes precedent over
    * version prop if both are present.
    */
-  @Prop() kitToken?: string;
+  @Prop() kitToken?: string
 
   /**
    * Version to use for finding and loading icons when kitToken is not provided.
    */
-  @Prop() version?: string;
+  @Prop() version?: string
 
-  @Prop() handleQuery: QueryHandler;
+  @Prop() handleQuery: QueryHandler
+
+  /**
+   * Callback function that returns the text body of a response that
+   * corresponds to an HTTP GET request for the given URL. For example, it
+   * would be the result of [Response.text()](https://developer.mozilla.org/en-US/docs/Web/API/Response/text).
+   */
+  @Prop() getUrlText: UrlTextFetcher
 
   @Event({
     eventName: 'finish',
@@ -74,6 +82,8 @@ export class FaIconChooser {
   };
 
   @State() kitMetadata: KitMetadata;
+
+  @State() fatalError: string
 
   svgApi?: any;
 
@@ -118,10 +128,9 @@ export class FaIconChooser {
       `
     )
 
-    // TODO: consider real error handling.
     if(get(response, 'errors')) {
-      console.error('GraphQL query errors', response.errors)
-      throw new Error('GraphQL query errors')
+      console.error('Font Awesome Icon Chooser GraphQL query errors', response.errors)
+      throw new Error()
     }
 
     const kit = get(response, 'data.me.kit')
@@ -174,7 +183,7 @@ export class FaIconChooser {
           // Otherwise, we'll add it to the outer DOM, but disable it from doing
           // anything automated that would have global affect--other than assigning
           // itself to the global window.FontAwesome.
-          return createFontAwesomeScriptElement(pro, this.resolvedVersion(), baseUrl, this.kitToken)
+          return createFontAwesomeScriptElement(this.getUrlText, pro, this.resolvedVersion(), baseUrl, this.kitToken)
             .then(scriptElement => {
               document.head.appendChild(scriptElement)
               return get(window, 'FontAwesome')
@@ -219,14 +228,16 @@ export class FaIconChooser {
           svgApi: get(window, 'FontAwesome'),
           pro: this.pro(),
           svgFetchBaseUrl: this.svgFetchBaseUrl,
-          kitToken: this.kitToken
+          kitToken: this.kitToken,
+          getUrlText: this.getUrlText
         }
 
         this.isInitialLoading = false
       })
       .catch(e => {
-        // TODO: implement real error handling
-        console.error('WHOOPS!', e.toString())
+        console.error(e)
+        this.isInitialLoading = false
+        this.fatalError = DEFAULT_FATAL_ERROR_MESSAGE
       })
   }
 
@@ -298,8 +309,8 @@ export class FaIconChooser {
   updateQueryResultsWithDebounce = debounce( query => {
       this.updateQueryResults(query)
       .catch(e => {
-        // TODO: implement real error handling
         console.error(e)
+        this.fatalError = DEFAULT_FATAL_ERROR_MESSAGE
       })
   }, 500 )
 
@@ -388,6 +399,15 @@ export class FaIconChooser {
     const fatDisabled = !(this.isV6() && this.pro())
     const fadDisabled = !this.isDuotoneAvailable()
     const fakDisabled = !this.mayHaveIconUploads()
+
+    if(this.fatalError) {
+      return <div class="fa-icon-chooser">
+        <div class="message-loading text-center margin-2xl">
+          <h3>Well, this is awkward...</h3>
+          <p>Something has gone horribly wrong. { this.fatalError }</p>
+        </div>
+      </div>
+    }
 
     if(this.isInitialLoading) {
       return <div class="fa-icon-chooser">

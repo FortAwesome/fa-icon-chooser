@@ -10,6 +10,7 @@
 | Property          | Attribute            | Description | Type                                                                                               | Default     |
 | ----------------- | -------------------- | ----------- | -------------------------------------------------------------------------------------------------- | ----------- |
 | `class`           | `class`              |             | `string`                                                                                           | `undefined` |
+| `getUrlText`      | --                   |             | `(url: string) => Promise<string>`                                                                 | `undefined` |
 | `icon`            | --                   |             | `IconDefinition`                                                                                   | `undefined` |
 | `iconUpload`      | --                   |             | `{ name: string; unicode: number; version: number; width: string; height: string; path: string; }` | `undefined` |
 | `kitToken`        | `kit-token`          |             | `string`                                                                                           | `undefined` |

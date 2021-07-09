@@ -1,5 +1,5 @@
 import { Component, Host, Prop, State, h } from '@stencil/core'
-import { IconPrefix, IconUpload, PREFIX_TO_STYLE, parseSvgText } from '../../utils/utils'
+import { IconPrefix, IconUpload, PREFIX_TO_STYLE, parseSvgText, UrlTextFetcher } from '../../utils/utils'
 import { IconDefinition } from '@fortawesome/fontawesome-common-types'
 import { get } from 'lodash'
 
@@ -22,6 +22,8 @@ export class FaIcon {
   @Prop() class: string
 
   @Prop() svgFetchBaseUrl?: string
+
+  @Prop() getUrlText?: UrlTextFetcher
 
   @Prop() kitToken?: string
 
@@ -92,22 +94,17 @@ export class FaIcon {
 
     const library = get(this, 'svgApi.library')
 
-    // TODO: do we need to support more than fetch?
-    // TODO: what do we want to do about these error conditions?
-    fetch(iconUrl).then((response) => {
-      if (response.ok) {
-        return response.text().then((svg) => {
-          const iconDefinition = {
-            iconName: this.name,
-            prefix: this.stylePrefix,
-            icon: parseSvgText(svg)
-          }
-          library && library.add(iconDefinition)
-          this.iconDefinition = {...iconDefinition}
-        })
-      } else {
-        throw response
+    // TODO: what should we do in this situation?
+    if('function' !== typeof this.getUrlText) return
+
+    this.getUrlText(iconUrl).then(svg => {
+      const iconDefinition = {
+        iconName: this.name,
+        prefix: this.stylePrefix,
+        icon: parseSvgText(svg)
       }
+      library && library.add(iconDefinition)
+      this.iconDefinition = {...iconDefinition}
     })
     .catch(e => {
       console.error('Font Awesome Icon Chooser: failed when fetching an individual SVG icon', e)
