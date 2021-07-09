@@ -1,5 +1,7 @@
 # FaIconChooser React Component
 
+Find API References for the required callback functions in the [`fa-icon-chooser` component documentation over here](../fa-icon-chooser).
+
 ## Usage
 
 ```
