@@ -23,7 +23,7 @@ In non-kit mode, only Font Awesome Free is available.
 When used with a kit, everything is available, according to that kit's configuration.
 - Font Awesome Pro
 - Font Awesome 6
-    Font Awesome 6 is currently in beta, but if the given kit is set to a version like `6.x` or `6.0.0-beta1`, the Icon Chooser knows what to do!
+    Font Awesome 6 is currently in beta, but if the given kit is set to a version like `6.x` or `6.0.0-beta1`, the Icon Chooser knows what to do.
 - Kit Icon Uploads: any icons uploaded to the kit are available in the chooser.
 
 A user configures their own kit on that kit's settings page on fontawesome.com and
@@ -47,32 +47,33 @@ For example, an `IconChooserResult` might be:
 { prefix: "fad", iconName: "alien" }
 ```
 
-If your code is a React app, you might that to build this:
+If your code is a React app using the [`FontAwesomeIcon` component](https://fontawesome.com/v5.15/how-to-use/on-the-web/using-with/react), you might that to build this:
 ```jsx
 <FontAwesomeIcon icon={[prefix, iconName]} />
 ```
 
-If your code is written JavaScript and needs to build an HTML element, it might look like this:
+If your code is written JavaScript and needs to build an HTML element as a string, it might look like this:
 ```js
 const icon = `<i class="${prefix} ${iconName}"></i>`
 ```
 
-If your code is a WordPress plugin or theme, it might producea shortcode like this:
+If your code is a WordPress plugin or theme, it might produce a shortcode like this:
 ```js
 const icon = `[icon prefix="${prefix}" name="${iconName}"]`
 ```
 
-**Heads Up!** the `IconChooserResult` type allows for more complexity than just
+**Heads Up!** the `IconChooserResult` type allows for more complex shapes than just
 a single icon's `prefix` and `iconName`. It's designed to be able to express
-most of the structures necessary for [Layering, Masks, and Power Transforms](https://fontawesome.com/v5.15/how-to-use/on-the-web/styling/layering). However, those features are
-not yet available in the Icon Chooser UI. In the meantime, just be careful about
-the assumptions you make about the shape of that `IconChooserResult` object.
+most of the structures necessary for [Layering, Masks, and Power Transforms](https://fontawesome.com/v5.15/how-to-use/on-the-web/styling/layering).
+Those more advanced features are not yet available in the Icon Chooser UI.
+In the meantime, just be careful about the assumptions you make about the shape
+of that `IconChooserResult` object.
 
 ## Setup
 
 Choose one of the following:
 
 1. Use the `fa-icon-chooser` web component directly.
-    Find those [setup instructions in that component's package](packages/fa-icon-chooser).
+    Find those [setup instructions in that component's package](packages/fa-icon-chooser/src/componnents/fa-icon-chooser/readme.md).
 1. Use a JavaScript framework integration.
     Currently, the only one available is for [React](packages/fa-icon-chooser-react).
