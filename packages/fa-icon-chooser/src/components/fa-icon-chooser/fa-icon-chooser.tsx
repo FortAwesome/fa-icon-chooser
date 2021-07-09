@@ -1,7 +1,7 @@
 import { Component, Event, Element, EventEmitter, Prop, State, h } from '@stencil/core'
 import { get, size, debounce } from 'lodash'
 import { IconLookup } from '@fortawesome/fontawesome-common-types'
-import { freeCdnBaseUrl, kitAssetsBaseUrl, buildIconChooserResult, createFontAwesomeScriptElement, IconUpload, defaultIcons, IconPrefix, STYLE_TO_PREFIX, IconUploadLookup, IconChooserResult, UrlTextFetcher } from '../../utils/utils'
+import { freeCdnBaseUrl, kitAssetsBaseUrl, buildIconChooserResult, createFontAwesomeScriptElement, IconUpload, defaultIcons, IconPrefix, STYLE_TO_PREFIX, IconUploadLookup, IconChooserResult, UrlTextFetcher, CONSOLE_MESSAGE_PREFIX } from '../../utils/utils'
 import { faSadTear, faTire } from '../../utils/icons'
 
 export type QueryHandler = (document: string) => Promise<any>;
@@ -265,10 +265,14 @@ export class FaIconChooser {
         return iconName.indexOf(query) > -1
       })
 
-    this.setIcons(response, filteredIconUploads)
+    let iconSearchResults = response
 
-    // TODO: test the case where data.search is null (which would happen if the API
-    // server returns a not_found)
+    if(!Array.isArray(get(iconSearchResults, 'data.search'))) {
+      console.warn(`${CONSOLE_MESSAGE_PREFIX}: search results may be inaccurate since 'handleQuery' returned an unexpected value:`, response)
+      iconSearchResults = {data: {search: []}}
+    }
+
+    this.setIcons(iconSearchResults, filteredIconUploads)
 
     this.hasQueried = true
     this.isQuerying = false
@@ -280,7 +284,7 @@ export class FaIconChooser {
     })
   }
 
-  setIcons(searchResultIcons: Array<any>, iconUploads: Array<IconUploadLookup>) {
+  setIcons(searchResultIcons: any, iconUploads: Array<IconUploadLookup>) {
     this.icons = (get(searchResultIcons, 'data.search') || [])
       .reduce((acc: Array<IconLookup>, result: any) => {
         const { id, membership } = result
