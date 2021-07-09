@@ -54,6 +54,13 @@
   border: 2px solid var(--fa-navy);
 }
 
+.icons-style-menu-listing .input-checkbox-custom:disabled ~ .icons-style-choice {
+  color: var(--fa-gravy);
+  background-color: var(--white);
+  border: 2px solid var(--fa-lt-gravy);
+  cursor: default;
+}
+
 .icons-style-menu-listing .icons-style-choice > span,
 .icons-style-menu-listing .icons-style-choice > .svg-inline--fa {
   display: inline-block;
