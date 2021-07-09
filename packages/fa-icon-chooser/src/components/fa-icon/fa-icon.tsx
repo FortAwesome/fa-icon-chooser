@@ -3,6 +3,10 @@ import { IconPrefix, IconUpload, PREFIX_TO_STYLE, parseSvgText, UrlTextFetcher, 
 import { IconDefinition } from '@fortawesome/fontawesome-common-types'
 import { get } from 'lodash'
 
+/**
+ * This fa-icon component isn't THE fa-icon component. It's just a convenience
+ * component to help with displaying icons within the Icon Chooser.
+ */
 @Component({
   tag: 'fa-icon',
   styleUrl: 'fa-icon.css',

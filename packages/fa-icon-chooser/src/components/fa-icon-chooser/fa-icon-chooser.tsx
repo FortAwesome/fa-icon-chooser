@@ -45,6 +45,19 @@ export class FaIconChooser {
    */
   @Prop() version?: string
 
+  /**
+   * Required callback function which is responsible for taking a given GraphQL
+   * query document and returns a Promise that resolves to a JavaScript object
+   * corresponding to the body of the associated network request, same as
+   * what would be produced by [Response.json()](https://developer.mozilla.org/en-US/docs/Web/API/Response/json).
+   *
+   * The query document is compliant with the GraphQL API at [api.fontawesome.com](https://fontawesome.com/v5.15/how-to-use/graphql-api/intro/getting-started).
+   *
+   * The implementation is responsible for handling any authorization that may be
+   * necessary to fulfill the request. For example, any time a kit is used to
+   * drive the Icon Chooser, it will be necessary to authorize GraphQL API requests
+   * sent to api.fontawesome.com with the [`kits_read` scope](https://fontawesome.com/v5.15/how-to-use/graphql-api/auth/scopes).
+   */
   @Prop() handleQuery: QueryHandler
 
   /**
@@ -54,6 +67,10 @@ export class FaIconChooser {
    */
   @Prop() getUrlText: UrlTextFetcher
 
+  /**
+   * Clients of the Icon Chooser should listen for this event in order to handle
+   * the result of the user's interaction.
+   */
   @Event({
     eventName: 'finish',
     composed: true,
