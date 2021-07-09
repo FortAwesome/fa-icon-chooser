@@ -379,6 +379,11 @@ export class FaIconChooser {
   }
 
   render() {
+    const falDisabled = !this.pro()
+    const fatDisabled = !(this.isV6() && this.pro())
+    const fadDisabled = !this.isDuotoneAvailable()
+    const fakDisabled = !this.mayHaveIconUploads()
+
     if(this.isInitialLoading) {
       return <div class="fa-icon-chooser">
         <div class="message-loading text-center margin-2xl">
@@ -424,36 +429,54 @@ export class FaIconChooser {
             </label>
           </div>
           <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
-            <input disabled={ !this.pro() } id="icons-style-light" checked={ this.styleFilterEnabled && this.styleFilters.fal } onChange={() => this.toggleStyleFilter('fal') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
+            <input disabled={ falDisabled } id="icons-style-light" checked={ this.styleFilterEnabled && this.styleFilters.fal } onChange={() => this.toggleStyleFilter('fal') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
             <label htmlFor="icons-style-light" class="icons-style-choice padding-y-md padding-x-md margin-0 display-flex flex-column flex-items-center ">
-              <span class="position-relative margin-right-sm">
-                <fa-icon style={ !this.showCheckedStyleIcon('fal') && DISPLAY_NONE} {...this.commonFaIconProps} name="grin-tongue" stylePrefix="fal" size="2x" class="checked-icon fa-fw"/>
-                <fa-icon style={ this.showCheckedStyleIcon('fal') && DISPLAY_NONE} {...this.commonFaIconProps} name="smile" stylePrefix="fal" size="2x" class="unchecked-icon fa-fw"/>
-              </span>
+              {
+                falDisabled
+                ?  <span class="position-relative margin-right-sm">
+                    <fa-icon {...this.commonFaIconProps} name="meh" stylePrefix="far" size="2x" class="checked-icon fa-fw"/>
+                  </span>
+                : <span class="position-relative margin-right-sm">
+                    <fa-icon style={ !this.showCheckedStyleIcon('fal') && DISPLAY_NONE} {...this.commonFaIconProps} name="grin-tongue" stylePrefix="fal" size="2x" class="checked-icon fa-fw"/>
+                    <fa-icon style={ this.showCheckedStyleIcon('fal') && DISPLAY_NONE} {...this.commonFaIconProps} name="smile" stylePrefix="fal" size="2x" class="unchecked-icon fa-fw"/>
+                  </span>
+              }
               <span>
                 <span class="sr-only">Show </span>light<span class="sr-only"> style icons</span>
               </span>
             </label>
           </div>
           <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
-            <input disabled={!(this.isV6() && this.pro())} id="icons-style-thin" checked={ this.styleFilterEnabled && this.styleFilters.fat } onChange={() => this.toggleStyleFilter('fat') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
+            <input disabled={ fatDisabled } id="icons-style-thin" checked={ this.styleFilterEnabled && this.styleFilters.fat } onChange={() => this.toggleStyleFilter('fat') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
             <label htmlFor="icons-style-thin" class="icons-style-choice padding-y-md padding-x-md margin-0 display-flex flex-column flex-items-center ">
-              <span class="position-relative margin-right-sm">
-                <fa-icon style={ !this.showCheckedStyleIcon('fat') && DISPLAY_NONE} {...this.commonFaIconProps} name="grin-tongue" stylePrefix="fat" size="2x" class="checked-icon fa-fw"/>
-                <fa-icon style={ this.showCheckedStyleIcon('fat') && DISPLAY_NONE} {...this.commonFaIconProps} name="smile" stylePrefix="fat" size="2x" class="unchecked-icon fa-fw"/>
-              </span>
+              {
+                fatDisabled
+                ? <span class="position-relative margin-right-sm">
+                    <fa-icon {...this.commonFaIconProps} name="meh" stylePrefix="far" size="2x" class="checked-icon fa-fw"/>
+                  </span>
+                : <span class="position-relative margin-right-sm">
+                    <fa-icon style={ !this.showCheckedStyleIcon('fat') && DISPLAY_NONE} {...this.commonFaIconProps} name="grin-tongue" stylePrefix="fat" size="2x" class="checked-icon fa-fw"/>
+                    <fa-icon style={ this.showCheckedStyleIcon('fat') && DISPLAY_NONE} {...this.commonFaIconProps} name="smile" stylePrefix="fat" size="2x" class="unchecked-icon fa-fw"/>
+                  </span>
+              }
               <span>
                 <span class="sr-only">Show </span>thin<span class="sr-only"> style icons</span>
               </span>
             </label>
           </div>
           <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
-            <input disabled={ !this.isDuotoneAvailable() } id="icons-style-duotone" checked={ this.styleFilterEnabled && this.styleFilters.fad } onChange={() => this.toggleStyleFilter('fad') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
+            <input disabled={ fadDisabled } id="icons-style-duotone" checked={ this.styleFilterEnabled && this.styleFilters.fad } onChange={() => this.toggleStyleFilter('fad') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
             <label htmlFor="icons-style-duotone" class="icons-style-choice padding-y-md padding-x-md margin-0 display-flex flex-column flex-items-center ">
-              <span class="position-relative margin-right-sm">
-                <fa-icon style={ !this.showCheckedStyleIcon('fad') && DISPLAY_NONE} {...this.commonFaIconProps} name="grin-tongue" stylePrefix="fad" size="2x" class="checked-icon fa-fw"/>
-                <fa-icon style={ this.showCheckedStyleIcon('fad') && DISPLAY_NONE} {...this.commonFaIconProps} name="smile" stylePrefix="fad" size="2x" class="unchecked-icon fa-fw"/>
-              </span>
+              {
+                fadDisabled
+                ? <span class="position-relative margin-right-sm">
+                    <fa-icon {...this.commonFaIconProps} name="meh" stylePrefix="far" size="2x" class="unchecked-icon fa-fw"/>
+                  </span>
+                : <span class="position-relative margin-right-sm">
+                    <fa-icon style={ !this.showCheckedStyleIcon('fad') && DISPLAY_NONE} {...this.commonFaIconProps} name="grin-tongue" stylePrefix="fad" size="2x" class="checked-icon fa-fw"/>
+                    <fa-icon style={ this.showCheckedStyleIcon('fad') && DISPLAY_NONE} {...this.commonFaIconProps} name="smile" stylePrefix="fad" size="2x" class="unchecked-icon fa-fw"/>
+                  </span>
+              }
               <span>
                 <span class="sr-only">Show </span>duotone<span class="sr-only"> style icons</span>
               </span>
@@ -471,10 +494,14 @@ export class FaIconChooser {
             </label>
           </div>
           <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
-            <input disabled={ !this.mayHaveIconUploads() } id="icons-style-uploads" checked={ this.styleFilterEnabled && this.styleFilters.fak } onChange={() => this.toggleStyleFilter('fak') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
+            <input disabled={ fakDisabled } id="icons-style-uploads" checked={ this.styleFilterEnabled && this.styleFilters.fak } onChange={() => this.toggleStyleFilter('fak') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
             <label htmlFor="icons-style-uploads" class="icons-style-choice padding-y-md padding-x-md margin-0 display-flex flex-column flex-items-center ">
               <span class="position-relative margin-right-sm">
-                <fa-icon {...this.commonFaIconProps} stylePrefix="fas" name="cloud" size="2x" class="fa-fw"/>
+                {
+                  fakDisabled
+                  ? <fa-icon {...this.commonFaIconProps} stylePrefix="far" name="meh" size="2x" class="fa-fw"/>
+                  : <fa-icon {...this.commonFaIconProps} stylePrefix="fas" name="cloud" size="2x" class="fa-fw"/>
+                }
               </span>
               <span>
                 <span class="sr-only">Show </span>Custom<span class="sr-only"> icons</span>
