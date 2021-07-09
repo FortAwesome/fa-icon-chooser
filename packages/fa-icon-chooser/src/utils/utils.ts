@@ -1,24 +1,24 @@
-import defaultIconsSearchResult from './defaultIconsSearchResult.json'
-import { IconLookup } from '@fortawesome/fontawesome-common-types'
-import { valid as validSemver } from 'semver'
+import defaultIconsSearchResult from './defaultIconsSearchResult.json';
+import { IconLookup } from '@fortawesome/fontawesome-common-types';
+import { valid as validSemver } from 'semver';
 
-export type UrlTextFetcher = (url: string) => Promise<string>
+export type UrlTextFetcher = (url: string) => Promise<string>;
 
-export const defaultIcons: any = defaultIconsSearchResult
+export const defaultIcons: any = defaultIconsSearchResult;
 
 // The IconPrefix type in @fortawesome/fontawesome-common-types corresponding to
 // FA v5 does not include 'fat', nor 'fak', so we'll make our own type here temporarily.
-export type IconPrefix = 'fas' | 'fab' | 'far' | 'fal' | 'fat' | 'fad' | 'fak'
+export type IconPrefix = 'fas' | 'fab' | 'far' | 'fal' | 'fat' | 'fad' | 'fak';
 
-export type IconStyle = 'solid' | 'duotone' | 'regular' | 'light' | 'thin' | 'kit' | 'brands'
+export type IconStyle = 'solid' | 'duotone' | 'regular' | 'light' | 'thin' | 'kit' | 'brands';
 
 export type IconStyleToPrefix = {
-  [style in IconStyle]: string
-}
+  [style in IconStyle]: string;
+};
 
 export type IconPrefixToStyle = {
-  [prefix in IconPrefix]: IconStyle
-}
+  [prefix in IconPrefix]: IconStyle;
+};
 
 export const STYLE_TO_PREFIX: IconStyleToPrefix = {
   solid: 'fas',
@@ -27,8 +27,8 @@ export const STYLE_TO_PREFIX: IconStyleToPrefix = {
   light: 'fal',
   thin: 'fat',
   kit: 'fak',
-  brands: 'fab'
-}
+  brands: 'fab',
+};
 
 export const PREFIX_TO_STYLE: IconPrefixToStyle = {
   fas: 'solid',
@@ -37,8 +37,8 @@ export const PREFIX_TO_STYLE: IconPrefixToStyle = {
   fal: 'light',
   fat: 'thin',
   fak: 'kit',
-  fab: 'brands'
-}
+  fab: 'brands',
+};
 
 export type IconUpload = {
   name: string;
@@ -47,10 +47,10 @@ export type IconUpload = {
   width: string;
   height: string;
   path: string;
-}
+};
 
 export interface IconUploadLookup extends IconLookup {
-  iconUpload: IconUpload
+  iconUpload: IconUpload;
 }
 
 export interface Customizable {
@@ -61,7 +61,7 @@ export interface Customizable {
 
 export interface Element extends Customizable {
   tag: string;
-  children?: Array<Element | Icon | string>
+  children?: Array<Element | Icon | string>;
 }
 
 export interface Icon extends IconLookup, Customizable {
@@ -71,97 +71,87 @@ export interface Icon extends IconLookup, Customizable {
 export type IconChooserResult = Icon | Element;
 
 // TODO: do we want to include this code in this project?
-const viewBoxRe = /viewBox="0 0 ([0-9]+) ([0-9]+)"/
-const singlePathRe = /path d="([^"]+)"/
+const viewBoxRe = /viewBox="0 0 ([0-9]+) ([0-9]+)"/;
+const singlePathRe = /path d="([^"]+)"/;
 
-const duotonePathDuoClasslessRe = /path d="([^"]+)".*path d="([^"]+)"/
-const duotonePathDuoClassedRe = /path class="([^"]+)".*d="([^"]+)".*path class="([^"]+)".*d="([^"]+)"/
-const duotonePathOnlyPrimaryRe = /path class="(fa-primary)".*d="([^"]+)"/
-const duotonePathOnlySecondaryRe = /path class="(fa-secondary)".*d="([^"]+)"/
+const duotonePathDuoClasslessRe = /path d="([^"]+)".*path d="([^"]+)"/;
+const duotonePathDuoClassedRe = /path class="([^"]+)".*d="([^"]+)".*path class="([^"]+)".*d="([^"]+)"/;
+const duotonePathOnlyPrimaryRe = /path class="(fa-primary)".*d="([^"]+)"/;
+const duotonePathOnlySecondaryRe = /path class="(fa-secondary)".*d="([^"]+)"/;
 
-export const CONSOLE_MESSAGE_PREFIX = 'Font Awesome Icon Chooser'
+export const CONSOLE_MESSAGE_PREFIX = 'Font Awesome Icon Chooser';
 
 export function parseSvgText(svgText) {
-  let val = null
-  let path = null
-  const viewBox = svgText.match(viewBoxRe)
-  const singlePath = svgText.match(singlePathRe)
+  let val = null;
+  let path = null;
+  const viewBox = svgText.match(viewBoxRe);
+  const singlePath = svgText.match(singlePathRe);
   const duotonePath =
-    svgText.match(duotonePathDuoClasslessRe)
-    || svgText.match(duotonePathDuoClassedRe)
-    || svgText.match(duotonePathOnlyPrimaryRe)
-    || svgText.match(duotonePathOnlySecondaryRe)
+    svgText.match(duotonePathDuoClasslessRe) || svgText.match(duotonePathDuoClassedRe) || svgText.match(duotonePathOnlyPrimaryRe) || svgText.match(duotonePathOnlySecondaryRe);
 
   if (duotonePath && duotonePath.length === 3) {
-    if(duotonePath[1].indexOf('primary') > -1) {
-      path = [duotonePath[2], '']
+    if (duotonePath[1].indexOf('primary') > -1) {
+      path = [duotonePath[2], ''];
     } else if (duotonePath[1].indexOf('secondary') > -1) {
-      path = ['', duotonePath[2]]
+      path = ['', duotonePath[2]];
     } else {
-      path = [duotonePath[1], duotonePath[2]]
+      path = [duotonePath[1], duotonePath[2]];
     }
   } else if (duotonePath && duotonePath.length === 5) {
-    path = (duotonePath[1].indexOf('primary') > -1)
-      ? [duotonePath[2], duotonePath[4]]
-      : [duotonePath[4], duotonePath[2]]
+    path = duotonePath[1].indexOf('primary') > -1 ? [duotonePath[2], duotonePath[4]] : [duotonePath[4], duotonePath[2]];
   } else if (singlePath) {
-    path = singlePath[1]
+    path = singlePath[1];
   }
 
   if (viewBox && path) {
-    val = [
-      parseInt(viewBox[1], 10),
-      parseInt(viewBox[2], 10),
-      [],
-      null,
-      path
-    ]
+    val = [parseInt(viewBox[1], 10), parseInt(viewBox[2], 10), [], null, path];
   }
 
-  return val
+  return val;
 }
 
 export function freeCdnBaseUrl(): string {
-  return 'https://use.fontawesome.com'
+  return 'https://use.fontawesome.com';
 }
 
 export function kitAssetsBaseUrl(pro: boolean): string {
-  return pro
-    ? 'https://ka-p.fontawesome.com'
-    : 'https://ka-f.fontawesome.com'
+  return pro ? 'https://ka-p.fontawesome.com' : 'https://ka-f.fontawesome.com';
 }
 
-export async function createFontAwesomeScriptElement(getUrlText: UrlTextFetcher, pro: boolean, version: string, baseUrl: string, kitToken: string | undefined): Promise<HTMLElement> {
-    const license = pro ? 'pro' : 'free'
-    const assetUrl = kitToken
-      ? `${baseUrl}/releases/v${version}/js/${license}.min.js?token=${kitToken}`
-      : `${baseUrl}/releases/v${version}/js/all.js`
+export async function createFontAwesomeScriptElement(
+  getUrlText: UrlTextFetcher,
+  pro: boolean,
+  version: string,
+  baseUrl: string,
+  kitToken: string | undefined,
+): Promise<HTMLElement> {
+  const license = pro ? 'pro' : 'free';
+  const assetUrl = kitToken ? `${baseUrl}/releases/v${version}/js/${license}.min.js?token=${kitToken}` : `${baseUrl}/releases/v${version}/js/all.js`;
 
-    try {
-      if('function' !== typeof getUrlText) throw new Error('Font Awesome Icon Chooser: expected getUrlText to be a function but it wasn\'t')
+  try {
+    if ('function' !== typeof getUrlText) throw new Error("Font Awesome Icon Chooser: expected getUrlText to be a function but it wasn't");
 
-      const scriptContent = await getUrlText(assetUrl)
-      const script = document.createElement('SCRIPT')
-      const text = document.createTextNode(scriptContent)
-      script.appendChild(text)
-      script.setAttribute('data-auto-replace-svg', 'false')
-      script.setAttribute('data-auto-add-css', 'false')
-      script.setAttribute('type', 'text/javascript')
+    const scriptContent = await getUrlText(assetUrl);
+    const script = document.createElement('SCRIPT');
+    const text = document.createTextNode(scriptContent);
+    script.appendChild(text);
+    script.setAttribute('data-auto-replace-svg', 'false');
+    script.setAttribute('data-auto-add-css', 'false');
+    script.setAttribute('type', 'text/javascript');
 
-      return script
-    }
-    catch(e) {
-      console.error(e)
-      throw new Error(e)
-    }
+    return script;
+  } catch (e) {
+    console.error(e);
+    throw new Error(e);
+  }
 }
 
 export function buildIconChooserResult(iconLookup: IconLookup | IconUploadLookup): IconChooserResult {
-  const { prefix, iconName} = iconLookup
+  const { prefix, iconName } = iconLookup;
 
-  return { prefix, iconName }
+  return { prefix, iconName };
 }
 
 export function isValidSemver(val: string): boolean {
-  return !!validSemver(val)
+  return !!validSemver(val);
 }

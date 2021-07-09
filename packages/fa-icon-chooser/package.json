@@ -19,7 +19,9 @@
     "start": "stencil build --config stencil.config.dev.ts --dev --watch --serve",
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watchAll",
-    "generate": "stencil generate"
+    "generate": "stencil generate",
+    "format": "prettier --write .",
+    "format.check": "prettier --check ."
   },
   "dependencies": {
     "@stencil/core": "^2.0.1",

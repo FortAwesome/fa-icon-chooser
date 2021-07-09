@@ -23,9 +23,9 @@
 }
 
 .wrap-search {
-  --input-with-icon-color:var(--fa-navy);
-  --input-border-color:var(--fa-navy);
-  --input-placeholder-color:var(--fa-md-gravy);
+  --input-with-icon-color: var(--fa-navy);
+  --input-border-color: var(--fa-navy);
+  --input-placeholder-color: var(--fa-md-gravy);
 }
 
 .icons-style-menu-listing .wrap-icons-style-choice {
@@ -71,7 +71,7 @@
   top: -2.5rem;
   left: 50%;
   border-radius: var(--border-radius-md);
-  background-color: rgba(16,50,87,.9);
+  background-color: rgba(16, 50, 87, 0.9);
   padding: var(--spacing-2xs) var(--spacing-sm);
   color: var(--white);
   text-align: center;
@@ -134,11 +134,10 @@ button.icon fa-icon {
   color: var(--fa-navy);
 }
 
-.message-title+p {
+.message-title + p {
   --paragraph-margin-bottom: var(--spacing-md);
   --paragraph-margin-top: var(--spacing-2xl);
 }
-
 
 /* custom > 480px */
 @media (max-width: 30rem) {
