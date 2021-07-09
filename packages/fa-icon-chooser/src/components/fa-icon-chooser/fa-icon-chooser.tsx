@@ -1,7 +1,7 @@
 import { Component, Event, Element, EventEmitter, Prop, State, h } from '@stencil/core'
 import { get, size, debounce } from 'lodash'
 import { IconLookup } from '@fortawesome/fontawesome-common-types'
-import { freeCdnBaseUrl, kitAssetsBaseUrl, buildIconChooserResult, createFontAwesomeScriptElement, IconUpload, defaultIcons, IconPrefix, STYLE_TO_PREFIX, IconUploadLookup, IconChooserResult, UrlTextFetcher } from '../../utils/utils'
+import { freeCdnBaseUrl, kitAssetsBaseUrl, buildIconChooserResult, createFontAwesomeScriptElement, IconUpload, defaultIcons, IconPrefix, STYLE_TO_PREFIX, IconUploadLookup, IconChooserResult, UrlTextFetcher, CONSOLE_MESSAGE_PREFIX, isValidSemver } from '../../utils/utils'
 import { faSadTear, faTire } from '../../utils/icons'
 
 export type QueryHandler = (document: string) => Promise<any>;
@@ -40,9 +40,24 @@ export class FaIconChooser {
 
   /**
    * Version to use for finding and loading icons when kitToken is not provided.
+   * Must be a valid semantic version, as parsed by the [semver NPM](https://www.npmjs.com/package/semver),
+   * like 5.5.13 or 6.0.0-beta1.
    */
   @Prop() version?: string
 
+  /**
+   * Required callback function which is responsible for taking a given GraphQL
+   * query document and returns a Promise that resolves to a JavaScript object
+   * corresponding to the body of the associated network request, same as
+   * what would be produced by [Response.json()](https://developer.mozilla.org/en-US/docs/Web/API/Response/json).
+   *
+   * The query document is compliant with the GraphQL API at [api.fontawesome.com](https://fontawesome.com/v5.15/how-to-use/graphql-api/intro/getting-started).
+   *
+   * The implementation is responsible for handling any authorization that may be
+   * necessary to fulfill the request. For example, any time a kit is used to
+   * drive the Icon Chooser, it will be necessary to authorize GraphQL API requests
+   * sent to api.fontawesome.com with the [`kits_read` scope](https://fontawesome.com/v5.15/how-to-use/graphql-api/auth/scopes).
+   */
   @Prop() handleQuery: QueryHandler
 
   /**
@@ -52,6 +67,10 @@ export class FaIconChooser {
    */
   @Prop() getUrlText: UrlTextFetcher
 
+  /**
+   * Clients of the Icon Chooser should listen for this event in order to handle
+   * the result of the user's interaction.
+   */
   @Event({
     eventName: 'finish',
     composed: true,
@@ -95,10 +114,6 @@ export class FaIconChooser {
 
   constructor() {
     this.toggleStyleFilter = this.toggleStyleFilter.bind(this)
-
-    if(!this.kitToken && !this.version) {
-      throw new Error('Font Awesome Icon Chooser requires either kit-token or version prop')
-    }
   }
 
   async loadKitMetadata() {
@@ -160,6 +175,12 @@ export class FaIconChooser {
   }
 
   componentWillLoad() {
+      if(!this.kitToken && !isValidSemver(this.version)) {
+        console.error(`${CONSOLE_MESSAGE_PREFIX}: either a kit-token or valid semantic version is required.`, this)
+        this.fatalError = DEFAULT_FATAL_ERROR_MESSAGE
+        return
+      }
+
       this.query = ''
 
       this.isInitialLoading = true
@@ -265,10 +286,14 @@ export class FaIconChooser {
         return iconName.indexOf(query) > -1
       })
 
-    this.setIcons(response, filteredIconUploads)
+    let iconSearchResults = response
 
-    // TODO: test the case where data.search is null (which would happen if the API
-    // server returns a not_found)
+    if(!Array.isArray(get(iconSearchResults, 'data.search'))) {
+      console.warn(`${CONSOLE_MESSAGE_PREFIX}: search results may be inaccurate since 'handleQuery' returned an unexpected value:`, response)
+      iconSearchResults = {data: {search: []}}
+    }
+
+    this.setIcons(iconSearchResults, filteredIconUploads)
 
     this.hasQueried = true
     this.isQuerying = false
@@ -280,7 +305,7 @@ export class FaIconChooser {
     })
   }
 
-  setIcons(searchResultIcons: Array<any>, iconUploads: Array<IconUploadLookup>) {
+  setIcons(searchResultIcons: any, iconUploads: Array<IconUploadLookup>) {
     this.icons = (get(searchResultIcons, 'data.search') || [])
       .reduce((acc: Array<IconLookup>, result: any) => {
         const { id, membership } = result

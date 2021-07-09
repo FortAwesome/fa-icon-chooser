@@ -1,13 +1,13 @@
 import defaultIconsSearchResult from './defaultIconsSearchResult.json'
 import { IconLookup } from '@fortawesome/fontawesome-common-types'
+import { valid as validSemver } from 'semver'
 
 export type UrlTextFetcher = (url: string) => Promise<string>
 
 export const defaultIcons: any = defaultIconsSearchResult
 
-// TODO: figure out whether the IconPrefix type in @fortawesome/fontawesome-common-types
-// should have 'fat' in it.
-// But this also needs to include "fak" for icon uploads. Does that even belong in the IconPrefix type?
+// The IconPrefix type in @fortawesome/fontawesome-common-types corresponding to
+// FA v5 does not include 'fat', nor 'fak', so we'll make our own type here temporarily.
 export type IconPrefix = 'fas' | 'fab' | 'far' | 'fal' | 'fat' | 'fad' | 'fak'
 
 export type IconStyle = 'solid' | 'duotone' | 'regular' | 'light' | 'thin' | 'kit' | 'brands'
@@ -70,20 +70,6 @@ export interface Icon extends IconLookup, Customizable {
 
 export type IconChooserResult = Icon | Element;
 
-// TODO: replace this placeholder logic with, probably, real API calls
-// that handle resolving the version.
-export function resolveVersion(version: string): string {
-  switch(version) {
-    case '5.x':
-    case 'latest':
-      return '5.15.3'
-    case '6.x':
-      return '6.0.0-beta1'
-    default:
-      return version
-  }
-}
-
 // TODO: do we want to include this code in this project?
 const viewBoxRe = /viewBox="0 0 ([0-9]+) ([0-9]+)"/
 const singlePathRe = /path d="([^"]+)"/
@@ -92,6 +78,8 @@ const duotonePathDuoClasslessRe = /path d="([^"]+)".*path d="([^"]+)"/
 const duotonePathDuoClassedRe = /path class="([^"]+)".*d="([^"]+)".*path class="([^"]+)".*d="([^"]+)"/
 const duotonePathOnlyPrimaryRe = /path class="(fa-primary)".*d="([^"]+)"/
 const duotonePathOnlySecondaryRe = /path class="(fa-secondary)".*d="([^"]+)"/
+
+export const CONSOLE_MESSAGE_PREFIX = 'Font Awesome Icon Chooser'
 
 export function parseSvgText(svgText) {
   let val = null
@@ -172,4 +160,8 @@ export function buildIconChooserResult(iconLookup: IconLookup | IconUploadLookup
   const { prefix, iconName} = iconLookup
 
   return { prefix, iconName }
+}
+
+export function isValidSemver(val: string): boolean {
+  return !!validSemver(val)
 }

@@ -1,6 +1,9 @@
 # fa-icon
 
-
+## CAVEAT: Not For Use Outside this Repo
+This `fa-icon` component isn't THE `fa-icon` component. It's just a convenience
+component to help with displaying icons within this Icon Chooser. It's API
+may change as suits the needs of the Icon Chooser.
 
 <!-- Auto Generated Below -->
 
