@@ -74,6 +74,6 @@ of that `IconChooserResult` object.
 Choose one of the following:
 
 1. Use the `fa-icon-chooser` web component directly.
-    Find those [setup instructions in that component's package](packages/fa-icon-chooser/src/componnents/fa-icon-chooser/readme.md).
+    Find those [setup instructions in that component's package](packages/fa-icon-chooser/src/components/fa-icon-chooser/readme.md).
 1. Use a JavaScript framework integration.
     Currently, the only one available is for [React](packages/fa-icon-chooser-react).
