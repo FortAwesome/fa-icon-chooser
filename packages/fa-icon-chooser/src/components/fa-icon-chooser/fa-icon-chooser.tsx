@@ -189,23 +189,7 @@ export class FaIconChooser {
         const css = document.createTextNode(dom.css())
         style.appendChild(css)
         this.host.shadowRoot.appendChild(style)
-
-        // If we're in pro v6, then we need to add the thin style as being available
-        // because our defaultIcons fixture doesn't include thin.
-        const adjustedDefaultIcons = (this.pro && this.isV6())
-          ? get(defaultIcons, 'data.search', []).map(i => {
-            const proStyles = get(i, 'membership.pro', [])
-
-            if(size(proStyles) > 1) {
-              proStyles.push('thin')
-              i.membership.pro = proStyles
-            }
-
-            return i
-          })
-          : get(defaultIcons, 'data.search', [])
-
-        this.defaultIcons = { data: { search: adjustedDefaultIcons } }
+        this.defaultIcons = defaultIcons
 
         this.setIcons(this.defaultIcons, this.iconUploadsAsIconUploadLookups())
 
