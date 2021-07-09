@@ -1,4 +1,11 @@
-import { parseSvgText, Icon, IconChooserResult, Element, isValidSemver } from './utils';
+import {
+  parseSvgText,
+  Icon,
+  IconChooserResult,
+  Element,
+  isValidSemver,
+  createFontAwesomeScriptElement
+} from './utils'
 
 describe('parseSvgText', () => {
   test('duotone double path no classes', () => {
@@ -135,7 +142,70 @@ describe('isSemver', () => {
   });
 
   test('when invalid', () => {
+<<<<<<< HEAD
     expect(isValidSemver('5.x')).toBe(false);
     expect(isValidSemver('5.13.5.foo.bar')).toBe(false);
   });
 });
+=======
+    expect(isValidSemver('5.x')).toBe(false)
+    expect(isValidSemver('5.13.5.foo.bar')).toBe(false)
+  })
+})
+
+// export async function createFontAwesomeScriptElement(getUrlText: UrlTextFetcher, pro: boolean, version: string, baseUrl: string, kitToken: string | undefined): Promise<HTMLElement> {
+describe('createFontAwesomeScriptElement', () => {
+  const getUrlText = jest.fn(() => Promise.resolve('foobar'))
+  const baseUrl = 'https://example.com'
+
+  beforeEach(() => {
+    getUrlText.mockClear()
+  })
+
+  test('basic pro kit', async () => {
+    const pro = true
+    const version = '5.0.0'
+    const kitToken = 'deadbeef00'
+
+    const script = await createFontAwesomeScriptElement(getUrlText, pro, version, baseUrl, kitToken)
+
+    expect(script.tagName).toEqual('SCRIPT')
+    expect(script.innerText).toEqual('foobar')
+    expect(getUrlText).toHaveBeenCalledWith('https://example.com/releases/v5.0.0/js/pro.min.js?token=deadbeef00')
+  })
+
+  test('basic free cdn', async () => {
+    const pro = false
+    const version = '5.0.0'
+    const kitToken = undefined
+
+    const script = await createFontAwesomeScriptElement(getUrlText, pro, version, baseUrl, kitToken)
+
+    expect(script.tagName).toEqual('SCRIPT')
+    expect(script.innerText).toEqual('foobar')
+    expect(getUrlText).toHaveBeenCalledWith('https://example.com/releases/v5.0.0/js/all.js')
+  })
+
+  describe('negatives', () => {
+    const originalConsoleError = console.error
+
+    beforeEach(() => {
+      console.error = jest.fn()
+    })
+
+    afterEach(() => {
+      console.error = originalConsoleError
+    })
+
+    test('throws when getUrlText rejects', async () => {
+      const pro = false
+      const version = '5.0.0'
+      const kitToken = undefined
+      const getUrlText = jest.fn(() => Promise.reject('fake rejection'))
+
+      return expect(
+        createFontAwesomeScriptElement(getUrlText, pro, version, baseUrl, kitToken)
+      ).rejects.toThrow('fake rejection')
+    })
+  })
+})
