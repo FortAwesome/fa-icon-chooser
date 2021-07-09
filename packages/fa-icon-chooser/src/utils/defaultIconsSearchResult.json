@@ -13,6 +13,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -40,6 +41,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -55,6 +57,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -70,6 +73,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -87,6 +91,22 @@
         }
       },
       {
+        "id": "user-secret",
+        "label": "User Secret",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "thin",
+            "duotone"
+          ]
+        }
+      },
+      {
         "id": "info",
         "label": "Info",
         "membership": {
@@ -97,6 +117,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -112,6 +133,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -128,6 +150,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -143,6 +166,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -158,6 +182,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -174,6 +199,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -190,6 +216,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -205,6 +232,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -220,6 +248,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -237,22 +266,6 @@
         }
       },
       {
-        "id": "circle",
-        "label": "Circle",
-        "membership": {
-          "free": [
-            "solid",
-            "regular"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "duotone"
-          ]
-        }
-      },
-      {
         "id": "cross",
         "label": "Cross",
         "membership": {
@@ -263,6 +276,23 @@
             "solid",
             "regular",
             "light",
+            "thin",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "meteor",
+        "label": "Meteor",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "thin",
             "duotone"
           ]
         }
@@ -290,6 +320,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -305,6 +336,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -318,6 +350,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -333,6 +366,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -360,6 +394,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -376,6 +411,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -391,6 +427,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -406,6 +443,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -421,6 +459,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -434,6 +473,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -450,6 +490,23 @@
             "solid",
             "regular",
             "light",
+            "thin",
+            "duotone"
+          ]
+        }
+      },
+      {
+        "id": "coffee",
+        "label": "Coffee",
+        "membership": {
+          "free": [
+            "solid"
+          ],
+          "pro": [
+            "solid",
+            "regular",
+            "light",
+            "thin",
             "duotone"
           ]
         }
@@ -465,6 +522,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -478,21 +536,7 @@
             "solid",
             "regular",
             "light",
-            "duotone"
-          ]
-        }
-      },
-      {
-        "id": "minus",
-        "label": "minus",
-        "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
+            "thin",
             "duotone"
           ]
         }
@@ -508,6 +552,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -536,6 +581,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -552,6 +598,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -568,22 +615,7 @@
             "solid",
             "regular",
             "light",
-            "duotone"
-          ]
-        }
-      },
-      {
-        "id": "square",
-        "label": "Square",
-        "membership": {
-          "free": [
-            "solid",
-            "regular"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
+            "thin",
             "duotone"
           ]
         }
@@ -599,6 +631,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -614,6 +647,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -629,34 +663,8 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
-          ]
-        }
-      },
-      {
-        "id": "globe",
-        "label": "Globe",
-        "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "duotone"
-          ]
-        }
-      },
-      {
-        "id": "openid",
-        "label": "OpenID",
-        "membership": {
-          "free": [
-            "brands"
-          ],
-          "pro": [
-            "brands"
           ]
         }
       },
@@ -669,22 +677,23 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
       },
       {
-        "id": "file-excel",
-        "label": "Excel File",
+        "id": "umbrella-beach",
+        "label": "Umbrella Beach",
         "membership": {
           "free": [
-            "solid",
-            "regular"
+            "solid"
           ],
           "pro": [
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -701,6 +710,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -716,6 +726,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -731,6 +742,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -747,6 +759,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -762,6 +775,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -775,31 +789,8 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
-          ]
-        }
-      },
-      {
-        "id": "pagelines",
-        "label": "Pagelines",
-        "membership": {
-          "free": [
-            "brands"
-          ],
-          "pro": [
-            "brands"
-          ]
-        }
-      },
-      {
-        "id": "html5",
-        "label": "HTML 5 Logo",
-        "membership": {
-          "free": [
-            "brands"
-          ],
-          "pro": [
-            "brands"
           ]
         }
       },
@@ -814,6 +805,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -829,13 +821,14 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
       },
       {
-        "id": "stop",
-        "label": "stop",
+        "id": "pepper-hot",
+        "label": "Pepper Hot",
         "membership": {
           "free": [
             "solid"
@@ -844,19 +837,8 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
-          ]
-        }
-      },
-      {
-        "id": "teamspeak",
-        "label": "TeamSpeak",
-        "membership": {
-          "free": [
-            "brands"
-          ],
-          "pro": [
-            "brands"
           ]
         }
       },
@@ -871,6 +853,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -886,19 +869,8 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
-          ]
-        }
-      },
-      {
-        "id": "internet-explorer",
-        "label": "Internet-explorer",
-        "membership": {
-          "free": [
-            "brands"
-          ],
-          "pro": [
-            "brands"
           ]
         }
       },
@@ -913,21 +885,7 @@
             "solid",
             "regular",
             "light",
-            "duotone"
-          ]
-        }
-      },
-      {
-        "id": "restroom",
-        "label": "Restroom",
-        "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
+            "thin",
             "duotone"
           ]
         }
@@ -941,6 +899,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -956,21 +915,7 @@
             "solid",
             "regular",
             "light",
-            "duotone"
-          ]
-        }
-      },
-      {
-        "id": "caret-down",
-        "label": "Caret Down",
-        "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
+            "thin",
             "duotone"
           ]
         }
@@ -986,19 +931,7 @@
             "solid",
             "regular",
             "light",
-            "duotone"
-          ]
-        }
-      },
-      {
-        "id": "shield",
-        "label": "shield",
-        "membership": {
-          "free": [],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
+            "thin",
             "duotone"
           ]
         }
@@ -1015,6 +948,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -1028,6 +962,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -1043,19 +978,7 @@
             "solid",
             "regular",
             "light",
-            "duotone"
-          ]
-        }
-      },
-      {
-        "id": "empty-set",
-        "label": "Empty Set",
-        "membership": {
-          "free": [],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
+            "thin",
             "duotone"
           ]
         }
@@ -1069,6 +992,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -1084,6 +1008,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -1099,6 +1024,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -1112,6 +1038,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -1125,6 +1052,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -1140,6 +1068,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -1155,6 +1084,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -1170,19 +1100,7 @@
             "solid",
             "regular",
             "light",
-            "duotone"
-          ]
-        }
-      },
-      {
-        "id": "basketball-hoop",
-        "label": "Basketball Hoop",
-        "membership": {
-          "free": [],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
+            "thin",
             "duotone"
           ]
         }
@@ -1198,19 +1116,8 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
-          ]
-        }
-      },
-      {
-        "id": "telegram",
-        "label": "Telegram",
-        "membership": {
-          "free": [
-            "brands"
-          ],
-          "pro": [
-            "brands"
           ]
         }
       },
@@ -1225,6 +1132,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -1240,6 +1148,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -1255,6 +1164,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -1268,21 +1178,7 @@
             "solid",
             "regular",
             "light",
-            "duotone"
-          ]
-        }
-      },
-      {
-        "id": "calendar-week",
-        "label": "Calendar with Week Focus",
-        "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
+            "thin",
             "duotone"
           ]
         }
@@ -1296,6 +1192,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -1311,6 +1208,7 @@
             "solid",
             "regular",
             "light",
+            "thin",
             "duotone"
           ]
         }
@@ -1324,45 +1222,7 @@
             "solid",
             "regular",
             "light",
-            "duotone"
-          ]
-        }
-      },
-      {
-        "id": "free-code-camp",
-        "label": "freeCodeCamp",
-        "membership": {
-          "free": [
-            "brands"
-          ],
-          "pro": [
-            "brands"
-          ]
-        }
-      },
-      {
-        "id": "connectdevelop",
-        "label": "Connect Develop",
-        "membership": {
-          "free": [
-            "brands"
-          ],
-          "pro": [
-            "brands"
-          ]
-        }
-      },
-      {
-        "id": "arrow-down",
-        "label": "arrow-down",
-        "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
+            "thin",
             "duotone"
           ]
         }
@@ -1376,63 +1236,7 @@
             "solid",
             "regular",
             "light",
-            "duotone"
-          ]
-        }
-      },
-      {
-        "id": "star-of-life",
-        "label": "Star of Life",
-        "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "duotone"
-          ]
-        }
-      },
-      {
-        "id": "shower",
-        "label": "Shower",
-        "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
-            "duotone"
-          ]
-        }
-      },
-      {
-        "id": "discord",
-        "label": "Discord",
-        "membership": {
-          "free": [
-            "brands"
-          ],
-          "pro": [
-            "brands"
-          ]
-        }
-      },
-      {
-        "id": "file-import",
-        "label": "File Import",
-        "membership": {
-          "free": [
-            "solid"
-          ],
-          "pro": [
-            "solid",
-            "regular",
-            "light",
+            "thin",
             "duotone"
           ]
         }

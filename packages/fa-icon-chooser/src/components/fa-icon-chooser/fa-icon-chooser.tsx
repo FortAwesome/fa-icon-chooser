@@ -527,8 +527,9 @@ export class FaIconChooser {
         }
         { !this.isQuerying &&
           this.query === '' &&
-          <article class="text-center margin-2xl">
-            <p class="muted size-sm">Here are some faves, but you can search for others.</p>
+          <article class="text-center margin-y-2xl line-length-lg margin-auto">
+            <h3 class="margin-bottom-md">Font Awesome is the web's most popular icon set, with tons of icons in a variety of styles.</h3>
+          <p class="margin-bottom-3xl">Not sure where to start? Here are some favorites, or try a search for spinners, animals, food, or whatever you're looking for.</p>
           </article>
         }
         {
