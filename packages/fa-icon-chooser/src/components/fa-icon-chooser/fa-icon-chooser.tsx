@@ -219,23 +219,7 @@ export class FaIconChooser {
         const css = document.createTextNode(dom.css())
         style.appendChild(css)
         this.host.shadowRoot.appendChild(style)
-
-        // If we're in pro v6, then we need to add the thin style as being available
-        // because our defaultIcons fixture doesn't include thin.
-        const adjustedDefaultIcons = (this.pro && this.isV6())
-          ? get(defaultIcons, 'data.search', []).map(i => {
-            const proStyles = get(i, 'membership.pro', [])
-
-            if(size(proStyles) > 1) {
-              proStyles.push('thin')
-              i.membership.pro = proStyles
-            }
-
-            return i
-          })
-          : get(defaultIcons, 'data.search', [])
-
-        this.defaultIcons = { data: { search: adjustedDefaultIcons } }
+        this.defaultIcons = defaultIcons
 
         this.setIcons(this.defaultIcons, this.iconUploadsAsIconUploadLookups())
 
@@ -495,6 +479,7 @@ export class FaIconChooser {
                 <span class="sr-only">Show </span>light<span class="sr-only"> style icons</span>
               </span>
             </label>
+            <span class="disabled-tooltip size-sm">You need to use a Pro kit to get Light icons.</span>
           </div>
           <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
             <input disabled={ fatDisabled } id="icons-style-thin" checked={ this.styleFilterEnabled && this.styleFilters.fat } onChange={() => this.toggleStyleFilter('fat') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
@@ -513,6 +498,7 @@ export class FaIconChooser {
                 <span class="sr-only">Show </span>thin<span class="sr-only"> style icons</span>
               </span>
             </label>
+            <span class="disabled-tooltip size-sm">You need to use a Pro kit with Version 6 to get Thin icons.</span>
           </div>
           <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
             <input disabled={ fadDisabled } id="icons-style-duotone" checked={ this.styleFilterEnabled && this.styleFilters.fad } onChange={() => this.toggleStyleFilter('fad') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
@@ -531,6 +517,7 @@ export class FaIconChooser {
                 <span class="sr-only">Show </span>duotone<span class="sr-only"> style icons</span>
               </span>
             </label>
+            <span class="disabled-tooltip size-sm">You need to use a Pro kit with Version 5.10 or later to get Duotone icons.</span>
           </div>
           <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
             <input id="icons-style-brands" checked={ this.styleFilterEnabled && this.styleFilters.fab } onChange={() => this.toggleStyleFilter('fab') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
@@ -545,18 +532,19 @@ export class FaIconChooser {
           </div>
           <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
             <input disabled={ fakDisabled } id="icons-style-uploads" checked={ this.styleFilterEnabled && this.styleFilters.fak } onChange={() => this.toggleStyleFilter('fak') } type="checkbox" name="icons-style" class="input-checkbox-custom"></input>
-            <label htmlFor="icons-style-uploads" class="icons-style-choice padding-y-md padding-x-md margin-0 display-flex flex-column flex-items-center ">
+            <label htmlFor="icons-style-uploads" class="icons-style-choice padding-y-md padding-x-md margin-0 display-flex flex-column flex-items-center">
               <span class="position-relative margin-right-sm">
                 {
                   fakDisabled
                   ? <fa-icon {...this.commonFaIconProps} stylePrefix="far" name="meh" size="2x" class="fa-fw"/>
-                  : <fa-icon {...this.commonFaIconProps} stylePrefix="fas" name="cloud" size="2x" class="fa-fw"/>
+                  : <fa-icon {...this.commonFaIconProps} stylePrefix="far" name="cloud" size="2x" class="fa-fw"/>
                 }
               </span>
               <span>
                 <span class="sr-only">Show </span>Custom<span class="sr-only"> icons</span>
               </span>
             </label>
+            <span class="disabled-tooltip size-sm">You need to use a Pro kit to get Custom icons.</span>
           </div>
         </div>
       </form>
@@ -568,6 +556,13 @@ export class FaIconChooser {
           this.styleFilters.fak &&
           <article class="text-center margin-2xl">
             <p class="muted size-sm">This kit contains no uploaded icons.</p>
+          </article>
+        }
+        { !this.isQuerying &&
+          this.query === '' &&
+          <article class="text-center margin-y-2xl line-length-lg margin-auto">
+            <h3 class="margin-bottom-md">Font Awesome is the web's most popular icon set, with tons of icons in a variety of styles.</h3>
+          <p class="margin-bottom-3xl">Not sure where to start? Here are some favorites, or try a search for <strong>spinners</strong>, <strong>animals</strong>, <strong>food</strong>, or <strong>whatever you're looking for</strong>.</p>
           </article>
         }
         {
