@@ -7,39 +7,54 @@ describe('fa-icon-chooser', () => {
     await page.setContent('<div id="container"></div>');
 
     const attrs = {
-      'version': '5.15.3',
-      'cdn-url': 'https://example.com/all.js',
-      'pro': true,
-    };
+      version: '5.15.3',
+      pro: false
+    }
 
-    await page.$eval(
-      '#container',
-      (elm: any, attrs) => {
-        const ic = document.createElement('fa-icon-chooser');
-        ic.handleQuery = () =>
-          Promise.resolve({
-            data: {
-              search: [
-                { id: 'business-time', label: 'Business Time', membership: { free: ['solid'], pro: ['solid', 'regular', 'light', 'duotone'] } },
-                { id: 'socks', label: 'Socks', membership: { free: ['solid'], pro: ['solid', 'regular', 'light', 'duotone'] } },
-                { id: 'print-slash', label: 'Print Slash', membership: { free: [], pro: ['solid', 'regular', 'light', 'duotone'] } },
-                { id: 'print-search', label: 'Print Search', membership: { free: [], pro: ['solid', 'regular', 'light', 'duotone'] } },
-                { id: 'print', label: 'print', membership: { free: ['solid'], pro: ['solid', 'regular', 'light', 'duotone'] } },
-                { id: 'fax', label: 'Fax', membership: { free: ['solid'], pro: ['solid', 'regular', 'light', 'duotone'] } },
-                { id: 'user-tie', label: 'User Tie', membership: { free: ['solid'], pro: ['solid', 'regular', 'light', 'duotone'] } },
-                { id: 'building', label: 'Building', membership: { free: ['solid', 'regular'], pro: ['solid', 'regular', 'light', 'duotone'] } },
-                { id: 'briefcase', label: 'Briefcase', membership: { free: ['solid'], pro: ['solid', 'regular', 'light', 'duotone'] } },
-              ],
-            },
-          });
-        ic.addEventListener('finish', () => {});
-        for (const attr in attrs) {
-          ic.setAttribute(attr, attrs[attr]);
+    await page.$eval('#container', (elm: any, attrs) => {
+      const ic = document.createElement('fa-icon-chooser')
+      ic.getUrlText = (url) => {
+        if(!url.match(/all.js/)) return Promise.reject(`unexpected url: ${url}`)
+
+        window['FontAwesome'] = {
+          dom: {
+            css: () => {
+              return '/* fake css */'
+            }
+          },
+          findIconDefinition: (_params) => {
+            return {
+              prefix: 'fas',
+              iconName: 'fake',
+              icon: [
+                512,
+                512,
+                [],
+                "f00d",
+                "M100 100l50 50v50z"
+              ]
+            }
+          }
         }
-        elm.appendChild(ic);
-      },
-      attrs,
-    );
+
+        return Promise.resolve('// fake JavaScript')
+      }
+      ic.handleQuery = () => Promise.resolve(
+        {"data":{"search":[
+          {"id":"business-time","label":"Business Time","membership":{"free":["solid"],"pro":["solid","regular","light","duotone"]}},
+          {"id":"socks","label":"Socks","membership":{"free":["solid"],"pro":["solid","regular","light","duotone"]}},
+          {"id":"print","label":"print","membership":{"free":["solid"],"pro":["solid","regular","light","duotone"]}},
+          {"id":"fax","label":"Fax","membership":{"free":["solid"],"pro":["solid","regular","light","duotone"]}},
+          {"id":"user-tie","label":"User Tie","membership":{"free":["solid"],"pro":["solid","regular","light","duotone"]}},
+          {"id":"building","label":"Building","membership":{"free":["solid","regular"],"pro":["solid","regular","light","duotone"]}},
+        ]}}
+      )
+      ic.addEventListener('finish', () => {})
+      for (const attr in attrs) {
+        ic.setAttribute(attr, attrs[attr])
+      }
+      elm.appendChild(ic)
+    }, attrs)
 
     await page.waitForChanges();
 
