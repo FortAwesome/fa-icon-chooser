@@ -142,16 +142,10 @@ describe('isSemver', () => {
   });
 
   test('when invalid', () => {
-<<<<<<< HEAD
     expect(isValidSemver('5.x')).toBe(false);
     expect(isValidSemver('5.13.5.foo.bar')).toBe(false);
   });
 });
-=======
-    expect(isValidSemver('5.x')).toBe(false)
-    expect(isValidSemver('5.13.5.foo.bar')).toBe(false)
-  })
-})
 
 // export async function createFontAwesomeScriptElement(getUrlText: UrlTextFetcher, pro: boolean, version: string, baseUrl: string, kitToken: string | undefined): Promise<HTMLElement> {
 describe('createFontAwesomeScriptElement', () => {
