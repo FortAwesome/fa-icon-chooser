@@ -44,16 +44,10 @@ export class FaIcon {
       this.iconDefinition = {
         prefix: 'fak',
         iconName: this.iconUpload.name,
-        icon: [
-          parseInt(`${this.iconUpload.width}`),
-          parseInt(`${this.iconUpload.height}`),
-          [],
-          this.iconUpload.unicode.toString(16),
-          this.iconUpload.path
-        ]
-      }
+        icon: [parseInt(`${this.iconUpload.width}`), parseInt(`${this.iconUpload.height}`), [], this.iconUpload.unicode.toString(16), this.iconUpload.path],
+      };
 
-      return
+      return;
     }
 
     if (this.icon) {
