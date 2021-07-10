@@ -11,6 +11,15 @@ describe('fa-icon-chooser', () => {
       pro: false
     }
 
+    const searchResults = [
+      {"id":"business-time","label":"Business Time","membership":{"free":["solid"],"pro":["solid","regular","light","duotone"]}},
+      {"id":"socks","label":"Socks","membership":{"free":["solid"],"pro":["solid","regular","light","duotone"]}},
+      {"id":"print","label":"print","membership":{"free":["solid"],"pro":["solid","regular","light","duotone"]}},
+      {"id":"fax","label":"Fax","membership":{"free":["solid"],"pro":["solid","regular","light","duotone"]}},
+      {"id":"user-tie","label":"User Tie","membership":{"free":["solid"],"pro":["solid","regular","light","duotone"]}},
+      {"id":"building","label":"Building","membership":{"free":["solid","regular"],"pro":["solid","regular","light","duotone"]}},
+    ]
+
     await page.$eval('#container', (elm: any, attrs) => {
       const ic = document.createElement('fa-icon-chooser')
       ic.getUrlText = (url) => {
@@ -39,15 +48,9 @@ describe('fa-icon-chooser', () => {
 
         return Promise.resolve('// fake JavaScript')
       }
+
       ic.handleQuery = () => Promise.resolve(
-        {"data":{"search":[
-          {"id":"business-time","label":"Business Time","membership":{"free":["solid"],"pro":["solid","regular","light","duotone"]}},
-          {"id":"socks","label":"Socks","membership":{"free":["solid"],"pro":["solid","regular","light","duotone"]}},
-          {"id":"print","label":"print","membership":{"free":["solid"],"pro":["solid","regular","light","duotone"]}},
-          {"id":"fax","label":"Fax","membership":{"free":["solid"],"pro":["solid","regular","light","duotone"]}},
-          {"id":"user-tie","label":"User Tie","membership":{"free":["solid"],"pro":["solid","regular","light","duotone"]}},
-          {"id":"building","label":"Building","membership":{"free":["solid","regular"],"pro":["solid","regular","light","duotone"]}},
-        ]}}
+        {"data":{"search": searchResults}}
       )
       ic.addEventListener('finish', () => {})
       for (const attr in attrs) {
@@ -60,6 +63,31 @@ describe('fa-icon-chooser', () => {
 
     const element = await page.find('fa-icon-chooser');
 
-    expect(element).toHaveClass('hydrated');
-  });
-});
+    expect(element).toHaveClass('hydrated')
+
+    const input = await page.find('fa-icon-chooser >>> input#search')
+
+    let value = await input.getProperty('value');
+    expect(value).toBe('');
+    await input.press('s');
+    await input.press('e');
+    await input.press('a');
+    await page.waitForChanges();
+    value = await input.getProperty('value');
+    expect(value).toBe('sea');
+
+    // TODO: get the rest of the test working. Looking to show that the search
+    // interaction works as expected.
+
+    /*
+    const iconListing = await page.find('fa-icon-chooser >>> div.icon-listing')
+    const icons = await iconListing.findAll('fa-icon')
+
+    expect(icons.length).toEqual(searchResults.length)
+
+    for(const result of searchResults) {
+      expect(element.shadowRoot.innerHTML).toEqual(expect.stringMatching(new RegExp(`<fa-icon .*name="${result.id}"`)))
+    }
+    */
+  })
+})
