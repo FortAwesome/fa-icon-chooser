@@ -35,6 +35,12 @@ type KitMetadata = {
 
 const DISPLAY_NONE = { display: 'none' };
 
+/**
+ * @slot fatal-error-heading - heading for fatal error message
+ * @slot fatal-error-detail - details for fatal error message
+ * @slot start-view-heading - heading for message on default view before search
+ * @slot start-view-detail - detail for message on default view before search
+ */
 @Component({
   tag: 'fa-icon-chooser',
   styleUrl: 'fa-icon-chooser.css',

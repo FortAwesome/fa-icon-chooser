@@ -71,6 +71,16 @@ You can also look at some example implementations in this repo's [development ru
 | `finish` | Clients of the Icon Chooser should listen for this event in order to handle the result of the user's interaction. | `CustomEvent<Element \| Icon>` |
 
 
+## Slots
+
+| Slot                    | Description                                       |
+| ----------------------- | ------------------------------------------------- |
+| `"fatal-error-detail"`  | details for fatal error message                   |
+| `"fatal-error-heading"` | heading for fatal error message                   |
+| `"start-view-detail"`   | detail for message on default view before search  |
+| `"start-view-heading"`  | heading for message on default view before search |
+
+
 ## Dependencies
 
 ### Depends on
