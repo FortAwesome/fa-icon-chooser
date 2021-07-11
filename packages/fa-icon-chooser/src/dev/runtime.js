@@ -5,7 +5,7 @@ const FaIconChooserDevExports = (function () {
 
   function getUrlText(url) {
     // To simulate a fatal error, uncomment the following line:
-    return Promise.reject('simulated fatal error')
+    // return Promise.reject('simulated fatal error')
 
     return fetch(url)
     .then(response => {
