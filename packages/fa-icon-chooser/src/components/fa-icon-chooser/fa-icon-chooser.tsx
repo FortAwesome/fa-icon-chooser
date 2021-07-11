@@ -17,6 +17,7 @@ import {
   isValidSemver,
 } from '../../utils/utils';
 import { faSadTear, faTire } from '../../utils/icons';
+import { slotDefaults } from '../../utils/slots'
 
 export type QueryHandler = (document: string) => Promise<any>;
 
@@ -33,7 +34,6 @@ type KitMetadata = {
 };
 
 const DISPLAY_NONE = { display: 'none' };
-const DEFAULT_FATAL_ERROR_MESSAGE = 'Check the console for additional error information.';
 
 @Component({
   tag: 'fa-icon-chooser',
@@ -117,7 +117,7 @@ export class FaIconChooser {
 
   @State() kitMetadata: KitMetadata;
 
-  @State() fatalError: string;
+  @State() fatalError: boolean = false;
 
   svgApi?: any;
 
@@ -126,6 +126,8 @@ export class FaIconChooser {
   commonFaIconProps: any;
 
   defaultIcons: any;
+
+  activeSlotDefaults: any = {};
 
   constructor() {
     this.toggleStyleFilter = this.toggleStyleFilter.bind(this);
@@ -189,16 +191,34 @@ export class FaIconChooser {
     }
   }
 
+  // Any slot for which the client does not provide content will be assigned
+  // a default.
+  setupSlots() {
+    for(const slotName in slotDefaults) {
+      const slotContentElement = this.host.querySelector(`[slot="${slotName}"]`)
+      if(!slotContentElement) {
+        this.activeSlotDefaults[slotName] = slotDefaults[slotName]
+      }
+    }
+  }
+
+  slot(name: string) {
+    return (this.activeSlotDefaults && this.activeSlotDefaults[name])
+      || <slot name={name}></slot>
+  }
+
   componentWillLoad() {
     if (!this.kitToken && !isValidSemver(this.version)) {
       console.error(`${CONSOLE_MESSAGE_PREFIX}: either a kit-token or valid semantic version is required.`, this);
-      this.fatalError = DEFAULT_FATAL_ERROR_MESSAGE;
+      this.fatalError = true;
       return;
     }
 
     this.query = '';
 
     this.isInitialLoading = true;
+
+    this.setupSlots()
 
     this.preload()
       .then(() => {
@@ -256,7 +276,7 @@ export class FaIconChooser {
       .catch(e => {
         console.error(e);
         this.isInitialLoading = false;
-        this.fatalError = DEFAULT_FATAL_ERROR_MESSAGE;
+        this.fatalError = true;
       });
   }
 
@@ -328,7 +348,7 @@ export class FaIconChooser {
   updateQueryResultsWithDebounce = debounce(query => {
     this.updateQueryResults(query).catch(e => {
       console.error(e);
-      this.fatalError = DEFAULT_FATAL_ERROR_MESSAGE;
+      this.fatalError = true;
     });
   }, 500);
 
@@ -422,8 +442,8 @@ export class FaIconChooser {
       return (
         <div class="fa-icon-chooser">
           <div class="message-loading text-center margin-2xl">
-            <h3>Well, this is awkward...</h3>
-            <p>Something has gone horribly wrong. {this.fatalError}</p>
+            <h3>{ this.slot('fatal-error-heading') }</h3>
+            <p>{ this.slot('fatal-error-detail') }</p>
           </div>
         </div>
       );
