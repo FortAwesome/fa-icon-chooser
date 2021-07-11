@@ -247,7 +247,8 @@ const FaIconChooserDevExports = (function () {
     toggleIconChooser,
     handleQuery,
     handleResult,
-    getLocalConfig
+    getLocalConfig,
+    getUrlText
   }
 })()
 

@@ -1,6 +1,6 @@
 import './App.css';
 import { FaIconChooser } from '@fortawesome/fa-icon-chooser-react'
-import { handleQuery, getLocalConfig } from './devRuntime'
+import { handleQuery, getLocalConfig, getUrlText } from './devRuntime'
 import React, { useState } from 'react'
 
 function App() {
@@ -28,7 +28,13 @@ function App() {
         }
         {
           showingChooser &&
-          <FaIconChooser kitToken={ getLocalConfig().props['kit-token'] } handleQuery={ handleQuery } onFinish={ handleResult } />
+          <FaIconChooser
+            version={ getLocalConfig().props['version'] }
+            kitToken={ getLocalConfig().props['kit-token'] }
+            handleQuery={ handleQuery }
+            getUrlText={ getUrlText }
+            onFinish={ handleResult }>
+          </FaIconChooser>
         }
       </header>
     </div>
