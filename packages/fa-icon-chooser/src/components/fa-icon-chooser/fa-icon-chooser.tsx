@@ -14,7 +14,7 @@ import {
   IconChooserResult,
   UrlTextFetcher,
   CONSOLE_MESSAGE_PREFIX,
-  isValidSemver,
+  isValidSemver
 } from '../../utils/utils';
 import { faSadTear, faTire } from '../../utils/icons';
 import { slotDefaults } from '../../utils/slots'
@@ -723,10 +723,9 @@ export class FaIconChooser {
           )}
           {!this.isQuerying && this.query === '' && (
             <article class="text-center margin-y-2xl line-length-lg margin-auto">
-              <h3 class="margin-bottom-md">Font Awesome is the web's most popular icon set, with tons of icons in a variety of styles.</h3>
+              <h3 class="margin-bottom-md">{ this.slot('start-view-heading') }</h3>
               <p class="margin-bottom-3xl">
-                Not sure where to start? Here are some favorites, or try a search for <strong>spinners</strong>, <strong>animals</strong>, <strong>food</strong>, or{' '}
-                <strong>whatever you're looking for</strong>.
+                { this.slot('start-view-detail') }
               </p>
             </article>
           )}
