@@ -17,3 +17,9 @@ slotDefaults['start-view-detail'] = <>
 slotDefaults['initial-loading-view-heading'] = 'Fetching icons'
 
 slotDefaults['initial-loading-view-detail'] = 'When this thing gets up to 88 mph...'
+
+slotDefaults['search-field-label'] = 'Search Font Awesome Icons'
+
+slotDefaults['search-field-placeholder'] = 'Search for icons by name, category, or keyword'
+
+slotDefaults['searching'] = 'Searching'

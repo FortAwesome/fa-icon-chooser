@@ -471,7 +471,7 @@ export class FaIconChooser {
       <div class="fa-icon-chooser">
         <form id="search-form" onSubmit={this.preventDefaultFormSubmit}>
           <label htmlFor="search" class="sr-only">
-            Search Font Awesome Icons
+            {this.slot('search-field-label')}
           </label>
           <div class="row align-middle tablet:margin-bottom-xl">
             <div class="wrap-search column-12 tablet:column-11 margin-bottom-xs with-icon-before">
@@ -483,10 +483,10 @@ export class FaIconChooser {
                 class="rounded"
                 value={this.query}
                 onKeyUp={this.onKeyUp.bind(this)}
-                placeholder="Search for icons by name, category, or keyword"
+                placeholder={this.slot('search-field-placeholder')}
               ></input>
             </div>
-            <span class="column-12 tablet:column-1 text-center margin-bottom-xs muted size-sm tablet:text-right">Searching v{this.resolvedVersion()}</span>
+            <span class="column-12 tablet:column-1 text-center margin-bottom-xs muted size-sm tablet:text-right">{this.slot('searching')} v{this.resolvedVersion()}</span>
           </div>
 
           <div class="icons-style-menu-listing display-flex flex-items-center align-between margin-bottom-xl">
