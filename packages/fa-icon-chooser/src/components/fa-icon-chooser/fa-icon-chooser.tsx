@@ -510,8 +510,8 @@ export class FaIconChooser {
             <div class="wrap-icons-style-choice size-sm laptop:size-md margin-3xs column">
               <input
                 id="icons-style-solid"
-                checked={ this.styleFilterEnabled && this.styleFilters.fas }
-                onChange={() => this.toggleStyleFilter('fas') }
+                checked={this.styleFilterEnabled && this.styleFilters.fas}
+                onChange={() => this.toggleStyleFilter('fas')}
                 type="checkbox"
                 name="icons-style"
                 class="input-checkbox-custom"
@@ -543,7 +543,7 @@ export class FaIconChooser {
             <div class="wrap-icons-style-choice size-sm laptop:size-md margin-3xs column">
               <input
                 id="icons-style-regular"
-                checked={ this.styleFilterEnabled && this.styleFilters.far }
+                checked={this.styleFilterEnabled && this.styleFilters.far}
                 onChange={() => this.toggleStyleFilter('far')}
                 type="checkbox"
                 name="icons-style"
@@ -560,7 +560,7 @@ export class FaIconChooser {
                     class="checked-icon fa-fw"
                   />
                   <fa-icon
-                    style={ this.showCheckedStyleIcon('far') && DISPLAY_NONE}
+                    style={this.showCheckedStyleIcon('far') && DISPLAY_NONE}
                     {...this.commonFaIconProps}
                     name="smile"
                     stylePrefix="far"
@@ -625,7 +625,7 @@ export class FaIconChooser {
                 disabled={fatDisabled}
                 id="icons-style-thin"
                 checked={this.styleFilterEnabled && this.styleFilters.fat}
-                onChange={() => this.toggleStyleFilter('fat') }
+                onChange={() => this.toggleStyleFilter('fat')}
                 type="checkbox"
                 name="icons-style"
                 class="input-checkbox-custom"
@@ -644,7 +644,7 @@ export class FaIconChooser {
                 ) : (
                   <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-right-sm laptop:margin-bottom-0">
                     <fa-icon
-                      style={ !this.showCheckedStyleIcon('fat') && DISPLAY_NONE}
+                      style={!this.showCheckedStyleIcon('fat') && DISPLAY_NONE}
                       {...this.commonFaIconProps}
                       name="grin-tongue"
                       stylePrefix="fat"
@@ -652,7 +652,7 @@ export class FaIconChooser {
                       class="checked-icon fa-fw"
                     />
                     <fa-icon
-                      style={ this.showCheckedStyleIcon('fat') && DISPLAY_NONE}
+                      style={this.showCheckedStyleIcon('fat') && DISPLAY_NONE}
                       {...this.commonFaIconProps}
                       name="smile"
                       stylePrefix="fat"
@@ -669,7 +669,7 @@ export class FaIconChooser {
             </div>
             <div class="wrap-icons-style-choice size-sm laptop:size-md margin-3xs column">
               <input
-                disabled={ fadDisabled }
+                disabled={fadDisabled}
                 id="icons-style-duotone"
                 checked={this.styleFilterEnabled && this.styleFilters.fad}
                 onChange={() => this.toggleStyleFilter('fad')}
@@ -690,7 +690,7 @@ export class FaIconChooser {
                   </span>
                 ) : (
                   <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-right-sm laptop:margin-bottom-0">
-                    <fa-icon style={ !this.showCheckedStyleIcon('fad') && DISPLAY_NONE}
+                    <fa-icon style={!this.showCheckedStyleIcon('fad') && DISPLAY_NONE}
                     {...this.commonFaIconProps}
                     name="grin-tongue"
                     stylePrefix="fad"
@@ -698,7 +698,7 @@ export class FaIconChooser {
                     class="checked-icon fa-fw"
                   />
                     <fa-icon
-                      style={ this.showCheckedStyleIcon('fad') && DISPLAY_NONE}
+                      style={this.showCheckedStyleIcon('fad') && DISPLAY_NONE}
                       {...this.commonFaIconProps}
                       name="smile"
                       stylePrefix="fad"
@@ -739,10 +739,10 @@ export class FaIconChooser {
             </div>
             <div class="wrap-icons-style-choice size-sm laptop:size-md margin-3xs column">
               <input
-                disabled={ fakDisabled }
+                disabled={fakDisabled}
                 id="icons-style-uploads"
-                checked={ this.styleFilterEnabled && this.styleFilters.fak }
-                onChange={() => this.toggleStyleFilter('fak') }
+                checked={this.styleFilterEnabled && this.styleFilters.fak}
+                onChange={() => this.toggleStyleFilter('fak')}
                 type="checkbox"
                 name="icons-style"
                 class="input-checkbox-custom"
