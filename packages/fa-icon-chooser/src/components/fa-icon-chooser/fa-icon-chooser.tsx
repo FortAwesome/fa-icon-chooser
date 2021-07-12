@@ -595,7 +595,7 @@ export class FaIconChooser {
                   <span class="sr-only">Show </span>light<span class="sr-only"> style icons</span>
                 </span>
               </label>
-              <span class="disabled-tooltip size-sm">You need to use a Pro kit to get Light icons.</span>
+              <span class="disabled-tooltip size-sm">{this.slot('light-requires-pro')}</span>
             </div>
             <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
               <input
@@ -636,7 +636,7 @@ export class FaIconChooser {
                   <span class="sr-only">Show </span>thin<span class="sr-only"> style icons</span>
                 </span>
               </label>
-              <span class="disabled-tooltip size-sm">You need to use a Pro kit with Version 6 to get Thin icons.</span>
+              <span class="disabled-tooltip size-sm">{this.slot('thin-requires-pro')}</span>
             </div>
             <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
               <input
@@ -677,7 +677,7 @@ export class FaIconChooser {
                   <span class="sr-only">Show </span>duotone<span class="sr-only"> style icons</span>
                 </span>
               </label>
-              <span class="disabled-tooltip size-sm">You need to use a Pro kit with Version 5.10 or later to get Duotone icons.</span>
+              <span class="disabled-tooltip size-sm">{this.slot('duotone-requires-pro')}</span>
             </div>
             <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
               <input
@@ -719,14 +719,14 @@ export class FaIconChooser {
                   <span class="sr-only">Show </span>Custom<span class="sr-only"> icons</span>
                 </span>
               </label>
-              <span class="disabled-tooltip size-sm">You need to use a Pro kit to get Custom icons.</span>
+              <span class="disabled-tooltip size-sm">{this.slot('custom-requires-pro')}</span>
             </div>
           </div>
         </form>
         <div class="wrap-icon-listing margin-y-lg">
           {!this.isQuerying && this.mayHaveIconUploads() && !this.hasIconUploads() && this.styleFilterEnabled && this.styleFilters.fak && (
             <article class="text-center margin-2xl">
-              <p class="muted size-sm">This kit contains no uploaded icons.</p>
+              <p class="muted size-sm">{this.slot('kit-has-no-uploaded-icons')}</p>
             </article>
           )}
           {!this.isQuerying && this.query === '' && (
@@ -760,14 +760,10 @@ export class FaIconChooser {
               <span key="b">
                 <fa-icon {...this.commonFaIconProps} icon={faSadTear} class="message-icon fa-2x margin-top-xs"></fa-icon>
               </span>
-              <h2 class="message-title margin-top-lg">Sorry, we couldn't find anything for that.</h2>
-              <p class="size-lg">You might try a different search...</p>
+              <h2 class="message-title margin-top-lg">{this.slot('no-search-results-heading')}</h2>
+              <p class="size-lg">{this.slot('no-search-results-detail')}</p>
               <p class="muted display-block">
-                Or{' '}
-                <a href="https://fontawesome.com/" target="_blank">
-                  get Font Awesome Pro
-                </a>{' '}
-                and upload your own icon!
+                {this.slot('get-fontawesome-pro')}
               </p>
             </article>
           )}
