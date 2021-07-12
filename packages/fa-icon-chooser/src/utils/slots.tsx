@@ -13,3 +13,7 @@ slotDefaults['start-view-detail'] = <>
   Not sure where to start? Here are some favorites, or try a search for <strong>spinners</strong>, <strong>animals</strong>, <strong>food</strong>, or{' '}
   <strong>whatever you're looking for</strong>.
 </>;
+
+slotDefaults['initial-loading-view-heading'] = 'Fetching icons'
+
+slotDefaults['initial-loading-view-detail'] = 'When this thing gets up to 88 mph...'

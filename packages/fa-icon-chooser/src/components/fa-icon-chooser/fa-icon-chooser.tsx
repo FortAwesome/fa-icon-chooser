@@ -40,6 +40,8 @@ const DISPLAY_NONE = { display: 'none' };
  * @slot fatal-error-detail - details for fatal error message
  * @slot start-view-heading - heading for message on default view before search
  * @slot start-view-detail - detail for message on default view before search
+ * @slot initial-loading-view-heading' - heading for initial loading view
+ * @slot initial-loading-view-detail' - detail for initial loading view
  */
 @Component({
   tag: 'fa-icon-chooser',
@@ -738,8 +740,8 @@ export class FaIconChooser {
           {this.isQuerying ? (
             <article class="message-loading text-center margin-2xl">
               <fa-icon {...this.commonFaIconProps} icon={faTire} class="message-icon fa-2x margin-top-xs fa-spin fa-fw"></fa-icon>
-              <h3>Fetching icons</h3>
-              <p class="margin-y-md muted">When this thing gets up to 88 mph...</p>
+              <h3>{ this.slot('initial-loading-view-header') }</h3>
+              <p class="margin-y-md muted">{ this.slot('initial-loading-view-detail') }</p>
             </article>
           ) : size(this.filteredIcons()) > 0 ? (
             <div class="icon-listing">
