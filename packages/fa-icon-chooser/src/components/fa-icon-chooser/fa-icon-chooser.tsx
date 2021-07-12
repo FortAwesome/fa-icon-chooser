@@ -471,7 +471,7 @@ export class FaIconChooser {
       <div class="fa-icon-chooser">
         <form id="search-form" onSubmit={this.preventDefaultFormSubmit}>
           <label htmlFor="search" class="sr-only">
-            Search the v6 Beta Icons
+            Search Font Awesome Icons
           </label>
           <div class="row align-middle tablet:margin-bottom-xl">
             <div class="wrap-search column-12 tablet:column-11 margin-bottom-xs with-icon-before">
