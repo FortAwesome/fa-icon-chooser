@@ -71,6 +71,29 @@ You can also look at some example implementations in this repo's [development ru
 | `finish` | Clients of the Icon Chooser should listen for this event in order to handle the result of the user's interaction. | `CustomEvent<Element \| Icon>` |
 
 
+## Slots
+
+| Slot                                                         | Description                                                             |
+| ------------------------------------------------------------ | ----------------------------------------------------------------------- |
+| `"custom-requires-pro"`                                      | message about requirements for accessing custom icon (kit icon uploads) |
+| `"duotone-requires-pro"`                                     | message about requirements for accessing duotone icons                  |
+| `"fatal-error-detail"`                                       | details for fatal error message                                         |
+| `"fatal-error-heading"`                                      | heading for fatal error message                                         |
+| `"get-fontawesome-pro"`                                      | message about getting Font Awesome Pro with link to fontawesome.com     |
+| `"initial-loading-view-detail"`                              | detail for initial loading view                                         |
+| `"initial-loading-view-heading"`                             | heading for initial loading view                                        |
+| `"kit-has-no-uploaded-icons"`                                | message about a kit having no icon uploads                              |
+| `"light-requires-pro"`                                       | tooltip for light style requiring Pro                                   |
+| `"no-search-results-detail"`                                 | no seach results message detail                                         |
+| `"no-search-results-heading"`                                | no search results message heading                                       |
+| `"search-field-label"`                                       | Search Font Awesome Icons                                               |
+| `"search-field-placeholder = search field placeholder"`      |                                                                         |
+| `"searching = Searching"`                                    |                                                                         |
+| `"start-view-detail"`                                        | detail for message on default view before search                        |
+| `"start-view-heading"`                                       | heading for message on default view before search                       |
+| `"thin-requires-pro = tooltip for thin style requiring Pro"` |                                                                         |
+
+
 ## Dependencies
 
 ### Depends on

@@ -5,7 +5,7 @@ const FaIconChooserDevExports = (function () {
 
   function getUrlText(url) {
     // To simulate a fatal error, uncomment the following line:
-    //return Promise.reject('simulated fatal error')
+    // return Promise.reject('simulated fatal error')
 
     return fetch(url)
     .then(response => {
@@ -71,6 +71,12 @@ const FaIconChooserDevExports = (function () {
     el.handleQuery = handleQuery
     el.getUrlText = getUrlText
     el.addEventListener('finish', handleResult)
+
+    const slotFatalErrorHeader = document.createElement('p')
+    slotFatalErrorHeader.setAttribute('slot', 'fatal-error-heading')
+    const slotFatalErrorHeaderMsg = document.createTextNode('foo')
+    slotFatalErrorHeader.appendChild(slotFatalErrorHeaderMsg)
+    el.appendChild(slotFatalErrorHeader)
 
     Object.keys(props).map(prop => {
       el.setAttribute(prop, props[prop])

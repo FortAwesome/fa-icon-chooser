@@ -14,9 +14,10 @@ import {
   IconChooserResult,
   UrlTextFetcher,
   CONSOLE_MESSAGE_PREFIX,
-  isValidSemver,
+  isValidSemver
 } from '../../utils/utils';
 import { faSadTear, faTire } from '../../utils/icons';
+import { slotDefaults } from '../../utils/slots'
 
 export type QueryHandler = (document: string) => Promise<any>;
 
@@ -33,8 +34,26 @@ type KitMetadata = {
 };
 
 const DISPLAY_NONE = { display: 'none' };
-const DEFAULT_FATAL_ERROR_MESSAGE = 'Check the console for additional error information.';
 
+/**
+ * @slot fatal-error-heading - heading for fatal error message
+ * @slot fatal-error-detail - details for fatal error message
+ * @slot start-view-heading - heading for message on default view before search
+ * @slot start-view-detail - detail for message on default view before search
+ * @slot initial-loading-view-heading - heading for initial loading view
+ * @slot initial-loading-view-detail - detail for initial loading view
+ * @slot search-field-label - Search Font Awesome Icons
+ * @slot search-field-placeholder = search field placeholder
+ * @slot searching = Searching
+ * @slot light-requires-pro - tooltip for light style requiring Pro
+ * @slot thin-requires-pro = tooltip for thin style requiring Pro
+ * @slot duotone-requires-pro - message about requirements for accessing duotone icons
+ * @slot custom-requires-pro - message about requirements for accessing custom icon (kit icon uploads)
+ * @slot kit-has-no-uploaded-icons - message about a kit having no icon uploads
+ * @slot no-search-results-heading - no search results message heading
+ * @slot no-search-results-detail - no seach results message detail
+ * @slot get-fontawesome-pro - message about getting Font Awesome Pro with link to fontawesome.com
+ */
 @Component({
   tag: 'fa-icon-chooser',
   styleUrl: 'fa-icon-chooser.css',
@@ -117,7 +136,7 @@ export class FaIconChooser {
 
   @State() kitMetadata: KitMetadata;
 
-  @State() fatalError: string;
+  @State() fatalError: boolean = false;
 
   svgApi?: any;
 
@@ -126,6 +145,8 @@ export class FaIconChooser {
   commonFaIconProps: any;
 
   defaultIcons: any;
+
+  activeSlotDefaults: any = {};
 
   constructor() {
     this.toggleStyleFilter = this.toggleStyleFilter.bind(this);
@@ -189,16 +210,34 @@ export class FaIconChooser {
     }
   }
 
+  // Any slot for which the client does not provide content will be assigned
+  // a default.
+  setupSlots() {
+    for(const slotName in slotDefaults) {
+      const slotContentElement = this.host.querySelector(`[slot="${slotName}"]`)
+      if(!slotContentElement) {
+        this.activeSlotDefaults[slotName] = slotDefaults[slotName]
+      }
+    }
+  }
+
+  slot(name: string) {
+    return (this.activeSlotDefaults && this.activeSlotDefaults[name])
+      || <slot name={name}></slot>
+  }
+
   componentWillLoad() {
     if (!this.kitToken && !isValidSemver(this.version)) {
       console.error(`${CONSOLE_MESSAGE_PREFIX}: either a kit-token or valid semantic version is required.`, this);
-      this.fatalError = DEFAULT_FATAL_ERROR_MESSAGE;
+      this.fatalError = true;
       return;
     }
 
     this.query = '';
 
     this.isInitialLoading = true;
+
+    this.setupSlots()
 
     this.preload()
       .then(() => {
@@ -256,7 +295,7 @@ export class FaIconChooser {
       .catch(e => {
         console.error(e);
         this.isInitialLoading = false;
-        this.fatalError = DEFAULT_FATAL_ERROR_MESSAGE;
+        this.fatalError = true;
       });
   }
 
@@ -328,7 +367,7 @@ export class FaIconChooser {
   updateQueryResultsWithDebounce = debounce(query => {
     this.updateQueryResults(query).catch(e => {
       console.error(e);
-      this.fatalError = DEFAULT_FATAL_ERROR_MESSAGE;
+      this.fatalError = true;
     });
   }, 500);
 
@@ -422,8 +461,8 @@ export class FaIconChooser {
       return (
         <div class="fa-icon-chooser">
           <div class="message-loading text-center margin-2xl">
-            <h3>Well, this is awkward...</h3>
-            <p>Something has gone horribly wrong. {this.fatalError}</p>
+            <h3>{ this.slot('fatal-error-heading') }</h3>
+            <p>{ this.slot('fatal-error-detail') }</p>
           </div>
         </div>
       );
@@ -443,7 +482,7 @@ export class FaIconChooser {
       <div class="fa-icon-chooser">
         <form id="search-form" onSubmit={this.preventDefaultFormSubmit}>
           <label htmlFor="search" class="sr-only">
-            Search the v6 Beta Icons
+            {this.slot('search-field-label')}
           </label>
           <div class="row align-middle tablet:margin-bottom-xl">
             <div class="wrap-search column-12 tablet:column-11 margin-bottom-xs with-icon-before">
@@ -455,10 +494,10 @@ export class FaIconChooser {
                 class="rounded"
                 value={this.query}
                 onKeyUp={this.onKeyUp.bind(this)}
-                placeholder="Search for icons by name, category, or keyword"
+                placeholder={this.slot('search-field-placeholder')}
               ></input>
             </div>
-            <span class="column-12 tablet:column-1 text-center margin-bottom-xs muted size-sm tablet:text-right">Searching v{this.resolvedVersion()}</span>
+            <span class="column-12 tablet:column-1 text-center margin-bottom-xs muted size-sm tablet:text-right">{this.slot('searching')} v{this.resolvedVersion()}</span>
           </div>
 
           <div class="icons-style-menu-listing display-flex flex-items-center align-between margin-bottom-xl">
@@ -567,7 +606,7 @@ export class FaIconChooser {
                   <span class="sr-only">Show </span>light<span class="sr-only"> style icons</span>
                 </span>
               </label>
-              <span class="disabled-tooltip size-sm">You need to use a Pro kit to get Light icons.</span>
+              <span class="disabled-tooltip size-sm">{this.slot('light-requires-pro')}</span>
             </div>
             <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
               <input
@@ -608,7 +647,7 @@ export class FaIconChooser {
                   <span class="sr-only">Show </span>thin<span class="sr-only"> style icons</span>
                 </span>
               </label>
-              <span class="disabled-tooltip size-sm">You need to use a Pro kit with Version 6 to get Thin icons.</span>
+              <span class="disabled-tooltip size-sm">{this.slot('thin-requires-pro')}</span>
             </div>
             <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
               <input
@@ -649,7 +688,7 @@ export class FaIconChooser {
                   <span class="sr-only">Show </span>duotone<span class="sr-only"> style icons</span>
                 </span>
               </label>
-              <span class="disabled-tooltip size-sm">You need to use a Pro kit with Version 5.10 or later to get Duotone icons.</span>
+              <span class="disabled-tooltip size-sm">{this.slot('duotone-requires-pro')}</span>
             </div>
             <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
               <input
@@ -691,30 +730,29 @@ export class FaIconChooser {
                   <span class="sr-only">Show </span>Custom<span class="sr-only"> icons</span>
                 </span>
               </label>
-              <span class="disabled-tooltip size-sm">You need to use a Pro kit to get Custom icons.</span>
+              <span class="disabled-tooltip size-sm">{this.slot('custom-requires-pro')}</span>
             </div>
           </div>
         </form>
         <div class="wrap-icon-listing margin-y-lg">
           {!this.isQuerying && this.mayHaveIconUploads() && !this.hasIconUploads() && this.styleFilterEnabled && this.styleFilters.fak && (
             <article class="text-center margin-2xl">
-              <p class="muted size-sm">This kit contains no uploaded icons.</p>
+              <p class="muted size-sm">{this.slot('kit-has-no-uploaded-icons')}</p>
             </article>
           )}
           {!this.isQuerying && this.query === '' && (
             <article class="text-center margin-y-2xl line-length-lg margin-auto">
-              <h3 class="margin-bottom-md">Font Awesome is the web's most popular icon set, with tons of icons in a variety of styles.</h3>
+              <h3 class="margin-bottom-md">{ this.slot('start-view-heading') }</h3>
               <p class="margin-bottom-3xl">
-                Not sure where to start? Here are some favorites, or try a search for <strong>spinners</strong>, <strong>animals</strong>, <strong>food</strong>, or{' '}
-                <strong>whatever you're looking for</strong>.
+                { this.slot('start-view-detail') }
               </p>
             </article>
           )}
           {this.isQuerying ? (
             <article class="message-loading text-center margin-2xl">
               <fa-icon {...this.commonFaIconProps} icon={faTire} class="message-icon fa-2x margin-top-xs fa-spin fa-fw"></fa-icon>
-              <h3>Fetching icons</h3>
-              <p class="margin-y-md muted">When this thing gets up to 88 mph...</p>
+              <h3>{ this.slot('initial-loading-view-header') }</h3>
+              <p class="margin-y-md muted">{ this.slot('initial-loading-view-detail') }</p>
             </article>
           ) : size(this.filteredIcons()) > 0 ? (
             <div class="icon-listing">
@@ -733,14 +771,10 @@ export class FaIconChooser {
               <span key="b">
                 <fa-icon {...this.commonFaIconProps} icon={faSadTear} class="message-icon fa-2x margin-top-xs"></fa-icon>
               </span>
-              <h2 class="message-title margin-top-lg">Sorry, we couldn't find anything for that.</h2>
-              <p class="size-lg">You might try a different search...</p>
+              <h2 class="message-title margin-top-lg">{this.slot('no-search-results-heading')}</h2>
+              <p class="size-lg">{this.slot('no-search-results-detail')}</p>
               <p class="muted display-block">
-                Or{' '}
-                <a href="https://fontawesome.com/" target="_blank">
-                  get Font Awesome Pro
-                </a>{' '}
-                and upload your own icon!
+                {this.slot('get-fontawesome-pro')}
               </p>
             </article>
           )}

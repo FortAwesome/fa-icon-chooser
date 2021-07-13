@@ -155,3 +155,5 @@ export function buildIconChooserResult(iconLookup: IconLookup | IconUploadLookup
 export function isValidSemver(val: string): boolean {
   return !!validSemver(val);
 }
+
+export const Fragment = (_props, children) => [ ...children ]
