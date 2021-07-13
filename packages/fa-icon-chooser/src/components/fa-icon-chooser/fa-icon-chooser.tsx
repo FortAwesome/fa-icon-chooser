@@ -529,8 +529,8 @@ export class FaIconChooser {
                     class="unchecked-icon fa-fw"
                   />
                 </span>
-                <span class="">
-                  Solid <span class="sr-only">Show solid style icons</span>
+                <span>
+                  Solid <span class="sr-only">{this.slot('solid-style-filter-sr-message')}</span>
                 </span>
               </label>
             </div>
@@ -563,7 +563,7 @@ export class FaIconChooser {
                   />
                 </span>
                 <span>
-                  Regular <span class="sr-only">Show regular style icons</span>
+                  Regular <span class="sr-only">{this.slot('regular-style-filter-sr-message')}</span>
                 </span>
               </label>
             </div>
@@ -603,7 +603,7 @@ export class FaIconChooser {
                   </span>
                 )}
                 <span>
-                  Light <span class="sr-only">Show light style icons</span>
+                  Light <span class="sr-only">{this.slot('light-style-filter-sr-message')}</span>
                 </span>
               </label>
               <span class="disabled-tooltip size-sm">{this.slot('light-requires-pro')}</span>
@@ -644,7 +644,7 @@ export class FaIconChooser {
                   </span>
                 )}
                 <span>
-                  Thin <span class="sr-only">Show thin style icons</span>
+                  Thin <span class="sr-only">{this.slot('thin-style-filter-sr-message')}</span>
                 </span>
               </label>
               <span class="disabled-tooltip size-sm">{this.slot('thin-requires-pro')}</span>
@@ -685,7 +685,7 @@ export class FaIconChooser {
                   </span>
                 )}
                 <span>
-                  Duotone <span class="sr-only">Show duotone style icons</span>
+                  Duotone <span class="sr-only">{this.slot('duotone-style-filter-sr-message')}</span>
                 </span>
               </label>
               <span class="disabled-tooltip size-sm">{this.slot('duotone-requires-pro')}</span>
@@ -704,7 +704,7 @@ export class FaIconChooser {
                   <fa-icon {...this.commonFaIconProps} stylePrefix="fab" name="font-awesome" size="2x" class="fa-fw" />
                 </span>
                 <span>
-                  Brands <span class="sr-only">Show brands style icons</span>
+                  Brands <span class="sr-only">{this.slot('brands-style-filter-sr-message')}</span>
                 </span>
               </label>
             </div>
@@ -727,7 +727,7 @@ export class FaIconChooser {
                   )}
                 </span>
                 <span>
-                  Uploaded <span class="sr-only">Show your uploaded icons</span>
+                  Uploaded <span class="sr-only">{this.slot('uploaded-style-filter-sr-message')}</span>
                 </span>
               </label>
               <span class="disabled-tooltip size-sm">{this.slot('custom-requires-pro')}</span>
