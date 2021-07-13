@@ -75,8 +75,10 @@ You can also look at some example implementations in this repo's [development ru
 
 | Slot                                                         | Description                                                             |
 | ------------------------------------------------------------ | ----------------------------------------------------------------------- |
+| `"brands-style-filter-sr-message"`                           | screen reader only message for style filter: brands                     |
 | `"custom-requires-pro"`                                      | message about requirements for accessing custom icon (kit icon uploads) |
 | `"duotone-requires-pro"`                                     | message about requirements for accessing duotone icons                  |
+| `"duotone-style-filter-sr-message"`                          | screen reader only message for style filter: duotone                    |
 | `"fatal-error-detail"`                                       | details for fatal error message                                         |
 | `"fatal-error-heading"`                                      | heading for fatal error message                                         |
 | `"get-fontawesome-pro"`                                      | message about getting Font Awesome Pro with link to fontawesome.com     |
@@ -84,14 +86,19 @@ You can also look at some example implementations in this repo's [development ru
 | `"initial-loading-view-heading"`                             | heading for initial loading view                                        |
 | `"kit-has-no-uploaded-icons"`                                | message about a kit having no icon uploads                              |
 | `"light-requires-pro"`                                       | tooltip for light style requiring Pro                                   |
+| `"light-style-filter-sr-message"`                            | screen reader only message for style filter: light                      |
 | `"no-search-results-detail"`                                 | no seach results message detail                                         |
 | `"no-search-results-heading"`                                | no search results message heading                                       |
+| `"regular-style-filter-sr-message"`                          | screen reader only message for style filter: regular                    |
 | `"search-field-label"`                                       | Search Font Awesome Icons                                               |
 | `"search-field-placeholder = search field placeholder"`      |                                                                         |
 | `"searching = Searching"`                                    |                                                                         |
+| `"solid-style-filter-sr-message"`                            | screen reader only message for style filter: solid                      |
 | `"start-view-detail"`                                        | detail for message on default view before search                        |
 | `"start-view-heading"`                                       | heading for message on default view before search                       |
 | `"thin-requires-pro = tooltip for thin style requiring Pro"` |                                                                         |
+| `"thin-style-filter-sr-message"`                             | screen reader only message for style filter: thin                       |
+| `"uploaded-style-filter-sr-message"`                         | screen reader only message for style filter: uploaded                   |
 
 
 ## Dependencies

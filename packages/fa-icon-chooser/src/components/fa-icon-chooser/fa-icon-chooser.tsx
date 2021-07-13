@@ -53,6 +53,13 @@ const DISPLAY_NONE = { display: 'none' };
  * @slot no-search-results-heading - no search results message heading
  * @slot no-search-results-detail - no seach results message detail
  * @slot get-fontawesome-pro - message about getting Font Awesome Pro with link to fontawesome.com
+ * @slot solid-style-filter-sr-message - screen reader only message for style filter: solid
+ * @slot regular-style-filter-sr-message - screen reader only message for style filter: regular
+ * @slot light-style-filter-sr-message - screen reader only message for style filter: light
+ * @slot thin-style-filter-sr-message - screen reader only message for style filter: thin
+ * @slot duotone-style-filter-sr-message - screen reader only message for style filter: duotone
+ * @slot brands-style-filter-sr-message - screen reader only message for style filter: brands
+ * @slot uploaded-style-filter-sr-message - screen reader only message for style filter: uploaded
  */
 @Component({
   tag: 'fa-icon-chooser',
@@ -529,8 +536,8 @@ export class FaIconChooser {
                     class="unchecked-icon fa-fw"
                   />
                 </span>
-                <span class="">
-                  <span class="sr-only">Show </span>solid<span class="sr-only"> style icons</span>
+                <span>
+                  Solid <span class="sr-only">{this.slot('solid-style-filter-sr-message')}</span>
                 </span>
               </label>
             </div>
@@ -563,7 +570,7 @@ export class FaIconChooser {
                   />
                 </span>
                 <span>
-                  <span class="sr-only">Show </span>regular<span class="sr-only"> style icons</span>
+                  Regular <span class="sr-only">{this.slot('regular-style-filter-sr-message')}</span>
                 </span>
               </label>
             </div>
@@ -603,7 +610,7 @@ export class FaIconChooser {
                   </span>
                 )}
                 <span>
-                  <span class="sr-only">Show </span>light<span class="sr-only"> style icons</span>
+                  Light <span class="sr-only">{this.slot('light-style-filter-sr-message')}</span>
                 </span>
               </label>
               <span class="disabled-tooltip size-sm">{this.slot('light-requires-pro')}</span>
@@ -644,7 +651,7 @@ export class FaIconChooser {
                   </span>
                 )}
                 <span>
-                  <span class="sr-only">Show </span>thin<span class="sr-only"> style icons</span>
+                  Thin <span class="sr-only">{this.slot('thin-style-filter-sr-message')}</span>
                 </span>
               </label>
               <span class="disabled-tooltip size-sm">{this.slot('thin-requires-pro')}</span>
@@ -685,7 +692,7 @@ export class FaIconChooser {
                   </span>
                 )}
                 <span>
-                  <span class="sr-only">Show </span>duotone<span class="sr-only"> style icons</span>
+                  Duotone <span class="sr-only">{this.slot('duotone-style-filter-sr-message')}</span>
                 </span>
               </label>
               <span class="disabled-tooltip size-sm">{this.slot('duotone-requires-pro')}</span>
@@ -704,7 +711,7 @@ export class FaIconChooser {
                   <fa-icon {...this.commonFaIconProps} stylePrefix="fab" name="font-awesome" size="2x" class="fa-fw" />
                 </span>
                 <span>
-                  <span class="sr-only">Show </span>brands<span class="sr-only"> style icons</span>
+                  Brands <span class="sr-only">{this.slot('brands-style-filter-sr-message')}</span>
                 </span>
               </label>
             </div>
@@ -727,7 +734,7 @@ export class FaIconChooser {
                   )}
                 </span>
                 <span>
-                  <span class="sr-only">Show </span>Custom<span class="sr-only"> icons</span>
+                  Uploaded <span class="sr-only">{this.slot('uploaded-style-filter-sr-message')}</span>
                 </span>
               </label>
               <span class="disabled-tooltip size-sm">{this.slot('custom-requires-pro')}</span>

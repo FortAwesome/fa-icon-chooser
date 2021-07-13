@@ -45,3 +45,17 @@ slotDefaults['get-fontawesome-pro'] = <>
   </a>{' '}
   and upload your own icon!
 </>
+
+slotDefaults['solid-style-filter-sr-message'] = 'Show solid style icons'
+
+slotDefaults['regular-style-filter-sr-message'] = 'Show regular style icons'
+
+slotDefaults['light-style-filter-sr-message'] = 'Show light style icons'
+
+slotDefaults['thin-style-filter-sr-message'] = 'Show thin style icons'
+
+slotDefaults['duotone-style-filter-sr-message'] = 'Show duotone style icons'
+
+slotDefaults['brands-style-filter-sr-message'] = 'Show brands style icons'
+
+slotDefaults['uploaded-style-filter-sr-message'] = 'Show your uploaded icons'
