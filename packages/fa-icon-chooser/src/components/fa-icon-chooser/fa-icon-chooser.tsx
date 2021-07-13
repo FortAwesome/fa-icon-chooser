@@ -53,6 +53,13 @@ const DISPLAY_NONE = { display: 'none' };
  * @slot no-search-results-heading - no search results message heading
  * @slot no-search-results-detail - no seach results message detail
  * @slot get-fontawesome-pro - message about getting Font Awesome Pro with link to fontawesome.com
+ * @slot solid-style-filter-sr-message - screen reader only message for style filter: solid
+ * @slot regular-style-filter-sr-message - screen reader only message for style filter: regular
+ * @slot light-style-filter-sr-message - screen reader only message for style filter: light
+ * @slot thin-style-filter-sr-message - screen reader only message for style filter: thin
+ * @slot duotone-style-filter-sr-message - screen reader only message for style filter: duotone
+ * @slot brands-style-filter-sr-message - screen reader only message for style filter: brands
+ * @slot uploaded-style-filter-sr-message - screen reader only message for style filter: uploaded
  */
 @Component({
   tag: 'fa-icon-chooser',
