@@ -36,6 +36,10 @@ export namespace Components {
          */
         "kitToken"?: string;
         /**
+          * Placeholder text for search form.  Use this to provide translatable text.
+         */
+        "searchInputPlaceholder"?: string;
+        /**
           * Version to use for finding and loading icons when kitToken is not provided. Must be a valid semantic version, as parsed by the [semver NPM](https://www.npmjs.com/package/semver), like 5.5.13 or 6.0.0-beta1.
          */
         "version"?: string;
@@ -90,6 +94,10 @@ declare namespace LocalJSX {
           * Clients of the Icon Chooser should listen for this event in order to handle the result of the user's interaction.
          */
         "onFinish"?: (event: CustomEvent<IconChooserResult>) => void;
+        /**
+          * Placeholder text for search form.  Use this to provide translatable text.
+         */
+        "searchInputPlaceholder"?: string;
         /**
           * Version to use for finding and loading icons when kitToken is not provided. Must be a valid semantic version, as parsed by the [semver NPM](https://www.npmjs.com/package/semver), like 5.5.13 or 6.0.0-beta1.
          */

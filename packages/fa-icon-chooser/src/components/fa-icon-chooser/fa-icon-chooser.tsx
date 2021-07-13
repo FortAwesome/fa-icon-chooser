@@ -86,6 +86,13 @@ export class FaIconChooser {
   @Prop() version?: string;
 
   /**
+   * Placeholder text for search form.
+   *
+   * Use this to provide translatable text.
+   */
+  @Prop() searchInputPlaceholder?: string;
+
+  /**
    * Required callback function which is responsible for taking a given GraphQL
    * query document and returns a Promise that resolves to a JavaScript object
    * corresponding to the body of the associated network request, same as
@@ -501,7 +508,7 @@ export class FaIconChooser {
                 class="rounded"
                 value={this.query}
                 onKeyUp={this.onKeyUp.bind(this)}
-                placeholder={this.slot('search-field-placeholder')}
+                placeholder={this.searchInputPlaceholder || slotDefaults['search-field-placeholder']}
               ></input>
             </div>
             <span class="column-12 tablet:column-1 text-center margin-bottom-xs muted size-sm tablet:text-right">{this.slot('searching')} v{this.resolvedVersion()}</span>
@@ -793,7 +800,7 @@ export class FaIconChooser {
             <article class="message-loading text-center margin-2xl">
               <fa-icon {...this.commonFaIconProps} icon={faTire} class="message-icon fa-2x margin-top-xs fa-spin fa-fw"></fa-icon>
               <h3>{ this.slot('initial-loading-view-header') }</h3>
-              <p class="margin-y-md muted">{ this.slot('initial-loading-view-detail') }</p>
+              <p key="a" class="margin-y-md muted">{ this.slot('initial-loading-view-detail') }</p>
             </article>
           ) : size(this.filteredIcons()) > 0 ? (
             <div class="icon-listing">
@@ -813,8 +820,8 @@ export class FaIconChooser {
                 <fa-icon {...this.commonFaIconProps} icon={faSadTear} class="message-icon fa-2x margin-top-xs"></fa-icon>
               </span>
               <h2 class="message-title margin-top-lg">{this.slot('no-search-results-heading')}</h2>
-              <p class="size-lg">{this.slot('no-search-results-detail')}</p>
-              <p class="muted display-block">
+              <p key="c" class="size-lg">{this.slot('no-search-results-detail')}</p>
+              <p key="d" class="muted display-block">
                 {this.slot('get-fontawesome-pro')}
               </p>
             </article>
