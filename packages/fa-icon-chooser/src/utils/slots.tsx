@@ -30,7 +30,7 @@ slotDefaults['thin-requires-pro'] = 'You need to use a Pro kit with Version 6 to
 
 slotDefaults['duotone-requires-pro'] = 'You need to use a Pro kit with Version 5.10 or later to get Duotone icons.'
 
-slotDefaults['custom-requires-pro'] = 'You need to use a Pro kit to get Custom icons.'
+slotDefaults['uploaded-requires-pro'] = 'You need to use a Pro kit to get Uploaded icons.'
 
 slotDefaults['kit-has-no-uploaded-icons'] = 'This kit contains no uploaded icons.'
 
