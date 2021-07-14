@@ -64,13 +64,6 @@ If your code is a WordPress plugin or theme, it might produce a shortcode like t
 const icon = `[icon prefix="${prefix}" name="${iconName}"]`
 ```
 
-**Heads Up!** the `IconChooserResult` type allows for more complex shapes than just
-a single icon's `prefix` and `iconName`. It's designed to be able to express
-most of the structures necessary for [Layering, Masks, and Power Transforms](https://fontawesome.com/v5.15/how-to-use/on-the-web/styling/layering).
-Those more advanced features are not yet available in the Icon Chooser UI.
-In the meantime, just be careful about the assumptions you make about the shape
-of that `IconChooserResult` object.
-
 ## Setup
 
 Choose one of the following:

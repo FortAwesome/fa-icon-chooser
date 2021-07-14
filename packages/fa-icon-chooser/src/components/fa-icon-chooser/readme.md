@@ -29,10 +29,8 @@ function getUrlText(url) {
 function handleResult(event) {
   const result = event && event.detail
 
-  if(result.iconName) {
+  if(result) {
     console.log(`<i class"${result.prefix} ${result.iconName}">`)
-  } else if(...) {
-    // handle other kinds of results
   }
 }
 
