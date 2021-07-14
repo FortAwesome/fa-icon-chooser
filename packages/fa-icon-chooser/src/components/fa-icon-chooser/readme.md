@@ -27,23 +27,21 @@ function getUrlText(url) {
 }
 
 function handleResult(event) {
-  const result = event && event.detail
+  const result = event && event.detail;
 
-  if(result.iconName) {
-    console.log(`<i class"${result.prefix} ${result.iconName}">`)
-  } else if(...) {
-    // handle other kinds of results
+  if (result) {
+    console.log(`<i class"${result.prefix} ${result.iconName}">`);
   }
 }
 
-window.addEventListener('DOMContentLoaded', (event) => {
-  const container = document.querySelector('#fa-icon-chooser-container')
-  const el = document.createElement('fa-icon-chooser')
-  el.handleQuery = handleQuery
-  el.getUrlText = getUrlText
-  el.addEventListener('finish', handleResult)
-  container.appendChild(el)
-})
+window.addEventListener('DOMContentLoaded', event => {
+  const container = document.querySelector('#fa-icon-chooser-container');
+  const el = document.createElement('fa-icon-chooser');
+  el.handleQuery = handleQuery;
+  el.getUrlText = getUrlText;
+  el.addEventListener('finish', handleResult);
+  container.appendChild(el);
+});
 ```
 
 See the API Reference below for details about what you'd need to implement in
@@ -65,38 +63,38 @@ You can also look at some example implementations in this repo's [development ru
 
 ## Events
 
-| Event    | Description                                                                                                       | Type                           |
-| -------- | ----------------------------------------------------------------------------------------------------------------- | ------------------------------ |
-| `finish` | Clients of the Icon Chooser should listen for this event in order to handle the result of the user's interaction. | `CustomEvent<Element \| Icon>` |
+| Event    | Description                                                                                                       | Type                      |
+| -------- | ----------------------------------------------------------------------------------------------------------------- | ------------------------- |
+| `finish` | Clients of the Icon Chooser should listen for this event in order to handle the result of the user's interaction. | `CustomEvent<IconLookup>` |
 
 ## Slots
 
-| Slot                                                         | Description                                                         |
-| ------------------------------------------------------------ | ------------------------------------------------------------------- |
-| `"brands-style-filter-sr-message"`                           | screen reader only message for style filter: brands                 |
-| `"duotone-requires-pro"`                                     | message about requirements for accessing duotone icons              |
-| `"duotone-style-filter-sr-message"`                          | screen reader only message for style filter: duotone                |
-| `"fatal-error-detail"`                                       | details for fatal error message                                     |
-| `"fatal-error-heading"`                                      | heading for fatal error message                                     |
-| `"get-fontawesome-pro"`                                      | message about getting Font Awesome Pro with link to fontawesome.com |
-| `"initial-loading-view-detail"`                              | detail for initial loading view                                     |
-| `"initial-loading-view-heading"`                             | heading for initial loading view                                    |
-| `"kit-has-no-uploaded-icons"`                                | message about a kit having no icon uploads                          |
-| `"light-requires-pro"`                                       | tooltip for light style requiring Pro                               |
-| `"light-style-filter-sr-message"`                            | screen reader only message for style filter: light                  |
-| `"no-search-results-detail"`                                 | no seach results message detail                                     |
-| `"no-search-results-heading"`                                | no search results message heading                                   |
-| `"regular-style-filter-sr-message"`                          | screen reader only message for style filter: regular                |
-| `"search-field-label"`                                       | Search Font Awesome Icons                                           |
-| `"search-field-placeholder = search field placeholder"`      |                                                                     |
-| `"searching = Searching"`                                    |                                                                     |
-| `"solid-style-filter-sr-message"`                            | screen reader only message for style filter: solid                  |
-| `"start-view-detail"`                                        | detail for message on default view before search                    |
-| `"start-view-heading"`                                       | heading for message on default view before search                   |
-| `"thin-requires-pro = tooltip for thin style requiring Pro"` |                                                                     |
-| `"thin-style-filter-sr-message"`                             | screen reader only message for style filter: thin                   |
-| `"uploaded-requires-pro"`                                    | message about requirements for accessing kit icon uploads           |
-| `"uploaded-style-filter-sr-message"`                         | screen reader only message for style filter: uploaded               |
+| Slot                                 | Description                                                         |
+| ------------------------------------ | ------------------------------------------------------------------- |
+| `"brands-style-filter-sr-message"`   | screen reader only message for style filter: brands                 |
+| `"duotone-requires-pro"`             | message about requirements for accessing duotone icons              |
+| `"duotone-style-filter-sr-message"`  | screen reader only message for style filter: duotone                |
+| `"fatal-error-detail"`               | details for fatal error message                                     |
+| `"fatal-error-heading"`              | heading for fatal error message                                     |
+| `"get-fontawesome-pro"`              | message about getting Font Awesome Pro with link to fontawesome.com |
+| `"initial-loading-view-detail"`      | detail for initial loading view                                     |
+| `"initial-loading-view-heading"`     | heading for initial loading view                                    |
+| `"kit-has-no-uploaded-icons"`        | message about a kit having no icon uploads                          |
+| `"light-requires-pro"`               | tooltip for light style requiring Pro                               |
+| `"light-style-filter-sr-message"`    | screen reader only message for style filter: light                  |
+| `"no-search-results-detail"`         | no seach results message detail                                     |
+| `"no-search-results-heading"`        | no search results message heading                                   |
+| `"regular-style-filter-sr-message"`  | screen reader only message for style filter: regular                |
+| `"search-field-label"`               | Search Font Awesome Icons                                           |
+| `"search-field-placeholder"`         | search field placeholder                                            |
+| `"searching"`                        | Searching                                                           |
+| `"solid-style-filter-sr-message"`    | screen reader only message for style filter: solid                  |
+| `"start-view-detail"`                | detail for message on default view before search                    |
+| `"start-view-heading"`               | heading for message on default view before search                   |
+| `"thin-requires-pro"`                | tooltip for thin style requiring Pro                                |
+| `"thin-style-filter-sr-message"`     | screen reader only message for style filter: thin                   |
+| `"uploaded-requires-pro"`            | message about requirements for accessing kit icon uploads           |
+| `"uploaded-style-filter-sr-message"` | screen reader only message for style filter: uploaded               |
 
 ## Dependencies
 

@@ -53,22 +53,7 @@ export interface IconUploadLookup extends IconLookup {
   iconUpload: IconUpload;
 }
 
-export interface Customizable {
-  class?: string;
-  style?: string;
-  transform?: string;
-}
-
-export interface Element extends Customizable {
-  tag: string;
-  children?: Array<Element | Icon | string>;
-}
-
-export interface Icon extends IconLookup, Customizable {
-  mask?: IconLookup;
-}
-
-export type IconChooserResult = Icon | Element;
+export type IconChooserResult = IconLookup;
 
 // TODO: do we want to include this code in this project?
 const viewBoxRe = /viewBox="0 0 ([0-9]+) ([0-9]+)"/;

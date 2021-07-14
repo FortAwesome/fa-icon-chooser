@@ -1,4 +1,5 @@
-import { parseSvgText, Icon, IconChooserResult, Element, isValidSemver, createFontAwesomeScriptElement } from './utils';
+import { parseSvgText, IconChooserResult, isValidSemver, createFontAwesomeScriptElement } from './utils';
+import { IconLookup } from '@fortawesome/fontawesome-common-types';
 
 describe('parseSvgText', () => {
   test('duotone double path no classes', () => {
@@ -25,7 +26,7 @@ describe('parseSvgText', () => {
 
 describe('IconChooserResult typing', () => {
   test('plain icon', () => {
-    const star: Icon = {
+    const star: IconLookup = {
       prefix: 'fas',
       iconName: 'star',
     };
@@ -33,98 +34,6 @@ describe('IconChooserResult typing', () => {
     const result: IconChooserResult = star;
 
     expect(result.iconName).toEqual('star');
-  });
-
-  // See: https://fontawesome.com/v5.15/how-to-use/on-the-web/styling/layering
-  test('layers', () => {
-    /*
-    <span class="fa-layers fa-fw" style="background:MistyRose">
-      <i class="fas fa-circle" style="color:Tomato"></i>
-      <i class="fa-inverse fas fa-times" data-fa-transform="shrink-6"></i>
-    </span>
-    */
-    const circle: Icon = {
-      prefix: 'fas',
-      iconName: 'circle',
-      style: 'color:Tomato',
-    };
-
-    const times: Icon = {
-      prefix: 'fas',
-      iconName: 'times',
-      class: 'fa-inverse',
-      transform: 'shrink-6',
-    };
-
-    const layeringSpan: Element = {
-      tag: 'span',
-      class: 'fa-layers fa-fw',
-      style: 'background:MistyRose',
-      children: [circle, times],
-    };
-
-    const result: IconChooserResult = layeringSpan;
-
-    expect(result.tag).toEqual('span');
-    expect((result.children[0] as Icon).iconName).toEqual('circle');
-  });
-
-  // See: https://fontawesome.com/v5.15/how-to-use/on-the-web/styling/layering
-  test('text layer', () => {
-    /*
-    <span class="fa-layers fa-fw" style="background:MistyRose">
-      <i class="fas fa-certificate"></i>
-      <span class="fa-layers-text fa-inverse" data-fa-transform="shrink-11.5 rotate--30" style="font-weight:900">NEW</span>
-    </span>
-    */
-
-    const certificate: Icon = {
-      prefix: 'fas',
-      iconName: 'certificate',
-    };
-
-    const textNew: string = 'NEW';
-
-    const spanNew: Element = {
-      tag: 'span',
-      class: 'fa-layers-text fa-inverse',
-      transform: 'shrink-11.5 rotate--30',
-      style: 'font-weight:900',
-      children: [textNew],
-    };
-
-    const layering: Element = {
-      tag: 'span',
-      class: 'fa-layers fa-fw',
-      style: 'background:MistyRose',
-      children: [certificate, spanNew],
-    };
-
-    const result: IconChooserResult = layering;
-
-    expect((result.children[0] as Icon).iconName).toEqual('certificate');
-    expect((result.children[1] as Element).children[0]).toEqual('NEW');
-  });
-
-  // See: https://fontawesome.com/v5.15/how-to-use/on-the-web/styling/masking
-  test('mask', () => {
-    /*
-    <i class="fas fa-pencil-alt" data-fa-transform="shrink-10 up-.5" data-fa-mask="fas fa-comment" style="background:MistyRose"></i>
-    */
-    const maskedPencil: Icon = {
-      prefix: 'fas',
-      iconName: 'pencil-alt',
-      transform: 'shrink-10 up-.5',
-      mask: {
-        prefix: 'fas',
-        iconName: 'comment',
-      },
-      style: 'background:MistyRose',
-    };
-
-    const result: IconChooserResult = maskedPencil;
-
-    expect((result as Icon).mask.iconName).toEqual('comment');
   });
 });
 
