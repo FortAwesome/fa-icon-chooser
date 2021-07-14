@@ -74,7 +74,7 @@ const FaIconChooserDevExports = (function () {
 
     const slotFatalErrorHeader = document.createElement('p')
     slotFatalErrorHeader.setAttribute('slot', 'fatal-error-heading')
-    const slotFatalErrorHeaderMsg = document.createTextNode('foo')
+    const slotFatalErrorHeaderMsg = document.createTextNode('Fatal Error')
     slotFatalErrorHeader.appendChild(slotFatalErrorHeaderMsg)
     el.appendChild(slotFatalErrorHeader)
 

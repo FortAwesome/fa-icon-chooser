@@ -14,10 +14,10 @@ import {
   IconChooserResult,
   UrlTextFetcher,
   CONSOLE_MESSAGE_PREFIX,
-  isValidSemver
+  isValidSemver,
 } from '../../utils/utils';
 import { faSadTear, faTire } from '../../utils/icons';
-import { slotDefaults } from '../../utils/slots'
+import { slotDefaults } from '../../utils/slots';
 
 export type QueryHandler = (document: string) => Promise<any>;
 
@@ -48,7 +48,7 @@ const DISPLAY_NONE = { display: 'none' };
  * @slot light-requires-pro - tooltip for light style requiring Pro
  * @slot thin-requires-pro = tooltip for thin style requiring Pro
  * @slot duotone-requires-pro - message about requirements for accessing duotone icons
- * @slot custom-requires-pro - message about requirements for accessing custom icon (kit icon uploads)
+ * @slot uploaded-requires-pro - message about requirements for accessing kit icon uploads
  * @slot kit-has-no-uploaded-icons - message about a kit having no icon uploads
  * @slot no-search-results-heading - no search results message heading
  * @slot no-search-results-detail - no seach results message detail
@@ -84,6 +84,13 @@ export class FaIconChooser {
    * like 5.5.13 or 6.0.0-beta1.
    */
   @Prop() version?: string;
+
+  /**
+   * Placeholder text for search form.
+   *
+   * Use this to provide translatable text.
+   */
+  @Prop() searchInputPlaceholder?: string;
 
   /**
    * Required callback function which is responsible for taking a given GraphQL
@@ -220,17 +227,16 @@ export class FaIconChooser {
   // Any slot for which the client does not provide content will be assigned
   // a default.
   setupSlots() {
-    for(const slotName in slotDefaults) {
-      const slotContentElement = this.host.querySelector(`[slot="${slotName}"]`)
-      if(!slotContentElement) {
-        this.activeSlotDefaults[slotName] = slotDefaults[slotName]
+    for (const slotName in slotDefaults) {
+      const slotContentElement = this.host.querySelector(`[slot="${slotName}"]`);
+      if (!slotContentElement) {
+        this.activeSlotDefaults[slotName] = slotDefaults[slotName];
       }
     }
   }
 
   slot(name: string) {
-    return (this.activeSlotDefaults && this.activeSlotDefaults[name])
-      || <slot name={name}></slot>
+    return (this.activeSlotDefaults && this.activeSlotDefaults[name]) || <slot name={name}></slot>;
   }
 
   componentWillLoad() {
@@ -244,7 +250,7 @@ export class FaIconChooser {
 
     this.isInitialLoading = true;
 
-    this.setupSlots()
+    this.setupSlots();
 
     this.preload()
       .then(() => {
@@ -468,8 +474,8 @@ export class FaIconChooser {
       return (
         <div class="fa-icon-chooser">
           <div class="message-loading text-center margin-2xl">
-            <h3>{ this.slot('fatal-error-heading') }</h3>
-            <p>{ this.slot('fatal-error-detail') }</p>
+            <h3>{this.slot('fatal-error-heading')}</h3>
+            <p>{this.slot('fatal-error-detail')}</p>
           </div>
         </div>
       );
@@ -501,14 +507,15 @@ export class FaIconChooser {
                 class="rounded"
                 value={this.query}
                 onKeyUp={this.onKeyUp.bind(this)}
-                placeholder={this.slot('search-field-placeholder')}
+                placeholder={this.searchInputPlaceholder || slotDefaults['search-field-placeholder']}
               ></input>
             </div>
-            <span class="column-12 tablet:column-1 text-center margin-bottom-xs muted size-sm tablet:text-right">{this.slot('searching')} v{this.resolvedVersion()}</span>
+            <span class="column-12 tablet:column-1 text-center margin-bottom-xs muted size-sm tablet:text-right">
+              {this.slot('searching')} v{this.resolvedVersion()}
+            </span>
           </div>
-
           <div class="icons-style-menu-listing display-flex flex-items-center align-between margin-bottom-xl">
-            <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
+            <div class="wrap-icons-style-choice size-sm laptop:size-md margin-3xs column">
               <input
                 id="icons-style-solid"
                 checked={this.styleFilterEnabled && this.styleFilters.fas}
@@ -517,8 +524,8 @@ export class FaIconChooser {
                 name="icons-style"
                 class="input-checkbox-custom"
               ></input>
-              <label htmlFor="icons-style-solid" class="icons-style-choice padding-y-md padding-x-md margin-0 display-flex flex-column flex-items-center">
-                <span class="position-relative margin-right-sm">
+              <label htmlFor="icons-style-solid" class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center">
+                <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-right-sm laptop:margin-bottom-0 desktop:size-md">
                   <fa-icon
                     style={!this.showCheckedStyleIcon('fas') && DISPLAY_NONE}
                     {...this.commonFaIconProps}
@@ -541,7 +548,7 @@ export class FaIconChooser {
                 </span>
               </label>
             </div>
-            <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
+            <div class="wrap-icons-style-choice size-sm laptop:size-md margin-3xs column">
               <input
                 id="icons-style-regular"
                 checked={this.styleFilterEnabled && this.styleFilters.far}
@@ -550,8 +557,8 @@ export class FaIconChooser {
                 name="icons-style"
                 class="input-checkbox-custom"
               ></input>
-              <label htmlFor="icons-style-regular" class="icons-style-choice padding-y-md padding-x-md margin-0 display-flex flex-column flex-items-center ">
-                <span class="position-relative margin-right-sm">
+              <label htmlFor="icons-style-regular" class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center ">
+                <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-right-sm laptop:margin-bottom-0">
                   <fa-icon
                     style={!this.showCheckedStyleIcon('far') && DISPLAY_NONE}
                     {...this.commonFaIconProps}
@@ -574,7 +581,7 @@ export class FaIconChooser {
                 </span>
               </label>
             </div>
-            <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
+            <div class="wrap-icons-style-choice size-sm laptop:size-md margin-3xs column">
               <input
                 disabled={falDisabled}
                 id="icons-style-light"
@@ -584,13 +591,13 @@ export class FaIconChooser {
                 name="icons-style"
                 class="input-checkbox-custom"
               ></input>
-              <label htmlFor="icons-style-light" class="icons-style-choice padding-y-md padding-x-md margin-0 display-flex flex-column flex-items-center ">
+              <label htmlFor="icons-style-light" class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center ">
                 {falDisabled ? (
-                  <span class="position-relative margin-right-sm">
+                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-right-sm laptop:margin-bottom-0">
                     <fa-icon {...this.commonFaIconProps} name="meh" stylePrefix="far" size="2x" class="checked-icon fa-fw" />
                   </span>
                 ) : (
-                  <span class="position-relative margin-right-sm">
+                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-right-sm laptop:margin-bottom-0">
                     <fa-icon
                       style={!this.showCheckedStyleIcon('fal') && DISPLAY_NONE}
                       {...this.commonFaIconProps}
@@ -615,7 +622,7 @@ export class FaIconChooser {
               </label>
               <span class="disabled-tooltip size-sm">{this.slot('light-requires-pro')}</span>
             </div>
-            <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
+            <div class="wrap-icons-style-choice size-sm laptop:size-md margin-3xs column">
               <input
                 disabled={fatDisabled}
                 id="icons-style-thin"
@@ -625,13 +632,13 @@ export class FaIconChooser {
                 name="icons-style"
                 class="input-checkbox-custom"
               ></input>
-              <label htmlFor="icons-style-thin" class="icons-style-choice padding-y-md padding-x-md margin-0 display-flex flex-column flex-items-center ">
+              <label htmlFor="icons-style-thin" class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center ">
                 {fatDisabled ? (
-                  <span class="position-relative margin-right-sm">
+                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-right-sm laptop:margin-bottom-0">
                     <fa-icon {...this.commonFaIconProps} name="meh" stylePrefix="far" size="2x" class="checked-icon fa-fw" />
                   </span>
                 ) : (
-                  <span class="position-relative margin-right-sm">
+                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-right-sm laptop:margin-bottom-0">
                     <fa-icon
                       style={!this.showCheckedStyleIcon('fat') && DISPLAY_NONE}
                       {...this.commonFaIconProps}
@@ -656,7 +663,7 @@ export class FaIconChooser {
               </label>
               <span class="disabled-tooltip size-sm">{this.slot('thin-requires-pro')}</span>
             </div>
-            <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
+            <div class="wrap-icons-style-choice size-sm laptop:size-md margin-3xs column">
               <input
                 disabled={fadDisabled}
                 id="icons-style-duotone"
@@ -666,13 +673,13 @@ export class FaIconChooser {
                 name="icons-style"
                 class="input-checkbox-custom"
               ></input>
-              <label htmlFor="icons-style-duotone" class="icons-style-choice padding-y-md padding-x-md margin-0 display-flex flex-column flex-items-center ">
+              <label htmlFor="icons-style-duotone" class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center ">
                 {fadDisabled ? (
-                  <span class="position-relative margin-right-sm">
+                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-right-sm laptop:margin-bottom-0">
                     <fa-icon {...this.commonFaIconProps} name="meh" stylePrefix="far" size="2x" class="unchecked-icon fa-fw" />
                   </span>
                 ) : (
-                  <span class="position-relative margin-right-sm">
+                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-right-sm laptop:margin-bottom-0">
                     <fa-icon
                       style={!this.showCheckedStyleIcon('fad') && DISPLAY_NONE}
                       {...this.commonFaIconProps}
@@ -697,7 +704,7 @@ export class FaIconChooser {
               </label>
               <span class="disabled-tooltip size-sm">{this.slot('duotone-requires-pro')}</span>
             </div>
-            <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
+            <div class="wrap-icons-style-choice size-sm laptop:size-md margin-3xs column">
               <input
                 id="icons-style-brands"
                 checked={this.styleFilterEnabled && this.styleFilters.fab}
@@ -706,8 +713,8 @@ export class FaIconChooser {
                 name="icons-style"
                 class="input-checkbox-custom"
               ></input>
-              <label htmlFor="icons-style-brands" class="icons-style-choice padding-y-md padding-x-md margin-0 display-flex flex-column flex-items-center ">
-                <span class="position-relative margin-right-sm">
+              <label htmlFor="icons-style-brands" class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center ">
+                <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-right-sm laptop:margin-bottom-0">
                   <fa-icon {...this.commonFaIconProps} stylePrefix="fab" name="font-awesome" size="2x" class="fa-fw" />
                 </span>
                 <span>
@@ -715,7 +722,7 @@ export class FaIconChooser {
                 </span>
               </label>
             </div>
-            <div class="wrap-icons-style-choice size-sm tablet:size-md margin-3xs column">
+            <div class="wrap-icons-style-choice size-sm laptop:size-md margin-3xs column">
               <input
                 disabled={fakDisabled}
                 id="icons-style-uploads"
@@ -725,8 +732,8 @@ export class FaIconChooser {
                 name="icons-style"
                 class="input-checkbox-custom"
               ></input>
-              <label htmlFor="icons-style-uploads" class="icons-style-choice padding-y-md padding-x-md margin-0 display-flex flex-column flex-items-center">
-                <span class="position-relative margin-right-sm">
+              <label htmlFor="icons-style-uploads" class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center">
+                <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-right-sm laptop:margin-bottom-0">
                   {fakDisabled ? (
                     <fa-icon {...this.commonFaIconProps} stylePrefix="far" name="meh" size="2x" class="fa-fw" />
                   ) : (
@@ -737,7 +744,7 @@ export class FaIconChooser {
                   Uploaded <span class="sr-only">{this.slot('uploaded-style-filter-sr-message')}</span>
                 </span>
               </label>
-              <span class="disabled-tooltip size-sm">{this.slot('custom-requires-pro')}</span>
+              <span class="disabled-tooltip size-sm">{this.slot('uploaded-requires-pro')}</span>
             </div>
           </div>
         </form>
@@ -749,17 +756,17 @@ export class FaIconChooser {
           )}
           {!this.isQuerying && this.query === '' && (
             <article class="text-center margin-y-2xl line-length-lg margin-auto">
-              <h3 class="margin-bottom-md">{ this.slot('start-view-heading') }</h3>
-              <p class="margin-bottom-3xl">
-                { this.slot('start-view-detail') }
-              </p>
+              <h3 class="margin-bottom-md">{this.slot('start-view-heading')}</h3>
+              <p class="margin-bottom-3xl">{this.slot('start-view-detail')}</p>
             </article>
           )}
           {this.isQuerying ? (
             <article class="message-loading text-center margin-2xl">
               <fa-icon {...this.commonFaIconProps} icon={faTire} class="message-icon fa-2x margin-top-xs fa-spin fa-fw"></fa-icon>
-              <h3>{ this.slot('initial-loading-view-header') }</h3>
-              <p class="margin-y-md muted">{ this.slot('initial-loading-view-detail') }</p>
+              <h3>{this.slot('initial-loading-view-header')}</h3>
+              <p key="a" class="margin-y-md muted">
+                {this.slot('initial-loading-view-detail')}
+              </p>
             </article>
           ) : size(this.filteredIcons()) > 0 ? (
             <div class="icon-listing">
@@ -779,8 +786,10 @@ export class FaIconChooser {
                 <fa-icon {...this.commonFaIconProps} icon={faSadTear} class="message-icon fa-2x margin-top-xs"></fa-icon>
               </span>
               <h2 class="message-title margin-top-lg">{this.slot('no-search-results-heading')}</h2>
-              <p class="size-lg">{this.slot('no-search-results-detail')}</p>
-              <p class="muted display-block">
+              <p key="c" class="size-lg">
+                {this.slot('no-search-results-detail')}
+              </p>
+              <p key="d" class="muted display-block">
                 {this.slot('get-fontawesome-pro')}
               </p>
             </article>

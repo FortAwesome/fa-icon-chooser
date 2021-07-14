@@ -86,7 +86,6 @@
 
 .icons-style-menu-listing .icons-style-choice > span,
 .icons-style-menu-listing .icons-style-choice > .svg-inline--fa {
-  display: inline-block;
   vertical-align: middle;
 }
 
@@ -139,9 +138,17 @@ button.icon fa-icon {
   --paragraph-margin-top: var(--spacing-2xl);
 }
 
-/* custom > 480px */
-@media (max-width: 30rem) {
+.icons-style-menu-listing {
+  flex-wrap: wrap;
+}
+
+.icons-style-menu-listing .wrap-icons-style-choice:nth-child(4n) {
+  break-after: always;
+}
+
+/* custom > tablet */
+@media (min-width: 48rem) {
   .icons-style-menu-listing {
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
   }
 }
