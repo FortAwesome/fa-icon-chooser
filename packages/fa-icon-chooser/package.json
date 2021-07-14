@@ -1,6 +1,6 @@
 {
   "name": "@fortawesome/fa-icon-chooser",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Stencil Component Starter",
   "main": "dist/index.cjs.js",
   "module": "dist/custom-elements/index.js",
@@ -10,6 +10,14 @@
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
   "unpkg": "dist/fa-icon-chooser/fa-icon-chooser.esm.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FortAwesome/fa-icon-chooser.git"
+  },
+  "contributors": [
+    "Mike Wilkerson <mike@fontawesome.com>",
+    "Frances Botsford <frances@fontawesome.com>"
+  ],
   "files": [
     "dist/",
     "loader/"

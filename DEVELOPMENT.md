@@ -103,6 +103,8 @@ and it has three top-level keys:
 
 ## Setup
 
+<a name="setup"></a>
+
 Create a `packages/fa-icon-chooser/src/dev/local.json` file with your desired
 configuration as above.
 
@@ -116,3 +118,22 @@ $ npm run
 
 There's a `create-react-app`-based example app under `packages/fa-icon-chooser-react/example` that
 demonstrates how it might be using it.
+
+## Releasing a new version
+
+<a name="release"></a>
+
+1. Update each `package.json` file:
+    - `packages/fa-icon-chooser/package.json` (main component library)
+    - `packages/fa-icon-chooser-react/package.json` (react integration library)
+
+    Edit the following keys in each file:
+
+        - Update the `version`
+        - Add new contributors to the `contributors` section
+1. Update the `CHANGELOG.md`
+1. Update the `readme.md` contributors section
+1. `npm run build` and `npm test` and `npm run format`
+1. `git add . && git commit -m 'Release VERSION'`
+1. `git push`
+1. Create a [new release](https://github.com/FortAwesome/fa-icon-chooser/releases/new) with `CHANGELOG` details
