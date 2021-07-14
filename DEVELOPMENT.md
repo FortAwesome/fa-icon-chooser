@@ -133,7 +133,6 @@ demonstrates how it might be using it.
         - Add new contributors to the `contributors` section
 1. Update the `CHANGELOG.md`
 1. Update the `readme.md` contributors section
-1. `npm run build` and `npm test` and `npm run format`
 1. `git add . && git commit -m 'Release VERSION'`
 1. `git push`
 1. Create a [new release](https://github.com/FortAwesome/fa-icon-chooser/releases/new) with `CHANGELOG` details
