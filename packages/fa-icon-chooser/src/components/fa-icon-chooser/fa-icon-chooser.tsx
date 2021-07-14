@@ -43,10 +43,10 @@ const DISPLAY_NONE = { display: 'none' };
  * @slot initial-loading-view-heading - heading for initial loading view
  * @slot initial-loading-view-detail - detail for initial loading view
  * @slot search-field-label - Search Font Awesome Icons
- * @slot search-field-placeholder = search field placeholder
- * @slot searching = Searching
+ * @slot search-field-placeholder - search field placeholder
+ * @slot searching - Searching
  * @slot light-requires-pro - tooltip for light style requiring Pro
- * @slot thin-requires-pro = tooltip for thin style requiring Pro
+ * @slot thin-requires-pro - tooltip for thin style requiring Pro
  * @slot duotone-requires-pro - message about requirements for accessing duotone icons
  * @slot uploaded-requires-pro - message about requirements for accessing kit icon uploads
  * @slot kit-has-no-uploaded-icons - message about a kit having no icon uploads
