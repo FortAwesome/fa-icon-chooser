@@ -72,3 +72,12 @@ Choose one of the following:
     Find those [setup instructions in that component's package](packages/fa-icon-chooser/src/components/fa-icon-chooser/readme.md).
 1. Use a JavaScript framework integration.
     Currently, the only one available is for [React](packages/fa-icon-chooser-react).
+
+# Contributors
+
+The Font Awesome team:
+
+|                                                            | Name           | GitHub                                             |
+| :--------------------------------------------------------: | -------------- | -------------------------------------------------- |
+|  <img src="https://github.com/mlwilkerson.png?size=72" />  | Mike Wilkerson | [@mlwilkerson](https://github.com/mlwilkerson)     |
+|     <img src="https://github.com/frrrances.png?size=72" />     | Frances Botsford   | [@frrrances](https://github.com/frrrances)                 |

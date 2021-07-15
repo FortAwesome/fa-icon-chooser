@@ -26,14 +26,14 @@ as some callback functions. So the way it's added to the DOM is by using
 DOM. (The React integration makes this more idiomatic, since it can handle
 non-scalar props.)
 
-The `index.html` that is loaded on `npm run start` pulls in [`runtime.js`](packages/fa-icon-chooser/src/dev/runtime.js)
+The `index.html` that is loaded on `npm run start` pulls in [`runtime.js`](packages/fa-icon-chooser/dev/runtime.js)
 
 `runtime.js` fetches a development-only `local.json` configuration file, which must
 exist, and you must create yourself, and it is intentionally `gitignore`'d.
 
 ### REQURED: make your own local.json
 
-`local.json` should be created at `packages/fa-icon-chooser/src/dev/local.json`,
+`local.json` should be created at `packages/fa-icon-chooser/local.json`,
 and it has three top-level keys:
 1. "head" (optional)
     This allows for simulating the environment in which you might be mounting
@@ -103,7 +103,9 @@ and it has three top-level keys:
 
 ## Setup
 
-Create a `packages/fa-icon-chooser/src/dev/local.json` file with your desired
+<a name="setup"></a>
+
+Create a `packages/fa-icon-chooser/src/local.json` file with your desired
 configuration as above.
 
 ```bash
@@ -116,3 +118,21 @@ $ npm run
 
 There's a `create-react-app`-based example app under `packages/fa-icon-chooser-react/example` that
 demonstrates how it might be using it.
+
+## Releasing a new version
+
+<a name="release"></a>
+
+1. Update each `package.json` file:
+    - `packages/fa-icon-chooser/package.json` (main component library)
+    - `packages/fa-icon-chooser-react/package.json` (react integration library)
+
+    Edit the following keys in each file:
+
+        - Update the `version`
+        - Add new contributors to the `contributors` section
+1. Update the `CHANGELOG.md`
+1. Update the `readme.md` contributors section
+1. `git add . && git commit -m 'Release VERSION'`
+1. `git push`
+1. Create a [new release](https://github.com/FortAwesome/fa-icon-chooser/releases/new) with `CHANGELOG` details
