@@ -37,7 +37,7 @@
     "typescript": "^4.3.2"
   },
   "dependencies": {
-    "@fortawesome/fa-icon-chooser": "^0.0.1"
+    "@fortawesome/fa-icon-chooser": "file:../fa-icon-chooser"
   },
   "peerDependencies": {
     "react": "^16.13.0",
