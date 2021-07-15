@@ -1,6 +1,8 @@
 name: Publish
 
-on: [push]
+on:
+  release:
+    types: [published]
 
 jobs:
   publish:
@@ -26,25 +28,22 @@ jobs:
         NPM_TOKEN: ${{ secrets.NPM_REGISTRY_ACCESS_TOKEN }}
       run: |
         cd packages/fa-icon-chooser
-        npm publish --dry-run
+        npm publish
     - name: Publish Main - Cloudsmith
       env:
         NPM_TOKEN: ${{ secrets.CLOUDSMITH_TOKEN }}
       run: |
         cd packages/fa-icon-chooser
-        npm publish --registry https://npm.fontawesome.com --dry-run
+        npm publish --registry https://npm.fontawesome.com
     - name: Publish React - npmjs
       env:
         NPM_TOKEN: ${{ secrets.NPM_REGISTRY_ACCESS_TOKEN }}
       run: |
         cd packages/fa-icon-chooser-react
-        npm publish --dry-run
+        npm publish
     - name: Publish Main - Cloudsmith
       env:
         NPM_TOKEN: ${{ secrets.CLOUDSMITH_TOKEN }}
       run: |
         cd packages/fa-icon-chooser-react
-        npm publish --registry https://npm.fontawesome.com --dry-run
-
-
-
+        npm publish --registry https://npm.fontawesome.com
