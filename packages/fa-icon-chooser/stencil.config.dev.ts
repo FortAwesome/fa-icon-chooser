@@ -6,7 +6,7 @@ export const config: Config = {
     {
       type: 'www',
       serviceWorker: null, // disable service workers
-      copy: [{ src: 'dev' }],
+      copy: [{ src: '../dev', dest: 'dev' }],
     },
   ],
 };
