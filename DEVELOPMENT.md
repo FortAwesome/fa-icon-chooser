@@ -26,14 +26,14 @@ as some callback functions. So the way it's added to the DOM is by using
 DOM. (The React integration makes this more idiomatic, since it can handle
 non-scalar props.)
 
-The `index.html` that is loaded on `npm run start` pulls in [`runtime.js`](packages/fa-icon-chooser/src/dev/runtime.js)
+The `index.html` that is loaded on `npm run start` pulls in [`runtime.js`](packages/fa-icon-chooser/dev/runtime.js)
 
 `runtime.js` fetches a development-only `local.json` configuration file, which must
 exist, and you must create yourself, and it is intentionally `gitignore`'d.
 
 ### REQURED: make your own local.json
 
-`local.json` should be created at `packages/fa-icon-chooser/src/dev/local.json`,
+`local.json` should be created at `packages/fa-icon-chooser/local.json`,
 and it has three top-level keys:
 1. "head" (optional)
     This allows for simulating the environment in which you might be mounting
@@ -105,7 +105,7 @@ and it has three top-level keys:
 
 <a name="setup"></a>
 
-Create a `packages/fa-icon-chooser/src/dev/local.json` file with your desired
+Create a `packages/fa-icon-chooser/src/local.json` file with your desired
 configuration as above.
 
 ```bash
