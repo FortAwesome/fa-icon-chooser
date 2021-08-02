@@ -18,30 +18,30 @@ jobs:
         npm install
         npm run test
         npm run format.check
-    - name: Prepare React
-      run: |
-        cd packages/fa-icon-chooser-react
-        npm install
-        npm run build
     - name: Publish Main - npmjs
       env:
         NPM_TOKEN: ${{ secrets.NPM_REGISTRY_ACCESS_TOKEN }}
       run: |
         cd packages/fa-icon-chooser
-        npm publish
+        npm publish --access public
+    - name: Prepare React
+      run: |
+        cd packages/fa-icon-chooser-react
+        npm install
+        npm run build
+    - name: Publish React - npmjs
+      env:
+        NPM_TOKEN: ${{ secrets.NPM_REGISTRY_ACCESS_TOKEN }}
+      run: |
+        cd packages/fa-icon-chooser-react
+        npm publish --access public
     - name: Publish Main - Cloudsmith
       env:
         NPM_TOKEN: ${{ secrets.CLOUDSMITH_TOKEN }}
       run: |
         cd packages/fa-icon-chooser
         npm publish --registry https://npm.fontawesome.com
-    - name: Publish React - npmjs
-      env:
-        NPM_TOKEN: ${{ secrets.NPM_REGISTRY_ACCESS_TOKEN }}
-      run: |
-        cd packages/fa-icon-chooser-react
-        npm publish
-    - name: Publish Main - Cloudsmith
+    - name: Publish React - Cloudsmith
       env:
         NPM_TOKEN: ${{ secrets.CLOUDSMITH_TOKEN }}
       run: |
