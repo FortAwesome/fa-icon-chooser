@@ -18,9 +18,9 @@ jobs:
       run: |
         cd packages/fa-icon-chooser
         npm install
+        npm run format.check
         npm run build
         npm run test
-        npm run format.check
     - name: Publish Main - npmjs
       env:
         NPM_TOKEN: ${{ secrets.NPM_REGISTRY_ACCESS_TOKEN }}
