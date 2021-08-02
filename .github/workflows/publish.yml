@@ -13,6 +13,8 @@ jobs:
       with:
         node-version: '14'
     - name: Prepare Main
+      env:
+        NPM_TOKEN: ${{ secrets.CLOUDSMITH_TOKEN }}
       run: |
         cd packages/fa-icon-chooser
         npm install
@@ -26,6 +28,8 @@ jobs:
         cd packages/fa-icon-chooser
         npm publish --access public
     - name: Prepare React
+      env:
+        NPM_TOKEN: ${{ secrets.CLOUDSMITH_TOKEN }}
       run: |
         cd packages/fa-icon-chooser-react
         npm install
