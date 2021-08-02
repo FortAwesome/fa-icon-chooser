@@ -16,6 +16,7 @@ jobs:
       run: |
         cd packages/fa-icon-chooser
         npm install
+        npm run build
         npm run test
         npm run format.check
     - name: Publish Main - npmjs
