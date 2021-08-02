@@ -7,14 +7,15 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    env:
+      CLOUDSMITH_API_TOKEN: ${{ secrets.CLOUDSMITH_TOKEN }}
+      NPM_TOKEN: ${{ secrets.NPM_REGISTRY_ACCESS_TOKEN }}
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
       with:
         node-version: '14'
     - name: Prepare Main
-      env:
-        NPM_TOKEN: ${{ secrets.CLOUDSMITH_TOKEN }}
       run: |
         cd packages/fa-icon-chooser
         npm install
@@ -22,33 +23,23 @@ jobs:
         npm run build
         npm run test
     - name: Publish Main - npmjs
-      env:
-        NPM_TOKEN: ${{ secrets.NPM_REGISTRY_ACCESS_TOKEN }}
       run: |
         cd packages/fa-icon-chooser
-        npm publish --access public
+        npm publish --access public --registry=https://registry.npmjs.org
     - name: Prepare React
-      env:
-        NPM_TOKEN: ${{ secrets.CLOUDSMITH_TOKEN }}
       run: |
         cd packages/fa-icon-chooser-react
         npm install
         npm run build
     - name: Publish React - npmjs
-      env:
-        NPM_TOKEN: ${{ secrets.NPM_REGISTRY_ACCESS_TOKEN }}
       run: |
         cd packages/fa-icon-chooser-react
-        npm publish --access public
+        npm publish --access public --registry=https://registry.npmjs.org
     - name: Publish Main - Cloudsmith
-      env:
-        NPM_TOKEN: ${{ secrets.CLOUDSMITH_TOKEN }}
       run: |
         cd packages/fa-icon-chooser
         npm publish --registry https://npm.fontawesome.com
     - name: Publish React - Cloudsmith
-      env:
-        NPM_TOKEN: ${{ secrets.CLOUDSMITH_TOKEN }}
       run: |
         cd packages/fa-icon-chooser-react
         npm publish --registry https://npm.fontawesome.com

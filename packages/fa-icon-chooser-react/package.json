@@ -1,7 +1,7 @@
 {
   "name": "@fortawesome/fa-icon-chooser-react",
   "sideEffects": false,
-  "version": "0.1.5",
+  "version": "0.1.6",
   "private": false,
   "description": "React specific wrapper for @fortawesome/fa-icon-chooser",
   "repository": {
