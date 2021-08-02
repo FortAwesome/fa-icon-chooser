@@ -1,8 +1,9 @@
 {
   "name": "@fortawesome/fa-icon-chooser",
-  "version": "0.1.0",
-  "description": "Stencil Component Starter",
+  "version": "0.1.1",
+  "description": "Font Awesome Icon Chooser",
   "main": "dist/index.cjs.js",
+  "private": false,
   "module": "dist/custom-elements/index.js",
   "es2015": "dist/esm/index.mjs",
   "es2017": "dist/esm/index.mjs",
