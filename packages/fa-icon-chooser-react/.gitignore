@@ -1,1 +1,3 @@
 local*.json
+# intentionally not committing this for the react package
+package-lock.json
