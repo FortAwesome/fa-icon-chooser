@@ -215,7 +215,7 @@ export class FaIconChooser {
     return get(this, 'kitMetadata.release.version') || this.version;
   }
 
-  pro() : boolean {
+  pro(): boolean {
     return get(this, 'kitMetadata.licenseSelected') === 'pro';
   }
 
@@ -498,11 +498,7 @@ export class FaIconChooser {
       <div class="fa-icon-chooser">
         <form id="search-form" onSubmit={this.preventDefaultFormSubmit}>
           <label htmlFor="search" class="margin-bottom-xs margin-left-xl sr-only">
-            {
-              this.pro()
-              ? this.slot('search-field-label-pro')
-              : this.slot('search-field-label-free')
-            }{' '}{this.resolvedVersion()}
+            {this.pro() ? this.slot('search-field-label-pro') : this.slot('search-field-label-free')} {this.resolvedVersion()}
           </label>
           <div class="tablet:margin-bottom-xl">
             <div class="wrap-search margin-bottom-3xs with-icon-before">
@@ -753,11 +749,7 @@ export class FaIconChooser {
           </div>
         </form>
         <p class="muted size-sm text-center margin-bottom-xs">
-          {
-            this.pro()
-            ? this.slot('searching-pro')
-            : this.slot('searching-free')
-          }{' '}{this.resolvedVersion()}
+          {this.pro() ? this.slot('searching-pro') : this.slot('searching-free')} {this.resolvedVersion()}
         </p>
         <div class="wrap-icon-listing margin-y-lg">
           {!this.isQuerying && this.mayHaveIconUploads() && !this.hasIconUploads() && this.styleFilterEnabled && this.styleFilters.fak && (
@@ -801,11 +793,7 @@ export class FaIconChooser {
                 {this.slot('no-search-results-detail')}
               </p>
               <p key="d" class="muted display-block">
-                {
-                  this.pro()
-                  ? this.slot('suggest-icon-upload')
-                  : this.slot('get-fontawesome-pro')
-                }
+                {this.pro() ? this.slot('suggest-icon-upload') : this.slot('get-fontawesome-pro')}
               </p>
             </article>
           )}
