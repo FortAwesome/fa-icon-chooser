@@ -131,6 +131,8 @@ demonstrates how it might be using it.
 
         - Update the `version`
         - Add new contributors to the `contributors` section
+
+    In `fa-icon-chooser-react/package.json` also update the dependency version for `fa-icon-chooser`, setting it equal to the exact version being released.
 1. Update the `CHANGELOG.md`
 1. Update the `readme.md` contributors section
 1. `git add . && git commit -m 'Release VERSION'`
