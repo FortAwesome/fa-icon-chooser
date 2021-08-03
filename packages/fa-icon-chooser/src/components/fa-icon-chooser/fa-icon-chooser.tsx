@@ -42,9 +42,11 @@ const DISPLAY_NONE = { display: 'none' };
  * @slot start-view-detail - detail for message on default view before search
  * @slot initial-loading-view-heading - heading for initial loading view
  * @slot initial-loading-view-detail - detail for initial loading view
- * @slot search-field-label - Search Font Awesome Icons
+ * @slot search-field-label-free - Search Font Awesome Free Icons
+ * @slot search-field-label-pro - Search Font Awesome Pro Icons
  * @slot search-field-placeholder - search field placeholder
- * @slot searching - Searching
+ * @slot searching-free - Searching Free
+ * @slot searching-pro - Searching Pro
  * @slot light-requires-pro - tooltip for light style requiring Pro
  * @slot thin-requires-pro - tooltip for thin style requiring Pro
  * @slot duotone-requires-pro - message about requirements for accessing duotone icons
@@ -52,6 +54,7 @@ const DISPLAY_NONE = { display: 'none' };
  * @slot kit-has-no-uploaded-icons - message about a kit having no icon uploads
  * @slot no-search-results-heading - no search results message heading
  * @slot no-search-results-detail - no seach results message detail
+ * @slot suggest-icon-upload - message suggesting to try uploading a custom icon to a kit
  * @slot get-fontawesome-pro - message about getting Font Awesome Pro with link to fontawesome.com
  * @slot solid-style-filter-sr-message - screen reader only message for style filter: solid
  * @slot regular-style-filter-sr-message - screen reader only message for style filter: regular
@@ -212,7 +215,7 @@ export class FaIconChooser {
     return get(this, 'kitMetadata.release.version') || this.version;
   }
 
-  pro() {
+  pro() : boolean {
     return get(this, 'kitMetadata.licenseSelected') === 'pro';
   }
 
@@ -494,11 +497,15 @@ export class FaIconChooser {
     return (
       <div class="fa-icon-chooser">
         <form id="search-form" onSubmit={this.preventDefaultFormSubmit}>
-          <label htmlFor="search" class="sr-only">
-            {this.slot('search-field-label')}
+          <label htmlFor="search" class="margin-bottom-xs margin-left-xl sr-only">
+            {
+              this.pro()
+              ? this.slot('search-field-label-pro')
+              : this.slot('search-field-label-free')
+            }{' '}{this.resolvedVersion()}
           </label>
-          <div class="row align-middle tablet:margin-bottom-xl">
-            <div class="wrap-search column-12 tablet:column-11 margin-bottom-xs with-icon-before">
+          <div class="tablet:margin-bottom-xl">
+            <div class="wrap-search margin-bottom-3xs with-icon-before">
               <fa-icon {...this.commonFaIconProps} stylePrefix="fas" name="search" class="icons-search-decorative"></fa-icon>
               <input
                 type="text"
@@ -510,9 +517,6 @@ export class FaIconChooser {
                 placeholder={this.searchInputPlaceholder || slotDefaults['search-field-placeholder']}
               ></input>
             </div>
-            <span class="column-12 tablet:column-1 text-center margin-bottom-xs muted size-sm tablet:text-right">
-              {this.slot('searching')} v{this.resolvedVersion()}
-            </span>
           </div>
           <div class="icons-style-menu-listing display-flex flex-items-center align-between margin-bottom-xl">
             <div class="wrap-icons-style-choice size-sm laptop:size-md margin-3xs column">
@@ -748,6 +752,13 @@ export class FaIconChooser {
             </div>
           </div>
         </form>
+        <p class="muted size-sm text-center margin-bottom-xs">
+          {
+            this.pro()
+            ? this.slot('searching-pro')
+            : this.slot('searching-free')
+          }{' '}{this.resolvedVersion()}
+        </p>
         <div class="wrap-icon-listing margin-y-lg">
           {!this.isQuerying && this.mayHaveIconUploads() && !this.hasIconUploads() && this.styleFilterEnabled && this.styleFilters.fak && (
             <article class="text-center margin-2xl">
@@ -790,7 +801,11 @@ export class FaIconChooser {
                 {this.slot('no-search-results-detail')}
               </p>
               <p key="d" class="muted display-block">
-                {this.slot('get-fontawesome-pro')}
+                {
+                  this.pro()
+                  ? this.slot('suggest-icon-upload')
+                  : this.slot('get-fontawesome-pro')
+                }
               </p>
             </article>
           )}
