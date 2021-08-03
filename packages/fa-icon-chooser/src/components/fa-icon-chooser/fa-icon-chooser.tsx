@@ -54,6 +54,7 @@ const DISPLAY_NONE = { display: 'none' };
  * @slot kit-has-no-uploaded-icons - message about a kit having no icon uploads
  * @slot no-search-results-heading - no search results message heading
  * @slot no-search-results-detail - no seach results message detail
+ * @slot suggest-icon-upload - message suggesting to try uploading a custom icon to a kit
  * @slot get-fontawesome-pro - message about getting Font Awesome Pro with link to fontawesome.com
  * @slot solid-style-filter-sr-message - screen reader only message for style filter: solid
  * @slot regular-style-filter-sr-message - screen reader only message for style filter: regular
@@ -800,7 +801,11 @@ export class FaIconChooser {
                 {this.slot('no-search-results-detail')}
               </p>
               <p key="d" class="muted display-block">
-                {this.slot('get-fontawesome-pro')}
+                {
+                  this.pro()
+                  ? this.slot('suggest-icon-upload')
+                  : this.slot('get-fontawesome-pro')
+                }
               </p>
             </article>
           )}

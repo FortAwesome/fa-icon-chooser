@@ -44,6 +44,8 @@ slotDefaults['no-search-results-heading'] = "Sorry, we couldn't find anything fo
 
 slotDefaults['no-search-results-detail'] = 'You might try a different search...';
 
+slotDefaults['suggest-icon-upload'] = 'Or try uploading your own icon to a Pro kit.';
+
 slotDefaults['get-fontawesome-pro'] = (
   <>
     Or{' '}
