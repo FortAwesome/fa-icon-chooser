@@ -494,11 +494,11 @@ export class FaIconChooser {
     return (
       <div class="fa-icon-chooser">
         <form id="search-form" onSubmit={this.preventDefaultFormSubmit}>
-          <label htmlFor="search" class="sr-only">
-            {this.slot('search-field-label')}
+          <label htmlFor="search" class="margin-bottom-xs margin-left-xl sr-only">
+            {this.slot('search-field-label')} v{this.resolvedVersion()}
           </label>
-          <div class="row align-middle tablet:margin-bottom-xl">
-            <div class="wrap-search column-12 tablet:column-11 margin-bottom-xs with-icon-before">
+          <div class="tablet:margin-bottom-xl">
+            <div class="wrap-search margin-bottom-3xs with-icon-before">
               <fa-icon {...this.commonFaIconProps} stylePrefix="fas" name="search" class="icons-search-decorative"></fa-icon>
               <input
                 type="text"
@@ -510,9 +510,6 @@ export class FaIconChooser {
                 placeholder={this.searchInputPlaceholder || slotDefaults['search-field-placeholder']}
               ></input>
             </div>
-            <span class="column-12 tablet:column-1 text-center margin-bottom-xs muted size-sm tablet:text-right">
-              {this.slot('searching')} v{this.resolvedVersion()}
-            </span>
           </div>
           <div class="icons-style-menu-listing display-flex flex-items-center align-between margin-bottom-xl">
             <div class="wrap-icons-style-choice size-sm laptop:size-md margin-3xs column">
@@ -748,6 +745,9 @@ export class FaIconChooser {
             </div>
           </div>
         </form>
+        <p class="muted size-sm text-center margin-bottom-xs">
+          {this.slot('searching')} v{this.resolvedVersion()}
+        </p>
         <div class="wrap-icon-listing margin-y-lg">
           {!this.isQuerying && this.mayHaveIconUploads() && !this.hasIconUploads() && this.styleFilterEnabled && this.styleFilters.fak && (
             <article class="text-center margin-2xl">

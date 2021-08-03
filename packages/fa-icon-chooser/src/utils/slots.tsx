@@ -11,7 +11,7 @@ slotDefaults['start-view-heading'] = "Font Awesome is the web's most popular ico
 
 slotDefaults['start-view-detail'] = (
   <>
-    Not sure where to start? Here are some favorites, or try a search for <strong>spinners</strong>, <strong>animals</strong>, <strong>food</strong>, or{' '}
+    Not sure where to start? Here are some favorites, or try a search for <strong>spinners</strong>, <strong>shopping</strong>, <strong>food</strong>, or{' '}
     <strong>whatever you're looking for</strong>.
   </>
 );
@@ -20,11 +20,11 @@ slotDefaults['initial-loading-view-heading'] = 'Fetching icons';
 
 slotDefaults['initial-loading-view-detail'] = 'When this thing gets up to 88 mph...';
 
-slotDefaults['search-field-label'] = 'Search Font Awesome Icons';
+slotDefaults['search-field-label'] = 'Search Font Awesome Free Icons in Version ';
 
-slotDefaults['search-field-placeholder'] = 'Search for icons by name, category, or keyword';
+slotDefaults['search-field-placeholder'] = 'Find icons by name, category, or keyword';
 
-slotDefaults['searching'] = 'Searching';
+slotDefaults['searching'] = 'You\'re searching Font Awesome Free icons in version ';
 
 slotDefaults['light-requires-pro'] = 'You need to use a Pro kit to get Light icons.';
 
@@ -44,9 +44,9 @@ slotDefaults['get-fontawesome-pro'] = (
   <>
     Or{' '}
     <a href="https://fontawesome.com/" target="_blank">
-      get Font Awesome Pro
+      use Font Awesome Pro
     </a>{' '}
-    and upload your own icon!
+    for more icons and styles!
   </>
 );
 
