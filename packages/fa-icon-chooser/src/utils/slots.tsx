@@ -44,7 +44,15 @@ slotDefaults['no-search-results-heading'] = "Sorry, we couldn't find anything fo
 
 slotDefaults['no-search-results-detail'] = 'You might try a different search...';
 
-slotDefaults['suggest-icon-upload'] = 'Or try uploading your own icon to a Pro kit.';
+slotDefaults['suggest-icon-upload'] = (
+  <>
+    Or{' '}
+    <a href="https://fontawesome.com/v5.15/how-to-use/on-the-web/using-kits/uploading-icons" target="_blank">
+      upload your own icon
+    </a>{' '}
+    to a Pro kit!
+  </>
+  );
 
 slotDefaults['get-fontawesome-pro'] = (
   <>

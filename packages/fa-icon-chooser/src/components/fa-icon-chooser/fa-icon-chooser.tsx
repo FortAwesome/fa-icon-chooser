@@ -502,7 +502,7 @@ export class FaIconChooser {
               this.pro()
               ? this.slot('search-field-label-pro')
               : this.slot('search-field-label-free')
-            }{' '}v{this.resolvedVersion()}
+            }{' '}{this.resolvedVersion()}
           </label>
           <div class="tablet:margin-bottom-xl">
             <div class="wrap-search margin-bottom-3xs with-icon-before">
@@ -757,7 +757,7 @@ export class FaIconChooser {
             this.pro()
             ? this.slot('searching-pro')
             : this.slot('searching-free')
-          }{' '}v{this.resolvedVersion()}
+          }{' '}{this.resolvedVersion()}
         </p>
         <div class="wrap-icon-listing margin-y-lg">
           {!this.isQuerying && this.mayHaveIconUploads() && !this.hasIconUploads() && this.styleFilterEnabled && this.styleFilters.fak && (
