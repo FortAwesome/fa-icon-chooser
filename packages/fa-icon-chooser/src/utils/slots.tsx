@@ -20,7 +20,9 @@ slotDefaults['initial-loading-view-heading'] = 'Fetching icons';
 
 slotDefaults['initial-loading-view-detail'] = 'When this thing gets up to 88 mph...';
 
-slotDefaults['search-field-label'] = 'Search Font Awesome Free Icons in Version ';
+slotDefaults['search-field-label-free'] = 'Search Font Awesome Free Icons in Version';
+
+slotDefaults['search-field-label-pro'] = 'Search Font Awesome Pro Icons in Version';
 
 slotDefaults['search-field-placeholder'] = 'Find icons by name, category, or keyword';
 

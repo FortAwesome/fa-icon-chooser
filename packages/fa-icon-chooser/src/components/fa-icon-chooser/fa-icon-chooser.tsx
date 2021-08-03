@@ -42,7 +42,8 @@ const DISPLAY_NONE = { display: 'none' };
  * @slot start-view-detail - detail for message on default view before search
  * @slot initial-loading-view-heading - heading for initial loading view
  * @slot initial-loading-view-detail - detail for initial loading view
- * @slot search-field-label - Search Font Awesome Icons
+ * @slot search-field-label-free - Search Font Awesome Free Icons
+ * @slot search-field-label-pro - Search Font Awesome Pro Icons
  * @slot search-field-placeholder - search field placeholder
  * @slot searching - Searching
  * @slot light-requires-pro - tooltip for light style requiring Pro
@@ -212,7 +213,7 @@ export class FaIconChooser {
     return get(this, 'kitMetadata.release.version') || this.version;
   }
 
-  pro() {
+  pro() : boolean {
     return get(this, 'kitMetadata.licenseSelected') === 'pro';
   }
 
@@ -495,7 +496,11 @@ export class FaIconChooser {
       <div class="fa-icon-chooser">
         <form id="search-form" onSubmit={this.preventDefaultFormSubmit}>
           <label htmlFor="search" class="margin-bottom-xs margin-left-xl sr-only">
-            {this.slot('search-field-label')} v{this.resolvedVersion()}
+            {
+              this.pro()
+              ? this.slot('search-field-label-pro')
+              : this.slot('search-field-label-free')
+            }{' '}v{this.resolvedVersion()}
           </label>
           <div class="tablet:margin-bottom-xl">
             <div class="wrap-search margin-bottom-3xs with-icon-before">
