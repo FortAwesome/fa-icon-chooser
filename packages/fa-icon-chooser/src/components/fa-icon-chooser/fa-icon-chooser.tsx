@@ -45,7 +45,8 @@ const DISPLAY_NONE = { display: 'none' };
  * @slot search-field-label-free - Search Font Awesome Free Icons
  * @slot search-field-label-pro - Search Font Awesome Pro Icons
  * @slot search-field-placeholder - search field placeholder
- * @slot searching - Searching
+ * @slot searching-free - Searching Free
+ * @slot searching-pro - Searching Pro
  * @slot light-requires-pro - tooltip for light style requiring Pro
  * @slot thin-requires-pro - tooltip for thin style requiring Pro
  * @slot duotone-requires-pro - message about requirements for accessing duotone icons
@@ -751,7 +752,11 @@ export class FaIconChooser {
           </div>
         </form>
         <p class="muted size-sm text-center margin-bottom-xs">
-          {this.slot('searching')} v{this.resolvedVersion()}
+          {
+            this.pro()
+            ? this.slot('searching-pro')
+            : this.slot('searching-free')
+          }{' '}v{this.resolvedVersion()}
         </p>
         <div class="wrap-icon-listing margin-y-lg">
           {!this.isQuerying && this.mayHaveIconUploads() && !this.hasIconUploads() && this.styleFilterEnabled && this.styleFilters.fak && (

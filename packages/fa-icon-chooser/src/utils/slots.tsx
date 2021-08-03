@@ -26,7 +26,9 @@ slotDefaults['search-field-label-pro'] = 'Search Font Awesome Pro Icons in Versi
 
 slotDefaults['search-field-placeholder'] = 'Find icons by name, category, or keyword';
 
-slotDefaults['searching'] = 'You\'re searching Font Awesome Free icons in version ';
+slotDefaults['searching-free'] = 'You\'re searching Font Awesome Free icons in version';
+
+slotDefaults['searching-pro'] = 'You\'re searching Font Awesome Pro icons in version';
 
 slotDefaults['light-requires-pro'] = 'You need to use a Pro kit to get Light icons.';
 
