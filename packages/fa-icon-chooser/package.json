@@ -33,10 +33,10 @@
     "format.check": "prettier --check ."
   },
   "dependencies": {
+    "@fortawesome/fontawesome-common-types": "^0.2.35",
     "@stencil/core": "^2.0.1",
     "lodash": "^4.17.21",
-    "semver": "^6.3.0",
-    "@fortawesome/fontawesome-common-types": "^0.2.35"
+    "semver": "^6.3.0"
   },
   "license": "MIT",
   "devDependencies": {
