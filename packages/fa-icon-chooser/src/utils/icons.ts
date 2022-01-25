@@ -30,14 +30,5 @@ export const faTire: IconDefinition = {
 export const faFakeDuotoneSquare: IconDefinition = {
   prefix: 'fad',
   iconName: 'square',
-  icon: [
-    640,
-    512,
-    [],
-    'e000',
-    [
-      'M50 50v412h540v-412z',
-      'M0 0h640v512h-640zM50 50v412h540v-412z'
-    ]
-  ],
+  icon: [640, 512, [], 'e000', ['M50 50v412h540v-412z', 'M0 0h640v512h-640zM50 50v412h540v-412z']],
 };

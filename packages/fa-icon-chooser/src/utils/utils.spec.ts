@@ -2,53 +2,53 @@ import { parseSvgText, IconChooserResult, isValidSemver, createFontAwesomeScript
 import { IconLookup } from '@fortawesome/fontawesome-common-types';
 
 describe('parseSvgText', () => {
-  const normalSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M1 1 h1 z"/></svg>`
+  const normalSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M1 1 h1 z"/></svg>`;
 
-  const normalSvgWithComment = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!-- Font Awesome Pro 5.15.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) --><path d="M1 1 h1 z"/></svg>`
+  const normalSvgWithComment = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!-- Font Awesome Pro 5.15.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) --><path d="M1 1 h1 z"/></svg>`;
 
-  const duotoneSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><defs><style>.fa-secondary{opacity:.4}</style></defs><path d="M2 2 h2 z" class="fa-secondary"/><path d="M1 1 h1 z" class="fa-primary"/></svg>`
+  const duotoneSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><defs><style>.fa-secondary{opacity:.4}</style></defs><path d="M2 2 h2 z" class="fa-secondary"/><path d="M1 1 h1 z" class="fa-primary"/></svg>`;
 
-  const duotoneSvgWithComment = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!-- Font Awesome Pro 5.15.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) --><defs><style>.fa-secondary{opacity:.4}</style></defs><path d="M2 2 h2 z" class="fa-secondary"/><path d="M1 1 h1 z" class="fa-primary"/></svg>`
+  const duotoneSvgWithComment = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!-- Font Awesome Pro 5.15.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) --><defs><style>.fa-secondary{opacity:.4}</style></defs><path d="M2 2 h2 z" class="fa-secondary"/><path d="M1 1 h1 z" class="fa-primary"/></svg>`;
 
-  const duotoneSvgWithClassBeforeD = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class="fa-secondary" d="M2 2 h2 z"/><path class="fa-primary" d="M1 1 h1 z"/></svg>`
+  const duotoneSvgWithClassBeforeD = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class="fa-secondary" d="M2 2 h2 z"/><path class="fa-primary" d="M1 1 h1 z"/></svg>`;
 
-  const duotoneSvgInvertedPrimarySecondary = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class="fa-primary" d="M1 1 h1 z"/><path class="fa-secondary" d="M2 2 h2 z"/></svg>`
+  const duotoneSvgInvertedPrimarySecondary = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class="fa-primary" d="M1 1 h1 z"/><path class="fa-secondary" d="M2 2 h2 z"/></svg>`;
 
-  const duotoneSvgOnlyPrimary = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class="fa-primary" d="M1 1 h1 z"/></svg>`
+  const duotoneSvgOnlyPrimary = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class="fa-primary" d="M1 1 h1 z"/></svg>`;
 
-  const duotoneSvgOnlySecondary = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class="fa-secondary" d="M2 2 h2 z"/></svg>`
+  const duotoneSvgOnlySecondary = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><defs><style>.fa-secondary{opacity:.4}</style></defs><path class="fa-secondary" d="M2 2 h2 z"/></svg>`;
 
   it('tests normal', () => {
-    expect(parseSvgText(normalSvgWithComment)).toEqual([640, 512, [], null, 'M1 1 h1 z'])
-  })
+    expect(parseSvgText(normalSvgWithComment)).toEqual([640, 512, [], null, 'M1 1 h1 z']);
+  });
 
   it('tests normal with comment', () => {
-    expect(parseSvgText(normalSvg)).toEqual([640, 512, [], null, 'M1 1 h1 z'])
-  })
+    expect(parseSvgText(normalSvg)).toEqual([640, 512, [], null, 'M1 1 h1 z']);
+  });
 
   it('tests duotone', () => {
-    expect(parseSvgText(duotoneSvg)).toEqual([640, 512, [], null, ['M2 2 h2 z', 'M1 1 h1 z']])
-  })
+    expect(parseSvgText(duotoneSvg)).toEqual([640, 512, [], null, ['M2 2 h2 z', 'M1 1 h1 z']]);
+  });
 
   it('tests duotone with comment', () => {
-    expect(parseSvgText(duotoneSvgWithComment)).toEqual([640, 512, [], null, ['M2 2 h2 z', 'M1 1 h1 z']])
-  })
+    expect(parseSvgText(duotoneSvgWithComment)).toEqual([640, 512, [], null, ['M2 2 h2 z', 'M1 1 h1 z']]);
+  });
 
   it('tests duotone with class before d', () => {
-    expect(parseSvgText(duotoneSvgWithClassBeforeD)).toEqual([640, 512, [], null, ['M2 2 h2 z', 'M1 1 h1 z']])
-  })
+    expect(parseSvgText(duotoneSvgWithClassBeforeD)).toEqual([640, 512, [], null, ['M2 2 h2 z', 'M1 1 h1 z']]);
+  });
 
   it('tests duotone with inverted primary and secondary', () => {
-    expect(parseSvgText(duotoneSvgInvertedPrimarySecondary)).toEqual([640, 512, [], null, ['M2 2 h2 z', 'M1 1 h1 z']])
-  })
+    expect(parseSvgText(duotoneSvgInvertedPrimarySecondary)).toEqual([640, 512, [], null, ['M2 2 h2 z', 'M1 1 h1 z']]);
+  });
 
   it('tests duotone with only primary', () => {
-    expect(parseSvgText(duotoneSvgOnlyPrimary)).toEqual([640, 512, [], null, ['', 'M1 1 h1 z']])
-  })
+    expect(parseSvgText(duotoneSvgOnlyPrimary)).toEqual([640, 512, [], null, ['', 'M1 1 h1 z']]);
+  });
 
   it('tests duotone with only secondary', () => {
-    expect(parseSvgText(duotoneSvgOnlySecondary)).toEqual([640, 512, [], null, ['M2 2 h2 z', '']])
-  })
+    expect(parseSvgText(duotoneSvgOnlySecondary)).toEqual([640, 512, [], null, ['M2 2 h2 z', '']]);
+  });
 });
 
 describe('IconChooserResult typing', () => {

@@ -55,53 +55,42 @@ export interface IconUploadLookup extends IconLookup {
 
 export type IconChooserResult = IconLookup;
 
-
-const viewBoxRe = /viewBox="0 0 ([0-9]+) ([0-9]+)"/
-const singlePathRe = /path d="([^"]+)"/
+const viewBoxRe = /viewBox="0 0 ([0-9]+) ([0-9]+)"/;
+const singlePathRe = /path d="([^"]+)"/;
 const duotonePathRe = [
   /path d="(?<d1>[^"]+)".*path d="(?<d2>[^"]+)"/,
   /path class="(?<cls1>[^"]+)".*d="(?<d1>[^"]+)".*path class="(?<cls2>[^"]+)".*d="(?<d2>[^"]+)"/,
-  /path class="(?<cls1>[^"]+)".*d="(?<d1>[^"]+)"/
-]
+  /path class="(?<cls1>[^"]+)".*d="(?<d1>[^"]+)"/,
+];
 
 export const CONSOLE_MESSAGE_PREFIX = 'Font Awesome Icon Chooser';
 
 export function parseSvgText(svgText) {
-  let val = null
-  let path = null
-  const viewBox = svgText.match(viewBoxRe)
-  const singlePath = svgText.match(singlePathRe)
-  const duotonePath = svgText.match(duotonePathRe[0]) || svgText.match(duotonePathRe[1]) || svgText.match(duotonePathRe[2])
+  let val = null;
+  let path = null;
+  const viewBox = svgText.match(viewBoxRe);
+  const singlePath = svgText.match(singlePathRe);
+  const duotonePath = svgText.match(duotonePathRe[0]) || svgText.match(duotonePathRe[1]) || svgText.match(duotonePathRe[2]);
 
   if (duotonePath) {
-    const { cls1, d1, cls2, d2 } = duotonePath.groups
+    const { cls1, d1, cls2, d2 } = duotonePath.groups;
 
     if (d1 && d2 && !cls1 && !cls2) {
-      path = [d1, d2]
+      path = [d1, d2];
     } else if (d1 && cls1 && !d2) {
-      path = (cls1.indexOf('primary') > -1)
-        ? ['', d1]
-        : [d1, '']
+      path = cls1.indexOf('primary') > -1 ? ['', d1] : [d1, ''];
     } else if (d1 && d2 && cls1 && cls2) {
-      path = (cls1.indexOf('primary') > -1)
-        ? [d2, d1]
-        : [d1, d2]
+      path = cls1.indexOf('primary') > -1 ? [d2, d1] : [d1, d2];
     }
   } else if (singlePath && singlePath.length === 2) {
-    path = singlePath[1]
+    path = singlePath[1];
   }
 
   if (viewBox && path) {
-    val = [
-      parseInt(viewBox[1], 10),
-      parseInt(viewBox[2], 10),
-      [],
-      null,
-      path
-    ]
+    val = [parseInt(viewBox[1], 10), parseInt(viewBox[2], 10), [], null, path];
   }
 
-  return val
+  return val;
 }
 
 export function freeCdnBaseUrl(): string {
