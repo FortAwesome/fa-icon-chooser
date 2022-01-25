@@ -33,7 +33,7 @@ exist, and you must create yourself, and it is intentionally `gitignore`'d.
 
 ### REQURED: make your own local.json
 
-`local.json` should be created at `packages/fa-icon-chooser/local.json`,
+`local.json` should be created at `packages/fa-icon-chooser/dev/local.json`,
 and it has three top-level keys:
 1. "head" (optional)
     This allows for simulating the environment in which you might be mounting
@@ -111,7 +111,7 @@ configuration as above.
 ```bash
 $ cd packages/fa-icon-chooser
 $ npm install
-$ npm run
+$ npm run start
 ```
 
 ## React example
