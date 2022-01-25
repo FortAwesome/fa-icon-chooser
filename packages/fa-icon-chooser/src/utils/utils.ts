@@ -55,14 +55,13 @@ export interface IconUploadLookup extends IconLookup {
 
 export type IconChooserResult = IconLookup;
 
-// TODO: do we want to include this code in this project?
 const viewBoxRe = /viewBox="0 0 ([0-9]+) ([0-9]+)"/;
 const singlePathRe = /path d="([^"]+)"/;
-
-const duotonePathDuoClasslessRe = /path d="([^"]+)".*path d="([^"]+)"/;
-const duotonePathDuoClassedRe = /path class="([^"]+)".*d="([^"]+)".*path class="([^"]+)".*d="([^"]+)"/;
-const duotonePathOnlyPrimaryRe = /path class="(fa-primary)".*d="([^"]+)"/;
-const duotonePathOnlySecondaryRe = /path class="(fa-secondary)".*d="([^"]+)"/;
+const duotonePathRe = [
+  /path d="(?<d1>[^"]+)".*path d="(?<d2>[^"]+)"/,
+  /path class="(?<cls1>[^"]+)".*d="(?<d1>[^"]+)".*path class="(?<cls2>[^"]+)".*d="(?<d2>[^"]+)"/,
+  /path class="(?<cls1>[^"]+)".*d="(?<d1>[^"]+)"/,
+];
 
 export const CONSOLE_MESSAGE_PREFIX = 'Font Awesome Icon Chooser';
 
@@ -71,20 +70,19 @@ export function parseSvgText(svgText) {
   let path = null;
   const viewBox = svgText.match(viewBoxRe);
   const singlePath = svgText.match(singlePathRe);
-  const duotonePath =
-    svgText.match(duotonePathDuoClasslessRe) || svgText.match(duotonePathDuoClassedRe) || svgText.match(duotonePathOnlyPrimaryRe) || svgText.match(duotonePathOnlySecondaryRe);
+  const duotonePath = svgText.match(duotonePathRe[0]) || svgText.match(duotonePathRe[1]) || svgText.match(duotonePathRe[2]);
 
-  if (duotonePath && duotonePath.length === 3) {
-    if (duotonePath[1].indexOf('primary') > -1) {
-      path = [duotonePath[2], ''];
-    } else if (duotonePath[1].indexOf('secondary') > -1) {
-      path = ['', duotonePath[2]];
-    } else {
-      path = [duotonePath[1], duotonePath[2]];
+  if (duotonePath) {
+    const { cls1, d1, cls2, d2 } = duotonePath.groups;
+
+    if (d1 && d2 && !cls1 && !cls2) {
+      path = [d1, d2];
+    } else if (d1 && cls1 && !d2) {
+      path = cls1.indexOf('primary') > -1 ? ['', d1] : [d1, ''];
+    } else if (d1 && d2 && cls1 && cls2) {
+      path = cls1.indexOf('primary') > -1 ? [d2, d1] : [d1, d2];
     }
-  } else if (duotonePath && duotonePath.length === 5) {
-    path = duotonePath[1].indexOf('primary') > -1 ? [duotonePath[2], duotonePath[4]] : [duotonePath[4], duotonePath[2]];
-  } else if (singlePath) {
+  } else if (singlePath && singlePath.length === 2) {
     path = singlePath[1];
   }
 

@@ -148,8 +148,8 @@ export class FaIcon {
     if (Array.isArray(svgPathData)) {
       return (
         <svg class={allClasses} xmlns="http://www.w3.org/2000/svg" viewBox={`0 0 ${width} ${height}`}>
-          <path fill="currentColor" class="fa-primary" d={svgPathData[0]} />
-          <path fill="currentColor" class="fa-secondary" d={svgPathData[1]} />
+          <path fill="currentColor" class="fa-primary" d={svgPathData[1]} />
+          <path fill="currentColor" class="fa-secondary" d={svgPathData[0]} />
         </svg>
       );
     } else {

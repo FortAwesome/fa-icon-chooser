@@ -322,8 +322,8 @@
         }
       },
       {
-        "id": "mobile",
-        "label": "Mobile Phone",
+        "id": "bomb",
+        "label": "Bomb",
         "membership": {
           "free": ["solid"],
           "pro": ["solid", "regular", "light", "thin", "duotone"]
