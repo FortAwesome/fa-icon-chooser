@@ -81,7 +81,7 @@ export class FaIcon {
     }
 
     if (!this.pro) {
-      console.error(`${CONSOLE_MESSAGE_PREFIX}: fa-icon: 'pro' prop is false but no free icon is avaialble`, this);
+      console.error(`${CONSOLE_MESSAGE_PREFIX}: fa-icon: 'pro' prop is false but no free icon is available`, this);
       return;
     }
 
