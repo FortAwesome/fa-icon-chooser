@@ -1,1 +1,1 @@
-../../../fa-icon-chooser/src/dev/runtime.js
+../../../fa-icon-chooser/dev/runtime.js

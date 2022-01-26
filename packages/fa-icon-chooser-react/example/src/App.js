@@ -45,7 +45,7 @@ function App() {
         }
         { !!lastResult &&
           <div>
-            Last result: <pre style={ {color: 'black'} }>{ JSON.stringify(lastResult) }</pre>
+            Last result: <pre style={ {color: 'black', backgroundColor: 'white'} }>{ JSON.stringify(lastResult) }</pre>
           </div>
         }
         {
