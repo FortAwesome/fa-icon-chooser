@@ -2,6 +2,7 @@
   "name": "@fortawesome/fa-icon-chooser-react",
   "sideEffects": false,
   "version": "0.2.1",
+  "license": "MIT",
   "private": false,
   "description": "React specific wrapper for @fortawesome/fa-icon-chooser",
   "repository": {
@@ -25,30 +26,19 @@
     "dist/"
   ],
   "devDependencies": {
-    "@types/jest": "23.3.9",
     "@types/node": "^14",
-    "@types/react": "^16",
-    "@types/react-dom": "^16",
-    "jest": "^23.0.0",
-    "jest-dom": "^3.0.2",
+    "@types/react": "^17",
+    "@types/react-dom": "^17",
     "np": "^3.1.0",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
+    "react": "^16 || ^17",
+    "react-dom": "^16 || ^17",
     "typescript": "^4.3.2"
   },
   "dependencies": {
     "@fortawesome/fa-icon-chooser": "0.2.1"
   },
   "peerDependencies": {
-    "react": "^16.13.0",
-    "react-dom": "^16.13.0"
-  },
-  "jest": {
-    "preset": "ts-jest",
-    "setupTestFrameworkScriptFile": "<rootDir>/jest.setup.js",
-    "testPathIgnorePatterns": [
-      "node_modules",
-      "dist"
-    ]
+    "react": "^16 || ^17",
+    "react-dom": "^16 || ^17"
   }
 }
