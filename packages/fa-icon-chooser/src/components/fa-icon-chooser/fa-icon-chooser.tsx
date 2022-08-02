@@ -551,6 +551,39 @@ export class FaIconChooser {
             </div>
             <div class="wrap-icons-style-choice size-sm laptop:size-md margin-3xs column">
               <input
+                id="icons-style-sharp"
+                checked={this.styleFilterEnabled && this.styleFilters.fas}
+                onChange={() => this.toggleStyleFilter('fas')}
+                type="checkbox"
+                name="icons-style"
+                class="input-checkbox-custom"
+              ></input>
+              <label htmlFor="icons-style-sharp" class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center">
+                <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-right-sm laptop:margin-bottom-0 desktop:size-md">
+                  <fa-icon
+                    style={!this.showCheckedStyleIcon('fas') && DISPLAY_NONE}
+                    {...this.commonFaIconProps}
+                    name="grin-tongue"
+                    stylePrefix="fas"
+                    size="2x"
+                    class="checked-icon fa-fw"
+                  />
+                  <fa-icon
+                    style={this.showCheckedStyleIcon('fas') && DISPLAY_NONE}
+                    {...this.commonFaIconProps}
+                    name="smile"
+                    stylePrefix="fas"
+                    size="2x"
+                    class="unchecked-icon fa-fw"
+                  />
+                </span>
+                <span>
+                  Sharp <span class="sr-only">{this.slot('solid-style-filter-sr-message')}</span>
+                </span>
+              </label>
+            </div>
+            <div class="wrap-icons-style-choice size-sm laptop:size-md margin-3xs column">
+              <input
                 id="icons-style-regular"
                 checked={this.styleFilterEnabled && this.styleFilters.far}
                 onChange={() => this.toggleStyleFilter('far')}
