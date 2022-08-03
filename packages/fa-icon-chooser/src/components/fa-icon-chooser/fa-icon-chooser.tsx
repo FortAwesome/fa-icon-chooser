@@ -578,7 +578,7 @@ export class FaIconChooser {
                   />
                 </span>
                 <span>
-                  Sharp <span class="sr-only">{this.slot('solid-style-filter-sr-message')}</span>
+                  Sharp Solid <span class="sr-only">{this.slot('solid-style-filter-sr-message')}</span>
                 </span>
               </label>
             </div>
