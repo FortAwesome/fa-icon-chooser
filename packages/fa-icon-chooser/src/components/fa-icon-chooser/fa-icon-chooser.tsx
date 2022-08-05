@@ -1,6 +1,5 @@
 import { Component, Event, Element, EventEmitter, Prop, State, h } from '@stencil/core';
 import { get, size, debounce } from 'lodash';
-import { IconLookup } from '@fortawesome/fontawesome-common-types';
 import {
   freeCdnBaseUrl,
   kitAssetsBaseUrl,
@@ -9,12 +8,13 @@ import {
   IconUpload,
   defaultIcons,
   IconPrefix,
-  STYLE_TO_PREFIX,
+  familyStyleToPrefix,
   IconUploadLookup,
   IconChooserResult,
   UrlTextFetcher,
   CONSOLE_MESSAGE_PREFIX,
   isValidSemver,
+  IconLookup
 } from '../../utils/utils';
 import { faSadTear, faTire } from '../../utils/icons';
 import { slotDefaults } from '../../utils/slots';
@@ -149,6 +149,7 @@ export class FaIconChooser {
     fab: false,
     fal: false,
     fak: false,
+    fass: false
   };
 
   @State() kitMetadata: KitMetadata;
@@ -326,9 +327,15 @@ export class FaIconChooser {
         search(version:"${this.resolvedVersion()}", query: "${query}", first: 100) {
           id
           label
-          membership {
-            free
-            pro
+          familyStylesByLicense {
+            free {
+              family
+              style
+            }
+            pro {
+              family
+              style
+            }
           }
         }
       }`,
@@ -359,20 +366,14 @@ export class FaIconChooser {
 
   setIcons(searchResultIcons: any, iconUploads: Array<IconUploadLookup>) {
     this.icons = (get(searchResultIcons, 'data.search') || []).reduce((acc: Array<IconLookup>, result: any) => {
-      const { id, membership } = result;
+      const { id, familyStylesByLicense } = result;
 
-      const styles = membership.free;
+      const familyStyles = this.pro() ? familyStylesByLicense.pro : familyStylesByLicense.free
 
-      if (this.pro() && !!membership.pro) {
-        membership.pro.filter(style => !membership.free.includes(style)).forEach(style => styles.push(style));
-      }
-
-      styles.map(style => {
-        const prefix = STYLE_TO_PREFIX[style];
-
+      familyStyles.map(familyStyle => {
         acc.push({
           iconName: id,
-          prefix,
+          prefix: familyStyleToPrefix(familyStyle),
         });
       });
 

@@ -1,16 +1,18 @@
 import defaultIconsSearchResult from './defaultIconsSearchResult.json';
-import { IconLookup } from '@fortawesome/fontawesome-common-types';
 import { valid as validSemver } from 'semver';
 
 export type UrlTextFetcher = (url: string) => Promise<string>;
 
 export const defaultIcons: any = defaultIconsSearchResult;
 
-// The IconPrefix type in @fortawesome/fontawesome-common-types corresponding to
-// FA v5 does not include 'fat', nor 'fak', so we'll make our own type here temporarily.
-export type IconPrefix = 'fas' | 'fab' | 'far' | 'fal' | 'fat' | 'fad' | 'fak';
+// When there is a published version of @fortawesome/fontawesome-common-types
+// that includes all of these prefixes, that could be used instead of defining
+// our own here.
+export type IconPrefix = 'fas' | 'fab' | 'far' | 'fal' | 'fat' | 'fad' | 'fak' | 'fass';
 
-export type IconStyle = 'solid' | 'duotone' | 'regular' | 'light' | 'thin' | 'kit' | 'brands';
+// This does not represent a list of proper Font Awesome style names, just an internal representation
+// to faciliate lookups to/from style/prefix within this package.
+export type IconStyle = 'solid' | 'duotone' | 'regular' | 'light' | 'thin' | 'kit' | 'brands' | 'sharp-solid';
 
 export type IconStyleToPrefix = {
   [style in IconStyle]: string;
@@ -20,6 +22,18 @@ export type IconPrefixToStyle = {
   [prefix in IconPrefix]: IconStyle;
 };
 
+export type IconFamily = 'classic' | 'sharp' | 'duotone'
+
+export type FamilyStyle = {
+  family: IconFamily,
+  style: IconStyle
+}
+
+export interface IconLookup {
+  prefix: IconPrefix;
+  iconName: string;
+}
+
 export const STYLE_TO_PREFIX: IconStyleToPrefix = {
   solid: 'fas',
   duotone: 'fad',
@@ -28,6 +42,7 @@ export const STYLE_TO_PREFIX: IconStyleToPrefix = {
   thin: 'fat',
   kit: 'fak',
   brands: 'fab',
+  'sharp-solid': 'fass'
 };
 
 export const PREFIX_TO_STYLE: IconPrefixToStyle = {
@@ -38,6 +53,7 @@ export const PREFIX_TO_STYLE: IconPrefixToStyle = {
   fat: 'thin',
   fak: 'kit',
   fab: 'brands',
+  fass: 'sharp-solid'
 };
 
 export type IconUpload = {
@@ -137,6 +153,18 @@ export function buildIconChooserResult(iconLookup: IconLookup | IconUploadLookup
 
 export function isValidSemver(val: string): boolean {
   return !!validSemver(val);
+}
+
+export function familyStyleToPrefix(familyStyle: FamilyStyle): IconPrefix | null {
+  if ( 'classic' === familyStyle.family ) {
+    return STYLE_TO_PREFIX[familyStyle.style as string]
+  } else if ( 'sharp' === familyStyle.family && 'solid' === familyStyle.style ) {
+    return 'fass'
+  } else if ( 'duotone' === familyStyle.family && 'solid' === familyStyle.style ) {
+    return 'fad'
+  } else {
+    return null
+  }
 }
 
 export const Fragment = (_props, children) => [...children];
