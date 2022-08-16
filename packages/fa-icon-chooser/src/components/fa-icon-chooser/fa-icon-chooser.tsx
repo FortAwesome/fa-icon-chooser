@@ -50,12 +50,14 @@ const DISPLAY_NONE = { display: 'none' };
  * @slot light-requires-pro - tooltip for light style requiring Pro
  * @slot thin-requires-pro - tooltip for thin style requiring Pro
  * @slot duotone-requires-pro - message about requirements for accessing duotone icons
+ * @slot sharp-solid-requires-pro - message about requirements for accessing sharp solid icons
  * @slot uploaded-requires-pro - message about requirements for accessing kit icon uploads
  * @slot kit-has-no-uploaded-icons - message about a kit having no icon uploads
  * @slot no-search-results-heading - no search results message heading
  * @slot no-search-results-detail - no seach results message detail
  * @slot suggest-icon-upload - message suggesting to try uploading a custom icon to a kit
  * @slot get-fontawesome-pro - message about getting Font Awesome Pro with link to fontawesome.com
+ * @slot sharp-solid-style-filter-sr-message - screen reader only message for style filter: sharp solid
  * @slot solid-style-filter-sr-message - screen reader only message for style filter: solid
  * @slot regular-style-filter-sr-message - screen reader only message for style filter: regular
  * @slot light-style-filter-sr-message - screen reader only message for style filter: light
@@ -446,6 +448,10 @@ export class FaIconChooser {
     return this.pro() && !!this.resolvedVersion().match('(5.[1-9][0-9]+.)|^6.');
   }
 
+  isSharpSolidAvailable() {
+    return this.pro() && !!this.resolvedVersion().match('(6.2[0-9]*.)');
+  }
+
   mayHaveIconUploads() {
     return this.pro();
   }
@@ -470,6 +476,7 @@ export class FaIconChooser {
 
   render() {
     const falDisabled = !this.pro();
+    const fassDisabled = !this.isSharpSolidAvailable();
     const fatDisabled = !(this.isV6() && this.pro());
     const fadDisabled = !this.isDuotoneAvailable();
     const fakDisabled = !this.mayHaveIconUploads();
@@ -546,39 +553,6 @@ export class FaIconChooser {
                 </span>
                 <span>
                   Solid <span class="sr-only">{this.slot('solid-style-filter-sr-message')}</span>
-                </span>
-              </label>
-            </div>
-            <div class="wrap-icons-style-choice size-sm laptop:size-md margin-3xs column">
-              <input
-                id="icons-style-sharp"
-                checked={this.styleFilterEnabled && this.styleFilters.fas}
-                onChange={() => this.toggleStyleFilter('fas')}
-                type="checkbox"
-                name="icons-style"
-                class="input-checkbox-custom"
-              ></input>
-              <label htmlFor="icons-style-sharp" class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center">
-                <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-right-sm laptop:margin-bottom-0 desktop:size-md">
-                  <fa-icon
-                    style={!this.showCheckedStyleIcon('fas') && DISPLAY_NONE}
-                    {...this.commonFaIconProps}
-                    name="grin-tongue"
-                    stylePrefix="fas"
-                    size="2x"
-                    class="checked-icon fa-fw"
-                  />
-                  <fa-icon
-                    style={this.showCheckedStyleIcon('fas') && DISPLAY_NONE}
-                    {...this.commonFaIconProps}
-                    name="smile"
-                    stylePrefix="fas"
-                    size="2x"
-                    class="unchecked-icon fa-fw"
-                  />
-                </span>
-                <span>
-                  Sharp Solid <span class="sr-only">{this.slot('solid-style-filter-sr-message')}</span>
                 </span>
               </label>
             </div>
@@ -737,6 +711,47 @@ export class FaIconChooser {
                 </span>
               </label>
               <span class="disabled-tooltip size-sm">{this.slot('duotone-requires-pro')}</span>
+            </div>
+            <div class="wrap-icons-style-choice size-sm laptop:size-md margin-3xs column">
+              <input
+                disabled={fassDisabled}
+                id="icons-style-sharp-solid"
+                checked={this.styleFilterEnabled && this.styleFilters.fass}
+                onChange={() => this.toggleStyleFilter('fass')}
+                type="checkbox"
+                name="icons-style"
+                class="input-checkbox-custom"
+              ></input>
+              <label htmlFor="icons-style-sharp-solid" class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center ">
+                {fassDisabled ? (
+                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-right-sm laptop:margin-bottom-0">
+                    <fa-icon {...this.commonFaIconProps} name="meh" stylePrefix="far" size="2x" class="checked-icon fa-fw" />
+                  </span>
+                ) : (
+                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-right-sm laptop:margin-bottom-0">
+                    <fa-icon
+                      style={!this.showCheckedStyleIcon('fass') && DISPLAY_NONE}
+                      {...this.commonFaIconProps}
+                      name="grin-tongue"
+                      stylePrefix="fass"
+                      size="2x"
+                      class="checked-icon fa-fw"
+                    />
+                    <fa-icon
+                      style={this.showCheckedStyleIcon('fass') && DISPLAY_NONE}
+                      {...this.commonFaIconProps}
+                      name="smile"
+                      stylePrefix="fass"
+                      size="2x"
+                      class="unchecked-icon fa-fw"
+                    />
+                  </span>
+                )}
+                <span>
+                  Sharp Solid <span class="sr-only">{this.slot('sharp-solid-style-filter-sr-message')}</span>
+                </span>
+              </label>
+              <span class="disabled-tooltip size-sm">{this.slot('sharp-solid-requires-pro')}</span>
             </div>
             <div class="wrap-icons-style-choice size-sm laptop:size-md margin-3xs column">
               <input
