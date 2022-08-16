@@ -8,6 +8,7 @@ may change as suits the needs of the Icon Chooser.
 
 <!-- Auto Generated Below -->
 
+
 ## Properties
 
 | Property          | Attribute            | Description | Type                                                                                               | Default     |
@@ -20,24 +21,24 @@ may change as suits the needs of the Icon Chooser.
 | `name`            | `name`               |             | `string`                                                                                           | `undefined` |
 | `pro`             | `pro`                |             | `boolean`                                                                                          | `false`     |
 | `size`            | `size`               |             | `string`                                                                                           | `undefined` |
-| `stylePrefix`     | `style-prefix`       |             | `"fab" \| "fad" \| "fak" \| "fal" \| "far" \| "fas" \| "fat"`                                      | `undefined` |
+| `stylePrefix`     | `style-prefix`       |             | `"fab" \| "fad" \| "fak" \| "fal" \| "far" \| "fas" \| "fass" \| "fat"`                            | `undefined` |
 | `svgApi`          | `svg-api`            |             | `any`                                                                                              | `undefined` |
 | `svgFetchBaseUrl` | `svg-fetch-base-url` |             | `string`                                                                                           | `undefined` |
+
 
 ## Dependencies
 
 ### Used by
 
-- [fa-icon-chooser](../fa-icon-chooser)
+ - [fa-icon-chooser](../fa-icon-chooser)
 
 ### Graph
-
 ```mermaid
 graph TD;
   fa-icon-chooser --> fa-icon
   style fa-icon fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
----
+----------------------------------------------
 
-_Built with [StencilJS](https://stenciljs.com/)_
+*Built with [StencilJS](https://stenciljs.com/)*
