@@ -14,7 +14,7 @@ import {
   UrlTextFetcher,
   CONSOLE_MESSAGE_PREFIX,
   isValidSemver,
-  IconLookup
+  IconLookup,
 } from '../../utils/utils';
 import { faSadTear, faTire } from '../../utils/icons';
 import { slotDefaults } from '../../utils/slots';
@@ -151,7 +151,7 @@ export class FaIconChooser {
     fab: false,
     fal: false,
     fak: false,
-    fass: false
+    fass: false,
   };
 
   @State() kitMetadata: KitMetadata;
@@ -370,7 +370,7 @@ export class FaIconChooser {
     this.icons = (get(searchResultIcons, 'data.search') || []).reduce((acc: Array<IconLookup>, result: any) => {
       const { id, familyStylesByLicense } = result;
 
-      const familyStyles = this.pro() ? familyStylesByLicense.pro : familyStylesByLicense.free
+      const familyStyles = this.pro() ? familyStylesByLicense.pro : familyStylesByLicense.free;
 
       familyStyles.map(familyStyle => {
         acc.push({
@@ -722,7 +722,10 @@ export class FaIconChooser {
                 name="icons-style"
                 class="input-checkbox-custom"
               ></input>
-              <label htmlFor="icons-style-sharp-solid" class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center ">
+              <label
+                htmlFor="icons-style-sharp-solid"
+                class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center "
+              >
                 {fassDisabled ? (
                   <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-right-sm laptop:margin-bottom-0">
                     <fa-icon {...this.commonFaIconProps} name="meh" stylePrefix="far" size="2x" class="checked-icon fa-fw" />

@@ -5,176 +5,314 @@
         "id": "user",
         "label": "User",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}, {"family": "classic", "style": "regular"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" }
+          ],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "facebook",
         "label": "Facebook",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "brands"}],
-          "pro": [{"family": "classic", "style": "brands"}]
+          "free": [{ "family": "classic", "style": "brands" }],
+          "pro": [{ "family": "classic", "style": "brands" }]
         }
       },
       {
         "id": "check",
         "label": "Check",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "phone",
         "label": "Phone",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "plus",
         "label": "plus",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "twitter",
         "label": "Twitter",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "brands"}],
-          "pro": [{"family": "classic", "style": "brands"}]
+          "free": [{ "family": "classic", "style": "brands" }],
+          "pro": [{ "family": "classic", "style": "brands" }]
         }
       },
       {
         "id": "user-secret",
         "label": "User Secret",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "info",
         "label": "Info",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "list",
         "label": "List",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "star",
         "label": "Star",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}, {"family": "classic", "style": "regular"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" }
+          ],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "cart-plus",
         "label": "Add to Shopping Cart",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "book",
         "label": "book",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "heart",
         "label": "Heart",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}, {"family": "classic", "style": "regular"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" }
+          ],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "calendar",
         "label": "Calendar",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}, {"family": "classic", "style": "regular"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" }
+          ],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "trash",
         "label": "Trash",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "download",
         "label": "Download",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "youtube",
         "label": "YouTube",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "brands"}],
-          "pro": [{"family": "classic", "style": "brands"}]
+          "free": [{ "family": "classic", "style": "brands" }],
+          "pro": [{ "family": "classic", "style": "brands" }]
         }
       },
       {
         "id": "cross",
         "label": "Cross",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "meteor",
         "label": "Meteor",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "linkedin",
         "label": "LinkedIn",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "brands"}],
-          "pro": [{"family": "classic", "style": "brands"}]
+          "free": [{ "family": "classic", "style": "brands" }],
+          "pro": [{ "family": "classic", "style": "brands" }]
         }
       },
       {
         "id": "play",
         "label": "play",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "lock",
         "label": "lock",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
@@ -182,63 +320,115 @@
         "label": "Car and Building",
         "familyStylesByLicense": {
           "free": [],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "question",
         "label": "Question",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "google",
         "label": "Google Logo",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "brands"}],
-          "pro": [{"family": "classic", "style": "brands"}]
+          "free": [{ "family": "classic", "style": "brands" }],
+          "pro": [{ "family": "classic", "style": "brands" }]
         }
       },
       {
         "id": "video",
         "label": "Video",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "paper-plane",
         "label": "Paper Plane",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}, {"family": "classic", "style": "regular"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" }
+          ],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "street-view",
         "label": "Street View",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "share",
         "label": "Share",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "code",
         "label": "Code",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
@@ -246,23 +436,47 @@
         "label": "House",
         "familyStylesByLicense": {
           "free": [],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "bell",
         "label": "bell",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}, {"family": "classic", "style": "regular"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" }
+          ],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "coffee",
         "label": "Coffee",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
@@ -270,71 +484,136 @@
         "label": "Computer Speaker",
         "familyStylesByLicense": {
           "free": [],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "bars",
         "label": "Bars",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "github",
         "label": "GitHub",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "brands"}],
-          "pro": [{"family": "classic", "style": "brands"}]
+          "free": [{ "family": "classic", "style": "brands" }],
+          "pro": [{ "family": "classic", "style": "brands" }]
         }
       },
       {
         "id": "comment",
         "label": "comment",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}, {"family": "classic", "style": "regular"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" }
+          ],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "image",
         "label": "Image",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}, {"family": "classic", "style": "regular"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" }
+          ],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "folder",
         "label": "Folder",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}, {"family": "classic", "style": "regular"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" }
+          ],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "key",
         "label": "key",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "bomb",
         "label": "Bomb",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "camera",
         "label": "camera",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
@@ -342,55 +621,110 @@
         "label": "Text",
         "familyStylesByLicense": {
           "free": [],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "umbrella-beach",
         "label": "Umbrella Beach",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "building",
         "label": "Building",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}, {"family": "classic", "style": "regular"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" }
+          ],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "print",
         "label": "print",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "sort",
         "label": "Sort",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "flag",
         "label": "flag",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}, {"family": "classic", "style": "regular"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" }
+          ],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "network-wired",
         "label": "Wired Network",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
@@ -398,55 +732,104 @@
         "label": "pencil",
         "familyStylesByLicense": {
           "free": [],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "quote-right",
         "label": "quote-right",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "truck",
         "label": "truck",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "pepper-hot",
         "label": "Pepper Hot",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "file-export",
         "label": "File Export",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "table",
         "label": "table",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "file-invoice",
         "label": "File Invoice",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
@@ -454,23 +837,47 @@
         "label": "Moon with Stars",
         "familyStylesByLicense": {
           "free": [],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "tty",
         "label": "TTY",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "registered",
         "label": "Registered Trademark",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}, {"family": "classic", "style": "regular"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" }
+          ],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
@@ -478,15 +885,29 @@
         "label": "Office Phone",
         "familyStylesByLicense": {
           "free": [],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "video-slash",
         "label": "Video Slash",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
@@ -494,23 +915,44 @@
         "label": "Person and Empty Dolly",
         "familyStylesByLicense": {
           "free": [],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "signature",
         "label": "Signature",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "store",
         "label": "Store",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
@@ -518,7 +960,14 @@
         "label": "Projector",
         "familyStylesByLicense": {
           "free": [],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
@@ -526,63 +975,119 @@
         "label": "Loveseat",
         "familyStylesByLicense": {
           "free": [],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "arrow-right",
         "label": "arrow-right",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "music",
         "label": "Music",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "icons",
         "label": "Icons",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "power-off",
         "label": "Power Off",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "wifi",
         "label": "WiFi",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "vials",
         "label": "Vials",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "door-open",
         "label": "Door Open",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
@@ -590,7 +1095,14 @@
         "label": "shield",
         "familyStylesByLicense": {
           "free": [],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
@@ -598,15 +1110,29 @@
         "label": "Line Height",
         "familyStylesByLicense": {
           "free": [],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
         "id": "expand",
         "label": "Expand",
         "familyStylesByLicense": {
-          "free": [{"family": "classic", "style": "solid"}],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "free": [{ "family": "classic", "style": "solid" }],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
@@ -614,7 +1140,14 @@
         "label": "Walkie Talkie",
         "familyStylesByLicense": {
           "free": [],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       },
       {
@@ -622,7 +1155,14 @@
         "label": "Mailbox",
         "familyStylesByLicense": {
           "free": [],
-          "pro": [{"family":"classic", "style": "solid"}, {"family": "classic", "style": "regular"}, {"family": "classic", "style": "light"}, {"family": "classic", "style": "thin"}, {"family": "duotone", "style": "solid"}, {"family": "sharp", "style": "solid"}]
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "sharp", "style": "solid" }
+          ]
         }
       }
     ]

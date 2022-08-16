@@ -12,66 +12,98 @@ describe('fa-icon-chooser', () => {
     };
 
     const searchResults = [
-      { id: 'business-time', label: 'Business Time',
+      {
+        id: 'business-time',
+        label: 'Business Time',
         familyStylesByLicense: {
-          free: [
-            {family: "classic", style: "solid"}
-          ],
+          free: [{ family: 'classic', style: 'solid' }],
           pro: [
-            {family: "classic", style: "solid"}, {family: "classic", style: "regular"}, {family: "classic", style: "light"}, {family: "classic", style: "thin"}, {family: "duotone", style: "solid"}, {family: "sharp", style: "solid"}
-          ]
-        }
+            { family: 'classic', style: 'solid' },
+            { family: 'classic', style: 'regular' },
+            { family: 'classic', style: 'light' },
+            { family: 'classic', style: 'thin' },
+            { family: 'duotone', style: 'solid' },
+            { family: 'sharp', style: 'solid' },
+          ],
+        },
       },
-      { id: 'socks', label: 'Socks',
+      {
+        id: 'socks',
+        label: 'Socks',
         familyStylesByLicense: {
-          free: [
-            {family: "classic", style: "solid"}
-          ],
+          free: [{ family: 'classic', style: 'solid' }],
           pro: [
-            {family: "classic", style: "solid"}, {family: "classic", style: "regular"}, {family: "classic", style: "light"}, {family: "classic", style: "thin"}, {family: "duotone", style: "solid"}, {family: "sharp", style: "solid"}
-          ]
-        }
+            { family: 'classic', style: 'solid' },
+            { family: 'classic', style: 'regular' },
+            { family: 'classic', style: 'light' },
+            { family: 'classic', style: 'thin' },
+            { family: 'duotone', style: 'solid' },
+            { family: 'sharp', style: 'solid' },
+          ],
+        },
       },
-      { id: 'print', label: 'print',
+      {
+        id: 'print',
+        label: 'print',
         familyStylesByLicense: {
-          free: [
-            {family: "classic", style: "solid"}
-          ],
+          free: [{ family: 'classic', style: 'solid' }],
           pro: [
-            {family: "classic", style: "solid"}, {family: "classic", style: "regular"}, {family: "classic", style: "light"}, {family: "classic", style: "thin"}, {family: "duotone", style: "solid"}, {family: "sharp", style: "solid"}
-          ]
-        }
+            { family: 'classic', style: 'solid' },
+            { family: 'classic', style: 'regular' },
+            { family: 'classic', style: 'light' },
+            { family: 'classic', style: 'thin' },
+            { family: 'duotone', style: 'solid' },
+            { family: 'sharp', style: 'solid' },
+          ],
+        },
       },
-      { id: 'fax', label: 'Fax',
+      {
+        id: 'fax',
+        label: 'Fax',
         familyStylesByLicense: {
-          free: [
-            {family: "classic", style: "solid"}
-          ],
+          free: [{ family: 'classic', style: 'solid' }],
           pro: [
-            {family: "classic", style: "solid"}, {family: "classic", style: "regular"}, {family: "classic", style: "light"}, {family: "classic", style: "thin"}, {family: "duotone", style: "solid"}, {family: "sharp", style: "solid"}
-          ]
-        }
+            { family: 'classic', style: 'solid' },
+            { family: 'classic', style: 'regular' },
+            { family: 'classic', style: 'light' },
+            { family: 'classic', style: 'thin' },
+            { family: 'duotone', style: 'solid' },
+            { family: 'sharp', style: 'solid' },
+          ],
+        },
       },
-      { id: 'user-tie', label: 'User Tie',
+      {
+        id: 'user-tie',
+        label: 'User Tie',
         familyStylesByLicense: {
-          free: [
-            {family: "classic", style: "solid"}
-          ],
+          free: [{ family: 'classic', style: 'solid' }],
           pro: [
-            {family: "classic", style: "solid"}, {family: "classic", style: "regular"}, {family: "classic", style: "light"}, {family: "classic", style: "thin"}, {family: "duotone", style: "solid"}, {family: "sharp", style: "solid"}
-          ]
-        }
+            { family: 'classic', style: 'solid' },
+            { family: 'classic', style: 'regular' },
+            { family: 'classic', style: 'light' },
+            { family: 'classic', style: 'thin' },
+            { family: 'duotone', style: 'solid' },
+            { family: 'sharp', style: 'solid' },
+          ],
+        },
       },
-      { id: 'building', label: 'Building',
+      {
+        id: 'building',
+        label: 'Building',
         familyStylesByLicense: {
           free: [
-            {family: "classic", style: "solid"},
-            {family: "classic", style: "regular"}
+            { family: 'classic', style: 'solid' },
+            { family: 'classic', style: 'regular' },
           ],
           pro: [
-            {family: "classic", style: "solid"}, {family: "classic", style: "regular"}, {family: "classic", style: "light"}, {family: "classic", style: "thin"}, {family: "duotone", style: "solid"}, {family: "sharp", style: "solid"}
-          ]
-        }
+            { family: 'classic', style: 'solid' },
+            { family: 'classic', style: 'regular' },
+            { family: 'classic', style: 'light' },
+            { family: 'classic', style: 'thin' },
+            { family: 'duotone', style: 'solid' },
+            { family: 'sharp', style: 'solid' },
+          ],
+        },
       },
     ];
 

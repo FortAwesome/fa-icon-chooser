@@ -1,9 +1,9 @@
 import defaultIconsSearchResult from './defaultIconsSearchResult.json';
 import { valid as validSemver } from 'semver';
 
-const FREE_CDN_URL='https://use.fontawesome.com'
-const PRO_KIT_ASSET_URL='https://ka-p.fontawesome.com'
-const FREE_KIT_ASSET_URL='https://ka-f.fontawesome.com'
+const FREE_CDN_URL = 'https://use.fontawesome.com';
+const PRO_KIT_ASSET_URL = 'https://ka-p.fontawesome.com';
+const FREE_KIT_ASSET_URL = 'https://ka-f.fontawesome.com';
 
 export type UrlTextFetcher = (url: string) => Promise<string>;
 
@@ -26,12 +26,12 @@ export type IconPrefixToStyle = {
   [prefix in IconPrefix]: IconStyle;
 };
 
-export type IconFamily = 'classic' | 'sharp' | 'duotone'
+export type IconFamily = 'classic' | 'sharp' | 'duotone';
 
 export type FamilyStyle = {
-  family: IconFamily,
-  style: IconStyle
-}
+  family: IconFamily;
+  style: IconStyle;
+};
 
 export interface IconLookup {
   prefix: IconPrefix;
@@ -39,14 +39,14 @@ export interface IconLookup {
 }
 
 export const STYLE_TO_PREFIX: IconStyleToPrefix = {
-  solid: 'fas',
-  duotone: 'fad',
-  regular: 'far',
-  light: 'fal',
-  thin: 'fat',
-  kit: 'fak',
-  brands: 'fab',
-  'sharp-solid': 'fass'
+  'solid': 'fas',
+  'duotone': 'fad',
+  'regular': 'far',
+  'light': 'fal',
+  'thin': 'fat',
+  'kit': 'fak',
+  'brands': 'fab',
+  'sharp-solid': 'fass',
 };
 
 export const PREFIX_TO_STYLE: IconPrefixToStyle = {
@@ -57,7 +57,7 @@ export const PREFIX_TO_STYLE: IconPrefixToStyle = {
   fat: 'thin',
   fak: 'kit',
   fab: 'brands',
-  fass: 'sharp-solid'
+  fass: 'sharp-solid',
 };
 
 export type IconUpload = {
@@ -160,14 +160,14 @@ export function isValidSemver(val: string): boolean {
 }
 
 export function familyStyleToPrefix(familyStyle: FamilyStyle): IconPrefix | null {
-  if ( 'classic' === familyStyle.family ) {
-    return STYLE_TO_PREFIX[familyStyle.style as string]
-  } else if ( 'sharp' === familyStyle.family && 'solid' === familyStyle.style ) {
-    return 'fass'
-  } else if ( 'duotone' === familyStyle.family && 'solid' === familyStyle.style ) {
-    return 'fad'
+  if ('classic' === familyStyle.family) {
+    return STYLE_TO_PREFIX[familyStyle.style as string];
+  } else if ('sharp' === familyStyle.family && 'solid' === familyStyle.style) {
+    return 'fass';
+  } else if ('duotone' === familyStyle.family && 'solid' === familyStyle.style) {
+    return 'fad';
   } else {
-    return null
+    return null;
   }
 }
 
