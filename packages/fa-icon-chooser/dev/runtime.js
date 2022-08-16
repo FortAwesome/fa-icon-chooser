@@ -1,3 +1,8 @@
+// This dev-only module isn't processed by the bundler like the others,
+// so we can't use a node env var to set this. Just hardcode it in one
+// place at the top.
+const API_URL='https://api-staging-origin.fontawesome.com'
+
 const FaIconChooserDevExports = (function () {
   let showingIconChooser = false
   let localConfig = undefined
@@ -33,7 +38,7 @@ const FaIconChooserDevExports = (function () {
           console.log('handleQuery: no access token found -- sending an unauthorized request')
         }
 
-        return fetch( 'https://api.fontawesome.com', {
+        return fetch( API_URL, {
             method: 'POST',
             headers,
             body: JSON.stringify({ query })
@@ -172,7 +177,7 @@ const FaIconChooserDevExports = (function () {
 
     if(freshToken) return Promise.resolve(freshToken)
 
-    return fetch('https://api.fontawesome.com/token', {
+    return fetch(`${API_URL}/token`, {
       method: 'POST',
       headers: {
         authorization: `Bearer ${ localConfig.apiToken }`

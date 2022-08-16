@@ -1,6 +1,10 @@
 import defaultIconsSearchResult from './defaultIconsSearchResult.json';
 import { valid as validSemver } from 'semver';
 
+const FREE_CDN_URL='https://use.fontawesome.com'
+const PRO_KIT_ASSET_URL='https://ka-p.fontawesome.com'
+const FREE_KIT_ASSET_URL='https://ka-f.fontawesome.com'
+
 export type UrlTextFetcher = (url: string) => Promise<string>;
 
 export const defaultIcons: any = defaultIconsSearchResult;
@@ -110,11 +114,11 @@ export function parseSvgText(svgText) {
 }
 
 export function freeCdnBaseUrl(): string {
-  return 'https://use.fontawesome.com';
+  return FREE_CDN_URL;
 }
 
 export function kitAssetsBaseUrl(pro: boolean): string {
-  return pro ? 'https://ka-p.fontawesome.com' : 'https://ka-f.fontawesome.com';
+  return pro ? PRO_KIT_ASSET_URL : FREE_KIT_ASSET_URL;
 }
 
 export async function createFontAwesomeScriptElement(
