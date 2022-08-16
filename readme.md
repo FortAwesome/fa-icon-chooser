@@ -83,3 +83,4 @@ The Font Awesome team:
 | :--------------------------------------------------------: | -------------- | -------------------------------------------------- |
 |  <img src="https://github.com/mlwilkerson.png?size=72" />  | Mike Wilkerson | [@mlwilkerson](https://github.com/mlwilkerson)     |
 |     <img src="https://github.com/frrrances.png?size=72" />     | Frances Botsford   | [@frrrances](https://github.com/frrrances)                 |
+|     <img src="https://github.com/kelseythejackson.png?size=72" />     | Kelsey Jackson   | [@kelseythejackson](https://github.com/kelseythejackson)                 |
