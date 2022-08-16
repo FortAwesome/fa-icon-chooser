@@ -748,7 +748,7 @@ export class FaIconChooser {
                   </span>
                 )}
                 <span>
-                  Sharp Solid <span class="sr-only">{this.slot('sharp-solid-style-filter-sr-message')}</span>
+                  Sharp&nbsp;Solid <span class="sr-only">{this.slot('sharp-solid-style-filter-sr-message')}</span>
                 </span>
               </label>
               <span class="disabled-tooltip size-sm">{this.slot('sharp-solid-requires-pro')}</span>
