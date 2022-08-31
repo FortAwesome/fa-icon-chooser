@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ---
+## [0.4.0](https://github.com/FortAwesome/fa-icon-chooser/releases/tag/0.4.0) - 2022-08-31
+
+### Added
+
+- Support for Sharp Solid.
+
 ## [0.3.0](https://github.com/FortAwesome/fa-icon-chooser/releases/tag/0.3.0) - 2022-01-26
 
 ### Changed
