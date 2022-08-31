@@ -17,7 +17,8 @@
   },
   "contributors": [
     "Mike Wilkerson <mike@fontawesome.com>",
-    "Frances Botsford <frances@fontawesome.com>"
+    "Frances Botsford <frances@fontawesome.com>",
+    "Kelsey Jackson <kelseythej@gmail.com>"
   ],
   "files": [
     "dist/",
@@ -36,7 +37,7 @@
     "@stencil/core": "^2.13.0",
     "lodash": "^4.17.21",
     "semver": "^6.3.0",
-    "@fortawesome/fontawesome-common-types": "^0.2.35"
+    "@fortawesome/fontawesome-common-types": "^6.2.0"
   },
   "license": "MIT",
   "devDependencies": {

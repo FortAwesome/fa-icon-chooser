@@ -1,5 +1,6 @@
 import defaultIconsSearchResult from './defaultIconsSearchResult.json';
 import { valid as validSemver } from 'semver';
+import { IconPrefix } from '@fortawesome/fontawesome-common-types';
 
 const FREE_CDN_URL = 'https://use.fontawesome.com';
 const PRO_KIT_ASSET_URL = 'https://ka-p.fontawesome.com';
@@ -8,11 +9,6 @@ const FREE_KIT_ASSET_URL = 'https://ka-f.fontawesome.com';
 export type UrlTextFetcher = (url: string) => Promise<string>;
 
 export const defaultIcons: any = defaultIconsSearchResult;
-
-// When there is a published version of @fortawesome/fontawesome-common-types
-// that includes all of these prefixes, that could be used instead of defining
-// our own here.
-export type IconPrefix = 'fas' | 'fab' | 'far' | 'fal' | 'fat' | 'fad' | 'fak' | 'fass';
 
 // This does not represent a list of proper Font Awesome style names, just an internal representation
 // to faciliate lookups to/from style/prefix within this package.

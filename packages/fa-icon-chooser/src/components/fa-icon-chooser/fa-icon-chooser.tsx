@@ -7,7 +7,6 @@ import {
   createFontAwesomeScriptElement,
   IconUpload,
   defaultIcons,
-  IconPrefix,
   familyStyleToPrefix,
   IconUploadLookup,
   IconChooserResult,
@@ -18,6 +17,7 @@ import {
 } from '../../utils/utils';
 import { faSadTear, faTire } from '../../utils/icons';
 import { slotDefaults } from '../../utils/slots';
+import { IconPrefix } from '@fortawesome/fontawesome-common-types';
 
 export type QueryHandler = (document: string) => Promise<any>;
 

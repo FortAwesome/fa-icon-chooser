@@ -5,8 +5,8 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { IconChooserResult, IconPrefix, IconUpload, UrlTextFetcher } from "./utils/utils";
-import { IconDefinition } from "@fortawesome/fontawesome-common-types";
+import { IconDefinition, IconPrefix } from "@fortawesome/fontawesome-common-types";
+import { IconChooserResult, IconUpload, UrlTextFetcher } from "./utils/utils";
 import { QueryHandler } from "./components/fa-icon-chooser/fa-icon-chooser";
 export namespace Components {
     interface FaIcon {
