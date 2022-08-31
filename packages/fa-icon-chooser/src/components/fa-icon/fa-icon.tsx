@@ -1,6 +1,6 @@
 import { Component, Host, Prop, State, h } from '@stencil/core';
-import { IconPrefix, IconUpload, PREFIX_TO_STYLE, parseSvgText, UrlTextFetcher, CONSOLE_MESSAGE_PREFIX } from '../../utils/utils';
-import { IconDefinition } from '@fortawesome/fontawesome-common-types';
+import { IconUpload, PREFIX_TO_STYLE, parseSvgText, UrlTextFetcher, CONSOLE_MESSAGE_PREFIX } from '../../utils/utils';
+import { IconDefinition, IconPrefix } from '@fortawesome/fontawesome-common-types';
 import { get } from 'lodash';
 
 /**

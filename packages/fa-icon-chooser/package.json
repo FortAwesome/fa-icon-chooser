@@ -17,7 +17,8 @@
   },
   "contributors": [
     "Mike Wilkerson <mike@fontawesome.com>",
-    "Frances Botsford <frances@fontawesome.com>"
+    "Frances Botsford <frances@fontawesome.com>",
+    "Kelsey Jackson <kelseythej@gmail.com>"
   ],
   "files": [
     "dist/",
@@ -36,15 +37,15 @@
     "@stencil/core": "^2.13.0",
     "lodash": "^4.17.21",
     "semver": "^6.3.0",
-    "@fortawesome/fontawesome-common-types": "^0.2.35"
+    "@fortawesome/fontawesome-common-types": "^6.2.0"
   },
   "license": "MIT",
   "devDependencies": {
     "@stencil/react-output-target": "^0.2.1",
     "@types/jest": "^27.4.0",
-    "@types/puppeteer": "^5.4.4",
     "jest": "^27.4.7",
     "jest-cli": "^27.4.7",
+    "@types/puppeteer": "^5.4.4",
     "prettier": "^2.3.2",
     "puppeteer": "^13.1.2"
   }

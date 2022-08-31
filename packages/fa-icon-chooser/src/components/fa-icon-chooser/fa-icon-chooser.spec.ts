@@ -79,7 +79,7 @@ describe('fa-icon-chooser', () => {
 
     // The initial default icons should have be shown
     get(defaultIcons, 'data.search', [])
-      .filter(i => i.membership.free.length > 0)
+      .filter(i => i.familyStylesByLicense.free.length > 0)
       .forEach(({ id }) => {
         expect(page.root.shadowRoot.innerHTML).toEqual(expect.stringMatching(new RegExp(`<fa-icon .*name="${id}"`)));
       });

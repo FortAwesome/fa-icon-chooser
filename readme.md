@@ -25,7 +25,9 @@ In non-kit mode, only Font Awesome Free is available.
 When used with a kit, everything is available, according to that kit's configuration.
 - Font Awesome Pro
 - Font Awesome 6
-    Font Awesome 6 is currently in beta, but if the given kit is set to a version like `6.x` or `6.0.0-beta1`, the Icon Chooser knows what to do.
+
+    Including the Sharp Solid style, when using a Pro kit with Font Awesome 6.2.0 or newer!
+
 - Kit Icon Uploads: any icons uploaded to the kit are available in the chooser.
 
 A user configures their own kit on that kit's settings page on fontawesome.com and
@@ -81,3 +83,4 @@ The Font Awesome team:
 | :--------------------------------------------------------: | -------------- | -------------------------------------------------- |
 |  <img src="https://github.com/mlwilkerson.png?size=72" />  | Mike Wilkerson | [@mlwilkerson](https://github.com/mlwilkerson)     |
 |     <img src="https://github.com/frrrances.png?size=72" />     | Frances Botsford   | [@frrrances](https://github.com/frrrances)                 |
+|     <img src="https://github.com/kelseythejackson.png?size=72" />     | Kelsey Jackson   | [@kelseythejackson](https://github.com/kelseythejackson)                 |

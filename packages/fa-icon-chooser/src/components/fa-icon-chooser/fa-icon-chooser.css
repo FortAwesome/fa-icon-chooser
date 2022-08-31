@@ -37,7 +37,7 @@
 }
 
 .icons-style-menu-listing .icons-style-choice {
-  display: block;
+  display: flex;
   cursor: pointer;
   border: 2px solid var(--fa-lt-gravy);
   border-radius: var(--border-radius-md);
@@ -150,5 +150,11 @@ button.icon fa-icon {
 @media (min-width: 48rem) {
   .icons-style-menu-listing {
     flex-wrap: nowrap;
+  }
+}
+
+@media (min-width: 89rem) {
+  .icons-style-menu-listing .icons-style-choice {
+    display: block;
   }
 }
