@@ -38,6 +38,10 @@ slotDefaults['duotone-requires-pro'] = 'You need to use a Pro kit with Version 5
 
 slotDefaults['sharp-solid-requires-pro'] = 'You need to use a Pro kit with Version 6.2.0 or later to get Sharp Solid icons.';
 
+slotDefaults['sharp-regular-requires-pro'] = 'You need to use a Pro kit with Version 6.4.0 or later to get Sharp Regular icons.';
+
+slotDefaults['sharp-light-requires-pro'] = 'You need to use a Pro kit with Version 6.4.0 or later to get Sharp Light icons.';
+
 slotDefaults['uploaded-requires-pro'] = 'You need to use a Pro kit to get Uploaded icons.';
 
 slotDefaults['kit-has-no-uploaded-icons'] = 'This kit contains no uploaded icons.';
@@ -67,6 +71,10 @@ slotDefaults['get-fontawesome-pro'] = (
 );
 
 slotDefaults['sharp-solid-style-filter-sr-message'] = 'Show sharp solid style icons';
+
+slotDefaults['sharp-regular-style-filter-sr-message'] = 'Show sharp regular style icons';
+
+slotDefaults['sharp-light-style-filter-sr-message'] = 'Show sharp light style icons';
 
 slotDefaults['solid-style-filter-sr-message'] = 'Show solid style icons';
 

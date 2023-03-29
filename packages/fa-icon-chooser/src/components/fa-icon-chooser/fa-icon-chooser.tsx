@@ -51,6 +51,8 @@ const DISPLAY_NONE = { display: 'none' };
  * @slot thin-requires-pro - tooltip for thin style requiring Pro
  * @slot duotone-requires-pro - message about requirements for accessing duotone icons
  * @slot sharp-solid-requires-pro - message about requirements for accessing sharp solid icons
+ * @slot sharp-regular-requires-pro - message about requirements for accessing sharp regular icons
+ * @slot sharp-light-requires-pro - message about requirements for accessing sharp light icons
  * @slot uploaded-requires-pro - message about requirements for accessing kit icon uploads
  * @slot kit-has-no-uploaded-icons - message about a kit having no icon uploads
  * @slot no-search-results-heading - no search results message heading
@@ -58,6 +60,8 @@ const DISPLAY_NONE = { display: 'none' };
  * @slot suggest-icon-upload - message suggesting to try uploading a custom icon to a kit
  * @slot get-fontawesome-pro - message about getting Font Awesome Pro with link to fontawesome.com
  * @slot sharp-solid-style-filter-sr-message - screen reader only message for style filter: sharp solid
+ * @slot sharp-regular-style-filter-sr-message - screen reader only message for style filter: sharp regular
+ * @slot sharp-light-style-filter-sr-message - screen reader only message for style filter: sharp light
  * @slot solid-style-filter-sr-message - screen reader only message for style filter: solid
  * @slot regular-style-filter-sr-message - screen reader only message for style filter: regular
  * @slot light-style-filter-sr-message - screen reader only message for style filter: light
@@ -152,6 +156,8 @@ export class FaIconChooser {
     fal: false,
     fak: false,
     fass: false,
+    fasr: false,
+    fasl: false,
   };
 
   @State() kitMetadata: KitMetadata;
@@ -449,7 +455,15 @@ export class FaIconChooser {
   }
 
   isSharpSolidAvailable() {
-    return this.pro() && !!this.resolvedVersion().match('(6.2[0-9]*.)');
+    return this.pro() && !!this.resolvedVersion().match('(6.4[0-9]*.)');
+  }
+
+  isSharpLightAvailable() {
+    return this.pro() && !!this.resolvedVersion().match('(6.4[0-9]*.)');
+  }
+
+  isSharpRegularAvailable() {
+    return this.pro() && !!this.resolvedVersion().match('(6.4[0-9]*.)');
   }
 
   mayHaveIconUploads() {
@@ -476,7 +490,9 @@ export class FaIconChooser {
 
   render() {
     const falDisabled = !this.pro();
+    const faslDisabled = !this.isSharpLightAvailable();
     const fassDisabled = !this.isSharpSolidAvailable();
+    const fasrDisabled = !this.isSharpRegularAvailable();
     const fatDisabled = !(this.isV6() && this.pro());
     const fadDisabled = !this.isDuotoneAvailable();
     const fakDisabled = !this.mayHaveIconUploads();
@@ -755,6 +771,95 @@ export class FaIconChooser {
                 </span>
               </label>
               <span class="disabled-tooltip size-sm">{this.slot('sharp-solid-requires-pro')}</span>
+            </div>
+            <div class="wrap-icons-style-choice size-sm laptop:size-md margin-3xs column">
+              <input
+                disabled={fasrDisabled}
+                id="icons-style-sharp-regular"
+                checked={this.styleFilterEnabled && this.styleFilters.fasr}
+                onChange={() => this.toggleStyleFilter('fasr')}
+                type="checkbox"
+                name="icons-style"
+                class="input-checkbox-custom"
+              ></input>
+              <label
+                htmlFor="icons-style-sharp-regular"
+                class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center "
+              >
+                {fasrDisabled ? (
+                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-right-sm laptop:margin-bottom-0">
+                    <fa-icon {...this.commonFaIconProps} name="meh" stylePrefix="far" size="2x" class="checked-icon fa-fw" />
+                  </span>
+                ) : (
+                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-right-sm laptop:margin-bottom-0">
+                    <fa-icon
+                      style={!this.showCheckedStyleIcon('fasr') && DISPLAY_NONE}
+                      {...this.commonFaIconProps}
+                      name="grin-tongue"
+                      stylePrefix="fasr"
+                      size="2x"
+                      class="checked-icon fa-fw"
+                    />
+                    <fa-icon
+                      style={this.showCheckedStyleIcon('fasr') && DISPLAY_NONE}
+                      {...this.commonFaIconProps}
+                      name="smile"
+                      stylePrefix="fasr"
+                      size="2x"
+                      class="unchecked-icon fa-fw"
+                    />
+                  </span>
+                )}
+
+                <span>
+                  Sharp&nbsp;Regular <span class="sr-only">{this.slot('sharp-regular-style-filter-sr-message')}</span>
+                </span>
+              </label>
+              <span class="disabled-tooltip size-sm">{this.slot('sharp-regular-requires-pro')}</span>
+            </div>
+            <div class="wrap-icons-style-choice size-sm laptop:size-md margin-3xs column">
+              <input
+                disabled={faslDisabled}
+                id="icons-style-sharp-light"
+                checked={this.styleFilterEnabled && this.styleFilters.fasl}
+                onChange={() => this.toggleStyleFilter('fasl')}
+                type="checkbox"
+                name="icons-style"
+                class="input-checkbox-custom"
+              ></input>
+              <label
+                htmlFor="icons-style-sharp-light"
+                class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center "
+              >
+                {faslDisabled ? (
+                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-right-sm laptop:margin-bottom-0">
+                    <fa-icon {...this.commonFaIconProps} name="meh" stylePrefix="far" size="2x" class="checked-icon fa-fw" />
+                  </span>
+                ) : (
+                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-right-sm laptop:margin-bottom-0">
+                    <fa-icon
+                      style={!this.showCheckedStyleIcon('fasl') && DISPLAY_NONE}
+                      {...this.commonFaIconProps}
+                      name="grin-tongue"
+                      stylePrefix="fasl"
+                      size="2x"
+                      class="checked-icon fa-fw"
+                    />
+                    <fa-icon
+                      style={this.showCheckedStyleIcon('fasl') && DISPLAY_NONE}
+                      {...this.commonFaIconProps}
+                      name="smile"
+                      stylePrefix="fasl"
+                      size="2x"
+                      class="unchecked-icon fa-fw"
+                    />
+                  </span>
+                )}
+                <span>
+                  Sharp&nbsp;Light <span class="sr-only">{this.slot('sharp-light-style-filter-sr-message')}</span>
+                </span>
+              </label>
+              <span class="disabled-tooltip size-sm">{this.slot('sharp-light-requires-pro')}</span>
             </div>
             <div class="wrap-icons-style-choice size-sm laptop:size-md margin-3xs column">
               <input
