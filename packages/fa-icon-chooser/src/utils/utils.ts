@@ -44,7 +44,7 @@ export const STYLE_TO_PREFIX: IconStyleToPrefix = {
   'brands': 'fab',
   'sharp-solid': 'fass',
   'sharp-regular': 'fasr',
-  'sharp-light': 'fasl'
+  'sharp-light': 'fasl',
 };
 
 export const PREFIX_TO_STYLE: IconPrefixToStyle = {
@@ -57,7 +57,7 @@ export const PREFIX_TO_STYLE: IconPrefixToStyle = {
   fab: 'brands',
   fass: 'sharp-solid',
   fasr: 'sharp-regular',
-  fasl: 'sharp-light'
+  fasl: 'sharp-light',
 };
 
 export type IconUpload = {
@@ -164,10 +164,10 @@ export function familyStyleToPrefix(familyStyle: FamilyStyle): IconPrefix | null
     return STYLE_TO_PREFIX[familyStyle.style as string];
   } else if ('sharp' === familyStyle.family && 'solid' === familyStyle.style) {
     return 'fass';
-  } else if ('sharp' === familyStyle.family && 'regular' === familyStyle.style) { 
-    return 'fasr'
+  } else if ('sharp' === familyStyle.family && 'regular' === familyStyle.style) {
+    return 'fasr';
   } else if ('sharp' === familyStyle.family && 'light' === familyStyle.style) {
-    return 'fasl'
+    return 'fasl';
   } else if ('duotone' === familyStyle.family && 'solid' === familyStyle.style) {
     return 'fad';
   } else {
