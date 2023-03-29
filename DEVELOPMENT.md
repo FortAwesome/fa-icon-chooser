@@ -59,7 +59,7 @@ and it has three top-level keys:
         }
       },
       "props": {
-        "version": "5.15.3"
+        "version": "6.4.0"
       }
     }    
     ```
@@ -78,7 +78,7 @@ and it has three top-level keys:
     ```json
     {
       "props": {
-        "version": "5.15.3"
+        "version": "6.4.0"
       }
     }    
     ```
