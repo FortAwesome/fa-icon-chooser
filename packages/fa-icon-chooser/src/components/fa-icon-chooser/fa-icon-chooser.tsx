@@ -18,7 +18,7 @@ import {
 import { faSadTear, faTire } from '../../utils/icons';
 import { slotDefaults } from '../../utils/slots';
 import { IconPrefix } from '@fortawesome/fontawesome-common-types';
-import semver from 'semver'
+import semver from 'semver';
 
 export type QueryHandler = (document: string) => Promise<any>;
 
