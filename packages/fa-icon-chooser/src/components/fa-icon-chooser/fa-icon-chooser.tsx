@@ -18,6 +18,7 @@ import {
 import { faSadTear, faTire } from '../../utils/icons';
 import { slotDefaults } from '../../utils/slots';
 import { IconPrefix } from '@fortawesome/fontawesome-common-types';
+import semver from 'semver'
 
 export type QueryHandler = (document: string) => Promise<any>;
 
@@ -455,15 +456,18 @@ export class FaIconChooser {
   }
 
   isSharpSolidAvailable() {
-    return this.pro() && !!this.resolvedVersion().match('(6.4[0-9]*.)');
+    console.log(semver.satisfies(this.resolvedVersion(), '>=6.2.0'));
+    return this.pro() && semver.satisfies(this.resolvedVersion(), '>=6.2.0');
   }
 
   isSharpLightAvailable() {
-    return this.pro() && !!this.resolvedVersion().match('(6.4[0-9]*.)');
+    console.log(semver.satisfies(this.resolvedVersion(), '>=6.4.0'));
+    return this.pro() && semver.satisfies(this.resolvedVersion(), '>=6.4.0');
   }
 
   isSharpRegularAvailable() {
-    return this.pro() && !!this.resolvedVersion().match('(6.4[0-9]*.)');
+    console.log(semver.satisfies(this.resolvedVersion(), '>=6.3.0'));
+    return this.pro() && semver.satisfies(this.resolvedVersion(), '>=6.3.0');
   }
 
   mayHaveIconUploads() {

@@ -38,7 +38,7 @@ slotDefaults['duotone-requires-pro'] = 'You need to use a Pro kit with Version 5
 
 slotDefaults['sharp-solid-requires-pro'] = 'You need to use a Pro kit with Version 6.2.0 or later to get Sharp Solid icons.';
 
-slotDefaults['sharp-regular-requires-pro'] = 'You need to use a Pro kit with Version 6.4.0 or later to get Sharp Regular icons.';
+slotDefaults['sharp-regular-requires-pro'] = 'You need to use a Pro kit with Version 6.3.0 or later to get Sharp Regular icons.';
 
 slotDefaults['sharp-light-requires-pro'] = 'You need to use a Pro kit with Version 6.4.0 or later to get Sharp Light icons.';
 

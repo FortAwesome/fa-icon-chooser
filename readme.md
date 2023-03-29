@@ -26,7 +26,6 @@ When used with a kit, everything is available, according to that kit's configura
 - Font Awesome Pro
 - Font Awesome 6
 
-    Including the Sharp Regular & Light styles, when using a Pro kit with Font Awesome 6.4.0 or newer!
 
 - Kit Icon Uploads: any icons uploaded to the kit are available in the chooser.
 
