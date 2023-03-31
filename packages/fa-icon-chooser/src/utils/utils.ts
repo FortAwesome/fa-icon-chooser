@@ -12,7 +12,7 @@ export const defaultIcons: any = defaultIconsSearchResult;
 
 // This does not represent a list of proper Font Awesome style names, just an internal representation
 // to faciliate lookups to/from style/prefix within this package.
-export type IconStyle = 'solid' | 'duotone' | 'regular' | 'light' | 'thin' | 'kit' | 'brands' | 'sharp-solid';
+export type IconStyle = 'solid' | 'duotone' | 'regular' | 'light' | 'thin' | 'kit' | 'brands' | 'sharp-solid' | 'sharp-regular' | 'sharp-light';
 
 export type IconStyleToPrefix = {
   [style in IconStyle]: string;
@@ -43,6 +43,8 @@ export const STYLE_TO_PREFIX: IconStyleToPrefix = {
   'kit': 'fak',
   'brands': 'fab',
   'sharp-solid': 'fass',
+  'sharp-regular': 'fasr',
+  'sharp-light': 'fasl',
 };
 
 export const PREFIX_TO_STYLE: IconPrefixToStyle = {
@@ -54,6 +56,8 @@ export const PREFIX_TO_STYLE: IconPrefixToStyle = {
   fak: 'kit',
   fab: 'brands',
   fass: 'sharp-solid',
+  fasr: 'sharp-regular',
+  fasl: 'sharp-light',
 };
 
 export type IconUpload = {
@@ -160,6 +164,10 @@ export function familyStyleToPrefix(familyStyle: FamilyStyle): IconPrefix | null
     return STYLE_TO_PREFIX[familyStyle.style as string];
   } else if ('sharp' === familyStyle.family && 'solid' === familyStyle.style) {
     return 'fass';
+  } else if ('sharp' === familyStyle.family && 'regular' === familyStyle.style) {
+    return 'fasr';
+  } else if ('sharp' === familyStyle.family && 'light' === familyStyle.style) {
+    return 'fasl';
   } else if ('duotone' === familyStyle.family && 'solid' === familyStyle.style) {
     return 'fad';
   } else {
