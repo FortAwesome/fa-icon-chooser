@@ -456,17 +456,14 @@ export class FaIconChooser {
   }
 
   isSharpSolidAvailable() {
-    console.log(semver.satisfies(this.resolvedVersion(), '>=6.2.0'));
     return this.pro() && semver.satisfies(this.resolvedVersion(), '>=6.2.0');
   }
 
   isSharpLightAvailable() {
-    console.log(semver.satisfies(this.resolvedVersion(), '>=6.4.0'));
     return this.pro() && semver.satisfies(this.resolvedVersion(), '>=6.4.0');
   }
 
   isSharpRegularAvailable() {
-    console.log(semver.satisfies(this.resolvedVersion(), '>=6.3.0'));
     return this.pro() && semver.satisfies(this.resolvedVersion(), '>=6.3.0');
   }
 
