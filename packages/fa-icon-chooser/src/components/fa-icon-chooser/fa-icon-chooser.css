@@ -148,7 +148,6 @@ button.icon fa-icon {
 
 /* custom > tablet */
 
-
 @media (min-width: 62.625rem) {
   .icons-style-menu-listing {
     flex-wrap: nowrap;
