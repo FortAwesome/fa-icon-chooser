@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ---
+
+## [0.5.0](https://github.com/FortAwesome/fa-icon-chooser/releases/tag/0.5.0) - 2023-03-31
+
+### Added
+
+- Support for Sharp Regular and Sharp Light
+
 ## [0.4.1](https://github.com/FortAwesome/fa-icon-chooser/releases/tag/0.4.1) - 2022-08-31
 
 ### Changed
@@ -32,4 +39,3 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 
 - Initial version
-
