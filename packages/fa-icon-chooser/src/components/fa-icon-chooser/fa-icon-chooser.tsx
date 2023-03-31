@@ -553,7 +553,7 @@ export class FaIconChooser {
                 class="input-checkbox-custom"
               ></input>
               <label htmlFor="icons-style-solid" class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center">
-                <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-right-sm laptop:margin-bottom-0 desktop:size-md">
+                <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0 desktop:size-md">
                   <fa-icon
                     style={!this.showCheckedStyleIcon('fas') && DISPLAY_NONE}
                     {...this.commonFaIconProps}
@@ -586,7 +586,7 @@ export class FaIconChooser {
                 class="input-checkbox-custom"
               ></input>
               <label htmlFor="icons-style-regular" class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center ">
-                <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-right-sm laptop:margin-bottom-0">
+                <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
                   <fa-icon
                     style={!this.showCheckedStyleIcon('far') && DISPLAY_NONE}
                     {...this.commonFaIconProps}
@@ -621,11 +621,11 @@ export class FaIconChooser {
               ></input>
               <label htmlFor="icons-style-light" class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center ">
                 {falDisabled ? (
-                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-right-sm laptop:margin-bottom-0">
+                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
                     <fa-icon {...this.commonFaIconProps} name="meh" stylePrefix="far" size="2x" class="checked-icon fa-fw" />
                   </span>
                 ) : (
-                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-right-sm laptop:margin-bottom-0">
+                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
                     <fa-icon
                       style={!this.showCheckedStyleIcon('fal') && DISPLAY_NONE}
                       {...this.commonFaIconProps}
@@ -662,11 +662,11 @@ export class FaIconChooser {
               ></input>
               <label htmlFor="icons-style-thin" class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center ">
                 {fatDisabled ? (
-                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-right-sm laptop:margin-bottom-0">
+                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
                     <fa-icon {...this.commonFaIconProps} name="meh" stylePrefix="far" size="2x" class="checked-icon fa-fw" />
                   </span>
                 ) : (
-                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-right-sm laptop:margin-bottom-0">
+                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
                     <fa-icon
                       style={!this.showCheckedStyleIcon('fat') && DISPLAY_NONE}
                       {...this.commonFaIconProps}
@@ -703,11 +703,11 @@ export class FaIconChooser {
               ></input>
               <label htmlFor="icons-style-duotone" class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center ">
                 {fadDisabled ? (
-                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-right-sm laptop:margin-bottom-0">
+                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
                     <fa-icon {...this.commonFaIconProps} name="meh" stylePrefix="far" size="2x" class="unchecked-icon fa-fw" />
                   </span>
                 ) : (
-                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-right-sm laptop:margin-bottom-0">
+                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
                     <fa-icon
                       style={!this.showCheckedStyleIcon('fad') && DISPLAY_NONE}
                       {...this.commonFaIconProps}
@@ -747,11 +747,11 @@ export class FaIconChooser {
                 class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center "
               >
                 {fassDisabled ? (
-                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-right-sm laptop:margin-bottom-0">
+                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
                     <fa-icon {...this.commonFaIconProps} name="meh" stylePrefix="far" size="2x" class="checked-icon fa-fw" />
                   </span>
                 ) : (
-                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-right-sm laptop:margin-bottom-0">
+                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
                     <fa-icon
                       style={!this.showCheckedStyleIcon('fass') && DISPLAY_NONE}
                       {...this.commonFaIconProps}
@@ -791,11 +791,11 @@ export class FaIconChooser {
                 class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center "
               >
                 {fasrDisabled ? (
-                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-right-sm laptop:margin-bottom-0">
+                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
                     <fa-icon {...this.commonFaIconProps} name="meh" stylePrefix="far" size="2x" class="checked-icon fa-fw" />
                   </span>
                 ) : (
-                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-right-sm laptop:margin-bottom-0">
+                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
                     <fa-icon
                       style={!this.showCheckedStyleIcon('fasr') && DISPLAY_NONE}
                       {...this.commonFaIconProps}
@@ -836,11 +836,11 @@ export class FaIconChooser {
                 class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center "
               >
                 {faslDisabled ? (
-                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-right-sm laptop:margin-bottom-0">
+                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
                     <fa-icon {...this.commonFaIconProps} name="meh" stylePrefix="far" size="2x" class="checked-icon fa-fw" />
                   </span>
                 ) : (
-                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-right-sm laptop:margin-bottom-0">
+                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
                     <fa-icon
                       style={!this.showCheckedStyleIcon('fasl') && DISPLAY_NONE}
                       {...this.commonFaIconProps}
@@ -875,7 +875,7 @@ export class FaIconChooser {
                 class="input-checkbox-custom"
               ></input>
               <label htmlFor="icons-style-brands" class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center ">
-                <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-right-sm laptop:margin-bottom-0">
+                <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
                   <fa-icon {...this.commonFaIconProps} stylePrefix="fab" name="font-awesome" size="2x" class="fa-fw" />
                 </span>
                 <span>
@@ -894,7 +894,7 @@ export class FaIconChooser {
                 class="input-checkbox-custom"
               ></input>
               <label htmlFor="icons-style-uploads" class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center">
-                <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-right-sm laptop:margin-bottom-0">
+                <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
                   {fakDisabled ? (
                     <fa-icon {...this.commonFaIconProps} stylePrefix="far" name="meh" size="2x" class="fa-fw" />
                   ) : (
