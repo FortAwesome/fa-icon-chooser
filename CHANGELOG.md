@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ---
+## [0.6.0](https://github.com/FortAwesome/fa-icon-chooser/releases/tag/0.6.0) - 2023-07-12
+
+### Changed
+
+- Enable React 18 as peer dependency for fa-icon-chooser-react
+- No changes to the fa-icon-chooser base package
 
 ## [0.5.0](https://github.com/FortAwesome/fa-icon-chooser/releases/tag/0.5.0) - 2023-04-12
 
