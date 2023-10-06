@@ -165,6 +165,57 @@ export class FaIconChooser {
 
   @State() fatalError: boolean = false;
 
+  @State() familyStyles: object = {
+    classic: {
+      solid: {
+        prefix: 'fas'
+      },
+      regular: {
+        prefix: 'far'
+      },
+      light: {
+        prefix: 'fal'
+      },
+      thin: {
+        prefix: 'fat'
+      },
+      brands: {
+        prefix: 'fab'
+      }
+    },
+    duotone: {
+      solid: {
+        prefix: 'fad'
+      }
+    },
+    sharp: {
+      solid: {
+        prefix: 'fass'
+      },
+      regular: {
+        prefix: 'fasr'
+      },
+      light: {
+        prefix: 'fasl'
+      }
+    },
+    kit: {
+      custom:
+      {
+        prefix: 'fak'
+      }
+    },
+    'kit-duotone': {
+      custom: {
+        prefix: 'fakd'
+      }
+    }
+  };
+
+  @State() selectedFamily: string = 'classic';
+
+  @State() selectedStyle: string = 'solid';
+
   svgApi?: any;
 
   svgFetchBaseUrl?: string;
@@ -177,6 +228,40 @@ export class FaIconChooser {
 
   constructor() {
     this.toggleStyleFilter = this.toggleStyleFilter.bind(this);
+  }
+
+  familyNameToLabel(name: string): string {
+    return name
+  }
+
+  styleNameToLabel(name: string): string {
+    return name
+  }
+
+  getFamilies(): string[] {
+    return Object.keys(this.familyStyles)
+  }
+
+  selectFamily(e: any): void {
+    const fam = e.target.value
+    if ('string' === typeof fam && 'object' === typeof this.familyStyles[fam]) {
+      this.selectedFamily = fam
+    }
+  }
+
+  selectStyle(e: any): void {
+    const style = e.target.value
+    if ('string' === typeof style && 'string' === typeof this.selectedFamily && 'object' === typeof this.familyStyles[this.selectedFamily]) {
+      this.selectedStyle = style
+    }
+  }
+
+  getStylesForSelectedFamily(): string[] {
+    if ('string' === typeof this.selectedFamily && 'object' === typeof this.familyStyles[this.selectedFamily]) {
+      return Object.keys(this.familyStyles[this.selectedFamily])
+    } else {
+      return []
+    }
   }
 
   async loadKitMetadata() {
@@ -539,372 +624,20 @@ export class FaIconChooser {
               ></input>
             </div>
           </div>
-          <div class="icons-style-menu-listing display-flex flex-items-center align-between margin-bottom-xl">
-            <div class="wrap-icons-style-choice size-sm laptop:size-md margin-3xs column">
-              <input
-                id="icons-style-solid"
-                checked={this.styleFilterEnabled && this.styleFilters.fas}
-                onChange={() => this.toggleStyleFilter('fas')}
-                type="checkbox"
-                name="icons-style"
-                class="input-checkbox-custom"
-              ></input>
-              <label htmlFor="icons-style-solid" class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center">
-                <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0 desktop:size-md">
-                  <fa-icon
-                    style={!this.showCheckedStyleIcon('fas') && DISPLAY_NONE}
-                    {...this.commonFaIconProps}
-                    name="grin-tongue"
-                    stylePrefix="fas"
-                    size="2x"
-                    class="checked-icon fa-fw"
-                  />
-                  <fa-icon
-                    style={this.showCheckedStyleIcon('fas') && DISPLAY_NONE}
-                    {...this.commonFaIconProps}
-                    name="smile"
-                    stylePrefix="fas"
-                    size="2x"
-                    class="unchecked-icon fa-fw"
-                  />
-                </span>
-                <span>
-                  Solid <span class="sr-only">{this.slot('solid-style-filter-sr-message')}</span>
-                </span>
-              </label>
-            </div>
-            <div class="wrap-icons-style-choice size-sm laptop:size-md margin-3xs column">
-              <input
-                id="icons-style-regular"
-                checked={this.styleFilterEnabled && this.styleFilters.far}
-                onChange={() => this.toggleStyleFilter('far')}
-                type="checkbox"
-                name="icons-style"
-                class="input-checkbox-custom"
-              ></input>
-              <label htmlFor="icons-style-regular" class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center ">
-                <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
-                  <fa-icon
-                    style={!this.showCheckedStyleIcon('far') && DISPLAY_NONE}
-                    {...this.commonFaIconProps}
-                    name="grin-tongue"
-                    stylePrefix="far"
-                    size="2x"
-                    class="checked-icon fa-fw"
-                  />
-                  <fa-icon
-                    style={this.showCheckedStyleIcon('far') && DISPLAY_NONE}
-                    {...this.commonFaIconProps}
-                    name="smile"
-                    stylePrefix="far"
-                    size="2x"
-                    class="unchecked-icon fa-fw"
-                  />
-                </span>
-                <span>
-                  Regular <span class="sr-only">{this.slot('regular-style-filter-sr-message')}</span>
-                </span>
-              </label>
-            </div>
-            <div class="wrap-icons-style-choice size-sm laptop:size-md margin-3xs column">
-              <input
-                disabled={falDisabled}
-                id="icons-style-light"
-                checked={this.styleFilterEnabled && this.styleFilters.fal}
-                onChange={() => this.toggleStyleFilter('fal')}
-                type="checkbox"
-                name="icons-style"
-                class="input-checkbox-custom"
-              ></input>
-              <label htmlFor="icons-style-light" class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center ">
-                {falDisabled ? (
-                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
-                    <fa-icon {...this.commonFaIconProps} name="meh" stylePrefix="far" size="2x" class="checked-icon fa-fw" />
-                  </span>
-                ) : (
-                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
-                    <fa-icon
-                      style={!this.showCheckedStyleIcon('fal') && DISPLAY_NONE}
-                      {...this.commonFaIconProps}
-                      name="grin-tongue"
-                      stylePrefix="fal"
-                      size="2x"
-                      class="checked-icon fa-fw"
-                    />
-                    <fa-icon
-                      style={this.showCheckedStyleIcon('fal') && DISPLAY_NONE}
-                      {...this.commonFaIconProps}
-                      name="smile"
-                      stylePrefix="fal"
-                      size="2x"
-                      class="unchecked-icon fa-fw"
-                    />
-                  </span>
-                )}
-                <span>
-                  Light <span class="sr-only">{this.slot('light-style-filter-sr-message')}</span>
-                </span>
-              </label>
-              <span class="disabled-tooltip size-sm">{this.slot('light-requires-pro')}</span>
-            </div>
-            <div class="wrap-icons-style-choice size-sm laptop:size-md margin-3xs column">
-              <input
-                disabled={fatDisabled}
-                id="icons-style-thin"
-                checked={this.styleFilterEnabled && this.styleFilters.fat}
-                onChange={() => this.toggleStyleFilter('fat')}
-                type="checkbox"
-                name="icons-style"
-                class="input-checkbox-custom"
-              ></input>
-              <label htmlFor="icons-style-thin" class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center ">
-                {fatDisabled ? (
-                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
-                    <fa-icon {...this.commonFaIconProps} name="meh" stylePrefix="far" size="2x" class="checked-icon fa-fw" />
-                  </span>
-                ) : (
-                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
-                    <fa-icon
-                      style={!this.showCheckedStyleIcon('fat') && DISPLAY_NONE}
-                      {...this.commonFaIconProps}
-                      name="grin-tongue"
-                      stylePrefix="fat"
-                      size="2x"
-                      class="checked-icon fa-fw"
-                    />
-                    <fa-icon
-                      style={this.showCheckedStyleIcon('fat') && DISPLAY_NONE}
-                      {...this.commonFaIconProps}
-                      name="smile"
-                      stylePrefix="fat"
-                      size="2x"
-                      class="unchecked-icon fa-fw"
-                    />
-                  </span>
-                )}
-                <span>
-                  Thin <span class="sr-only">{this.slot('thin-style-filter-sr-message')}</span>
-                </span>
-              </label>
-              <span class="disabled-tooltip size-sm">{this.slot('thin-requires-pro')}</span>
-            </div>
-            <div class="wrap-icons-style-choice size-sm laptop:size-md margin-3xs column">
-              <input
-                disabled={fadDisabled}
-                id="icons-style-duotone"
-                checked={this.styleFilterEnabled && this.styleFilters.fad}
-                onChange={() => this.toggleStyleFilter('fad')}
-                type="checkbox"
-                name="icons-style"
-                class="input-checkbox-custom"
-              ></input>
-              <label htmlFor="icons-style-duotone" class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center ">
-                {fadDisabled ? (
-                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
-                    <fa-icon {...this.commonFaIconProps} name="meh" stylePrefix="far" size="2x" class="unchecked-icon fa-fw" />
-                  </span>
-                ) : (
-                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
-                    <fa-icon
-                      style={!this.showCheckedStyleIcon('fad') && DISPLAY_NONE}
-                      {...this.commonFaIconProps}
-                      name="grin-tongue"
-                      stylePrefix="fad"
-                      size="2x"
-                      class="checked-icon fa-fw"
-                    />
-                    <fa-icon
-                      style={this.showCheckedStyleIcon('fad') && DISPLAY_NONE}
-                      {...this.commonFaIconProps}
-                      name="smile"
-                      stylePrefix="fad"
-                      size="2x"
-                      class="unchecked-icon fa-fw"
-                    />
-                  </span>
-                )}
-                <span>
-                  Duotone <span class="sr-only">{this.slot('duotone-style-filter-sr-message')}</span>
-                </span>
-              </label>
-              <span class="disabled-tooltip size-sm">{this.slot('duotone-requires-pro')}</span>
-            </div>
-            <div class="wrap-icons-style-choice size-sm laptop:size-md margin-3xs column">
-              <input
-                disabled={fassDisabled}
-                id="icons-style-sharp-solid"
-                checked={this.styleFilterEnabled && this.styleFilters.fass}
-                onChange={() => this.toggleStyleFilter('fass')}
-                type="checkbox"
-                name="icons-style"
-                class="input-checkbox-custom"
-              ></input>
-              <label
-                htmlFor="icons-style-sharp-solid"
-                class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center "
-              >
-                {fassDisabled ? (
-                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
-                    <fa-icon {...this.commonFaIconProps} name="meh" stylePrefix="far" size="2x" class="checked-icon fa-fw" />
-                  </span>
-                ) : (
-                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
-                    <fa-icon
-                      style={!this.showCheckedStyleIcon('fass') && DISPLAY_NONE}
-                      {...this.commonFaIconProps}
-                      name="grin-tongue"
-                      stylePrefix="fass"
-                      size="2x"
-                      class="checked-icon fa-fw"
-                    />
-                    <fa-icon
-                      style={this.showCheckedStyleIcon('fass') && DISPLAY_NONE}
-                      {...this.commonFaIconProps}
-                      name="smile"
-                      stylePrefix="fass"
-                      size="2x"
-                      class="unchecked-icon fa-fw"
-                    />
-                  </span>
-                )}
-                <span>
-                  Sharp&nbsp;Solid <span class="sr-only">{this.slot('sharp-solid-style-filter-sr-message')}</span>
-                </span>
-              </label>
-              <span class="disabled-tooltip size-sm">{this.slot('sharp-solid-requires-pro')}</span>
-            </div>
-            <div class="wrap-icons-style-choice size-sm laptop:size-md margin-3xs column">
-              <input
-                disabled={fasrDisabled}
-                id="icons-style-sharp-regular"
-                checked={this.styleFilterEnabled && this.styleFilters.fasr}
-                onChange={() => this.toggleStyleFilter('fasr')}
-                type="checkbox"
-                name="icons-style"
-                class="input-checkbox-custom"
-              ></input>
-              <label
-                htmlFor="icons-style-sharp-regular"
-                class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center "
-              >
-                {fasrDisabled ? (
-                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
-                    <fa-icon {...this.commonFaIconProps} name="meh" stylePrefix="far" size="2x" class="checked-icon fa-fw" />
-                  </span>
-                ) : (
-                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
-                    <fa-icon
-                      style={!this.showCheckedStyleIcon('fasr') && DISPLAY_NONE}
-                      {...this.commonFaIconProps}
-                      name="grin-tongue"
-                      stylePrefix="fasr"
-                      size="2x"
-                      class="checked-icon fa-fw"
-                    />
-                    <fa-icon
-                      style={this.showCheckedStyleIcon('fasr') && DISPLAY_NONE}
-                      {...this.commonFaIconProps}
-                      name="smile"
-                      stylePrefix="fasr"
-                      size="2x"
-                      class="unchecked-icon fa-fw"
-                    />
-                  </span>
-                )}
 
-                <span>
-                  Sharp&nbsp;Regular <span class="sr-only">{this.slot('sharp-regular-style-filter-sr-message')}</span>
-                </span>
-              </label>
-              <span class="disabled-tooltip size-sm">{this.slot('sharp-regular-requires-pro')}</span>
-            </div>
-            <div class="wrap-icons-style-choice size-sm laptop:size-md margin-3xs column">
-              <input
-                disabled={faslDisabled}
-                id="icons-style-sharp-light"
-                checked={this.styleFilterEnabled && this.styleFilters.fasl}
-                onChange={() => this.toggleStyleFilter('fasl')}
-                type="checkbox"
-                name="icons-style"
-                class="input-checkbox-custom"
-              ></input>
-              <label
-                htmlFor="icons-style-sharp-light"
-                class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center "
-              >
-                {faslDisabled ? (
-                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
-                    <fa-icon {...this.commonFaIconProps} name="meh" stylePrefix="far" size="2x" class="checked-icon fa-fw" />
-                  </span>
-                ) : (
-                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
-                    <fa-icon
-                      style={!this.showCheckedStyleIcon('fasl') && DISPLAY_NONE}
-                      {...this.commonFaIconProps}
-                      name="grin-tongue"
-                      stylePrefix="fasl"
-                      size="2x"
-                      class="checked-icon fa-fw"
-                    />
-                    <fa-icon
-                      style={this.showCheckedStyleIcon('fasl') && DISPLAY_NONE}
-                      {...this.commonFaIconProps}
-                      name="smile"
-                      stylePrefix="fasl"
-                      size="2x"
-                      class="unchecked-icon fa-fw"
-                    />
-                  </span>
-                )}
-                <span>
-                  Sharp&nbsp;Light <span class="sr-only">{this.slot('sharp-light-style-filter-sr-message')}</span>
-                </span>
-              </label>
-              <span class="disabled-tooltip size-sm">{this.slot('sharp-light-requires-pro')}</span>
-            </div>
-            <div class="wrap-icons-style-choice size-sm laptop:size-md margin-3xs column">
-              <input
-                id="icons-style-brands"
-                checked={this.styleFilterEnabled && this.styleFilters.fab}
-                onChange={() => this.toggleStyleFilter('fab')}
-                type="checkbox"
-                name="icons-style"
-                class="input-checkbox-custom"
-              ></input>
-              <label htmlFor="icons-style-brands" class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center ">
-                <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
-                  <fa-icon {...this.commonFaIconProps} stylePrefix="fab" name="font-awesome" size="2x" class="fa-fw" />
-                </span>
-                <span>
-                  Brands <span class="sr-only">{this.slot('brands-style-filter-sr-message')}</span>
-                </span>
-              </label>
-            </div>
-            <div class="wrap-icons-style-choice size-sm laptop:size-md margin-3xs column">
-              <input
-                disabled={fakDisabled}
-                id="icons-style-uploads"
-                checked={this.styleFilterEnabled && this.styleFilters.fak}
-                onChange={() => this.toggleStyleFilter('fak')}
-                type="checkbox"
-                name="icons-style"
-                class="input-checkbox-custom"
-              ></input>
-              <label htmlFor="icons-style-uploads" class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center">
-                <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
-                  {fakDisabled ? (
-                    <fa-icon {...this.commonFaIconProps} stylePrefix="far" name="meh" size="2x" class="fa-fw" />
-                  ) : (
-                    <fa-icon {...this.commonFaIconProps} stylePrefix="far" name="cloud" size="2x" class="fa-fw" />
-                  )}
-                </span>
-                <span>
-                  Uploaded <span class="sr-only">{this.slot('uploaded-style-filter-sr-message')}</span>
-                </span>
-              </label>
-              <span class="disabled-tooltip size-sm">{this.slot('uploaded-requires-pro')}</span>
-            </div>
-          </div>
+          <select name="family-select" onChange={this.selectFamily.bind(this)}>
+            {this.getFamilies().map((family: string) =>
+              <option value={family}>{family}</option>
+            )}
+          </select>
+
+          <select name="style-select" onChange={this.selectStyle.bind(this)}>
+            {this.getStylesForSelectedFamily()
+              .map((style: string) =>
+                <option value={style}>{style}</option>
+              )}
+          </select>
+
         </form>
         <p class="muted size-sm text-center margin-bottom-xs">
           {this.pro() ? this.slot('searching-pro') : this.slot('searching-free')} {this.resolvedVersion()}
