@@ -520,7 +520,7 @@ export class FaIconChooser {
     }
 
     return (
-      <div class="fa-icon-chooser">
+      <div class="fa-icon-chooser figma">
         <form id="search-form" onSubmit={this.preventDefaultFormSubmit}>
           <label htmlFor="search" class="margin-bottom-xs margin-left-xl sr-only">
             {this.pro() ? this.slot('search-field-label-pro') : this.slot('search-field-label-free')} {this.resolvedVersion()}
@@ -933,10 +933,17 @@ export class FaIconChooser {
             <div class="icon-listing">
               {this.filteredIcons().map(iconLookup => (
                 <article class="wrap-icon" key={`${iconLookup.prefix}-${iconLookup.iconName}`}>
-                  <button class="icon subtle display-flex flex-column flex-items-center flex-content-center" onClick={() => this.finish.emit(buildIconChooserResult(iconLookup))}>
-                    <fa-icon {...this.commonFaIconProps} size="2x" stylePrefix={iconLookup.prefix} name={iconLookup.iconName} iconUpload={get(iconLookup, 'iconUpload')} />
+                  <button class="icon-button" onClick={() => this.finish.emit(buildIconChooserResult(iconLookup))}>
+                    <fa-icon
+                      {...this.commonFaIconProps}
+                      size="2x"
+                      stylePrefix={iconLookup.prefix}
+                      name={iconLookup.iconName}
+                      iconUpload={get(iconLookup, 'iconUpload')}
+                      title={iconLookup.iconName}
+                    />
 
-                    <span class="icon-name size-sm text-truncate margin-top-lg">{`${iconLookup.iconName}`}</span>
+                    <span class="icon-name">{`${iconLookup.iconName}`}</span>
                   </button>
                 </article>
               ))}

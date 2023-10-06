@@ -1,0 +1,323 @@
+@import 'figma-plugin-ds.css';
+
+/* general styles */
+:root {
+  font-family: Inter;
+  font-size: 11px;
+}
+
+body {
+  background-color: var(--figma-color-bg);
+  color: var(--figma-color-text);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+h1 {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 1.5em 0 0.5em 0;
+}
+
+label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+a {
+  color: var(--figma-color-text-brand);
+  text-decoration: none;
+}
+
+a:hover,
+a:focus {
+  text-decoration: underline;
+}
+
+.searchtools .wrap-radio-select {
+  flex: 1 0 auto;
+}
+
+.radio-select-button {
+  border: none;
+  background: transparent;
+  color: var(--figma-color-text);
+  display: flex;
+  align-items: center;
+  padding-left: 7px;
+}
+
+.radio-select-button .caret {
+  width: 30px;
+  height: 30px;
+  display: block;
+  margin-top: -1px;
+  background-image: url('data:image/svg+xml;utf8,%3Csvg%20fill%3D%22none%22%20height%3D%2230%22%20viewBox%3D%220%200%2030%2030%22%20width%3D%2230%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20clip-rule%3D%22evenodd%22%20d%3D%22m15%2016.7071-3-3%20.7071-.7071%202.6465%202.6464%202.6464-2.6464.7071.7071-3%203-.3535.3536z%22%20fill%3D%22%23000%22%20fill-rule%3D%22evenodd%22%2F%3E%3C%2Fsvg%3E');
+  background-repeat: no-repeat;
+  background-position: center center;
+  opacity: 0.3;
+}
+
+.radio-select-button:hover {
+  outline: 1px solid var(--figma-color-border);
+  justify-content: space-between;
+}
+
+.radio-select-button:hover .caret {
+  opacity: 1;
+}
+
+.radio-select-button:focus-visible {
+  outline: 1px solid var(--figma-color-border-selected);
+}
+
+.radio-select {
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.15);
+  border-radius: 2px;
+  padding: 10px 0;
+  background-color: var(--figma-color-bg-inverse);
+  color: var(--figma-color-text-oninverse);
+}
+
+.radio-select .select-item:hover {
+  background-color: var(--figma-color-bg-selected-strong);
+}
+
+.radio-select .checked-icon {
+  width: var(--size-xsmall);
+  height: var(--size-xsmall);
+  margin: 0 var(--size-xxsmall);
+  opacity: 0;
+  pointer-events: none;
+  background-image: url('data:image/svg+xml;utf8,%3Csvg%20fill%3D%22none%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20width%3D%2216%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20clip-rule%3D%22evenodd%22%20d%3D%22m13.2069%205.20724-5.50002%205.49996-.70711.7072-.70711-.7072-3-2.99996%201.41422-1.41421%202.29289%202.29289%204.79293-4.79289z%22%20fill%3D%22%23fff%22%20fill-rule%3D%22evenodd%22%2F%3E%3C%2Fsvg%3E');
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.radio-select .select-item.selected .checked-icon {
+  opacity: 1;
+}
+
+.radio-select label {
+  display: flex;
+  align-items: center;
+  font-weight: normal;
+  margin-bottom: 0;
+
+  padding: 6px 32px 6px 6px;
+}
+
+.radio-select input {
+  visibility: hidden;
+  position: absolute;
+  left: 0;
+}
+
+.message {
+  border-radius: 3px;
+  background-color: var(--figma-color-bg-inverse);
+  color: var(--figma-color-text-oninverse);
+  padding: 8px 11px;
+  margin: 6px 0;
+}
+
+.message.info {
+  background-color: var(--figma-color-bg-brand);
+}
+
+.message.success {
+  background-color: var(--figma-color-bg-success);
+}
+
+.message.warning,
+.message.danger {
+  background-color: var(--figma-color-bg-danger);
+}
+
+.wrap-ux-message {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+}
+
+.ux-message {
+  margin: 48px 24px;
+  text-align: center;
+  color: var(--figma-color-text-secondary);
+  line-height: 1.5;
+}
+
+.ux-message-icon {
+  font-size: 5em;
+  color: var(--figma-color-icon-tertiary);
+  fill: var(--figma-color-icon-tertiary);
+  margin-bottom: 32px;
+}
+
+/* lowry overrides */
+.input__field:placeholder-shown {
+  border-color: var(--figma-color-bg);
+}
+
+.icon-button > .icon {
+  cursor: pointer;
+}
+
+/* lowry dark mode fixes */
+*::selected {
+  color: var(--figma-color-text);
+}
+
+.input__field {
+  color: var(--figma-color-text);
+  background-color: var(--figma-color-bg);
+}
+
+.input__field::placeholder {
+  color: var(--figma-color-text-secondary);
+}
+
+.input__field:active,
+.input__field:focus {
+  color: var(--figma-color-text);
+}
+
+.figma-dark {
+  --hover-fill: #000;
+}
+
+.figma-dark .icon-button .icon,
+.figma-dark .input .icon,
+.figma-dark .radio-select-button .caret {
+  filter: invert(100%);
+}
+
+.figma-dark .radio-select {
+  background-color: #000;
+  color: var(--figma-color-text);
+}
+
+/* layout */
+.plugin,
+.fa-icon-chooser {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.bar {
+  display: flex;
+  gap: 4px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px;
+  border-bottom: 1px solid var(--figma-color-border);
+  background-color: var(--figma-color-bg);
+}
+
+.bar.back {
+  justify-content: flex-start;
+  gap: 6px;
+}
+
+.bar.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  align-items: center;
+  border-top: 1px solid var(--figma-color-border);
+  border-bottom: none;
+  padding-right: 10px;
+}
+
+.wrap-icon-search,
+.wrap-icon-listing {
+  flex: 1;
+  margin: 12px 8px 40px 8px;
+  overflow-y: scroll;
+}
+
+.icon-grid,
+.icon-listing {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.icon-name {
+  display: none;
+}
+
+.view-settings .main {
+  padding: 32px 16px 40px 16px;
+}
+
+/* search bar */
+
+.figma .icons-style-menu-listing {
+  display: none;
+}
+
+.search .wrap-search-input {
+  flex-grow: 1;
+  position: relative;
+}
+
+.search .clear-search {
+  position: absolute;
+  top: 4px;
+  right: 3px;
+  z-index: 5;
+  width: var(--size-small);
+  height: var(--size-small);
+  opacity: 0.5;
+}
+
+.search .clear-search:hover {
+  opacity: 1;
+  background-color: transparent;
+}
+
+/* searchtools */
+.searchtools {
+  position: relative;
+}
+
+/* settings */
+.title {
+  text-align: center;
+  margin: 20px 30px;
+  line-height: 150%;
+}
+
+.wrap-api-token {
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 8px;
+}
+
+.api-token-form {
+  flex: 1 0 auto;
+}
+
+.api-token {
+  display: flex;
+  align-items: center;
+  flex: 1 0 auto;
+}
