@@ -29,13 +29,36 @@
   --spacing-11xl: calc(var(--spacing-base) * 16); /* 256px */
   --spacing-12xl: calc(var(--spacing-base) * 20); /* 320px */
 
+  /* neutral scale */
+  --color-neutral-white: #fff;
+  --color-neutral-50: #f0f1f3;
+  --color-neutral-100: #e0e2e8;
+  --color-neutral-200: #c3c6d1;
+  --color-neutral-300: #a5abbb;
+  --color-neutral-400: #8991a5;
+  --color-neutral-500: #6d7790;
+  --color-neutral-600: #515e7b;
+  --color-neutral-700: #364767;
+  --color-neutral-800: #183153;
+  --color-neutral-900: #001c40;
+  --color-neutral-black: #000;
+
   /* icon chooser specific */
-  --icon-chooser-background-color: #fff;
+  --icon-chooser-background-color: var(--color-neutral-white);
+  --icon-chooser-text-color: var(--color-neutral-800);
+  --icon-chooser-font-size: 16px;
+  --icon-chooser-font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   --icon-chooser-width: 90vw;
   --icon-chooser-height: 75vw;
   --icon-chooser-margin: 0 auto;
-  --icon-chooser-padding: var(--spacing-sm);
-  --icon-chooser-font-size: 16px;
+  --icon-chooser-padding: 0;
+  --icon-chooser-footer-background-color: var(--color-neutral-white);
+  --icon-chooser-border-radius: 0.3rem;
+
+  --icon-search-input-padding: var(--spacing-sm) var(--spacing-md);
+  --icon-search-input-border: ;
+
+  /* style selects and search input - pipe in props */
 
   --icon-details-preview-font-size: 12rem; /* 192px */
   --icon-details-preview-line-height: 1;
@@ -46,21 +69,41 @@
   --icon-listing-roomy-gap-y: var(--spacing-md); /* 16px */
   --icon-listing-roomy-size: calc(var(--spacing-base) * 8); /* 128px */
 
-  --icon-border: #fff;
-  --icon-background: #fff;
-  --icon-hover-background: #e0e2e8;
+  --icon-button-background: var(--color-neutral-white);
+  --icon-button-hover-background: #e0e2e8;
+  --icon-button-border-width: 0;
+  --icon-button-border-style: solid;
+  --icon-button-border-color: var(--color-neutral-white);
+  --icon-button-border-radius: var(--icon-chooser-border-radius);
+  --icon-button-padding-y: var(--spacing-md);
+  --icon-button-padding-x: var(--spacing-sm);
+
+  --icon-padding: var(--spacing-xs);
+  --icon-color: var(--color-neutral-800);
+  --icon-name-display: block;
+  --icon-name-color: var(--color-neutral-500);
+  --icon-name-size: 0.8rem;
 }
 
-:host {
+/* icon chooser */
+:host,
+body,
+.fa-icon-chooser {
   background-color: var(--icon-chooser-background-color);
+  color: var(--icon-chooser-text-color);
   display: block;
   width: var(--icon-chooser-width);
   height: var(--icon-chooser-height);
   margin: var(--icon-chooser-margin);
   padding: var(--icon-chooser-padding);
+  font-family: var(--icon-chooser-font-family);
   font-size: var(--icon-chooser-font-size);
+  font-weight: 400;
+  font-size: 1em;
+  line-height: 1.5;
 }
 
+/* sets and resets */
 *,
 *::before,
 *::after {
@@ -68,19 +111,97 @@
   box-sizing: border-box;
 }
 
-/* search */
-.wrap-search {
-  --input-with-icon-color: var(--fa-navy);
-  --input-border-color: var(--fa-navy);
-  --input-placeholder-color: var(--fa-md-gravy);
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: 0;
+  background-color: transparent;
 }
 
-/* icon list */
+input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: 0;
+}
+
+button {
+  cursor: pointer;
+  margin: 0;
+  border: none;
+  background: transparent;
+  padding: 0;
+}
+
+.sr-only {
+  clip: rect(0, 0, 0, 0);
+  position: absolute;
+  -webkit-clip-path: inset(50%);
+  clip-path: inset(50%);
+  border: 0;
+  padding: 0;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.sr-only:active,
+.sr-only:focus {
+  clip: auto;
+  position: static;
+  -webkit-clip-path: none;
+  clip-path: none;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  white-space: normal;
+}
+
+/* layout */
+.wrap-search {
+  --input-with-icon-color: var(--icon-chooser-text-color);
+  --input-border-color: var(--color-neutral-800);
+  --input-placeholder-color: var(--color-neutral-500);
+  padding: var(--spacing-lg) var(--spacing-md);
+  display: flex;
+  align-items: center;
+}
+
+.icons-search-decorative {
+  padding: 0.5em;
+}
+
+.icons-search-input {
+  flex-grow: 1;
+  padding: var(--icon-search-input-padding);
+}
+
 .wrap-icon-listing {
-  background: var(--fa-lt-gravy);
+  background: var(--icon-chooser-background-color);
   padding: var(--spacing-lg) var(--spacing-md);
 }
 
+.footer {
+  background-color: var(--icon-chooser-footer-background-color);
+  position: sticky;
+  bottom: 0;
+  padding: var(--spacing-2xs) var(--spacing-md);
+  text-align: right;
+}
+
+/* search */
+.wrap-style-selects select {
+  margin: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  border: 1px solid var(--color-neutral-300);
+  text-transform: capitalize;
+  font-weight: 600;
+  border-radius: var(--icon-chooser-border-radius);
+}
+
+/* icon list */
 .icon-listing {
   display: grid;
   grid-auto-flow: row dense;
@@ -96,33 +217,40 @@
 }
 
 .icon-button {
-  --button-padding: var(--spacing-xl) var(--spacing-lg);
-  --button-font-weight: var(--font-weight-normal);
-  --button-background: var(--white);
-  --button-color: var(--fa-md-gravy);
-  --button-hover-color: var(--fa-navy);
-  --button-margin-bottom: 0;
-
-  width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
-  background: var(--icon-background);
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  background: var(--icon-button-background);
+  padding: var(--icon-button-padding-y) var(--icon-button-padding-x);
+  border-radius: var(--icon-button-border-radius);
+  border: var(--icon-button-border-width) var(--icon-button-border-style) var(--icon-button-border-color);
 }
 
 .icon-button:hover {
-  background: var(--icon-hover-background);
+  background: var(--icon-button-hover-background);
 }
 
 .icon-button fa-icon {
-  color: var(--fa-navy);
+  color: var(--icon-color);
+  padding: var(--icon-padding);
 }
 
-.icon-listing .icon .icon-name {
+.icon-button .icon-name {
+  display: var(--icon-name-display);
   width: 100%; /* to support text truncate */
+  color: var(--icon-name-color);
+  font-size: var(--icon-name-size);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-/* dev/temp */
-.icons-style-menu-listing {
-  display: none;
+.version-info {
+  background-color: var(--color-neutral-500);
+  color: var(--color-neutral-white);
+  border-radius: --icon-chooser-border-radius;
+  padding: var(--spacing-4xs) var(--spacing-xs);
+  font-size: 0.8rem;
 }

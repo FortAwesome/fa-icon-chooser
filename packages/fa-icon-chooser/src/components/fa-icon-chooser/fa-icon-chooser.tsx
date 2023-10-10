@@ -166,50 +166,49 @@ export class FaIconChooser {
   @State() fatalError: boolean = false;
 
   @State() familyStyles: object = {
-    classic: {
+    'classic': {
       solid: {
-        prefix: 'fas'
+        prefix: 'fas',
       },
       regular: {
-        prefix: 'far'
+        prefix: 'far',
       },
       light: {
-        prefix: 'fal'
+        prefix: 'fal',
       },
       thin: {
-        prefix: 'fat'
+        prefix: 'fat',
       },
       brands: {
-        prefix: 'fab'
-      }
+        prefix: 'fab',
+      },
     },
-    duotone: {
+    'duotone': {
       solid: {
-        prefix: 'fad'
-      }
+        prefix: 'fad',
+      },
     },
-    sharp: {
+    'sharp': {
       solid: {
-        prefix: 'fass'
+        prefix: 'fass',
       },
       regular: {
-        prefix: 'fasr'
+        prefix: 'fasr',
       },
       light: {
-        prefix: 'fasl'
-      }
+        prefix: 'fasl',
+      },
     },
-    kit: {
-      custom:
-      {
-        prefix: 'fak'
-      }
+    'kit': {
+      custom: {
+        prefix: 'fak',
+      },
     },
     'kit-duotone': {
       custom: {
-        prefix: 'fakd'
-      }
-    }
+        prefix: 'fakd',
+      },
+    },
   };
 
   @State() selectedFamily: string = 'classic';
@@ -231,36 +230,36 @@ export class FaIconChooser {
   }
 
   familyNameToLabel(name: string): string {
-    return name
+    return name;
   }
 
   styleNameToLabel(name: string): string {
-    return name
+    return name;
   }
 
   getFamilies(): string[] {
-    return Object.keys(this.familyStyles)
+    return Object.keys(this.familyStyles);
   }
 
   selectFamily(e: any): void {
-    const fam = e.target.value
+    const fam = e.target.value;
     if ('string' === typeof fam && 'object' === typeof this.familyStyles[fam]) {
-      this.selectedFamily = fam
+      this.selectedFamily = fam;
     }
   }
 
   selectStyle(e: any): void {
-    const style = e.target.value
+    const style = e.target.value;
     if ('string' === typeof style && 'string' === typeof this.selectedFamily && 'object' === typeof this.familyStyles[this.selectedFamily]) {
-      this.selectedStyle = style
+      this.selectedStyle = style;
     }
   }
 
   getStylesForSelectedFamily(): string[] {
     if ('string' === typeof this.selectedFamily && 'object' === typeof this.familyStyles[this.selectedFamily]) {
-      return Object.keys(this.familyStyles[this.selectedFamily])
+      return Object.keys(this.familyStyles[this.selectedFamily]);
     } else {
-      return []
+      return [];
     }
   }
 
@@ -586,7 +585,7 @@ export class FaIconChooser {
     if (this.fatalError) {
       return (
         <div class="fa-icon-chooser">
-          <div class="message-loading text-center margin-2xl">
+          <div class="message-loading error">
             <h3>{this.slot('fatal-error-heading')}</h3>
             <p>{this.slot('fatal-error-detail')}</p>
           </div>
@@ -597,7 +596,7 @@ export class FaIconChooser {
     if (this.isInitialLoading) {
       return (
         <div class="fa-icon-chooser">
-          <div class="message-loading text-center margin-2xl">
+          <div class="message-loading">
             <h3>Loading...</h3>
           </div>
         </div>
@@ -605,44 +604,40 @@ export class FaIconChooser {
     }
 
     return (
-      <div class="fa-icon-chooser figma">
+      <div class="fa-icon-chooser">
         <form id="search-form" onSubmit={this.preventDefaultFormSubmit}>
-          <label htmlFor="search" class="margin-bottom-xs margin-left-xl sr-only">
+          <label htmlFor="search" class="sr-only">
             {this.pro() ? this.slot('search-field-label-pro') : this.slot('search-field-label-free')} {this.resolvedVersion()}
           </label>
-          <div class="tablet:margin-bottom-xl">
-            <div class="wrap-search margin-bottom-3xs with-icon-before">
+          <div>
+            <div class="wrap-search">
               <fa-icon {...this.commonFaIconProps} stylePrefix="fas" name="search" class="icons-search-decorative"></fa-icon>
               <input
                 type="text"
                 name="search"
                 id="search"
-                class="rounded"
+                class="icons-search-input"
                 value={this.query}
                 onKeyUp={this.onKeyUp.bind(this)}
                 placeholder={this.searchInputPlaceholder || slotDefaults['search-field-placeholder']}
               ></input>
             </div>
           </div>
+          <div class="wrap-style-selects">
+            <select name="family-select" onChange={this.selectFamily.bind(this)}>
+              {this.getFamilies().map((family: string) => (
+                <option value={family}>{family}</option>
+              ))}
+            </select>
 
-          <select name="family-select" onChange={this.selectFamily.bind(this)}>
-            {this.getFamilies().map((family: string) =>
-              <option value={family}>{family}</option>
-            )}
-          </select>
-
-          <select name="style-select" onChange={this.selectStyle.bind(this)}>
-            {this.getStylesForSelectedFamily()
-              .map((style: string) =>
+            <select name="style-select" onChange={this.selectStyle.bind(this)}>
+              {this.getStylesForSelectedFamily().map((style: string) => (
                 <option value={style}>{style}</option>
-              )}
-          </select>
-
+              ))}
+            </select>
+          </div>
         </form>
-        <p class="muted size-sm text-center margin-bottom-xs">
-          {this.pro() ? this.slot('searching-pro') : this.slot('searching-free')} {this.resolvedVersion()}
-        </p>
-        <div class="wrap-icon-listing margin-y-lg">
+        <div class="wrap-icon-listing">
           {!this.isQuerying && this.mayHaveIconUploads() && !this.hasIconUploads() && this.styleFilterEnabled && this.styleFilters.fak && (
             <article class="text-center margin-2xl">
               <p class="muted size-sm">{this.slot('kit-has-no-uploaded-icons')}</p>
@@ -695,6 +690,11 @@ export class FaIconChooser {
               </p>
             </article>
           )}
+        </div>
+        <div class="footer">
+          <span class="version-info">
+            {this.pro() ? this.slot('searching-pro') : this.slot('searching-free')} {this.resolvedVersion()}
+          </span>
         </div>
       </div>
     );
