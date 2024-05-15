@@ -30,19 +30,19 @@ slotDefaults['searching-free'] = "You're searching Font Awesome Free icons in ve
 
 slotDefaults['searching-pro'] = "You're searching Font Awesome Pro icons in version";
 
-slotDefaults['light-requires-pro'] = 'You need to use a Pro kit to get Light icons.';
+slotDefaults['light-requires-pro'] = 'You need to use a Pro Kit to get Light icons.';
 
-slotDefaults['thin-requires-pro'] = 'You need to use a Pro kit with Version 6 to get Thin icons.';
+slotDefaults['thin-requires-pro'] = 'You need to use a Pro Kit with Version 6 to get Thin icons.';
 
-slotDefaults['duotone-requires-pro'] = 'You need to use a Pro kit with Version 5.10 or later to get Duotone icons.';
+slotDefaults['duotone-requires-pro'] = 'You need to use a Pro Kit with Version 5.10 or later to get Duotone icons.';
 
-slotDefaults['sharp-solid-requires-pro'] = 'You need to use a Pro kit with Version 6.2.0 or later to get Sharp Solid icons.';
+slotDefaults['sharp-solid-requires-pro'] = 'You need to use a Pro Kit with Version 6.2.0 or later to get Sharp Solid icons.';
 
-slotDefaults['sharp-regular-requires-pro'] = 'You need to use a Pro kit with Version 6.3.0 or later to get Sharp Regular icons.';
+slotDefaults['sharp-regular-requires-pro'] = 'You need to use a Pro Kit with Version 6.3.0 or later to get Sharp Regular icons.';
 
-slotDefaults['sharp-light-requires-pro'] = 'You need to use a Pro kit with Version 6.4.0 or later to get Sharp Light icons.';
+slotDefaults['sharp-light-requires-pro'] = 'You need to use a Pro Kit with Version 6.4.0 or later to get Sharp Light icons.';
 
-slotDefaults['uploaded-requires-pro'] = 'You need to use a Pro kit to get Uploaded icons.';
+slotDefaults['uploaded-requires-pro'] = 'You need to use a Pro Kit to get Uploaded icons.';
 
 slotDefaults['kit-has-no-uploaded-icons'] = 'This kit contains no uploaded icons.';
 
@@ -56,7 +56,7 @@ slotDefaults['suggest-icon-upload'] = (
     <a href="https://fontawesome.com/v5.15/how-to-use/on-the-web/using-kits/uploading-icons" target="_blank">
       upload your own icon
     </a>{' '}
-    to a Pro kit!
+    to a Pro Kit!
   </>
 );
 
