@@ -610,7 +610,7 @@ export class FaIconChooser {
           <label htmlFor="search" class="margin-bottom-xs margin-left-xl sr-only">
             {this.pro() ? this.slot('search-field-label-pro') : this.slot('search-field-label-free')} {this.resolvedVersion()}
           </label>
-          <div class="tablet:margin-bottom-xl">
+          <div class="margin-bottom-md">
             <div class="wrap-search margin-bottom-3xs with-icon-before">
               <fa-icon {...this.commonFaIconProps} stylePrefix="fas" name="search" class="icons-search-decorative"></fa-icon>
               <input
@@ -625,21 +625,25 @@ export class FaIconChooser {
             </div>
           </div>
 
-          <select name="family-select" onChange={this.selectFamily.bind(this)}>
-            {this.getFamilies().map((family: string) =>
-              <option value={family}>{family}</option>
-            )}
-          </select>
+          <div class="style-selectors row">
+            <div class="column-6">
+              <select name="family-select" onChange={this.selectFamily.bind(this)}>
+                {this.getFamilies().map((family: string) => (
+                  <option value={family}>{family}</option>
+                ))}
+              </select>
+            </div>
 
-          <select name="style-select" onChange={this.selectStyle.bind(this)}>
-            {this.getStylesForSelectedFamily()
-              .map((style: string) =>
-                <option value={style}>{style}</option>
-              )}
-          </select>
-
+            <div class="column-6">
+              <select name="style-select" onChange={this.selectStyle.bind(this)}>
+                {this.getStylesForSelectedFamily().map((style: string) => (
+                  <option value={style}>{style}</option>
+                ))}
+              </select>
+            </div>
+          </div>
         </form>
-        <p class="muted size-sm text-center margin-bottom-xs">
+        <p class="muted size-sm text-center margin-top-xs margin-bottom-xs">
           {this.pro() ? this.slot('searching-pro') : this.slot('searching-free')} {this.resolvedVersion()}
         </p>
         <div class="wrap-icon-listing margin-y-lg">
