@@ -300,6 +300,10 @@ export class FaIconChooser {
     const kit = get(response, "data.me.kit");
     this.kitMetadata = kit;
     this.updateFamilyStyles(get(kit, "release.familyStyles", []));
+    this.updateFamilyStyles([
+      {family: 'kit', style: 'custom', prefix: 'fak'},
+      {family: 'kit-duotone', style: 'custom', prefix: 'fakd'},
+    ]);
   }
 
   updateFamilyStyles(familyStyles: Array<any>) {
