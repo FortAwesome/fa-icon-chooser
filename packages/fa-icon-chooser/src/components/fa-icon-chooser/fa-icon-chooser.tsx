@@ -28,10 +28,6 @@ import { slotDefaults } from "../../utils/slots";
 
 export type QueryHandler = (document: string) => Promise<any>;
 
-export type StyleFilters = {
-  [key: string]: boolean;
-};
-
 type KitMetadata = {
   version: string;
   technologySelected: string;
@@ -162,16 +158,6 @@ export class FaIconChooser {
   icons: IconLookup[] = [];
 
   @State()
-  styleFilterEnabled: boolean = false;
-
-  @State()
-  styleFilters: StyleFilters = {
-    fas: false,
-    far: false,
-    fab: false,
-  };
-
-  @State()
   kitMetadata: KitMetadata;
 
   @State()
@@ -212,10 +198,6 @@ export class FaIconChooser {
 
   activeSlotDefaults: any = {};
 
-  constructor() {
-    this.toggleStyleFilter = this.toggleStyleFilter.bind(this);
-  }
-
   familyNameToLabel(name: string): string {
     return name;
   }
@@ -232,6 +214,8 @@ export class FaIconChooser {
     const fam = e.target.value;
     if ("string" === typeof fam && "object" === typeof this.familyStyles[fam]) {
       this.selectedFamily = fam;
+      const styles = this.getStylesForSelectedFamily()
+      this.selectedStyle = styles[0]
     }
   }
 
@@ -243,6 +227,14 @@ export class FaIconChooser {
     ) {
       this.selectedStyle = style;
     }
+  }
+
+  getPrefixForFamilyStyle(family: string, style: string) : string | undefined {
+    return get(this.familyStyles, [family, style, 'prefix'])
+  }
+
+  getSelectedPrefix() : string | undefined {
+    return this.getPrefixForFamilyStyle(this.selectedFamily, this.selectedStyle)
   }
 
   getStylesForSelectedFamily(): string[] {
@@ -280,7 +272,6 @@ export class FaIconChooser {
               version
               width
               height
-              path
               pathData
             }
           }
@@ -310,12 +301,6 @@ export class FaIconChooser {
     for (const fs of familyStyles) {
       set(this.familyStyles, [fs.family, fs.style, "prefix"], fs.prefix);
     }
-  }
-
-  activateDefaultStyleFilters() {
-    this.styleFilterEnabled = true;
-    this.styleFilters.fas = true;
-    this.styleFilters.fab = true;
   }
 
   resolvedVersion() {
@@ -414,15 +399,6 @@ export class FaIconChooser {
         this.defaultIcons = defaultIcons;
 
         this.setIcons(this.defaultIcons, this.iconUploadsAsIconUploadLookups());
-
-        this.activateDefaultStyleFilters();
-
-        if (
-          this.mayHaveIconUploads() &&
-          size(get(this, "kitMetadata.iconUploads")) > 0
-        ) {
-          this.styleFilters.fak = true;
-        }
 
         this.commonFaIconProps = {
           svgApi: get(window, "FontAwesome"),
@@ -527,59 +503,13 @@ export class FaIconChooser {
   }, 500);
 
   filteredIcons(): Array<IconLookup | IconUploadLookup> {
-    if (!this.styleFilterEnabled) return this.icons;
+    const selectedPrefix = this.getSelectedPrefix()
 
-    return this.icons.filter(({ prefix }) => this.styleFilters[prefix]);
-  }
-
-  resetStyleFilter(): void {
-    Object.keys(this.styleFilters).forEach((style) => {
-      this.styleFilters[style] = false;
-    });
-
-    this.styleFilterEnabled = false;
-  }
-
-  isOnlyEnabledStyleFilter(style: string): boolean {
-    if (this.styleFilters[style]) {
-      const foundAnotherEnabledStyleFilter = !!Object.keys(this.styleFilters)
-        .find((styleFilter) => {
-          if (styleFilter === style) return false; // the current style doesn't count
-
-          return this.styleFilters[styleFilter];
-        });
-
-      return !foundAnotherEnabledStyleFilter;
+    if(!selectedPrefix) {
+      return []
     }
 
-    return false;
-  }
-
-  showCheckedStyleIcon(style: string) {
-    return this.styleFilterEnabled && this.styleFilters[style];
-  }
-
-  toggleStyleFilter(style: string): void {
-    if (this.styleFilterEnabled) {
-      // If we're turning "off" the last style filter, this has the effect
-      // if disabling the master style filter as well.
-      if (this.isOnlyEnabledStyleFilter(style)) {
-        this.styleFilters = {
-          ...this.styleFilters,
-          [style]: !this.styleFilters[style],
-        };
-        this.styleFilterEnabled = false;
-      } else {
-        // simply toggle this style
-        this.styleFilters = {
-          ...this.styleFilters,
-          [style]: !this.styleFilters[style],
-        };
-      }
-    } else {
-      this.styleFilters = { ...this.styleFilters, [style]: true };
-      this.styleFilterEnabled = true;
-    }
+    return this.icons.filter(({ prefix }) => prefix === selectedPrefix);
   }
 
   isV6() {
@@ -696,8 +626,7 @@ export class FaIconChooser {
         </p>
         <div class="wrap-icon-listing margin-y-lg">
           {!this.isQuerying && this.mayHaveIconUploads() &&
-            !this.hasIconUploads() && this.styleFilterEnabled &&
-            this.styleFilters.fak && (
+            !this.hasIconUploads() && (['kit', 'kit-duotone'].includes(this.selectedFamily)) && (
             <article class="text-center margin-2xl">
               <p class="muted size-sm">
                 {this.slot("kit-has-no-uploaded-icons")}
