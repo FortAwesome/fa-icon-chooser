@@ -13,7 +13,6 @@ import {
   CONSOLE_MESSAGE_PREFIX,
   createFontAwesomeScriptElement,
   defaultIcons,
-  familyStyleToPrefix,
   freeCdnBaseUrl,
   IconChooserResult,
   IconLookup,

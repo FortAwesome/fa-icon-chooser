@@ -1,6 +1,6 @@
 import { Component, Host, Prop, State, h } from '@stencil/core';
-import { IconUpload, PREFIX_TO_STYLE, parseSvgText, UrlTextFetcher, CONSOLE_MESSAGE_PREFIX } from '../../utils/utils';
-import { IconDefinition, IconPrefix } from '@fortawesome/fontawesome-common-types';
+import { IconUpload, parseSvgText, UrlTextFetcher, CONSOLE_MESSAGE_PREFIX } from '../../utils/utils';
+import { IconDefinition } from '@fortawesome/fontawesome-common-types';
 import { get } from 'lodash';
 
 /**
@@ -15,7 +15,7 @@ import { get } from 'lodash';
 export class FaIcon {
   @Prop() name?: string;
 
-  @Prop() stylePrefix?: IconPrefix;
+  @Prop() stylePrefix?: string;
 
   @Prop() svgApi: any;
 
