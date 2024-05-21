@@ -7,7 +7,7 @@ import {
   Prop,
   State,
 } from "@stencil/core";
-import { debounce, get, size } from "lodash";
+import { debounce, get, set, size } from "lodash";
 import {
   buildIconChooserResult,
   CONSOLE_MESSAGE_PREFIX,
@@ -177,6 +177,10 @@ export class FaIconChooser {
   @State()
   fatalError: boolean = false;
 
+  // familyStyles starts with only the values that would be present in any
+  // release, whether Pro or Free. After resolving an initial metadata query,
+  // it will be updated to include the familyStyles appropriate for the active
+  // version and license of Font Awesome.
   @State()
   familyStyles: object = {
     classic: {
@@ -264,6 +268,11 @@ export class FaIconChooser {
             name
             release {
               version
+              familyStyles {
+                family
+                style
+                prefix
+              }
             }
             iconUploads {
               name
@@ -272,6 +281,7 @@ export class FaIconChooser {
               width
               height
               path
+              pathData
             }
           }
         }
@@ -289,6 +299,13 @@ export class FaIconChooser {
 
     const kit = get(response, "data.me.kit");
     this.kitMetadata = kit;
+    this.updateFamilyStyles(get(kit, "release.familyStyles", []));
+  }
+
+  updateFamilyStyles(familyStyles: Array<any>) {
+    for (const fs of familyStyles) {
+      set(this.familyStyles, [fs.family, fs.style, "prefix"], fs.prefix);
+    }
   }
 
   activateDefaultStyleFilters() {
