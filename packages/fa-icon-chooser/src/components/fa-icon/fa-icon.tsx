@@ -42,9 +42,9 @@ export class FaIcon {
   componentWillLoad() {
     if (this.iconUpload) {
       this.iconDefinition = {
-        prefix: 'fak',
+        prefix: this.stylePrefix,
         iconName: this.iconUpload.name,
-        icon: [parseInt(`${this.iconUpload.width}`), parseInt(`${this.iconUpload.height}`), [], this.iconUpload.unicode.toString(16), this.iconUpload.path],
+        icon: [parseInt(`${this.iconUpload.width}`), parseInt(`${this.iconUpload.height}`), [], this.iconUpload.unicode.toString(16), this.iconUpload.pathData],
       };
 
       return;

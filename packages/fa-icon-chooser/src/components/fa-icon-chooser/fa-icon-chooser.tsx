@@ -486,7 +486,10 @@ export class FaIconChooser {
 
   iconUploadsAsIconUploadLookups(): Array<IconUploadLookup> {
     return get(this, "kitMetadata.iconUploads", []).map((i) => {
-      return { prefix: "fak", iconName: i.name, iconUpload: i };
+      const [prefix, pathData] = i.pathData.length > 1
+        ? ["fakd", i.pathData]
+        : ["fak", i.pathData[0]];
+      return { prefix, iconName: i.name, iconUpload: { ...i, pathData } };
     });
   }
 
