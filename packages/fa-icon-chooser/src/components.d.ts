@@ -11,6 +11,7 @@ import { QueryHandler } from "./components/fa-icon-chooser/fa-icon-chooser";
 export namespace Components {
     interface FaIcon {
         "class": string;
+        "familyStylePathSegment": string;
         "getUrlText"?: UrlTextFetcher;
         "icon"?: IconDefinition;
         "iconUpload"?: IconUpload;
@@ -66,6 +67,7 @@ declare global {
 declare namespace LocalJSX {
     interface FaIcon {
         "class"?: string;
+        "familyStylePathSegment"?: string;
         "getUrlText"?: UrlTextFetcher;
         "icon"?: IconDefinition;
         "iconUpload"?: IconUpload;

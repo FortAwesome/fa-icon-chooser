@@ -6,6 +6,7 @@ import {
   h,
   Prop,
   State,
+  Watch
 } from "@stencil/core";
 import { debounce, get, set, size } from "lodash";
 import {
@@ -181,6 +182,10 @@ export class FaIconChooser {
     },
   };
 
+  // This will be populated as a reverse lookup by a @Watch below.
+  @State()
+  prefixToFamilyStyle: object = {};
+
   @State()
   selectedFamily: string = "classic";
 
@@ -245,6 +250,32 @@ export class FaIconChooser {
     } else {
       return [];
     }
+  }
+
+  @Watch('familyStyles')
+  buildFamilyStyleReverseLookup(): void {
+    const acc = {}
+
+    for(const family in this.familyStyles) {
+      for(const style in this.familyStyles[family]) {
+        acc[this.familyStyles[family][style].prefix] = {family, style}
+      }
+    }
+
+    this.prefixToFamilyStyle = acc
+  }
+
+  prefixToFamilyStylePathSegment(prefix: string): string | undefined {
+    const family = get(this.prefixToFamilyStyle, [prefix, 'family'])
+    const style = get(this.prefixToFamilyStyle, [prefix, 'style'])
+
+    if(!family || !style) {
+      return
+    }
+
+    return 'classic' === family
+      ? style
+      : `${family}-${style}`
   }
 
   async loadKitMetadata() {
@@ -338,6 +369,8 @@ export class FaIconChooser {
   }
 
   componentWillLoad() {
+    this.buildFamilyStyleReverseLookup()
+
     if (!this.kitToken && !isValidSemver(this.version)) {
       console.error(
         `${CONSOLE_MESSAGE_PREFIX}: either a kit-token or valid semantic version is required.`,
@@ -481,10 +514,11 @@ export class FaIconChooser {
           ? familyStylesByLicense.pro
           : familyStylesByLicense.free;
 
-        familyStyles.map((familyStyle) => {
+        familyStyles.map((fs) => {
+          const prefix = this.getPrefixForFamilyStyle(fs.family, fs.style)
           acc.push({
             iconName: id,
-            prefix: familyStyleToPrefix(familyStyle),
+            prefix
           });
         });
 
@@ -576,6 +610,7 @@ export class FaIconChooser {
               <fa-icon
                 {...this.commonFaIconProps}
                 stylePrefix="fas"
+                familyStylePathSegment={this.prefixToFamilyStylePathSegment('fas')}
                 name="search"
                 class="icons-search-decorative"
               >
@@ -672,6 +707,7 @@ export class FaIconChooser {
                         {...this.commonFaIconProps}
                         size="2x"
                         stylePrefix={iconLookup.prefix}
+                        familyStylePathSegment={this.prefixToFamilyStylePathSegment(iconLookup.prefix)}
                         name={iconLookup.iconName}
                         iconUpload={get(iconLookup, "iconUpload")}
                       />

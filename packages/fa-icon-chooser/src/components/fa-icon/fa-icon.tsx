@@ -17,6 +17,8 @@ export class FaIcon {
 
   @Prop() stylePrefix?: string;
 
+  @Prop() familyStylePathSegment: string;
+
   @Prop() svgApi: any;
 
   @Prop() pro: boolean = false;
@@ -66,6 +68,11 @@ export class FaIcon {
       return;
     }
 
+    if (! this.familyStylePathSegment) {
+      console.error(`${CONSOLE_MESSAGE_PREFIX}: fa-icon: the 'familyStylePathSegment' prop is required to render this icon but not provided.`, this);
+      return;
+    }
+
     const { findIconDefinition } = this.svgApi;
 
     const iconDefinition =
@@ -97,7 +104,7 @@ export class FaIcon {
 
     this.loading = true;
 
-    const iconUrl = `${this.svgFetchBaseUrl}/${PREFIX_TO_STYLE[this.stylePrefix]}/${this.name}.svg?token=${this.kitToken}`;
+    const iconUrl = `${this.svgFetchBaseUrl}/${this.familyStylePathSegment}/${this.name}.svg?token=${this.kitToken}`;
 
     const library = get(this, 'svgApi.library');
 
