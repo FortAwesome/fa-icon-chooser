@@ -56,7 +56,7 @@ describe('fa-icon', () => {
         version: 1,
         width: '123',
         height: '456',
-        path: 'M100 100h50v50z',
+        pathData: ['M100 100h50v50z'],
       },
     });
 
