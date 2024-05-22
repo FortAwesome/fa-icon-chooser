@@ -7,7 +7,7 @@ import {
   Prop,
   State
 } from "@stencil/core";
-import { debounce, get, set, size } from "lodash";
+import { debounce, find, get, set, size } from "lodash";
 import {
   buildIconChooserResult,
   CONSOLE_MESSAGE_PREFIX,
@@ -306,10 +306,25 @@ export class FaIconChooser {
     const kit = get(response, "data.me.kit");
     this.kitMetadata = kit;
     this.updateFamilyStyles(get(kit, "release.familyStyles", []));
-    this.updateFamilyStyles([
-      {family: 'kit', style: 'custom', prefix: 'fak'},
-      {family: 'kit-duotone', style: 'custom', prefix: 'fakd'},
-    ]);
+
+    const kitFamilyStyles = []
+    const iconUploads = get(response, "data.me.kit.iconUploads", [])
+
+    if (find(iconUploads, (i) => i.pathData.length === 1)) {
+      kitFamilyStyles.push(
+        {family: 'kit', style: 'custom', prefix: 'fak'}
+      )
+    }
+
+    if (find(iconUploads, (i) => i.pathData.length > 1)) {
+      kitFamilyStyles.push(
+        {family: 'kit-duotone', style: 'custom', prefix: 'fakd'},
+      )
+    }
+
+    if(kitFamilyStyles.length > 0) {
+      this.updateFamilyStyles(kitFamilyStyles);
+    }
   }
 
   updateFamilyStyles(familyStyles: Array<any>) {
