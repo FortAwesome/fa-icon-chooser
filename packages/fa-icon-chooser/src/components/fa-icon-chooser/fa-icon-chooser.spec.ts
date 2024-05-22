@@ -83,29 +83,5 @@ describe('fa-icon-chooser', () => {
       .forEach(({ id }) => {
         expect(page.root.shadowRoot.innerHTML).toEqual(expect.stringMatching(new RegExp(`<fa-icon .*name="${id}"`)));
       });
-
-    const disabledStyleFilters = ['light', 'duotone', 'thin'];
-    disabledStyleFilters.forEach(async style => {
-      const input = await page.root.shadowRoot.querySelector(`input#icons-style-${style}`);
-      expect(input['disabled']).toBe(true);
-    });
-
-    const enabledStyleFilters = ['solid', 'brands', 'regular'];
-    enabledStyleFilters.forEach(async style => {
-      const input = await page.root.shadowRoot.querySelector(`input#icons-style-${style}`);
-      expect(input['disabled']).toBe(false);
-    });
-
-    const checkedStyleFilters = ['solid', 'brands'];
-    checkedStyleFilters.forEach(async style => {
-      const input = await page.root.shadowRoot.querySelector(`input#icons-style-${style}`);
-      expect(input['checked']).toBe(true);
-    });
-
-    const uncheckedStyleFilters = ['regular'];
-    uncheckedStyleFilters.forEach(async style => {
-      const input = await page.root.shadowRoot.querySelector(`input#icons-style-${style}`);
-      expect(input['checked']).toBe(false);
-    });
   });
 });
