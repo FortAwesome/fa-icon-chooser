@@ -1,6 +1,6 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { FaIconChooser } from './fa-icon-chooser';
-import { defaultIcons } from '../../utils/utils';
+import { buildDefaultIconsSearchResult } from '../../utils/utils';
 import { get } from 'lodash';
 
 // TODO: tests
@@ -66,6 +66,8 @@ describe('fa-icon-chooser', () => {
       }
     });
 
+    expect(foundFaCss).toBe(true);
+
     // the script should have been injected into the outer DOM's head
     const scriptsInHead = await page.doc.head.querySelectorAll('script');
     let foundFaScript = false;
@@ -76,6 +78,12 @@ describe('fa-icon-chooser', () => {
     });
 
     expect(foundFaScript).toBe(true);
+
+    const defaultIcons = buildDefaultIconsSearchResult([
+      {family: "classic", style: "solid"},
+      {family: "classic", style: "regular"},
+      {family: "classic", style: "brands"}
+    ])
 
     // The initial default icons should have be shown
     get(defaultIcons, 'data.search', [])

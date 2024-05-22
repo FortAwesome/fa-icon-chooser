@@ -1,5 +1,6 @@
-import defaultIconsSearchResult from "./defaultIconsSearchResult.json";
+import defaultIconsSearchResultTemplate from "./defaultIconsSearchResult.json";
 import { valid as validSemver } from "semver";
+import { cloneDeep, get, set } from "lodash";
 
 const FREE_CDN_URL = "https://use.fontawesome.com";
 const PRO_KIT_ASSET_URL = "https://ka-p.fontawesome.com";
@@ -7,7 +8,34 @@ const FREE_KIT_ASSET_URL = "https://ka-f.fontawesome.com";
 
 export type UrlTextFetcher = (url: string) => Promise<string>;
 
-export const defaultIcons: any = defaultIconsSearchResult;
+// Given a set of familyStyles, replace the term "ALL" in the defaultIconsSearchResult
+// asset. This is to allow that static query result to dynamically include
+// new familyStyles, as they are released and made available via the GraphQL API.
+// It rests on the assumption that each (non-brands) icon in that static default query is
+// available in all Pro familyStyles.
+export function buildDefaultIconsSearchResult(familyStyles: object): object {
+  const allNonBrandsFamilyStyles = []
+
+  for(const family in familyStyles) {
+    for(const style in familyStyles[family]) {
+      if('brands' !== style && 'brands' !== family) {
+        allNonBrandsFamilyStyles.push({family, style})
+      }
+    }
+  }
+
+  const defaultIconsSearchResult = cloneDeep(defaultIconsSearchResultTemplate)
+
+  const icons = get(defaultIconsSearchResult, 'data.search', [])
+
+  for(const i of icons) {
+    if('ALL' === get(i, 'familyStylesByLicense.pro')) {
+      set(i, 'familyStylesByLicense.pro', allNonBrandsFamilyStyles)
+    }
+  }
+
+  return defaultIconsSearchResult
+}
 
 export interface IconLookup {
   prefix: string;

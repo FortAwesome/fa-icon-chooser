@@ -12,7 +12,7 @@ import {
   buildIconChooserResult,
   CONSOLE_MESSAGE_PREFIX,
   createFontAwesomeScriptElement,
-  defaultIcons,
+  buildDefaultIconsSearchResult,
   freeCdnBaseUrl,
   IconChooserResult,
   IconLookup,
@@ -428,7 +428,7 @@ export class FaIconChooser {
         const css = document.createTextNode(dom.css());
         style.appendChild(css);
         this.host.shadowRoot.appendChild(style);
-        this.defaultIcons = defaultIcons;
+        this.defaultIcons = buildDefaultIconsSearchResult(this.familyStyles)
 
         this.setIcons(this.defaultIcons, this.iconUploadsAsIconUploadLookups());
 
