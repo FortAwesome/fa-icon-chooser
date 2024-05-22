@@ -559,6 +559,12 @@ export class FaIconChooser {
   }
 
   onKeyUp(e: any): void {
+    if(this.query === e.target.value) {
+      // If the user selects the contents of the query field using keystrokes,
+      // those selection keystrokes will not change the query value and should
+      // not trigger a new query.
+      return;
+    }
     this.query = e.target.value;
     if (size(this.query) === 0) {
       this.setIcons(this.defaultIcons, this.iconUploadsAsIconUploadLookups());
