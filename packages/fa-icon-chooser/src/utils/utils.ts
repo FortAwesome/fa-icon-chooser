@@ -1,6 +1,5 @@
 import defaultIconsSearchResult from "./defaultIconsSearchResult.json";
 import { valid as validSemver } from "semver";
-import { IconPrefix } from "@fortawesome/fontawesome-common-types";
 
 const FREE_CDN_URL = "https://use.fontawesome.com";
 const PRO_KIT_ASSET_URL = "https://ka-p.fontawesome.com";
