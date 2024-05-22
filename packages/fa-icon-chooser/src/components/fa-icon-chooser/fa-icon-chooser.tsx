@@ -271,6 +271,10 @@ export class FaIconChooser {
       return
     }
 
+    if('duotone' === family && 'solid' === style) {
+       return 'duotone'
+    }
+
     return 'classic' === family
       ? style
       : `${family}-${style}`
