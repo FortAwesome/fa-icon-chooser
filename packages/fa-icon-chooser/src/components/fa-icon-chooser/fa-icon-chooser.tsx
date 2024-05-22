@@ -5,8 +5,7 @@ import {
   EventEmitter,
   h,
   Prop,
-  State,
-  Watch
+  State
 } from "@stencil/core";
 import { debounce, get, set, size } from "lodash";
 import {
@@ -182,7 +181,7 @@ export class FaIconChooser {
     },
   };
 
-  // This will be populated as a reverse lookup by a @Watch below.
+  // This should be populated as a reverse lookup when updating familyStyles.
   @State()
   prefixToFamilyStyle: object = {};
 
@@ -252,7 +251,6 @@ export class FaIconChooser {
     }
   }
 
-  @Watch('familyStyles')
   buildFamilyStyleReverseLookup(): void {
     const acc = {}
 
@@ -331,6 +329,8 @@ export class FaIconChooser {
     for (const fs of familyStyles) {
       set(this.familyStyles, [fs.family, fs.style, "prefix"], fs.prefix);
     }
+
+    this.buildFamilyStyleReverseLookup()
   }
 
   resolvedVersion() {
