@@ -47,28 +47,11 @@ type KitMetadata = {
  * @slot search-field-placeholder - search field placeholder
  * @slot searching-free - Searching Free
  * @slot searching-pro - Searching Pro
- * @slot light-requires-pro - tooltip for light style requiring Pro
- * @slot thin-requires-pro - tooltip for thin style requiring Pro
- * @slot duotone-requires-pro - message about requirements for accessing duotone icons
- * @slot sharp-solid-requires-pro - message about requirements for accessing sharp solid icons
- * @slot sharp-regular-requires-pro - message about requirements for accessing sharp regular icons
- * @slot sharp-light-requires-pro - message about requirements for accessing sharp light icons
- * @slot uploaded-requires-pro - message about requirements for accessing kit icon uploads
  * @slot kit-has-no-uploaded-icons - message about a kit having no icon uploads
  * @slot no-search-results-heading - no search results message heading
  * @slot no-search-results-detail - no seach results message detail
  * @slot suggest-icon-upload - message suggesting to try uploading a custom icon to a kit
  * @slot get-fontawesome-pro - message about getting Font Awesome Pro with link to fontawesome.com
- * @slot sharp-solid-style-filter-sr-message - screen reader only message for style filter: sharp solid
- * @slot sharp-regular-style-filter-sr-message - screen reader only message for style filter: sharp regular
- * @slot sharp-light-style-filter-sr-message - screen reader only message for style filter: sharp light
- * @slot solid-style-filter-sr-message - screen reader only message for style filter: solid
- * @slot regular-style-filter-sr-message - screen reader only message for style filter: regular
- * @slot light-style-filter-sr-message - screen reader only message for style filter: light
- * @slot thin-style-filter-sr-message - screen reader only message for style filter: thin
- * @slot duotone-style-filter-sr-message - screen reader only message for style filter: duotone
- * @slot brands-style-filter-sr-message - screen reader only message for style filter: brands
- * @slot uploaded-style-filter-sr-message - screen reader only message for style filter: uploaded
  */
 @Component({
   tag: "fa-icon-chooser",
