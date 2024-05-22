@@ -18,7 +18,7 @@ export function buildDefaultIconsSearchResult(familyStyles: object): object {
 
   for(const family in familyStyles) {
     for(const style in familyStyles[family]) {
-      if('brands' !== style && 'brands' !== family) {
+      if('brands' !== style && 'brands' !== family && 'custom' !== style) {
         allNonBrandsFamilyStyles.push({family, style})
       }
     }
