@@ -7,7 +7,7 @@ import {
   Prop,
   State
 } from "@stencil/core";
-import { debounce, find, get, set, size } from "lodash";
+import { capitalize, debounce, find, get, set, size } from "lodash";
 import {
   buildIconChooserResult,
   CONSOLE_MESSAGE_PREFIX,
@@ -580,6 +580,13 @@ export class FaIconChooser {
     e.stopPropagation();
   }
 
+  labelForFamilyOrStyle(labelOrFamily: string) : string {
+    return labelOrFamily
+    .split('-')
+    .map((term) => capitalize(term))
+    .join(' ')
+  }
+
   render() {
     if (this.fatalError) {
       return (
@@ -644,7 +651,7 @@ export class FaIconChooser {
                 onChange={this.selectFamily.bind(this)}
               >
                 {this.getFamilies().map((family: string) => (
-                  <option value={family}>{family}</option>
+                  <option value={family}>{this.labelForFamilyOrStyle(family)}</option>
                 ))}
               </select>
             </div>
@@ -655,7 +662,7 @@ export class FaIconChooser {
                 onChange={this.selectStyle.bind(this)}
               >
                 {this.getStylesForSelectedFamily().map((style: string) => (
-                  <option value={style}>{style}</option>
+                  <option value={style}>{this.labelForFamilyOrStyle(style)}</option>
                 ))}
               </select>
             </div>
