@@ -5,14 +5,14 @@ import {
   EventEmitter,
   h,
   Prop,
-  State
+  State,
 } from "@stencil/core";
 import { capitalize, debounce, find, get, set, size } from "lodash";
 import {
+  buildDefaultIconsSearchResult,
   buildIconChooserResult,
   CONSOLE_MESSAGE_PREFIX,
   createFontAwesomeScriptElement,
-  buildDefaultIconsSearchResult,
   freeCdnBaseUrl,
   IconChooserResult,
   IconLookup,
@@ -25,7 +25,10 @@ import {
 import { faSadTear, faTire } from "../../utils/icons";
 import { slotDefaults } from "../../utils/slots";
 
-export type QueryHandler = (document: string) => Promise<any>;
+export type QueryHandler = (
+  document: string,
+  variables?: object,
+) => Promise<any>;
 
 type KitMetadata = {
   version: string;
@@ -200,8 +203,8 @@ export class FaIconChooser {
     const fam = e.target.value;
     if ("string" === typeof fam && "object" === typeof this.familyStyles[fam]) {
       this.selectedFamily = fam;
-      const styles = this.getStylesForSelectedFamily()
-      this.selectedStyle = styles[0]
+      const styles = this.getStylesForSelectedFamily();
+      this.selectedStyle = styles[0];
     }
   }
 
@@ -215,12 +218,15 @@ export class FaIconChooser {
     }
   }
 
-  getPrefixForFamilyStyle(family: string, style: string) : string | undefined {
-    return get(this.familyStyles, [family, style, 'prefix'])
+  getPrefixForFamilyStyle(family: string, style: string): string | undefined {
+    return get(this.familyStyles, [family, style, "prefix"]);
   }
 
-  getSelectedPrefix() : string | undefined {
-    return this.getPrefixForFamilyStyle(this.selectedFamily, this.selectedStyle)
+  getSelectedPrefix(): string | undefined {
+    return this.getPrefixForFamilyStyle(
+      this.selectedFamily,
+      this.selectedStyle,
+    );
   }
 
   getStylesForSelectedFamily(): string[] {
@@ -235,40 +241,38 @@ export class FaIconChooser {
   }
 
   buildFamilyStyleReverseLookup(): void {
-    const acc = {}
+    const acc = {};
 
-    for(const family in this.familyStyles) {
-      for(const style in this.familyStyles[family]) {
-        acc[this.familyStyles[family][style].prefix] = {family, style}
+    for (const family in this.familyStyles) {
+      for (const style in this.familyStyles[family]) {
+        acc[this.familyStyles[family][style].prefix] = { family, style };
       }
     }
 
-    this.prefixToFamilyStyle = acc
+    this.prefixToFamilyStyle = acc;
   }
 
   prefixToFamilyStylePathSegment(prefix: string): string | undefined {
-    const family = get(this.prefixToFamilyStyle, [prefix, 'family'])
-    const style = get(this.prefixToFamilyStyle, [prefix, 'style'])
+    const family = get(this.prefixToFamilyStyle, [prefix, "family"]);
+    const style = get(this.prefixToFamilyStyle, [prefix, "style"]);
 
-    if(!family || !style) {
-      return
+    if (!family || !style) {
+      return;
     }
 
-    if('duotone' === family && 'solid' === style) {
-       return 'duotone'
+    if ("duotone" === family && "solid" === style) {
+      return "duotone";
     }
 
-    return 'classic' === family
-      ? style
-      : `${family}-${style}`
+    return "classic" === family ? style : `${family}-${style}`;
   }
 
   async loadKitMetadata() {
     const response = await this.handleQuery(
       `
-      query {
+      query KitMetadata($token: String!) {
         me {
-          kit(token:"${this.kitToken}") {
+          kit(token: $token) {
             version
             technologySelected
             licenseSelected
@@ -293,6 +297,7 @@ export class FaIconChooser {
         }
       }
       `,
+      { token: this.kitToken },
     );
 
     if (get(response, "errors")) {
@@ -307,22 +312,22 @@ export class FaIconChooser {
     this.kitMetadata = kit;
     this.updateFamilyStyles(get(kit, "release.familyStyles", []));
 
-    const kitFamilyStyles = []
-    const iconUploads = get(response, "data.me.kit.iconUploads", [])
+    const kitFamilyStyles = [];
+    const iconUploads = get(response, "data.me.kit.iconUploads", []);
 
     if (find(iconUploads, (i) => i.pathData.length === 1)) {
       kitFamilyStyles.push(
-        {family: 'kit', style: 'custom', prefix: 'fak'}
-      )
+        { family: "kit", style: "custom", prefix: "fak" },
+      );
     }
 
     if (find(iconUploads, (i) => i.pathData.length > 1)) {
       kitFamilyStyles.push(
-        {family: 'kit-duotone', style: 'custom', prefix: 'fakd'},
-      )
+        { family: "kit-duotone", style: "custom", prefix: "fakd" },
+      );
     }
 
-    if(kitFamilyStyles.length > 0) {
+    if (kitFamilyStyles.length > 0) {
       this.updateFamilyStyles(kitFamilyStyles);
     }
   }
@@ -332,7 +337,7 @@ export class FaIconChooser {
       set(this.familyStyles, [fs.family, fs.style, "prefix"], fs.prefix);
     }
 
-    this.buildFamilyStyleReverseLookup()
+    this.buildFamilyStyleReverseLookup();
   }
 
   resolvedVersion() {
@@ -371,7 +376,7 @@ export class FaIconChooser {
   }
 
   componentWillLoad() {
-    this.buildFamilyStyleReverseLookup()
+    this.buildFamilyStyleReverseLookup();
 
     if (!this.kitToken && !isValidSemver(this.version)) {
       console.error(
@@ -430,7 +435,7 @@ export class FaIconChooser {
         const css = document.createTextNode(dom.css());
         style.appendChild(css);
         this.host.shadowRoot.appendChild(style);
-        this.defaultIcons = buildDefaultIconsSearchResult(this.familyStyles)
+        this.defaultIcons = buildDefaultIconsSearchResult(this.familyStyles);
 
         this.setIcons(this.defaultIcons, this.iconUploadsAsIconUploadLookups());
 
@@ -458,8 +463,8 @@ export class FaIconChooser {
 
     const response = await this.handleQuery(
       `
-      query {
-        search(version:"${this.resolvedVersion()}", query: "${query}", first: 100) {
+      query Search($version: String!, $query: String!) {
+        search(version: $version, query: $query, first: 100) {
           id
           label
           familyStylesByLicense {
@@ -474,6 +479,7 @@ export class FaIconChooser {
           }
         }
       }`,
+      { version: this.resolvedVersion(), query },
     );
 
     const filteredIconUploads = this.iconUploadsAsIconUploadLookups().filter(
@@ -517,10 +523,10 @@ export class FaIconChooser {
           : familyStylesByLicense.free;
 
         familyStyles.map((fs) => {
-          const prefix = this.getPrefixForFamilyStyle(fs.family, fs.style)
+          const prefix = this.getPrefixForFamilyStyle(fs.family, fs.style);
           acc.push({
             iconName: id,
-            prefix
+            prefix,
           });
         });
 
@@ -538,10 +544,10 @@ export class FaIconChooser {
   }, 500);
 
   filteredIcons(): Array<IconLookup | IconUploadLookup> {
-    const selectedPrefix = this.getSelectedPrefix()
+    const selectedPrefix = this.getSelectedPrefix();
 
-    if(!selectedPrefix) {
-      return []
+    if (!selectedPrefix) {
+      return [];
     }
 
     return this.icons.filter(({ prefix }) => prefix === selectedPrefix);
@@ -561,7 +567,7 @@ export class FaIconChooser {
   }
 
   onKeyUp(e: any): void {
-    if(this.query === e.target.value) {
+    if (this.query === e.target.value) {
       // If the user selects the contents of the query field using keystrokes,
       // those selection keystrokes will not change the query value and should
       // not trigger a new query.
@@ -580,11 +586,11 @@ export class FaIconChooser {
     e.stopPropagation();
   }
 
-  labelForFamilyOrStyle(labelOrFamily: string) : string {
+  labelForFamilyOrStyle(labelOrFamily: string): string {
     return labelOrFamily
-    .split('-')
-    .map((term) => capitalize(term))
-    .join(' ')
+      .split("-")
+      .map((term) => capitalize(term))
+      .join(" ");
   }
 
   render() {
@@ -625,7 +631,9 @@ export class FaIconChooser {
               <fa-icon
                 {...this.commonFaIconProps}
                 stylePrefix="fas"
-                familyStylePathSegment={this.prefixToFamilyStylePathSegment('fas')}
+                familyStylePathSegment={this.prefixToFamilyStylePathSegment(
+                  "fas",
+                )}
                 name="search"
                 class="icons-search-decorative"
               >
@@ -651,7 +659,9 @@ export class FaIconChooser {
                 onChange={this.selectFamily.bind(this)}
               >
                 {this.getFamilies().map((family: string) => (
-                  <option value={family}>{this.labelForFamilyOrStyle(family)}</option>
+                  <option value={family}>
+                    {this.labelForFamilyOrStyle(family)}
+                  </option>
                 ))}
               </select>
             </div>
@@ -662,7 +672,9 @@ export class FaIconChooser {
                 onChange={this.selectStyle.bind(this)}
               >
                 {this.getStylesForSelectedFamily().map((style: string) => (
-                  <option value={style}>{this.labelForFamilyOrStyle(style)}</option>
+                  <option value={style}>
+                    {this.labelForFamilyOrStyle(style)}
+                  </option>
                 ))}
               </select>
             </div>
@@ -675,7 +687,8 @@ export class FaIconChooser {
         </p>
         <div class="wrap-icon-listing margin-y-lg">
           {!this.isQuerying && this.mayHaveIconUploads() &&
-            !this.hasIconUploads() && (['kit', 'kit-duotone'].includes(this.selectedFamily)) && (
+            !this.hasIconUploads() &&
+            (["kit", "kit-duotone"].includes(this.selectedFamily)) && (
             <article class="text-center margin-2xl">
               <p class="muted size-sm">
                 {this.slot("kit-has-no-uploaded-icons")}
@@ -722,7 +735,8 @@ export class FaIconChooser {
                         {...this.commonFaIconProps}
                         size="2x"
                         stylePrefix={iconLookup.prefix}
-                        familyStylePathSegment={this.prefixToFamilyStylePathSegment(iconLookup.prefix)}
+                        familyStylePathSegment={this
+                          .prefixToFamilyStylePathSegment(iconLookup.prefix)}
                         name={iconLookup.iconName}
                         iconUpload={get(iconLookup, "iconUpload")}
                       />
