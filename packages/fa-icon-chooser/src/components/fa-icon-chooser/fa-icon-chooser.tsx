@@ -566,13 +566,7 @@ export class FaIconChooser {
     return size(get(this, "kitMetadata.iconUploads"));
   }
 
-  onKeyUp(e: any): void {
-    if (this.query === e.target.value) {
-      // If the user selects the contents of the query field using keystrokes,
-      // those selection keystrokes will not change the query value and should
-      // not trigger a new query.
-      return;
-    }
+  onSearchInputChange(e: any): void {
     this.query = e.target.value;
     if (size(this.query) === 0) {
       this.setIcons(this.defaultIcons, this.iconUploadsAsIconUploadLookups());
@@ -644,7 +638,7 @@ export class FaIconChooser {
                 id="search"
                 class="rounded"
                 value={this.query}
-                onKeyUp={this.onKeyUp.bind(this)}
+                onInput={this.onSearchInputChange.bind(this)}
                 placeholder={this.searchInputPlaceholder ||
                   slotDefaults["search-field-placeholder"]}
               >
