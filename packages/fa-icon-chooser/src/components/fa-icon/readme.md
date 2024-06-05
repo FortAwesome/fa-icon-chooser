@@ -10,19 +10,20 @@ may change as suits the needs of the Icon Chooser.
 
 ## Properties
 
-| Property          | Attribute            | Description | Type                                                                                               | Default     |
-| ----------------- | -------------------- | ----------- | -------------------------------------------------------------------------------------------------- | ----------- |
-| `class`           | `class`              |             | `string`                                                                                           | `undefined` |
-| `getUrlText`      | --                   |             | `(url: string) => Promise<string>`                                                                 | `undefined` |
-| `icon`            | --                   |             | `IconDefinition`                                                                                   | `undefined` |
-| `iconUpload`      | --                   |             | `{ name: string; unicode: number; version: number; width: string; height: string; path: string; }` | `undefined` |
-| `kitToken`        | `kit-token`          |             | `string`                                                                                           | `undefined` |
-| `name`            | `name`               |             | `string`                                                                                           | `undefined` |
-| `pro`             | `pro`                |             | `boolean`                                                                                          | `false`     |
-| `size`            | `size`               |             | `string`                                                                                           | `undefined` |
-| `stylePrefix`     | `style-prefix`       |             | `"fab" \| "fad" \| "fak" \| "fal" \| "far" \| "fas" \| "fass" \| "fat"`                            | `undefined` |
-| `svgApi`          | `svg-api`            |             | `any`                                                                                              | `undefined` |
-| `svgFetchBaseUrl` | `svg-fetch-base-url` |             | `string`                                                                                           | `undefined` |
+| Property                 | Attribute                   | Description | Type                                                                                                   | Default     |
+| ------------------------ | --------------------------- | ----------- | ------------------------------------------------------------------------------------------------------ | ----------- |
+| `class`                  | `class`                     |             | `string`                                                                                               | `undefined` |
+| `familyStylePathSegment` | `family-style-path-segment` |             | `string`                                                                                               | `undefined` |
+| `getUrlText`             | --                          |             | `(url: string) => Promise<string>`                                                                     | `undefined` |
+| `icon`                   | --                          |             | `IconDefinition`                                                                                       | `undefined` |
+| `iconUpload`             | --                          |             | `{ name: string; unicode: number; version: number; width: string; height: string; pathData: string; }` | `undefined` |
+| `kitToken`               | `kit-token`                 |             | `string`                                                                                               | `undefined` |
+| `name`                   | `name`                      |             | `string`                                                                                               | `undefined` |
+| `pro`                    | `pro`                       |             | `boolean`                                                                                              | `false`     |
+| `size`                   | `size`                      |             | `string`                                                                                               | `undefined` |
+| `stylePrefix`            | `style-prefix`              |             | `string`                                                                                               | `undefined` |
+| `svgApi`                 | `svg-api`                   |             | `any`                                                                                                  | `undefined` |
+| `svgFetchBaseUrl`        | `svg-fetch-base-url`        |             | `string`                                                                                               | `undefined` |
 
 ## Dependencies
 

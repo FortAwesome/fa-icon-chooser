@@ -1,6 +1,6 @@
-import defaultIconsSearchResult from './defaultIconsSearchResult.json';
+import defaultIconsSearchResultTemplate from './defaultIconsSearchResult.json';
 import { valid as validSemver } from 'semver';
-import { IconPrefix } from '@fortawesome/fontawesome-common-types';
+import { cloneDeep, get, set } from 'lodash';
 
 const FREE_CDN_URL = 'https://use.fontawesome.com';
 const PRO_KIT_ASSET_URL = 'https://ka-p.fontawesome.com';
@@ -8,57 +8,39 @@ const FREE_KIT_ASSET_URL = 'https://ka-f.fontawesome.com';
 
 export type UrlTextFetcher = (url: string) => Promise<string>;
 
-export const defaultIcons: any = defaultIconsSearchResult;
+// Given a set of familyStyles, replace the term "ALL" in the defaultIconsSearchResult
+// asset. This is to allow that static query result to dynamically include
+// new familyStyles, as they are released and made available via the GraphQL API.
+// It rests on the assumption that each (non-brands) icon in that static default query is
+// available in all Pro familyStyles.
+export function buildDefaultIconsSearchResult(familyStyles: object): object {
+  const allNonBrandsFamilyStyles = [];
 
-// This does not represent a list of proper Font Awesome style names, just an internal representation
-// to faciliate lookups to/from style/prefix within this package.
-export type IconStyle = 'solid' | 'duotone' | 'regular' | 'light' | 'thin' | 'kit' | 'brands' | 'sharp-solid' | 'sharp-regular' | 'sharp-light';
+  for (const family in familyStyles) {
+    for (const style in familyStyles[family]) {
+      if ('brands' !== style && 'brands' !== family && 'custom' !== style) {
+        allNonBrandsFamilyStyles.push({ family, style });
+      }
+    }
+  }
 
-export type IconStyleToPrefix = {
-  [style in IconStyle]: string;
-};
+  const defaultIconsSearchResult = cloneDeep(defaultIconsSearchResultTemplate);
 
-export type IconPrefixToStyle = {
-  [prefix in IconPrefix]: IconStyle;
-};
+  const icons = get(defaultIconsSearchResult, 'data.search', []);
 
-export type IconFamily = 'classic' | 'sharp' | 'duotone';
+  for (const i of icons) {
+    if ('ALL' === get(i, 'familyStylesByLicense.pro')) {
+      set(i, 'familyStylesByLicense.pro', allNonBrandsFamilyStyles);
+    }
+  }
 
-export type FamilyStyle = {
-  family: IconFamily;
-  style: IconStyle;
-};
-
-export interface IconLookup {
-  prefix: IconPrefix;
-  iconName: string;
+  return defaultIconsSearchResult;
 }
 
-export const STYLE_TO_PREFIX: IconStyleToPrefix = {
-  'solid': 'fas',
-  'duotone': 'fad',
-  'regular': 'far',
-  'light': 'fal',
-  'thin': 'fat',
-  'kit': 'fak',
-  'brands': 'fab',
-  'sharp-solid': 'fass',
-  'sharp-regular': 'fasr',
-  'sharp-light': 'fasl',
-};
-
-export const PREFIX_TO_STYLE: IconPrefixToStyle = {
-  fas: 'solid',
-  fad: 'duotone',
-  far: 'regular',
-  fal: 'light',
-  fat: 'thin',
-  fak: 'kit',
-  fab: 'brands',
-  fass: 'sharp-solid',
-  fasr: 'sharp-regular',
-  fasl: 'sharp-light',
-};
+export interface IconLookup {
+  prefix: string;
+  iconName: string;
+}
 
 export type IconUpload = {
   name: string;
@@ -66,7 +48,7 @@ export type IconUpload = {
   version: number;
   width: string;
   height: string;
-  path: string;
+  pathData: string;
 };
 
 export interface IconUploadLookup extends IconLookup {
@@ -132,7 +114,9 @@ export async function createFontAwesomeScriptElement(
   const assetUrl = kitToken ? `${baseUrl}/releases/v${version}/js/${license}.min.js?token=${kitToken}` : `${baseUrl}/releases/v${version}/js/all.js`;
 
   try {
-    if ('function' !== typeof getUrlText) throw new Error("Font Awesome Icon Chooser: expected getUrlText to be a function but it wasn't");
+    if ('function' !== typeof getUrlText) {
+      throw new Error("Font Awesome Icon Chooser: expected getUrlText to be a function but it wasn't");
+    }
 
     const scriptContent = await getUrlText(assetUrl);
     const script = document.createElement('SCRIPT');
@@ -157,22 +141,6 @@ export function buildIconChooserResult(iconLookup: IconLookup | IconUploadLookup
 
 export function isValidSemver(val: string): boolean {
   return !!validSemver(val);
-}
-
-export function familyStyleToPrefix(familyStyle: FamilyStyle): IconPrefix | null {
-  if ('classic' === familyStyle.family) {
-    return STYLE_TO_PREFIX[familyStyle.style as string];
-  } else if ('sharp' === familyStyle.family && 'solid' === familyStyle.style) {
-    return 'fass';
-  } else if ('sharp' === familyStyle.family && 'regular' === familyStyle.style) {
-    return 'fasr';
-  } else if ('sharp' === familyStyle.family && 'light' === familyStyle.style) {
-    return 'fasl';
-  } else if ('duotone' === familyStyle.family && 'solid' === familyStyle.style) {
-    return 'fad';
-  } else {
-    return null;
-  }
 }
 
 export const Fragment = (_props, children) => [...children];

@@ -1,6 +1,6 @@
 import { Component, Host, Prop, State, h } from '@stencil/core';
-import { IconUpload, PREFIX_TO_STYLE, parseSvgText, UrlTextFetcher, CONSOLE_MESSAGE_PREFIX } from '../../utils/utils';
-import { IconDefinition, IconPrefix } from '@fortawesome/fontawesome-common-types';
+import { IconUpload, parseSvgText, UrlTextFetcher, CONSOLE_MESSAGE_PREFIX } from '../../utils/utils';
+import { IconDefinition } from '@fortawesome/fontawesome-common-types';
 import { get } from 'lodash';
 
 /**
@@ -15,7 +15,9 @@ import { get } from 'lodash';
 export class FaIcon {
   @Prop() name?: string;
 
-  @Prop() stylePrefix?: IconPrefix;
+  @Prop() stylePrefix?: string;
+
+  @Prop() familyStylePathSegment: string;
 
   @Prop() svgApi: any;
 
@@ -42,9 +44,9 @@ export class FaIcon {
   componentWillLoad() {
     if (this.iconUpload) {
       this.iconDefinition = {
-        prefix: 'fak',
+        prefix: this.stylePrefix,
         iconName: this.iconUpload.name,
-        icon: [parseInt(`${this.iconUpload.width}`), parseInt(`${this.iconUpload.height}`), [], this.iconUpload.unicode.toString(16), this.iconUpload.path],
+        icon: [parseInt(`${this.iconUpload.width}`), parseInt(`${this.iconUpload.height}`), [], this.iconUpload.unicode.toString(16), this.iconUpload.pathData],
       };
 
       return;
@@ -63,6 +65,11 @@ export class FaIcon {
 
     if (!(this.stylePrefix && this.name)) {
       console.error(`${CONSOLE_MESSAGE_PREFIX}: fa-icon: the 'stylePrefix' and 'name' props are needed to render this icon but not provided.`, this);
+      return;
+    }
+
+    if (!this.familyStylePathSegment) {
+      console.error(`${CONSOLE_MESSAGE_PREFIX}: fa-icon: the 'familyStylePathSegment' prop is required to render this icon but not provided.`, this);
       return;
     }
 
@@ -97,7 +104,7 @@ export class FaIcon {
 
     this.loading = true;
 
-    const iconUrl = `${this.svgFetchBaseUrl}/${PREFIX_TO_STYLE[this.stylePrefix]}/${this.name}.svg?token=${this.kitToken}`;
+    const iconUrl = `${this.svgFetchBaseUrl}/${this.familyStylePathSegment}/${this.name}.svg?token=${this.kitToken}`;
 
     const library = get(this, 'svgApi.library');
 

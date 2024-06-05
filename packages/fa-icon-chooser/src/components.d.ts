@@ -5,12 +5,13 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { IconDefinition, IconPrefix } from "@fortawesome/fontawesome-common-types";
 import { IconChooserResult, IconUpload, UrlTextFetcher } from "./utils/utils";
+import { IconDefinition } from "@fortawesome/fontawesome-common-types";
 import { QueryHandler } from "./components/fa-icon-chooser/fa-icon-chooser";
 export namespace Components {
     interface FaIcon {
         "class": string;
+        "familyStylePathSegment": string;
         "getUrlText"?: UrlTextFetcher;
         "icon"?: IconDefinition;
         "iconUpload"?: IconUpload;
@@ -18,7 +19,7 @@ export namespace Components {
         "name"?: string;
         "pro": boolean;
         "size"?: string;
-        "stylePrefix"?: IconPrefix;
+        "stylePrefix"?: string;
         "svgApi": any;
         "svgFetchBaseUrl"?: string;
     }
@@ -66,6 +67,7 @@ declare global {
 declare namespace LocalJSX {
     interface FaIcon {
         "class"?: string;
+        "familyStylePathSegment"?: string;
         "getUrlText"?: UrlTextFetcher;
         "icon"?: IconDefinition;
         "iconUpload"?: IconUpload;
@@ -73,7 +75,7 @@ declare namespace LocalJSX {
         "name"?: string;
         "pro"?: boolean;
         "size"?: string;
-        "stylePrefix"?: IconPrefix;
+        "stylePrefix"?: string;
         "svgApi"?: any;
         "svgFetchBaseUrl"?: string;
     }

@@ -1,30 +1,23 @@
-import { Component, Event, Element, EventEmitter, Prop, State, h } from '@stencil/core';
-import { get, size, debounce } from 'lodash';
+import { Component, Element, Event, EventEmitter, h, Prop, State } from '@stencil/core';
+import { capitalize, debounce, find, get, set, size } from 'lodash';
 import {
-  freeCdnBaseUrl,
-  kitAssetsBaseUrl,
+  buildDefaultIconsSearchResult,
   buildIconChooserResult,
-  createFontAwesomeScriptElement,
-  IconUpload,
-  defaultIcons,
-  familyStyleToPrefix,
-  IconUploadLookup,
-  IconChooserResult,
-  UrlTextFetcher,
   CONSOLE_MESSAGE_PREFIX,
-  isValidSemver,
+  createFontAwesomeScriptElement,
+  freeCdnBaseUrl,
+  IconChooserResult,
   IconLookup,
+  IconUpload,
+  IconUploadLookup,
+  isValidSemver,
+  kitAssetsBaseUrl,
+  UrlTextFetcher,
 } from '../../utils/utils';
 import { faSadTear, faTire } from '../../utils/icons';
 import { slotDefaults } from '../../utils/slots';
-import { IconPrefix } from '@fortawesome/fontawesome-common-types';
-import semver from 'semver';
 
-export type QueryHandler = (document: string) => Promise<any>;
-
-export type StyleFilters = {
-  [prefix in IconPrefix]: boolean;
-};
+export type QueryHandler = (document: string, variables?: object) => Promise<any>;
 
 type KitMetadata = {
   version: string;
@@ -33,8 +26,6 @@ type KitMetadata = {
   name: string;
   iconUploads: Array<IconUpload> | null;
 };
-
-const DISPLAY_NONE = { display: 'none' };
 
 /**
  * @slot fatal-error-heading - heading for fatal error message
@@ -48,28 +39,11 @@ const DISPLAY_NONE = { display: 'none' };
  * @slot search-field-placeholder - search field placeholder
  * @slot searching-free - Searching Free
  * @slot searching-pro - Searching Pro
- * @slot light-requires-pro - tooltip for light style requiring Pro
- * @slot thin-requires-pro - tooltip for thin style requiring Pro
- * @slot duotone-requires-pro - message about requirements for accessing duotone icons
- * @slot sharp-solid-requires-pro - message about requirements for accessing sharp solid icons
- * @slot sharp-regular-requires-pro - message about requirements for accessing sharp regular icons
- * @slot sharp-light-requires-pro - message about requirements for accessing sharp light icons
- * @slot uploaded-requires-pro - message about requirements for accessing kit icon uploads
  * @slot kit-has-no-uploaded-icons - message about a kit having no icon uploads
  * @slot no-search-results-heading - no search results message heading
  * @slot no-search-results-detail - no seach results message detail
  * @slot suggest-icon-upload - message suggesting to try uploading a custom icon to a kit
  * @slot get-fontawesome-pro - message about getting Font Awesome Pro with link to fontawesome.com
- * @slot sharp-solid-style-filter-sr-message - screen reader only message for style filter: sharp solid
- * @slot sharp-regular-style-filter-sr-message - screen reader only message for style filter: sharp regular
- * @slot sharp-light-style-filter-sr-message - screen reader only message for style filter: sharp light
- * @slot solid-style-filter-sr-message - screen reader only message for style filter: solid
- * @slot regular-style-filter-sr-message - screen reader only message for style filter: regular
- * @slot light-style-filter-sr-message - screen reader only message for style filter: light
- * @slot thin-style-filter-sr-message - screen reader only message for style filter: thin
- * @slot duotone-style-filter-sr-message - screen reader only message for style filter: duotone
- * @slot brands-style-filter-sr-message - screen reader only message for style filter: brands
- * @slot uploaded-style-filter-sr-message - screen reader only message for style filter: uploaded
  */
 @Component({
   tag: 'fa-icon-chooser',
@@ -80,27 +54,31 @@ export class FaIconChooser {
   /**
    * The host element for this component's Shadow DOM.
    */
-  @Element() host: HTMLElement;
+  @Element()
+  host: HTMLElement;
 
   /**
    * A kit token identifying a kit in which to find icons. Takes precedent over
    * version prop if both are present.
    */
-  @Prop() kitToken?: string;
+  @Prop()
+  kitToken?: string;
 
   /**
    * Version to use for finding and loading icons when kitToken is not provided.
    * Must be a valid semantic version, as parsed by the [semver NPM](https://www.npmjs.com/package/semver),
    * like 5.5.13 or 6.0.0-beta1.
    */
-  @Prop() version?: string;
+  @Prop()
+  version?: string;
 
   /**
    * Placeholder text for search form.
    *
    * Use this to provide translatable text.
    */
-  @Prop() searchInputPlaceholder?: string;
+  @Prop()
+  searchInputPlaceholder?: string;
 
   /**
    * Required callback function which is responsible for taking a given GraphQL
@@ -115,14 +93,16 @@ export class FaIconChooser {
    * drive the Icon Chooser, it will be necessary to authorize GraphQL API requests
    * sent to api.fontawesome.com with the [`kits_read` scope](https://fontawesome.com/v5.15/how-to-use/graphql-api/auth/scopes).
    */
-  @Prop() handleQuery: QueryHandler;
+  @Prop()
+  handleQuery: QueryHandler;
 
   /**
    * Callback function that returns the text body of a response that
    * corresponds to an HTTP GET request for the given URL. For example, it
    * would be the result of [Response.text()](https://developer.mozilla.org/en-US/docs/Web/API/Response/text).
    */
-  @Prop() getUrlText: UrlTextFetcher;
+  @Prop()
+  getUrlText: UrlTextFetcher;
 
   /**
    * Clients of the Icon Chooser should listen for this event in order to handle
@@ -136,34 +116,55 @@ export class FaIconChooser {
   })
   finish: EventEmitter<IconChooserResult>;
 
-  @State() query: string = '';
+  @State()
+  query: string = '';
 
-  @State() isQuerying: boolean = false;
+  @State()
+  isQuerying: boolean = false;
 
-  @State() isInitialLoading: boolean = false;
+  @State()
+  isInitialLoading: boolean = false;
 
-  @State() hasQueried: boolean = false;
+  @State()
+  hasQueried: boolean = false;
 
-  @State() icons: IconLookup[] = [];
+  @State()
+  icons: IconLookup[] = [];
 
-  @State() styleFilterEnabled: boolean = false;
+  @State()
+  kitMetadata: KitMetadata;
 
-  @State() styleFilters: StyleFilters = {
-    fas: false,
-    far: false,
-    fad: false,
-    fat: false,
-    fab: false,
-    fal: false,
-    fak: false,
-    fass: false,
-    fasr: false,
-    fasl: false,
+  @State()
+  fatalError: boolean = false;
+
+  // familyStyles starts with only the values that would be present in any
+  // release, whether Pro or Free. After resolving an initial metadata query,
+  // it will be updated to include the familyStyles appropriate for the active
+  // version and license of Font Awesome.
+  @State()
+  familyStyles: object = {
+    classic: {
+      solid: {
+        prefix: 'fas',
+      },
+      regular: {
+        prefix: 'far',
+      },
+      brands: {
+        prefix: 'fab',
+      },
+    },
   };
 
-  @State() kitMetadata: KitMetadata;
+  // This should be populated as a reverse lookup when updating familyStyles.
+  @State()
+  prefixToFamilyStyle: object = {};
 
-  @State() fatalError: boolean = false;
+  @State()
+  selectedFamily: string = 'classic';
+
+  @State()
+  selectedStyle: string = 'solid';
 
   svgApi?: any;
 
@@ -175,22 +176,94 @@ export class FaIconChooser {
 
   activeSlotDefaults: any = {};
 
-  constructor() {
-    this.toggleStyleFilter = this.toggleStyleFilter.bind(this);
+  familyNameToLabel(name: string): string {
+    return name;
+  }
+
+  styleNameToLabel(name: string): string {
+    return name;
+  }
+
+  getFamilies(): string[] {
+    return Object.keys(this.familyStyles);
+  }
+
+  selectFamily(e: any): void {
+    const fam = e.target.value;
+    if ('string' === typeof fam && 'object' === typeof this.familyStyles[fam]) {
+      this.selectedFamily = fam;
+      const styles = this.getStylesForSelectedFamily();
+      this.selectedStyle = styles[0];
+    }
+  }
+
+  selectStyle(e: any): void {
+    const style = e.target.value;
+    if ('string' === typeof style && 'string' === typeof this.selectedFamily && 'object' === typeof this.familyStyles[this.selectedFamily]) {
+      this.selectedStyle = style;
+    }
+  }
+
+  getPrefixForFamilyStyle(family: string, style: string): string | undefined {
+    return get(this.familyStyles, [family, style, 'prefix']);
+  }
+
+  getSelectedPrefix(): string | undefined {
+    return this.getPrefixForFamilyStyle(this.selectedFamily, this.selectedStyle);
+  }
+
+  getStylesForSelectedFamily(): string[] {
+    if ('string' === typeof this.selectedFamily && 'object' === typeof this.familyStyles[this.selectedFamily]) {
+      return Object.keys(this.familyStyles[this.selectedFamily]);
+    } else {
+      return [];
+    }
+  }
+
+  buildFamilyStyleReverseLookup(): void {
+    const acc = {};
+
+    for (const family in this.familyStyles) {
+      for (const style in this.familyStyles[family]) {
+        acc[this.familyStyles[family][style].prefix] = { family, style };
+      }
+    }
+
+    this.prefixToFamilyStyle = acc;
+  }
+
+  prefixToFamilyStylePathSegment(prefix: string): string | undefined {
+    const family = get(this.prefixToFamilyStyle, [prefix, 'family']);
+    const style = get(this.prefixToFamilyStyle, [prefix, 'style']);
+
+    if (!family || !style) {
+      return;
+    }
+
+    if ('duotone' === family && 'solid' === style) {
+      return 'duotone';
+    }
+
+    return 'classic' === family ? style : `${family}-${style}`;
   }
 
   async loadKitMetadata() {
     const response = await this.handleQuery(
       `
-      query {
+      query KitMetadata($token: String!) {
         me {
-          kit(token:"${this.kitToken}") {
+          kit(token: $token) {
             version
             technologySelected
             licenseSelected
             name
             release {
               version
+              familyStyles {
+                family
+                style
+                prefix
+              }
             }
             iconUploads {
               name
@@ -198,12 +271,13 @@ export class FaIconChooser {
               version
               width
               height
-              path
+              pathData
             }
           }
         }
       }
       `,
+      { token: this.kitToken },
     );
 
     if (get(response, 'errors')) {
@@ -213,12 +287,30 @@ export class FaIconChooser {
 
     const kit = get(response, 'data.me.kit');
     this.kitMetadata = kit;
+    this.updateFamilyStyles(get(kit, 'release.familyStyles', []));
+
+    const kitFamilyStyles = [];
+    const iconUploads = get(response, 'data.me.kit.iconUploads', []);
+
+    if (find(iconUploads, i => i.pathData.length === 1)) {
+      kitFamilyStyles.push({ family: 'kit', style: 'custom', prefix: 'fak' });
+    }
+
+    if (find(iconUploads, i => i.pathData.length > 1)) {
+      kitFamilyStyles.push({ family: 'kit-duotone', style: 'custom', prefix: 'fakd' });
+    }
+
+    if (kitFamilyStyles.length > 0) {
+      this.updateFamilyStyles(kitFamilyStyles);
+    }
   }
 
-  activateDefaultStyleFilters() {
-    this.styleFilterEnabled = true;
-    this.styleFilters.fas = true;
-    this.styleFilters.fab = true;
+  updateFamilyStyles(familyStyles: Array<any>) {
+    for (const fs of familyStyles) {
+      set(this.familyStyles, [fs.family, fs.style, 'prefix'], fs.prefix);
+    }
+
+    this.buildFamilyStyleReverseLookup();
   }
 
   resolvedVersion() {
@@ -253,6 +345,8 @@ export class FaIconChooser {
   }
 
   componentWillLoad() {
+    this.buildFamilyStyleReverseLookup();
+
     if (!this.kitToken && !isValidSemver(this.version)) {
       console.error(`${CONSOLE_MESSAGE_PREFIX}: either a kit-token or valid semantic version is required.`, this);
       this.fatalError = true;
@@ -298,15 +392,9 @@ export class FaIconChooser {
         const css = document.createTextNode(dom.css());
         style.appendChild(css);
         this.host.shadowRoot.appendChild(style);
-        this.defaultIcons = defaultIcons;
+        this.defaultIcons = buildDefaultIconsSearchResult(this.familyStyles);
 
         this.setIcons(this.defaultIcons, this.iconUploadsAsIconUploadLookups());
-
-        this.activateDefaultStyleFilters();
-
-        if (this.mayHaveIconUploads() && size(get(this, 'kitMetadata.iconUploads')) > 0) {
-          this.styleFilters.fak = true;
-        }
 
         this.commonFaIconProps = {
           svgApi: get(window, 'FontAwesome'),
@@ -332,8 +420,8 @@ export class FaIconChooser {
 
     const response = await this.handleQuery(
       `
-      query {
-        search(version:"${this.resolvedVersion()}", query: "${query}", first: 100) {
+      query Search($version: String!, $query: String!) {
+        search(version: $version, query: $query, first: 100) {
           id
           label
           familyStylesByLicense {
@@ -348,6 +436,7 @@ export class FaIconChooser {
           }
         }
       }`,
+      { version: this.resolvedVersion(), query },
     );
 
     const filteredIconUploads = this.iconUploadsAsIconUploadLookups().filter(({ iconName }) => {
@@ -369,7 +458,8 @@ export class FaIconChooser {
 
   iconUploadsAsIconUploadLookups(): Array<IconUploadLookup> {
     return get(this, 'kitMetadata.iconUploads', []).map(i => {
-      return { prefix: 'fak', iconName: i.name, iconUpload: i };
+      const [prefix, pathData] = i.pathData.length > 1 ? ['fakd', i.pathData] : ['fak', i.pathData[0]];
+      return { prefix, iconName: i.name, iconUpload: { ...i, pathData } };
     });
   }
 
@@ -379,10 +469,11 @@ export class FaIconChooser {
 
       const familyStyles = this.pro() ? familyStylesByLicense.pro : familyStylesByLicense.free;
 
-      familyStyles.map(familyStyle => {
+      familyStyles.map(fs => {
+        const prefix = this.getPrefixForFamilyStyle(fs.family, fs.style);
         acc.push({
           iconName: id,
-          prefix: familyStyleToPrefix(familyStyle),
+          prefix,
         });
       });
 
@@ -398,73 +489,18 @@ export class FaIconChooser {
   }, 500);
 
   filteredIcons(): Array<IconLookup | IconUploadLookup> {
-    if (!this.styleFilterEnabled) return this.icons;
+    const selectedPrefix = this.getSelectedPrefix();
 
-    return this.icons.filter(({ prefix }) => this.styleFilters[prefix]);
-  }
-
-  resetStyleFilter(): void {
-    Object.keys(this.styleFilters).forEach(style => {
-      this.styleFilters[style] = false;
-    });
-
-    this.styleFilterEnabled = false;
-  }
-
-  isOnlyEnabledStyleFilter(style: string): boolean {
-    if (this.styleFilters[style]) {
-      const foundAnotherEnabledStyleFilter = !!Object.keys(this.styleFilters).find(styleFilter => {
-        if (styleFilter === style) return false; // the current style doesn't count
-
-        return this.styleFilters[styleFilter];
-      });
-
-      return !foundAnotherEnabledStyleFilter;
+    if (!selectedPrefix) {
+      return [];
     }
 
-    return false;
-  }
-
-  showCheckedStyleIcon(style: string) {
-    return this.styleFilterEnabled && this.styleFilters[style];
-  }
-
-  toggleStyleFilter(style: string): void {
-    if (this.styleFilterEnabled) {
-      // If we're turning "off" the last style filter, this has the effect
-      // if disabling the master style filter as well.
-      if (this.isOnlyEnabledStyleFilter(style)) {
-        this.styleFilters = { ...this.styleFilters, [style]: !this.styleFilters[style] };
-        this.styleFilterEnabled = false;
-      } else {
-        // simply toggle this style
-        this.styleFilters = { ...this.styleFilters, [style]: !this.styleFilters[style] };
-      }
-    } else {
-      this.styleFilters = { ...this.styleFilters, [style]: true };
-      this.styleFilterEnabled = true;
-    }
+    return this.icons.filter(({ prefix }) => prefix === selectedPrefix);
   }
 
   isV6() {
     const version = this.resolvedVersion();
     return version && version[0] === '6';
-  }
-
-  isDuotoneAvailable() {
-    return this.pro() && !!this.resolvedVersion().match('(5.[1-9][0-9]+.)|^6.');
-  }
-
-  isSharpSolidAvailable() {
-    return this.pro() && semver.satisfies(this.resolvedVersion(), '>=6.2.0');
-  }
-
-  isSharpLightAvailable() {
-    return this.pro() && semver.satisfies(this.resolvedVersion(), '>=6.4.0');
-  }
-
-  isSharpRegularAvailable() {
-    return this.pro() && semver.satisfies(this.resolvedVersion(), '>=6.3.0');
   }
 
   mayHaveIconUploads() {
@@ -475,7 +511,7 @@ export class FaIconChooser {
     return size(get(this, 'kitMetadata.iconUploads'));
   }
 
-  onKeyUp(e: any): void {
+  onSearchInputChange(e: any): void {
     this.query = e.target.value;
     if (size(this.query) === 0) {
       this.setIcons(this.defaultIcons, this.iconUploadsAsIconUploadLookups());
@@ -489,15 +525,14 @@ export class FaIconChooser {
     e.stopPropagation();
   }
 
-  render() {
-    const falDisabled = !this.pro();
-    const faslDisabled = !this.isSharpLightAvailable();
-    const fassDisabled = !this.isSharpSolidAvailable();
-    const fasrDisabled = !this.isSharpRegularAvailable();
-    const fatDisabled = !(this.isV6() && this.pro());
-    const fadDisabled = !this.isDuotoneAvailable();
-    const fakDisabled = !this.mayHaveIconUploads();
+  labelForFamilyOrStyle(labelOrFamily: string): string {
+    return labelOrFamily
+      .split('-')
+      .map(term => capitalize(term))
+      .join(' ');
+  }
 
+  render() {
     if (this.fatalError) {
       return (
         <div class="fa-icon-chooser">
@@ -525,392 +560,52 @@ export class FaIconChooser {
           <label htmlFor="search" class="margin-bottom-xs margin-left-xl sr-only">
             {this.pro() ? this.slot('search-field-label-pro') : this.slot('search-field-label-free')} {this.resolvedVersion()}
           </label>
-          <div class="tablet:margin-bottom-xl">
+          <div class="margin-bottom-md">
             <div class="wrap-search margin-bottom-3xs with-icon-before">
-              <fa-icon {...this.commonFaIconProps} stylePrefix="fas" name="search" class="icons-search-decorative"></fa-icon>
+              <fa-icon
+                {...this.commonFaIconProps}
+                stylePrefix="fas"
+                familyStylePathSegment={this.prefixToFamilyStylePathSegment('fas')}
+                name="search"
+                class="icons-search-decorative"
+              ></fa-icon>
               <input
                 type="text"
                 name="search"
                 id="search"
                 class="rounded"
                 value={this.query}
-                onKeyUp={this.onKeyUp.bind(this)}
+                onInput={this.onSearchInputChange.bind(this)}
                 placeholder={this.searchInputPlaceholder || slotDefaults['search-field-placeholder']}
               ></input>
             </div>
           </div>
-          <div class="icons-style-menu-listing display-flex flex-items-center align-between margin-bottom-xl">
-            <div class="wrap-icons-style-choice size-sm laptop:size-md margin-3xs column">
-              <input
-                id="icons-style-solid"
-                checked={this.styleFilterEnabled && this.styleFilters.fas}
-                onChange={() => this.toggleStyleFilter('fas')}
-                type="checkbox"
-                name="icons-style"
-                class="input-checkbox-custom"
-              ></input>
-              <label htmlFor="icons-style-solid" class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center">
-                <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0 desktop:size-md">
-                  <fa-icon
-                    style={!this.showCheckedStyleIcon('fas') && DISPLAY_NONE}
-                    {...this.commonFaIconProps}
-                    name="grin-tongue"
-                    stylePrefix="fas"
-                    size="2x"
-                    class="checked-icon fa-fw"
-                  />
-                  <fa-icon
-                    style={this.showCheckedStyleIcon('fas') && DISPLAY_NONE}
-                    {...this.commonFaIconProps}
-                    name="smile"
-                    stylePrefix="fas"
-                    size="2x"
-                    class="unchecked-icon fa-fw"
-                  />
-                </span>
-                <span>
-                  Solid <span class="sr-only">{this.slot('solid-style-filter-sr-message')}</span>
-                </span>
-              </label>
-            </div>
-            <div class="wrap-icons-style-choice size-sm laptop:size-md margin-3xs column">
-              <input
-                id="icons-style-regular"
-                checked={this.styleFilterEnabled && this.styleFilters.far}
-                onChange={() => this.toggleStyleFilter('far')}
-                type="checkbox"
-                name="icons-style"
-                class="input-checkbox-custom"
-              ></input>
-              <label htmlFor="icons-style-regular" class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center ">
-                <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
-                  <fa-icon
-                    style={!this.showCheckedStyleIcon('far') && DISPLAY_NONE}
-                    {...this.commonFaIconProps}
-                    name="grin-tongue"
-                    stylePrefix="far"
-                    size="2x"
-                    class="checked-icon fa-fw"
-                  />
-                  <fa-icon
-                    style={this.showCheckedStyleIcon('far') && DISPLAY_NONE}
-                    {...this.commonFaIconProps}
-                    name="smile"
-                    stylePrefix="far"
-                    size="2x"
-                    class="unchecked-icon fa-fw"
-                  />
-                </span>
-                <span>
-                  Regular <span class="sr-only">{this.slot('regular-style-filter-sr-message')}</span>
-                </span>
-              </label>
-            </div>
-            <div class="wrap-icons-style-choice size-sm laptop:size-md margin-3xs column">
-              <input
-                disabled={falDisabled}
-                id="icons-style-light"
-                checked={this.styleFilterEnabled && this.styleFilters.fal}
-                onChange={() => this.toggleStyleFilter('fal')}
-                type="checkbox"
-                name="icons-style"
-                class="input-checkbox-custom"
-              ></input>
-              <label htmlFor="icons-style-light" class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center ">
-                {falDisabled ? (
-                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
-                    <fa-icon {...this.commonFaIconProps} name="meh" stylePrefix="far" size="2x" class="checked-icon fa-fw" />
-                  </span>
-                ) : (
-                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
-                    <fa-icon
-                      style={!this.showCheckedStyleIcon('fal') && DISPLAY_NONE}
-                      {...this.commonFaIconProps}
-                      name="grin-tongue"
-                      stylePrefix="fal"
-                      size="2x"
-                      class="checked-icon fa-fw"
-                    />
-                    <fa-icon
-                      style={this.showCheckedStyleIcon('fal') && DISPLAY_NONE}
-                      {...this.commonFaIconProps}
-                      name="smile"
-                      stylePrefix="fal"
-                      size="2x"
-                      class="unchecked-icon fa-fw"
-                    />
-                  </span>
-                )}
-                <span>
-                  Light <span class="sr-only">{this.slot('light-style-filter-sr-message')}</span>
-                </span>
-              </label>
-              <span class="disabled-tooltip size-sm">{this.slot('light-requires-pro')}</span>
-            </div>
-            <div class="wrap-icons-style-choice size-sm laptop:size-md margin-3xs column">
-              <input
-                disabled={fatDisabled}
-                id="icons-style-thin"
-                checked={this.styleFilterEnabled && this.styleFilters.fat}
-                onChange={() => this.toggleStyleFilter('fat')}
-                type="checkbox"
-                name="icons-style"
-                class="input-checkbox-custom"
-              ></input>
-              <label htmlFor="icons-style-thin" class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center ">
-                {fatDisabled ? (
-                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
-                    <fa-icon {...this.commonFaIconProps} name="meh" stylePrefix="far" size="2x" class="checked-icon fa-fw" />
-                  </span>
-                ) : (
-                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
-                    <fa-icon
-                      style={!this.showCheckedStyleIcon('fat') && DISPLAY_NONE}
-                      {...this.commonFaIconProps}
-                      name="grin-tongue"
-                      stylePrefix="fat"
-                      size="2x"
-                      class="checked-icon fa-fw"
-                    />
-                    <fa-icon
-                      style={this.showCheckedStyleIcon('fat') && DISPLAY_NONE}
-                      {...this.commonFaIconProps}
-                      name="smile"
-                      stylePrefix="fat"
-                      size="2x"
-                      class="unchecked-icon fa-fw"
-                    />
-                  </span>
-                )}
-                <span>
-                  Thin <span class="sr-only">{this.slot('thin-style-filter-sr-message')}</span>
-                </span>
-              </label>
-              <span class="disabled-tooltip size-sm">{this.slot('thin-requires-pro')}</span>
-            </div>
-            <div class="wrap-icons-style-choice size-sm laptop:size-md margin-3xs column">
-              <input
-                disabled={fadDisabled}
-                id="icons-style-duotone"
-                checked={this.styleFilterEnabled && this.styleFilters.fad}
-                onChange={() => this.toggleStyleFilter('fad')}
-                type="checkbox"
-                name="icons-style"
-                class="input-checkbox-custom"
-              ></input>
-              <label htmlFor="icons-style-duotone" class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center ">
-                {fadDisabled ? (
-                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
-                    <fa-icon {...this.commonFaIconProps} name="meh" stylePrefix="far" size="2x" class="unchecked-icon fa-fw" />
-                  </span>
-                ) : (
-                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
-                    <fa-icon
-                      style={!this.showCheckedStyleIcon('fad') && DISPLAY_NONE}
-                      {...this.commonFaIconProps}
-                      name="grin-tongue"
-                      stylePrefix="fad"
-                      size="2x"
-                      class="checked-icon fa-fw"
-                    />
-                    <fa-icon
-                      style={this.showCheckedStyleIcon('fad') && DISPLAY_NONE}
-                      {...this.commonFaIconProps}
-                      name="smile"
-                      stylePrefix="fad"
-                      size="2x"
-                      class="unchecked-icon fa-fw"
-                    />
-                  </span>
-                )}
-                <span>
-                  Duotone <span class="sr-only">{this.slot('duotone-style-filter-sr-message')}</span>
-                </span>
-              </label>
-              <span class="disabled-tooltip size-sm">{this.slot('duotone-requires-pro')}</span>
-            </div>
-            <div class="wrap-icons-style-choice size-sm laptop:size-md margin-3xs column">
-              <input
-                disabled={fassDisabled}
-                id="icons-style-sharp-solid"
-                checked={this.styleFilterEnabled && this.styleFilters.fass}
-                onChange={() => this.toggleStyleFilter('fass')}
-                type="checkbox"
-                name="icons-style"
-                class="input-checkbox-custom"
-              ></input>
-              <label
-                htmlFor="icons-style-sharp-solid"
-                class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center "
-              >
-                {fassDisabled ? (
-                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
-                    <fa-icon {...this.commonFaIconProps} name="meh" stylePrefix="far" size="2x" class="checked-icon fa-fw" />
-                  </span>
-                ) : (
-                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
-                    <fa-icon
-                      style={!this.showCheckedStyleIcon('fass') && DISPLAY_NONE}
-                      {...this.commonFaIconProps}
-                      name="grin-tongue"
-                      stylePrefix="fass"
-                      size="2x"
-                      class="checked-icon fa-fw"
-                    />
-                    <fa-icon
-                      style={this.showCheckedStyleIcon('fass') && DISPLAY_NONE}
-                      {...this.commonFaIconProps}
-                      name="smile"
-                      stylePrefix="fass"
-                      size="2x"
-                      class="unchecked-icon fa-fw"
-                    />
-                  </span>
-                )}
-                <span>
-                  Sharp&nbsp;Solid <span class="sr-only">{this.slot('sharp-solid-style-filter-sr-message')}</span>
-                </span>
-              </label>
-              <span class="disabled-tooltip size-sm">{this.slot('sharp-solid-requires-pro')}</span>
-            </div>
-            <div class="wrap-icons-style-choice size-sm laptop:size-md margin-3xs column">
-              <input
-                disabled={fasrDisabled}
-                id="icons-style-sharp-regular"
-                checked={this.styleFilterEnabled && this.styleFilters.fasr}
-                onChange={() => this.toggleStyleFilter('fasr')}
-                type="checkbox"
-                name="icons-style"
-                class="input-checkbox-custom"
-              ></input>
-              <label
-                htmlFor="icons-style-sharp-regular"
-                class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center "
-              >
-                {fasrDisabled ? (
-                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
-                    <fa-icon {...this.commonFaIconProps} name="meh" stylePrefix="far" size="2x" class="checked-icon fa-fw" />
-                  </span>
-                ) : (
-                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
-                    <fa-icon
-                      style={!this.showCheckedStyleIcon('fasr') && DISPLAY_NONE}
-                      {...this.commonFaIconProps}
-                      name="grin-tongue"
-                      stylePrefix="fasr"
-                      size="2x"
-                      class="checked-icon fa-fw"
-                    />
-                    <fa-icon
-                      style={this.showCheckedStyleIcon('fasr') && DISPLAY_NONE}
-                      {...this.commonFaIconProps}
-                      name="smile"
-                      stylePrefix="fasr"
-                      size="2x"
-                      class="unchecked-icon fa-fw"
-                    />
-                  </span>
-                )}
 
-                <span>
-                  Sharp&nbsp;Regular <span class="sr-only">{this.slot('sharp-regular-style-filter-sr-message')}</span>
-                </span>
-              </label>
-              <span class="disabled-tooltip size-sm">{this.slot('sharp-regular-requires-pro')}</span>
+          <div class="style-selectors row">
+            <div class="column-6">
+              <select name="family-select" onChange={this.selectFamily.bind(this)}>
+                {this.getFamilies().map((family: string) => (
+                  <option value={family}>{this.labelForFamilyOrStyle(family)}</option>
+                ))}
+              </select>
             </div>
-            <div class="wrap-icons-style-choice size-sm laptop:size-md margin-3xs column">
-              <input
-                disabled={faslDisabled}
-                id="icons-style-sharp-light"
-                checked={this.styleFilterEnabled && this.styleFilters.fasl}
-                onChange={() => this.toggleStyleFilter('fasl')}
-                type="checkbox"
-                name="icons-style"
-                class="input-checkbox-custom"
-              ></input>
-              <label
-                htmlFor="icons-style-sharp-light"
-                class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center "
-              >
-                {faslDisabled ? (
-                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
-                    <fa-icon {...this.commonFaIconProps} name="meh" stylePrefix="far" size="2x" class="checked-icon fa-fw" />
-                  </span>
-                ) : (
-                  <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
-                    <fa-icon
-                      style={!this.showCheckedStyleIcon('fasl') && DISPLAY_NONE}
-                      {...this.commonFaIconProps}
-                      name="grin-tongue"
-                      stylePrefix="fasl"
-                      size="2x"
-                      class="checked-icon fa-fw"
-                    />
-                    <fa-icon
-                      style={this.showCheckedStyleIcon('fasl') && DISPLAY_NONE}
-                      {...this.commonFaIconProps}
-                      name="smile"
-                      stylePrefix="fasl"
-                      size="2x"
-                      class="unchecked-icon fa-fw"
-                    />
-                  </span>
-                )}
-                <span>
-                  Sharp&nbsp;Light <span class="sr-only">{this.slot('sharp-light-style-filter-sr-message')}</span>
-                </span>
-              </label>
-              <span class="disabled-tooltip size-sm">{this.slot('sharp-light-requires-pro')}</span>
-            </div>
-            <div class="wrap-icons-style-choice size-sm laptop:size-md margin-3xs column">
-              <input
-                id="icons-style-brands"
-                checked={this.styleFilterEnabled && this.styleFilters.fab}
-                onChange={() => this.toggleStyleFilter('fab')}
-                type="checkbox"
-                name="icons-style"
-                class="input-checkbox-custom"
-              ></input>
-              <label htmlFor="icons-style-brands" class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center ">
-                <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
-                  <fa-icon {...this.commonFaIconProps} stylePrefix="fab" name="font-awesome" size="2x" class="fa-fw" />
-                </span>
-                <span>
-                  Brands <span class="sr-only">{this.slot('brands-style-filter-sr-message')}</span>
-                </span>
-              </label>
-            </div>
-            <div class="wrap-icons-style-choice size-sm laptop:size-md margin-3xs column">
-              <input
-                disabled={fakDisabled}
-                id="icons-style-uploads"
-                checked={this.styleFilterEnabled && this.styleFilters.fak}
-                onChange={() => this.toggleStyleFilter('fak')}
-                type="checkbox"
-                name="icons-style"
-                class="input-checkbox-custom"
-              ></input>
-              <label htmlFor="icons-style-uploads" class="icons-style-choice padding-xs tablet:padding-md laptop:padding-sm margin-0 display-flex flex-column flex-items-center">
-                <span class="style-icon position-relative display-none size-sm margin-bottom-2xs tablet:display-block laptop:display-inline-block laptop:margin-bottom-0">
-                  {fakDisabled ? (
-                    <fa-icon {...this.commonFaIconProps} stylePrefix="far" name="meh" size="2x" class="fa-fw" />
-                  ) : (
-                    <fa-icon {...this.commonFaIconProps} stylePrefix="far" name="cloud" size="2x" class="fa-fw" />
-                  )}
-                </span>
-                <span>
-                  Uploaded <span class="sr-only">{this.slot('uploaded-style-filter-sr-message')}</span>
-                </span>
-              </label>
-              <span class="disabled-tooltip size-sm">{this.slot('uploaded-requires-pro')}</span>
+
+            <div class="column-6">
+              <select name="style-select" onChange={this.selectStyle.bind(this)}>
+                {this.getStylesForSelectedFamily().map((style: string) => (
+                  <option selected={style == this.selectedStyle} value={style}>
+                    {this.labelForFamilyOrStyle(style)}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
         </form>
-        <p class="muted size-sm text-center margin-bottom-xs">
+        <p class="muted size-sm text-center margin-top-xs margin-bottom-xs">
           {this.pro() ? this.slot('searching-pro') : this.slot('searching-free')} {this.resolvedVersion()}
         </p>
         <div class="wrap-icon-listing margin-y-lg">
-          {!this.isQuerying && this.mayHaveIconUploads() && !this.hasIconUploads() && this.styleFilterEnabled && this.styleFilters.fak && (
+          {!this.isQuerying && this.mayHaveIconUploads() && !this.hasIconUploads() && ['kit', 'kit-duotone'].includes(this.selectedFamily) && (
             <article class="text-center margin-2xl">
               <p class="muted size-sm">{this.slot('kit-has-no-uploaded-icons')}</p>
             </article>
@@ -934,7 +629,14 @@ export class FaIconChooser {
               {this.filteredIcons().map(iconLookup => (
                 <article class="wrap-icon" key={`${iconLookup.prefix}-${iconLookup.iconName}`}>
                   <button class="icon subtle display-flex flex-column flex-items-center flex-content-center" onClick={() => this.finish.emit(buildIconChooserResult(iconLookup))}>
-                    <fa-icon {...this.commonFaIconProps} size="2x" stylePrefix={iconLookup.prefix} name={iconLookup.iconName} iconUpload={get(iconLookup, 'iconUpload')} />
+                    <fa-icon
+                      {...this.commonFaIconProps}
+                      size="2x"
+                      stylePrefix={iconLookup.prefix}
+                      familyStylePathSegment={this.prefixToFamilyStylePathSegment(iconLookup.prefix)}
+                      name={iconLookup.iconName}
+                      iconUpload={get(iconLookup, 'iconUpload')}
+                    />
 
                     <span class="icon-name size-sm text-truncate margin-top-lg">{`${iconLookup.iconName}`}</span>
                   </button>

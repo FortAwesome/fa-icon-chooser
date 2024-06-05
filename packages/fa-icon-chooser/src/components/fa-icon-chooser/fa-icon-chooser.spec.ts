@@ -1,6 +1,6 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { FaIconChooser } from './fa-icon-chooser';
-import { defaultIcons } from '../../utils/utils';
+import { buildDefaultIconsSearchResult } from '../../utils/utils';
 import { get } from 'lodash';
 
 // TODO: tests
@@ -66,6 +66,8 @@ describe('fa-icon-chooser', () => {
       }
     });
 
+    expect(foundFaCss).toBe(true);
+
     // the script should have been injected into the outer DOM's head
     const scriptsInHead = await page.doc.head.querySelectorAll('script');
     let foundFaScript = false;
@@ -77,35 +79,28 @@ describe('fa-icon-chooser', () => {
 
     expect(foundFaScript).toBe(true);
 
+    const defaultIcons = buildDefaultIconsSearchResult({
+      classic: {
+        solid: {
+          prefix: 'fas',
+        },
+        regular: {
+          prefix: 'far',
+        },
+        brands: {
+          prefix: 'fab',
+        },
+      },
+    });
+
     // The initial default icons should have be shown
     get(defaultIcons, 'data.search', [])
       .filter(i => i.familyStylesByLicense.free.length > 0)
-      .forEach(({ id }) => {
-        expect(page.root.shadowRoot.innerHTML).toEqual(expect.stringMatching(new RegExp(`<fa-icon .*name="${id}"`)));
+      .forEach(({ id, familyStylesByLicense }) => {
+        const isNonBrandIcon = familyStylesByLicense.free.some(({ family, style }) => 'brands' !== family && 'brands' !== style);
+        if (isNonBrandIcon) {
+          expect(page.root.shadowRoot.innerHTML).toEqual(expect.stringMatching(new RegExp(`<fa-icon .*name="${id}"`)));
+        }
       });
-
-    const disabledStyleFilters = ['light', 'duotone', 'thin'];
-    disabledStyleFilters.forEach(async style => {
-      const input = await page.root.shadowRoot.querySelector(`input#icons-style-${style}`);
-      expect(input['disabled']).toBe(true);
-    });
-
-    const enabledStyleFilters = ['solid', 'brands', 'regular'];
-    enabledStyleFilters.forEach(async style => {
-      const input = await page.root.shadowRoot.querySelector(`input#icons-style-${style}`);
-      expect(input['disabled']).toBe(false);
-    });
-
-    const checkedStyleFilters = ['solid', 'brands'];
-    checkedStyleFilters.forEach(async style => {
-      const input = await page.root.shadowRoot.querySelector(`input#icons-style-${style}`);
-      expect(input['checked']).toBe(true);
-    });
-
-    const uncheckedStyleFilters = ['regular'];
-    uncheckedStyleFilters.forEach(async style => {
-      const input = await page.root.shadowRoot.querySelector(`input#icons-style-${style}`);
-      expect(input['checked']).toBe(false);
-    });
   });
 });
