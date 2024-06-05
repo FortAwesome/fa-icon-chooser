@@ -1,6 +1,6 @@
 {
   "name": "@fortawesome/fa-icon-chooser",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Font Awesome Icon Chooser",
   "main": "dist/index.cjs.js",
   "private": false,
@@ -34,7 +34,7 @@
     "format.check": "prettier --check ."
   },
   "dependencies": {
-    "@fortawesome/fontawesome-common-types": "^6.4.0",
+    "@fortawesome/fontawesome-common-types": "^6.5.2",
     "@stencil/core": "^2.13.0",
     "lodash": "^4.17.21",
     "semver": "^6.3.0"
