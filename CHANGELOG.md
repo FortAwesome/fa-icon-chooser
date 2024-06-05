@@ -46,6 +46,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
   into a single query document string. Thus, any `QueryHandler` callback must be updated
   to handle the query variables.
 
+  Its type signature is now:
+
+  ```typescript
+  export type QueryHandler = (document: string, variables?: object) => Promise<any>;
+  ```
+
   Suggestion:
 
   ```javascript
