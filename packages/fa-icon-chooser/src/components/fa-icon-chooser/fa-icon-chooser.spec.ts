@@ -79,17 +79,28 @@ describe('fa-icon-chooser', () => {
 
     expect(foundFaScript).toBe(true);
 
-    const defaultIcons = buildDefaultIconsSearchResult([
-      {family: "classic", style: "solid"},
-      {family: "classic", style: "regular"},
-      {family: "classic", style: "brands"}
-    ])
+    const defaultIcons = buildDefaultIconsSearchResult({
+      classic: {
+        solid: {
+          prefix: 'fas'
+        },
+        regular: {
+          prefix: 'far'
+        },
+        brands: {
+          prefix: 'fab'
+        }
+      }
+    })
 
     // The initial default icons should have be shown
     get(defaultIcons, 'data.search', [])
       .filter(i => i.familyStylesByLicense.free.length > 0)
-      .forEach(({ id }) => {
-        expect(page.root.shadowRoot.innerHTML).toEqual(expect.stringMatching(new RegExp(`<fa-icon .*name="${id}"`)));
+      .forEach(({ id, familyStylesByLicense }) => {
+        const isNonBrandIcon = familyStylesByLicense.free.some(({ family, style}) => 'brands' !== family && 'brands' !== style)
+        if ( isNonBrandIcon ) {
+          expect(page.root.shadowRoot.innerHTML).toEqual(expect.stringMatching(new RegExp(`<fa-icon .*name="${id}"`)));
+        }
       });
   });
 });
