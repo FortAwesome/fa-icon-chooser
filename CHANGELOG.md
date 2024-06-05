@@ -38,7 +38,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
   - `uploaded-style-filter-sr-message`
 
 - The `QueryHandler` type now takes a second optional argument for variables.
-  (See also Breaking Changes)
+  (See also Breaking Changes)o
+
+### Fixed
+- Duotone custom icons in kits now work correctly.
 
 ### Breaking Changes
 
