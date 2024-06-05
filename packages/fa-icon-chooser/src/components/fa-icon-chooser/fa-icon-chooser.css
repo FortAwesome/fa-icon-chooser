@@ -10,7 +10,7 @@
   --icon-listing-roomy-gap-y: var(--spacing-md); /* 16px */
   --icon-listing-roomy-size: calc(var(--spacing-base) * 8); /* 128px */
   --input-border-color: var(--fa-navy);
-  --input-border-width: .15rem;
+  --input-border-width: 0.15rem;
 }
 
 :host {

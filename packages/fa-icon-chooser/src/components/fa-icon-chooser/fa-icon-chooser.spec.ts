@@ -82,23 +82,23 @@ describe('fa-icon-chooser', () => {
     const defaultIcons = buildDefaultIconsSearchResult({
       classic: {
         solid: {
-          prefix: 'fas'
+          prefix: 'fas',
         },
         regular: {
-          prefix: 'far'
+          prefix: 'far',
         },
         brands: {
-          prefix: 'fab'
-        }
-      }
-    })
+          prefix: 'fab',
+        },
+      },
+    });
 
     // The initial default icons should have be shown
     get(defaultIcons, 'data.search', [])
       .filter(i => i.familyStylesByLicense.free.length > 0)
       .forEach(({ id, familyStylesByLicense }) => {
-        const isNonBrandIcon = familyStylesByLicense.free.some(({ family, style}) => 'brands' !== family && 'brands' !== style)
-        if ( isNonBrandIcon ) {
+        const isNonBrandIcon = familyStylesByLicense.free.some(({ family, style }) => 'brands' !== family && 'brands' !== style);
+        if (isNonBrandIcon) {
           expect(page.root.shadowRoot.innerHTML).toEqual(expect.stringMatching(new RegExp(`<fa-icon .*name="${id}"`)));
         }
       });

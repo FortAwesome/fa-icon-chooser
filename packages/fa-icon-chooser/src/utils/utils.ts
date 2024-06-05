@@ -1,10 +1,10 @@
-import defaultIconsSearchResultTemplate from "./defaultIconsSearchResult.json";
-import { valid as validSemver } from "semver";
-import { cloneDeep, get, set } from "lodash";
+import defaultIconsSearchResultTemplate from './defaultIconsSearchResult.json';
+import { valid as validSemver } from 'semver';
+import { cloneDeep, get, set } from 'lodash';
 
-const FREE_CDN_URL = "https://use.fontawesome.com";
-const PRO_KIT_ASSET_URL = "https://ka-p.fontawesome.com";
-const FREE_KIT_ASSET_URL = "https://ka-f.fontawesome.com";
+const FREE_CDN_URL = 'https://use.fontawesome.com';
+const PRO_KIT_ASSET_URL = 'https://ka-p.fontawesome.com';
+const FREE_KIT_ASSET_URL = 'https://ka-f.fontawesome.com';
 
 export type UrlTextFetcher = (url: string) => Promise<string>;
 
@@ -14,27 +14,27 @@ export type UrlTextFetcher = (url: string) => Promise<string>;
 // It rests on the assumption that each (non-brands) icon in that static default query is
 // available in all Pro familyStyles.
 export function buildDefaultIconsSearchResult(familyStyles: object): object {
-  const allNonBrandsFamilyStyles = []
+  const allNonBrandsFamilyStyles = [];
 
-  for(const family in familyStyles) {
-    for(const style in familyStyles[family]) {
-      if('brands' !== style && 'brands' !== family && 'custom' !== style) {
-        allNonBrandsFamilyStyles.push({family, style})
+  for (const family in familyStyles) {
+    for (const style in familyStyles[family]) {
+      if ('brands' !== style && 'brands' !== family && 'custom' !== style) {
+        allNonBrandsFamilyStyles.push({ family, style });
       }
     }
   }
 
-  const defaultIconsSearchResult = cloneDeep(defaultIconsSearchResultTemplate)
+  const defaultIconsSearchResult = cloneDeep(defaultIconsSearchResultTemplate);
 
-  const icons = get(defaultIconsSearchResult, 'data.search', [])
+  const icons = get(defaultIconsSearchResult, 'data.search', []);
 
-  for(const i of icons) {
-    if('ALL' === get(i, 'familyStylesByLicense.pro')) {
-      set(i, 'familyStylesByLicense.pro', allNonBrandsFamilyStyles)
+  for (const i of icons) {
+    if ('ALL' === get(i, 'familyStylesByLicense.pro')) {
+      set(i, 'familyStylesByLicense.pro', allNonBrandsFamilyStyles);
     }
   }
 
-  return defaultIconsSearchResult
+  return defaultIconsSearchResult;
 }
 
 export interface IconLookup {
@@ -65,15 +65,14 @@ const duotonePathRe = [
   /path class="(?<cls1>[^"]+)".*d="(?<d1>[^"]+)"/,
 ];
 
-export const CONSOLE_MESSAGE_PREFIX = "Font Awesome Icon Chooser";
+export const CONSOLE_MESSAGE_PREFIX = 'Font Awesome Icon Chooser';
 
 export function parseSvgText(svgText) {
   let val = null;
   let path = null;
   const viewBox = svgText.match(viewBoxRe);
   const singlePath = svgText.match(singlePathRe);
-  const duotonePath = svgText.match(duotonePathRe[0]) ||
-    svgText.match(duotonePathRe[1]) || svgText.match(duotonePathRe[2]);
+  const duotonePath = svgText.match(duotonePathRe[0]) || svgText.match(duotonePathRe[1]) || svgText.match(duotonePathRe[2]);
 
   if (duotonePath) {
     const { cls1, d1, cls2, d2 } = duotonePath.groups;
@@ -81,9 +80,9 @@ export function parseSvgText(svgText) {
     if (d1 && d2 && !cls1 && !cls2) {
       path = [d1, d2];
     } else if (d1 && cls1 && !d2) {
-      path = cls1.indexOf("primary") > -1 ? ["", d1] : [d1, ""];
+      path = cls1.indexOf('primary') > -1 ? ['', d1] : [d1, ''];
     } else if (d1 && d2 && cls1 && cls2) {
-      path = cls1.indexOf("primary") > -1 ? [d2, d1] : [d1, d2];
+      path = cls1.indexOf('primary') > -1 ? [d2, d1] : [d1, d2];
     }
   } else if (singlePath && singlePath.length === 2) {
     path = singlePath[1];
@@ -111,25 +110,21 @@ export async function createFontAwesomeScriptElement(
   baseUrl: string,
   kitToken: string | undefined,
 ): Promise<HTMLElement> {
-  const license = pro ? "pro" : "free";
-  const assetUrl = kitToken
-    ? `${baseUrl}/releases/v${version}/js/${license}.min.js?token=${kitToken}`
-    : `${baseUrl}/releases/v${version}/js/all.js`;
+  const license = pro ? 'pro' : 'free';
+  const assetUrl = kitToken ? `${baseUrl}/releases/v${version}/js/${license}.min.js?token=${kitToken}` : `${baseUrl}/releases/v${version}/js/all.js`;
 
   try {
-    if ("function" !== typeof getUrlText) {
-      throw new Error(
-        "Font Awesome Icon Chooser: expected getUrlText to be a function but it wasn't",
-      );
+    if ('function' !== typeof getUrlText) {
+      throw new Error("Font Awesome Icon Chooser: expected getUrlText to be a function but it wasn't");
     }
 
     const scriptContent = await getUrlText(assetUrl);
-    const script = document.createElement("SCRIPT");
+    const script = document.createElement('SCRIPT');
     const text = document.createTextNode(scriptContent);
     script.appendChild(text);
-    script.setAttribute("data-auto-replace-svg", "false");
-    script.setAttribute("data-auto-add-css", "false");
-    script.setAttribute("type", "text/javascript");
+    script.setAttribute('data-auto-replace-svg', 'false');
+    script.setAttribute('data-auto-add-css', 'false');
+    script.setAttribute('type', 'text/javascript');
 
     return script;
   } catch (e) {
@@ -138,9 +133,7 @@ export async function createFontAwesomeScriptElement(
   }
 }
 
-export function buildIconChooserResult(
-  iconLookup: IconLookup | IconUploadLookup,
-): IconChooserResult {
+export function buildIconChooserResult(iconLookup: IconLookup | IconUploadLookup): IconChooserResult {
   const { prefix, iconName } = iconLookup;
 
   return { prefix, iconName };

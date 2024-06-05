@@ -68,7 +68,7 @@ export class FaIcon {
       return;
     }
 
-    if (! this.familyStylePathSegment) {
+    if (!this.familyStylePathSegment) {
       console.error(`${CONSOLE_MESSAGE_PREFIX}: fa-icon: the 'familyStylePathSegment' prop is required to render this icon but not provided.`, this);
       return;
     }
