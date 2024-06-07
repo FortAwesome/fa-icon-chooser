@@ -55,7 +55,11 @@ export interface IconUploadLookup extends IconLookup {
   iconUpload: IconUpload;
 }
 
-export type IconChooserResult = IconLookup;
+export interface IconDefinition extends IconLookup {
+  icon: Array<any>;
+}
+
+export type IconChooserResult = IconLookup | IconDefinition;
 
 const viewBoxRe = /viewBox="0 0 ([0-9]+) ([0-9]+)"/;
 const singlePathRe = /path d="([^"]+)"/;
@@ -133,10 +137,8 @@ export async function createFontAwesomeScriptElement(
   }
 }
 
-export function buildIconChooserResult(iconLookup: IconLookup | IconUploadLookup): IconChooserResult {
-  const { prefix, iconName } = iconLookup;
-
-  return { prefix, iconName };
+export function buildIconChooserResult(iconDefinition: IconDefinition): IconChooserResult {
+  return iconDefinition;
 }
 
 export function isValidSemver(val: string): boolean {

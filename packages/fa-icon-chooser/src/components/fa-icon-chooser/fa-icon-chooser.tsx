@@ -16,6 +16,7 @@ import {
 } from '../../utils/utils';
 import { faSadTear, faTire } from '../../utils/icons';
 import { slotDefaults } from '../../utils/slots';
+import { IconDefinition } from '../../utils/utils';
 
 export type QueryHandler = (document: string, variables?: object) => Promise<any>;
 
@@ -297,7 +298,11 @@ export class FaIconChooser {
     }
 
     if (find(iconUploads, i => i.pathData.length > 1)) {
-      kitFamilyStyles.push({ family: 'kit-duotone', style: 'custom', prefix: 'fakd' });
+      kitFamilyStyles.push({
+        family: 'kit-duotone',
+        style: 'custom',
+        prefix: 'fakd',
+      });
     }
 
     if (kitFamilyStyles.length > 0) {
@@ -626,22 +631,34 @@ export class FaIconChooser {
             </article>
           ) : size(this.filteredIcons()) > 0 ? (
             <div class="icon-listing">
-              {this.filteredIcons().map(iconLookup => (
-                <article class="wrap-icon" key={`${iconLookup.prefix}-${iconLookup.iconName}`}>
-                  <button class="icon subtle display-flex flex-column flex-items-center flex-content-center" onClick={() => this.finish.emit(buildIconChooserResult(iconLookup))}>
-                    <fa-icon
-                      {...this.commonFaIconProps}
-                      size="2x"
-                      stylePrefix={iconLookup.prefix}
-                      familyStylePathSegment={this.prefixToFamilyStylePathSegment(iconLookup.prefix)}
-                      name={iconLookup.iconName}
-                      iconUpload={get(iconLookup, 'iconUpload')}
-                    />
+              {this.filteredIcons().map(iconLookup => {
+                let iconDefinition = null;
+                const setIconDefinition = (currentIconDefinition: IconDefinition) => {
+                  if ('object' === typeof currentIconDefinition) {
+                    iconDefinition = { ...currentIconDefinition };
+                  }
+                };
+                return (
+                  <article class="wrap-icon" key={`${iconLookup.prefix}-${iconLookup.iconName}`}>
+                    <button
+                      class="icon subtle display-flex flex-column flex-items-center flex-content-center"
+                      onClick={() => this.finish.emit(buildIconChooserResult(iconDefinition))}
+                    >
+                      <fa-icon
+                        {...this.commonFaIconProps}
+                        size="2x"
+                        stylePrefix={iconLookup.prefix}
+                        emitIconDefinition={setIconDefinition}
+                        familyStylePathSegment={this.prefixToFamilyStylePathSegment(iconLookup.prefix)}
+                        name={iconLookup.iconName}
+                        iconUpload={get(iconLookup, 'iconUpload')}
+                      />
 
-                    <span class="icon-name size-sm text-truncate margin-top-lg">{`${iconLookup.iconName}`}</span>
-                  </button>
-                </article>
-              ))}
+                      <span class="icon-name size-sm text-truncate margin-top-lg">{`${iconLookup.iconName}`}</span>
+                    </button>
+                  </article>
+                );
+              })}
             </div>
           ) : (
             <article class="message message-noresults text-center margin-2xl">
