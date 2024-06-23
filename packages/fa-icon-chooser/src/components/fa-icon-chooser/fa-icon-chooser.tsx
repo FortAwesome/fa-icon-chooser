@@ -18,7 +18,7 @@ import { faSadTear, faTire } from '../../utils/icons';
 import { slotDefaults } from '../../utils/slots';
 import { IconDefinition } from '../../utils/utils';
 
-export type QueryHandler = (document: string, variables?: object) => Promise<any>;
+export type QueryHandler = (document: string, variables?: object, options?: object) => Promise<any>;
 
 type KitMetadata = {
   version: string;
@@ -279,6 +279,7 @@ export class FaIconChooser {
       }
       `,
       { token: this.kitToken },
+      { cache: true }
     );
 
     if (get(response, 'errors')) {
