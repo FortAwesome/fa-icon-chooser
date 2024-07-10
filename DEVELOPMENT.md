@@ -31,7 +31,7 @@ The `index.html` that is loaded on `npm run start` pulls in [`runtime.js`](packa
 `runtime.js` fetches a development-only `local.json` configuration file, which must
 exist, and you must create yourself, and it is intentionally `gitignore`'d.
 
-### REQURED: make your own local.json
+### REQUIRED: make your own local.json
 
 `local.json` should be created at `packages/fa-icon-chooser/dev/local.json`,
 and it has three top-level keys:
