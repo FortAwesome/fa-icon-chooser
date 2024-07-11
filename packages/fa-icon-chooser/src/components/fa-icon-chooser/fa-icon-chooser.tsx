@@ -279,7 +279,7 @@ export class FaIconChooser {
       }
       `,
       { token: this.kitToken },
-      { cache: true }
+      { cache: true },
     );
 
     if (get(response, 'errors')) {
