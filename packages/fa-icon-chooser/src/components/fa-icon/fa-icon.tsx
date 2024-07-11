@@ -1,6 +1,6 @@
-import { Component, Host, Prop, State, h } from '@stencil/core';
-import { IconUpload, parseSvgText, UrlTextFetcher, CONSOLE_MESSAGE_PREFIX } from '../../utils/utils';
-import { IconDefinition } from '@fortawesome/fontawesome-common-types';
+import { Component, h, Host, Prop, State } from '@stencil/core';
+import { CONSOLE_MESSAGE_PREFIX, IconUpload, parseSvgText, UrlTextFetcher } from '../../utils/utils';
+import { IconDefinition } from '../../utils/utils';
 import { get } from 'lodash';
 
 /**
@@ -13,47 +13,71 @@ import { get } from 'lodash';
   shadow: false,
 })
 export class FaIcon {
-  @Prop() name?: string;
+  @Prop()
+  name?: string;
 
-  @Prop() stylePrefix?: string;
+  @Prop()
+  stylePrefix?: string;
 
-  @Prop() familyStylePathSegment: string;
+  @Prop()
+  familyStylePathSegment: string;
 
-  @Prop() svgApi: any;
+  @Prop()
+  svgApi: any;
 
-  @Prop() pro: boolean = false;
+  @Prop()
+  pro: boolean = false;
 
-  @Prop() iconUpload?: IconUpload;
+  @Prop()
+  iconUpload?: IconUpload;
 
-  @Prop() class: string;
+  @Prop()
+  class: string;
 
-  @Prop() svgFetchBaseUrl?: string;
+  @Prop()
+  svgFetchBaseUrl?: string;
 
-  @Prop() getUrlText?: UrlTextFetcher;
+  @Prop()
+  getUrlText?: UrlTextFetcher;
 
-  @Prop() kitToken?: string;
+  @Prop()
+  kitToken?: string;
 
-  @Prop() icon?: IconDefinition;
+  @Prop()
+  icon?: IconDefinition;
 
-  @Prop() size?: string;
+  @Prop()
+  size?: string;
 
-  @State() loading: boolean = false;
+  @Prop()
+  emitIconDefinition?: (iconDefinition: IconDefinition) => void;
 
-  @State() iconDefinition: any;
+  @State()
+  loading: boolean = false;
+
+  @State()
+  iconDefinition: any;
+
+  setIconDefinition(iconDefinition: IconDefinition): void {
+    this.iconDefinition = iconDefinition;
+    if ('function' === typeof this.emitIconDefinition) {
+      this.emitIconDefinition(iconDefinition);
+    }
+  }
 
   componentWillLoad() {
     if (this.iconUpload) {
-      this.iconDefinition = {
+      this.setIconDefinition({
         prefix: this.stylePrefix,
         iconName: this.iconUpload.name,
         icon: [parseInt(`${this.iconUpload.width}`), parseInt(`${this.iconUpload.height}`), [], this.iconUpload.unicode.toString(16), this.iconUpload.pathData],
-      };
+      });
 
       return;
     }
 
     if (this.icon) {
-      this.iconDefinition = this.icon;
+      this.setIconDefinition(this.icon);
 
       return;
     }
@@ -83,7 +107,7 @@ export class FaIcon {
       });
 
     if (iconDefinition) {
-      this.iconDefinition = iconDefinition;
+      this.setIconDefinition(iconDefinition);
       return;
     }
 
@@ -121,7 +145,7 @@ export class FaIcon {
           icon: parseSvgText(svg),
         };
         library && library.add(iconDefinition);
-        this.iconDefinition = { ...iconDefinition };
+        this.setIconDefinition({ ...iconDefinition });
       })
       .catch(e => {
         console.error(`${CONSOLE_MESSAGE_PREFIX}: fa-icon: failed when using 'getUrlText' to fetch icon`, e, this);
