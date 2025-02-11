@@ -8,11 +8,13 @@ may change as suits the needs of the Icon Chooser.
 
 <!-- Auto Generated Below -->
 
+
 ## Properties
 
 | Property                 | Attribute                   | Description | Type                                                                                                   | Default     |
 | ------------------------ | --------------------------- | ----------- | ------------------------------------------------------------------------------------------------------ | ----------- |
 | `class`                  | `class`                     |             | `string`                                                                                               | `undefined` |
+| `emitIconDefinition`     | --                          |             | `(iconDefinition: IconDefinition) => void`                                                             | `undefined` |
 | `familyStylePathSegment` | `family-style-path-segment` |             | `string`                                                                                               | `undefined` |
 | `getUrlText`             | --                          |             | `(url: string) => Promise<string>`                                                                     | `undefined` |
 | `icon`                   | --                          |             | `IconDefinition`                                                                                       | `undefined` |
@@ -25,20 +27,20 @@ may change as suits the needs of the Icon Chooser.
 | `svgApi`                 | `svg-api`                   |             | `any`                                                                                                  | `undefined` |
 | `svgFetchBaseUrl`        | `svg-fetch-base-url`        |             | `string`                                                                                               | `undefined` |
 
+
 ## Dependencies
 
 ### Used by
 
-- [fa-icon-chooser](../fa-icon-chooser)
+ - [fa-icon-chooser](../fa-icon-chooser)
 
 ### Graph
-
 ```mermaid
 graph TD;
   fa-icon-chooser --> fa-icon
   style fa-icon fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
----
+----------------------------------------------
 
-_Built with [StencilJS](https://stenciljs.com/)_
+*Built with [StencilJS](https://stenciljs.com/)*
