@@ -109,10 +109,11 @@ export class FaIconChooser {
    * Clients of the Icon Chooser should listen for this event in order to handle
    * the result of the user's interaction.
    *
+   * The emitted `IconChooserResult` will not include SVG data (as an `IconDefinition`) when
+   * prohibited by the client's license.
+   *
    * License terms for SVG icon data emitted are governed by the terms on the Font Awesome [plans page](https://fontawesome.com/plans),
    * which are elaborated on the Font Awesome [support page](https://fontawesome.com/support).
-   * While this event may emit full SVG data for Font Awesome Pro icons, that does not
-   * entitle the client to use them. In particular, there are restrictions for the Pro Lite plan.
    */
   @Event({
     eventName: 'finish',
