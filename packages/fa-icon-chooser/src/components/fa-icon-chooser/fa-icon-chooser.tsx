@@ -564,6 +564,10 @@ export class FaIconChooser {
       .join(' ');
   }
 
+  shouldEmitSvgData(prefix: string): boolean {
+    return this.embedSvgPrefixes.has(prefix);
+  }
+
   render() {
     if (this.fatalError) {
       return (
@@ -669,7 +673,7 @@ export class FaIconChooser {
                   <article class="wrap-icon" key={`${iconLookup.prefix}-${iconLookup.iconName}`}>
                     <button
                       class="icon subtle display-flex flex-column flex-items-center flex-content-center"
-                      onClick={() => this.finish.emit(buildIconChooserResult(this.embedSvgPrefixes.has(iconLookup.prefix) ? iconDefinition : iconLookup))}
+                      onClick={() => this.finish.emit(buildIconChooserResult(this.shouldEmitSvgData(iconLookup.prefix) ? iconDefinition : iconLookup))}
                     >
                       <fa-icon
                         {...this.commonFaIconProps}
