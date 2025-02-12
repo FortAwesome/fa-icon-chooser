@@ -183,7 +183,7 @@ export class FaIconChooser {
 
   activeSlotDefaults: any = {};
 
-  shouldEmitIconDefinition: boolean = false;
+  embedSvgPrefixes: Set<string> = new Set([]);
 
   familyNameToLabel(name: string): string {
     return name;
@@ -266,6 +266,11 @@ export class FaIconChooser {
             technologySelected
             licenseSelected
             name
+            permits {
+              embedProSvg {
+                prefix
+              }
+            }
             release {
               version
               familyStyles {
@@ -316,6 +321,14 @@ export class FaIconChooser {
 
     if (kitFamilyStyles.length > 0) {
       this.updateFamilyStyles(kitFamilyStyles);
+
+      if (this.pro()) {
+        // For a Pro kit, only the SVGs for the permitted familyStyles may be embedded.
+        get(response, 'data.me.kit.permits.embedProSvg', []).forEach(fs => this.embedSvgPrefixes.add(fs.prefix));
+      } else {
+        // All Free SVGs in a Free kit may be embedded.
+        kitFamilyStyles.forEach(fs => this.embedSvgPrefixes.add(fs.prefix));
+      }
     }
   }
 
@@ -381,6 +394,11 @@ export class FaIconChooser {
 
         if (pro) {
           this.svgFetchBaseUrl = `${baseUrl}/releases/v${this.resolvedVersion()}/svgs`;
+        } else {
+          // If we haven't already added prefixes for the Free familyStyles, add them now.
+          if (this.embedSvgPrefixes.size === 0) {
+            Object.keys(this.prefixToFamilyStyle).forEach(prefix => this.embedSvgPrefixes.add(prefix));
+          }
         }
 
         const svgApi = get(window, 'FontAwesome');
@@ -409,10 +427,6 @@ export class FaIconChooser {
         this.defaultIcons = buildDefaultIconsSearchResult(this.familyStyles);
 
         this.setIcons(this.defaultIcons, this.iconUploadsAsIconUploadLookups());
-
-        if (!this.pro()) {
-          this.shouldEmitIconDefinition = true;
-        }
 
         this.commonFaIconProps = {
           svgApi: get(window, 'FontAwesome'),
@@ -655,7 +669,7 @@ export class FaIconChooser {
                   <article class="wrap-icon" key={`${iconLookup.prefix}-${iconLookup.iconName}`}>
                     <button
                       class="icon subtle display-flex flex-column flex-items-center flex-content-center"
-                      onClick={() => this.finish.emit(buildIconChooserResult(this.shouldEmitIconDefinition ? iconDefinition : iconLookup))}
+                      onClick={() => this.finish.emit(buildIconChooserResult(this.embedSvgPrefixes.has(iconLookup.prefix) ? iconDefinition : iconLookup))}
                     >
                       <fa-icon
                         {...this.commonFaIconProps}
