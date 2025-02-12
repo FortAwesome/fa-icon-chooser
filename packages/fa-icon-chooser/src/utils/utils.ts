@@ -137,8 +137,8 @@ export async function createFontAwesomeScriptElement(
   }
 }
 
-export function buildIconChooserResult(iconDefinition: IconDefinition): IconChooserResult {
-  return iconDefinition;
+export function buildIconChooserResult(value: IconDefinition | IconLookup): IconChooserResult {
+  return value;
 }
 
 export function isValidSemver(val: string): boolean {

@@ -183,6 +183,8 @@ export class FaIconChooser {
 
   activeSlotDefaults: any = {};
 
+  shouldEmitIconDefinition: boolean = false;
+
   familyNameToLabel(name: string): string {
     return name;
   }
@@ -649,7 +651,7 @@ export class FaIconChooser {
                   <article class="wrap-icon" key={`${iconLookup.prefix}-${iconLookup.iconName}`}>
                     <button
                       class="icon subtle display-flex flex-column flex-items-center flex-content-center"
-                      onClick={() => this.finish.emit(buildIconChooserResult(iconDefinition))}
+                      onClick={() => this.finish.emit(buildIconChooserResult(this.shouldEmitIconDefinition ? iconDefinition : iconLookup))}
                     >
                       <fa-icon
                         {...this.commonFaIconProps}
