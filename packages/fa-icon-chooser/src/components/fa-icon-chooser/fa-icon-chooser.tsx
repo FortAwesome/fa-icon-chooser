@@ -410,6 +410,10 @@ export class FaIconChooser {
 
         this.setIcons(this.defaultIcons, this.iconUploadsAsIconUploadLookups());
 
+        if (!this.pro()) {
+          this.shouldEmitIconDefinition = true;
+        }
+
         this.commonFaIconProps = {
           svgApi: get(window, 'FontAwesome'),
           pro: this.pro(),
