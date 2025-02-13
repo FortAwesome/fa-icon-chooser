@@ -7,7 +7,7 @@
     "lib": ["dom", "es2017"],
     "moduleResolution": "node",
     "module": "esnext",
-    "target": "es2017",
+    "target": "ESNext",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "jsx": "react",

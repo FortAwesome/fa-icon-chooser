@@ -7,7 +7,13 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { IconChooserResult, IconDefinition, IconUpload, UrlTextFetcher } from "./utils/utils";
 import { QueryHandler } from "./components/fa-icon-chooser/fa-icon-chooser";
+export { IconChooserResult, IconDefinition, IconUpload, UrlTextFetcher } from "./utils/utils";
+export { QueryHandler } from "./components/fa-icon-chooser/fa-icon-chooser";
 export namespace Components {
+    /**
+     * This fa-icon component isn't THE fa-icon component. It's just a convenience
+     * component to help with displaying icons within the Icon Chooser.
+     */
     interface FaIcon {
         "class": string;
         "emitIconDefinition"?: (iconDefinition: IconDefinition) => void;
@@ -46,14 +52,33 @@ export namespace Components {
         "version"?: string;
     }
 }
+export interface FaIconChooserCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLFaIconChooserElement;
+}
 declare global {
+    /**
+     * This fa-icon component isn't THE fa-icon component. It's just a convenience
+     * component to help with displaying icons within the Icon Chooser.
+     */
     interface HTMLFaIconElement extends Components.FaIcon, HTMLStencilElement {
     }
     var HTMLFaIconElement: {
         prototype: HTMLFaIconElement;
         new (): HTMLFaIconElement;
     };
+    interface HTMLFaIconChooserElementEventMap {
+        "finish": IconChooserResult;
+    }
     interface HTMLFaIconChooserElement extends Components.FaIconChooser, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLFaIconChooserElementEventMap>(type: K, listener: (this: HTMLFaIconChooserElement, ev: FaIconChooserCustomEvent<HTMLFaIconChooserElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLFaIconChooserElementEventMap>(type: K, listener: (this: HTMLFaIconChooserElement, ev: FaIconChooserCustomEvent<HTMLFaIconChooserElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLFaIconChooserElement: {
         prototype: HTMLFaIconChooserElement;
@@ -65,6 +90,10 @@ declare global {
     }
 }
 declare namespace LocalJSX {
+    /**
+     * This fa-icon component isn't THE fa-icon component. It's just a convenience
+     * component to help with displaying icons within the Icon Chooser.
+     */
     interface FaIcon {
         "class"?: string;
         "emitIconDefinition"?: (iconDefinition: IconDefinition) => void;
@@ -96,7 +125,7 @@ declare namespace LocalJSX {
         /**
           * Clients of the Icon Chooser should listen for this event in order to handle the result of the user's interaction.  The emitted `IconChooserResult` will not include SVG data (as an `IconDefinition`) when prohibited by the client's license.  License terms for SVG icon data emitted are governed by the terms on the Font Awesome [plans page](https://fontawesome.com/plans), which are elaborated on the Font Awesome [support page](https://fontawesome.com/support).
          */
-        "onFinish"?: (event: CustomEvent<IconChooserResult>) => void;
+        "onFinish"?: (event: FaIconChooserCustomEvent<IconChooserResult>) => void;
         /**
           * Placeholder text for search form.  Use this to provide translatable text.
          */
@@ -115,6 +144,10 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            /**
+             * This fa-icon component isn't THE fa-icon component. It's just a convenience
+             * component to help with displaying icons within the Icon Chooser.
+             */
             "fa-icon": LocalJSX.FaIcon & JSXBase.HTMLAttributes<HTMLFaIconElement>;
             "fa-icon-chooser": LocalJSX.FaIconChooser & JSXBase.HTMLAttributes<HTMLFaIconChooserElement>;
         }

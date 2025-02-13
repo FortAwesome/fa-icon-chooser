@@ -8,6 +8,7 @@ export const config: Config = {
       componentCorePackage: '@fortawesome/fa-icon-chooser',
       proxiesFile: '../fa-icon-chooser-react/src/components.ts',
       includeDefineCustomElements: true,
+      outDir: '../fa-icon-chooser-react/src',
     }),
     {
       type: 'dist',
@@ -15,6 +16,7 @@ export const config: Config = {
     },
     {
       type: 'dist-custom-elements',
+      externalRuntime: false,
     },
     {
       type: 'docs-readme',
