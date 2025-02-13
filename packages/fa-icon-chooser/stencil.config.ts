@@ -5,10 +5,7 @@ export const config: Config = {
   namespace: 'fa-icon-chooser',
   outputTargets: [
     reactOutputTarget({
-      componentCorePackage: '@fortawesome/fa-icon-chooser',
-      proxiesFile: '../fa-icon-chooser-react/src/components.ts',
-      includeDefineCustomElements: true,
-      outDir: '../fa-icon-chooser-react/src',
+      outDir: '../fa-icon-chooser-react/src/',
     }),
     {
       type: 'dist',
