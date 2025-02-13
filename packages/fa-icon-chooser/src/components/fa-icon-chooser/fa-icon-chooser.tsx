@@ -565,7 +565,21 @@ export class FaIconChooser {
   }
 
   shouldEmitSvgData(prefix: string): boolean {
-    return this.embedSvgPrefixes.has(prefix);
+    // This override is subject to the Font Awesome plan license terms
+    // at https://fontawesome.com/plans and https://fontawesome.com/support.
+    // At the time of writing, only the Font Awesome official WordPress plugin is
+    // permitted to embed SVGs for Pro Lite plans. If you're a developer who wants
+    // your integration or plugin to be licensed to embed SVGs for Pro Lite plans, please
+    // contact hello@fontawesome.com.
+    const svgEmbedOverrideCallback = get(window, '__FA_SVG_EMBED__');
+
+    let override = false;
+
+    if (typeof svgEmbedOverrideCallback === 'function') {
+      override = !!svgEmbedOverrideCallback();
+    }
+
+    return override || this.embedSvgPrefixes.has(prefix);
   }
 
   render() {
