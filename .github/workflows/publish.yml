@@ -21,8 +21,7 @@ jobs:
           npm install
           npm run format.check
           npm run build
-          # TODO: re-enable tests on publish. Disabled due to chromium suid_sandbox issue.
-          # npm run test
+          npm run test
       - name: Publish Main - npmjs
         run: |
           cd packages/fa-icon-chooser
