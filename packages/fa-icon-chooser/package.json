@@ -1,6 +1,6 @@
 {
   "name": "@fortawesome/fa-icon-chooser",
-  "version": "0.8.0-5",
+  "version": "0.8.0-6",
   "description": "Font Awesome Icon Chooser",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
