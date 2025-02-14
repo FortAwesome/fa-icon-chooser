@@ -1,5 +1,4 @@
 import { h } from '@stencil/core';
-import { Fragment } from './utils';
 
 export const slotDefaults = {};
 
