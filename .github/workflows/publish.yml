@@ -11,39 +11,39 @@ jobs:
       CLOUDSMITH_API_TOKEN: ${{ secrets.CLOUDSMITH_TOKEN }}
       NPM_TOKEN: ${{ secrets.NPM_REGISTRY_ACCESS_TOKEN }}
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v1
-      with:
-        node-version: '16'
-    - name: Prepare Main
-      run: |
-        cd packages/fa-icon-chooser
-        npm install
-        npm run format.check
-        npm run build
-        npm run test
-    - name: Publish Main - npmjs
-      run: |
-        cd packages/fa-icon-chooser
-        echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
-        npm publish --access public --registry=https://registry.npmjs.org
-    - name: Prepare React
-      run: |
-        cd packages/fa-icon-chooser-react
-        npm install
-        npm run build
-    - name: Publish React - npmjs
-      run: |
-        cd packages/fa-icon-chooser-react
-        echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
-        npm publish --access public --registry=https://registry.npmjs.org
-    - name: Publish Main - Cloudsmith
-      run: |
-        cd packages/fa-icon-chooser
-        echo "//npm.fontawesome.com/:_authToken=${CLOUDSMITH_API_TOKEN}" > .npmrc
-        npm publish --registry https://npm.fontawesome.com
-    - name: Publish React - Cloudsmith
-      run: |
-        cd packages/fa-icon-chooser-react
-        echo "//npm.fontawesome.com/:_authToken=${CLOUDSMITH_API_TOKEN}" > .npmrc
-        npm publish --registry https://npm.fontawesome.com
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "22"
+      - name: Prepare Main
+        run: |
+          cd packages/fa-icon-chooser
+          npm install
+          npm run format.check
+          npm run build
+          npm run test
+      - name: Publish Main - npmjs
+        run: |
+          cd packages/fa-icon-chooser
+          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+          npm publish --access public --registry=https://registry.npmjs.org
+      - name: Prepare React
+        run: |
+          cd packages/fa-icon-chooser-react
+          npm install
+          npm run build
+      - name: Publish React - npmjs
+        run: |
+          cd packages/fa-icon-chooser-react
+          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+          npm publish --access public --registry=https://registry.npmjs.org
+      - name: Publish Main - Cloudsmith
+        run: |
+          cd packages/fa-icon-chooser
+          echo "//npm.fontawesome.com/:_authToken=${CLOUDSMITH_API_TOKEN}" > .npmrc
+          npm publish --registry https://npm.fontawesome.com
+      - name: Publish React - Cloudsmith
+        run: |
+          cd packages/fa-icon-chooser-react
+          echo "//npm.fontawesome.com/:_authToken=${CLOUDSMITH_API_TOKEN}" > .npmrc
+          npm publish --registry https://npm.fontawesome.com

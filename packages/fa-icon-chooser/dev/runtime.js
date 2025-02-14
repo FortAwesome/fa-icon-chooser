@@ -102,6 +102,18 @@ const FaIconChooserDevExports = (function () {
     document.querySelector("fa-icon-chooser").remove();
   }
 
+  function maybeOverrideEmbedProSvg() {
+    if (!localConfig) throw new Error(localDevMissingMsg);
+
+    // This override is subject to the Font Awesome plan license terms
+    // at https://fontawesome.com/plans and https://fontawesome.com/support.
+    if (!!localConfig?.overrideEmbedProSvg) {
+      window.__FA_SVG_EMBED__ = () => true
+    }
+
+    return Promise.resolve()
+  }
+
   function setupHead() {
     if (!localConfig) throw new Error(localDevMissingMsg);
     // If there's no head config, we have nothing left to do here.
@@ -259,6 +271,7 @@ const FaIconChooserDevExports = (function () {
   }
 
   loadLocalConfig()
+    .then(maybeOverrideEmbedProSvg)
     .then(setupHead)
     .catch((e) => {
       throw e;

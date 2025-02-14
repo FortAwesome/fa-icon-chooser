@@ -8,11 +8,17 @@ may change as suits the needs of the Icon Chooser.
 
 <!-- Auto Generated Below -->
 
+## Overview
+
+This fa-icon component isn't THE fa-icon component. It's just a convenience
+component to help with displaying icons within the Icon Chooser.
+
 ## Properties
 
 | Property                 | Attribute                   | Description | Type                                                                                                   | Default     |
 | ------------------------ | --------------------------- | ----------- | ------------------------------------------------------------------------------------------------------ | ----------- |
 | `class`                  | `class`                     |             | `string`                                                                                               | `undefined` |
+| `emitIconDefinition`     | --                          |             | `(iconDefinition: IconDefinition) => void`                                                             | `undefined` |
 | `familyStylePathSegment` | `family-style-path-segment` |             | `string`                                                                                               | `undefined` |
 | `getUrlText`             | --                          |             | `(url: string) => Promise<string>`                                                                     | `undefined` |
 | `icon`                   | --                          |             | `IconDefinition`                                                                                       | `undefined` |

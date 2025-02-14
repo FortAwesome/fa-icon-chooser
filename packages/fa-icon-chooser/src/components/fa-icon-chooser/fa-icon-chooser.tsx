@@ -16,8 +16,9 @@ import {
 } from '../../utils/utils';
 import { faSadTear, faTire } from '../../utils/icons';
 import { slotDefaults } from '../../utils/slots';
+import { IconDefinition } from '../../utils/utils';
 
-export type QueryHandler = (document: string, variables?: object) => Promise<any>;
+export type QueryHandler = (document: string, variables?: object, options?: object) => Promise<any>;
 
 type KitMetadata = {
   version: string;
@@ -107,6 +108,12 @@ export class FaIconChooser {
   /**
    * Clients of the Icon Chooser should listen for this event in order to handle
    * the result of the user's interaction.
+   *
+   * The emitted `IconChooserResult` will not include SVG data (as an `IconDefinition`) when
+   * prohibited by the client's license.
+   *
+   * License terms for SVG icon data emitted are governed by the terms on the Font Awesome [plans page](https://fontawesome.com/plans),
+   * which are elaborated on the Font Awesome [support page](https://fontawesome.com/support).
    */
   @Event({
     eventName: 'finish',
@@ -175,6 +182,8 @@ export class FaIconChooser {
   defaultIcons: any;
 
   activeSlotDefaults: any = {};
+
+  embedSvgPrefixes: Set<string> = new Set([]);
 
   familyNameToLabel(name: string): string {
     return name;
@@ -257,6 +266,11 @@ export class FaIconChooser {
             technologySelected
             licenseSelected
             name
+            permits {
+              embedProSvg {
+                prefix
+              }
+            }
             release {
               version
               familyStyles {
@@ -278,6 +292,7 @@ export class FaIconChooser {
       }
       `,
       { token: this.kitToken },
+      { cache: true },
     );
 
     if (get(response, 'errors')) {
@@ -287,7 +302,16 @@ export class FaIconChooser {
 
     const kit = get(response, 'data.me.kit');
     this.kitMetadata = kit;
-    this.updateFamilyStyles(get(kit, 'release.familyStyles', []));
+    const familyStyles = get(kit, 'release.familyStyles', []);
+    this.updateFamilyStyles(familyStyles);
+
+    if (this.pro()) {
+      // For a Pro kit, only the SVGs for the permitted familyStyles may be embedded.
+      get(response, 'data.me.kit.permits.embedProSvg', []).forEach(fs => this.embedSvgPrefixes.add(fs.prefix));
+    } else {
+      // All Free SVGs in a Free kit may be embedded.
+      familyStyles.forEach(fs => this.embedSvgPrefixes.add(fs.prefix));
+    }
 
     const kitFamilyStyles = [];
     const iconUploads = get(response, 'data.me.kit.iconUploads', []);
@@ -297,7 +321,11 @@ export class FaIconChooser {
     }
 
     if (find(iconUploads, i => i.pathData.length > 1)) {
-      kitFamilyStyles.push({ family: 'kit-duotone', style: 'custom', prefix: 'fakd' });
+      kitFamilyStyles.push({
+        family: 'kit-duotone',
+        style: 'custom',
+        prefix: 'fakd',
+      });
     }
 
     if (kitFamilyStyles.length > 0) {
@@ -367,6 +395,11 @@ export class FaIconChooser {
 
         if (pro) {
           this.svgFetchBaseUrl = `${baseUrl}/releases/v${this.resolvedVersion()}/svgs`;
+        } else {
+          // If we haven't already added prefixes for the Free familyStyles, add them now.
+          if (this.embedSvgPrefixes.size === 0) {
+            Object.keys(this.prefixToFamilyStyle).forEach(prefix => this.embedSvgPrefixes.add(prefix));
+          }
         }
 
         const svgApi = get(window, 'FontAwesome');
@@ -532,6 +565,24 @@ export class FaIconChooser {
       .join(' ');
   }
 
+  shouldEmitSvgData(prefix: string): boolean {
+    // This override is subject to the Font Awesome plan license terms
+    // at https://fontawesome.com/plans and https://fontawesome.com/support.
+    // At the time of writing, only the Font Awesome official WordPress plugin is
+    // permitted to embed SVGs for Pro Lite plans. If you're a developer who wants
+    // your integration or plugin to be licensed to embed SVGs for Pro Lite plans, please
+    // contact hello@fontawesome.com.
+    const svgEmbedOverrideCallback = get(window, '__FA_SVG_EMBED__');
+
+    let override = false;
+
+    if (typeof svgEmbedOverrideCallback === 'function') {
+      override = !!svgEmbedOverrideCallback();
+    }
+
+    return override || this.embedSvgPrefixes.has(prefix);
+  }
+
   render() {
     if (this.fatalError) {
       return (
@@ -626,22 +677,34 @@ export class FaIconChooser {
             </article>
           ) : size(this.filteredIcons()) > 0 ? (
             <div class="icon-listing">
-              {this.filteredIcons().map(iconLookup => (
-                <article class="wrap-icon" key={`${iconLookup.prefix}-${iconLookup.iconName}`}>
-                  <button class="icon subtle display-flex flex-column flex-items-center flex-content-center" onClick={() => this.finish.emit(buildIconChooserResult(iconLookup))}>
-                    <fa-icon
-                      {...this.commonFaIconProps}
-                      size="2x"
-                      stylePrefix={iconLookup.prefix}
-                      familyStylePathSegment={this.prefixToFamilyStylePathSegment(iconLookup.prefix)}
-                      name={iconLookup.iconName}
-                      iconUpload={get(iconLookup, 'iconUpload')}
-                    />
+              {this.filteredIcons().map(iconLookup => {
+                let iconDefinition = null;
+                const setIconDefinition = (currentIconDefinition: IconDefinition) => {
+                  if ('object' === typeof currentIconDefinition) {
+                    iconDefinition = { ...currentIconDefinition };
+                  }
+                };
+                return (
+                  <article class="wrap-icon" key={`${iconLookup.prefix}-${iconLookup.iconName}`}>
+                    <button
+                      class="icon subtle display-flex flex-column flex-items-center flex-content-center"
+                      onClick={() => this.finish.emit(buildIconChooserResult(this.shouldEmitSvgData(iconLookup.prefix) ? iconDefinition : iconLookup))}
+                    >
+                      <fa-icon
+                        {...this.commonFaIconProps}
+                        size="2x"
+                        stylePrefix={iconLookup.prefix}
+                        emitIconDefinition={setIconDefinition}
+                        familyStylePathSegment={this.prefixToFamilyStylePathSegment(iconLookup.prefix)}
+                        name={iconLookup.iconName}
+                        iconUpload={get(iconLookup, 'iconUpload')}
+                      />
 
-                    <span class="icon-name size-sm text-truncate margin-top-lg">{`${iconLookup.iconName}`}</span>
-                  </button>
-                </article>
-              ))}
+                      <span class="icon-name size-sm text-truncate margin-top-lg">{`${iconLookup.iconName}`}</span>
+                    </button>
+                  </article>
+                );
+              })}
             </div>
           ) : (
             <article class="message message-noresults text-center margin-2xl">

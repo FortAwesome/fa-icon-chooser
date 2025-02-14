@@ -5,15 +5,15 @@
     "declaration": false,
     "experimentalDecorators": true,
     "lib": ["dom", "es2017"],
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "module": "esnext",
-    "target": "es2017",
+    "target": "esnext",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "jsx": "react",
     "jsxFactory": "h",
-    "resolveJsonModule": true,
-    "jsxFragmentFactory": "Fragment"
+    "jsxFragmentFactory": "h.Fragment",
+    "resolveJsonModule": true
   },
   "include": ["src"],
   "exclude": ["node_modules"]

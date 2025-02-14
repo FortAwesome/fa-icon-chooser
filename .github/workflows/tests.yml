@@ -6,19 +6,19 @@ jobs:
   tests:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v1
-      with:
-        node-version: '14'
-    - name: Install Deps
-      run: |
-        cd packages/fa-icon-chooser
-        npm install
-    - name: Run Tests
-      run: |
-        cd packages/fa-icon-chooser
-        npm run test
-    - name: Check Format
-      run: |
-        cd packages/fa-icon-chooser
-        npm run format.check
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "22"
+      - name: Install Deps
+        run: |
+          cd packages/fa-icon-chooser
+          npm install
+      - name: Run Tests
+        run: |
+          cd packages/fa-icon-chooser
+          npm run test
+      - name: Check Format
+        run: |
+          cd packages/fa-icon-chooser
+          npm run format.check

@@ -5,9 +5,7 @@ export const config: Config = {
   namespace: 'fa-icon-chooser',
   outputTargets: [
     reactOutputTarget({
-      componentCorePackage: '@fortawesome/fa-icon-chooser',
-      proxiesFile: '../fa-icon-chooser-react/src/components.ts',
-      includeDefineCustomElements: true,
+      outDir: '../fa-icon-chooser-react/lib/components/stencil-generated/',
     }),
     {
       type: 'dist',
@@ -15,6 +13,8 @@ export const config: Config = {
     },
     {
       type: 'dist-custom-elements',
+      customElementsExportBehavior: 'auto-define-custom-elements',
+      externalRuntime: false,
     },
     {
       type: 'docs-readme',
@@ -24,4 +24,7 @@ export const config: Config = {
       serviceWorker: null, // disable service workers
     },
   ],
+  testing: {
+    browserHeadless: 'shell',
+  },
 };

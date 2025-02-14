@@ -74,6 +74,20 @@ Choose one of the following:
 1. Use a JavaScript framework integration.
     Currently, the only one available is for [React](packages/fa-icon-chooser-react).
 
+## License Restrictions for Emitted SVG Data
+
+As of version `0.8.0` of this package, the icon chooser's selection events may emit SVG data.
+
+The [Font Awesome Free license](https://fontawesome.com/license/free) permits any Free icons
+to be embedded in this way.
+
+The [Font Awesome Pro license](https://fontawesome.com/license) permits Pro icons to embedded by
+Pro license holders.
+
+SVG embedding is prohibited for [Font Awesome Pro Lite](https://fontawesome.com/support).
+
+When prohibited by the current user's license, the icon chooser will not emit SVG data in the `IconChooserResult` object.
+
 # Contributors
 
 The Font Awesome team:
