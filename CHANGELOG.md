@@ -32,6 +32,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
   Consider showing the user a message like: "Your current Font Awesome plan does not allow embedding SVG icons.
   You can upgrade to enable this feature."
 
+- The `QueryHandler` type of the `handleQuery()` callback function now takes an optional third argument: `options`.
+  That `options` object now has a single optional property: `cache`.
+  When `cache` is `true`, the results of the `handleQuery()` function may be cached, and a cached
+  result may be returned instead of a new query being sent to the GraphQL API.
+  This allows the kit metadata query to be cached. A kit's metadata rarely changes, but it must be
+  provided each time the icon chooser is mounted. Hence caching it allows for much quicker
+  re-opening of the icon chooser after the first time it's opened.
+
+  This `cache` option is not used when searching icons, only when loading the kit's metadata.
+
 ### Breaking Changes
 
 - This release includes a major upgrade of `@stencil/core`, the library used to build this web component
