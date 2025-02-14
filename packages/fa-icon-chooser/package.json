@@ -49,7 +49,9 @@
     "start": "stencil build --dev --watch --serve",
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watchAll",
-    "generate": "stencil generate"
+    "generate": "stencil generate",
+    "format": "prettier --write .",
+    "format.check": "prettier --check ."
   },
   "devDependencies": {
     "@stencil/core": "^4.7.0",
@@ -61,7 +63,8 @@
     "@fortawesome/fontawesome-common-types": "^6.5.2",
     "lodash": "^4.17.21",
     "semver": "^6.3.0",
-    "@stencil/react-output-target": "^0.8.2"
+    "@stencil/react-output-target": "^0.8.2",
+    "prettier": "^2.3.2"
   },
   "license": "MIT"
 }
