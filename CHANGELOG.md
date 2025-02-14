@@ -5,6 +5,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ---
+## [0.8.0](https://github.com/FortAwesome/fa-icon-chooser/releases/tag/0.8.0) - 2025-02-14
+
+### Changed
+
+- The `IconChooserResult` object emitted by the icon chooser's selection event may now include
+  not only an `IconLookup` (the `name` and `prefix` of an icon in a particular familyStyle),
+  but also an entire [`IconDefinition`](https://docs.fontawesome.com/apis/javascript/methods#findicondefinitionparams) (including the SVG path data).
+  This allows for embedding SVG icons directly in content.
+
+  Font Awesome Pro icons are subject to the terms of the [Font Awesome Pro license](https://fontawesome.com/license).
+  This license is restricted for some plan types, such as Pro Lite. At the time of this release,
+  the Pro Lite plan license does not permit embedding of Pro SVGs, except by the official
+  Font Awesome WordPress plugin. See the [plans](https://fontawesome.com/plans) page and [support](https://fontawesome.com/support)
+  page for details.
+
+  The `fa-icon-chooser` queries the Font Awesome GraphQL API to determine whether the current user
+  has permissions to embed Pro SVGs. If not, then the `IconChooserResult` will include only the
+  `IconLookup` object, not the full `IconDefinition` object.
+
+  Thus, a developer using this `fa-icon-chooser` need not write any business logic according to
+  the current user's Font Awesome plan type. However, the developer should take care to handle
+  either case in its UI. Do not assume that the `IconDefinition` is always present in the
+  `IconChooserResult` object.
+
+  Consider showing the user a message like: "Your current Font Awesome plan does not allow embedding SVG icons.
+  You can upgrade to enable this feature."
+
+### Breaking Changes
+
+- This release includes a major upgrade of `@stencil/core`, the library used to build this web component
+  package. The new version of StencilJS requires a minimum version of React >= 17.
+  So the `fa-icon-chooser-react` package in this repo now requires React >= 17.
+
 ## [0.7.0](https://github.com/FortAwesome/fa-icon-chooser/releases/tag/0.7.0) - 2024-06-05
 
 ### Changed
