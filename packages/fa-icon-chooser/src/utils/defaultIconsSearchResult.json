@@ -57,7 +57,24 @@
         "label": "User Secret",
         "familyStylesByLicense": {
           "free": [{ "family": "classic", "style": "solid" }],
-          "pro": "ALL"
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "duotone", "style": "regular" },
+            { "family": "duotone", "style": "light" },
+            { "family": "duotone", "style": "thin" },
+            { "family": "sharp", "style": "solid" },
+            { "family": "sharp", "style": "regular" },
+            { "family": "sharp", "style": "light" },
+            { "family": "sharp", "style": "thin" },
+            { "family": "sharp-duotone", "style": "solid" },
+            { "family": "sharp-duotone", "style": "regular" },
+            { "family": "sharp-duotone", "style": "light" },
+            { "family": "sharp-duotone", "style": "thin" }
+          ]
         }
       },
       {
@@ -65,7 +82,24 @@
         "label": "Info",
         "familyStylesByLicense": {
           "free": [{ "family": "classic", "style": "solid" }],
-          "pro": "ALL"
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "duotone", "style": "regular" },
+            { "family": "duotone", "style": "light" },
+            { "family": "duotone", "style": "thin" },
+            { "family": "sharp", "style": "solid" },
+            { "family": "sharp", "style": "regular" },
+            { "family": "sharp", "style": "light" },
+            { "family": "sharp", "style": "thin" },
+            { "family": "sharp-duotone", "style": "solid" },
+            { "family": "sharp-duotone", "style": "regular" },
+            { "family": "sharp-duotone", "style": "light" },
+            { "family": "sharp-duotone", "style": "thin" }
+          ]
         }
       },
       {
@@ -73,7 +107,34 @@
         "label": "List",
         "familyStylesByLicense": {
           "free": [{ "family": "classic", "style": "solid" }],
-          "pro": "ALL"
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "duotone", "style": "regular" },
+            { "family": "duotone", "style": "light" },
+            { "family": "duotone", "style": "thin" },
+            { "family": "sharp", "style": "solid" },
+            { "family": "sharp", "style": "regular" },
+            { "family": "sharp", "style": "light" },
+            { "family": "sharp", "style": "thin" },
+            { "family": "sharp-duotone", "style": "solid" },
+            { "family": "sharp-duotone", "style": "regular" },
+            { "family": "sharp-duotone", "style": "light" },
+            { "family": "sharp-duotone", "style": "thin" },
+            { "family": "chisel", "style": "regular" },
+            { "family": "etch", "style": "solid" },
+            { "family": "jelly-duo", "style": "regular" },
+            { "family": "jelly-fill", "style": "regular" },
+            { "family": "jelly", "style": "regular" },
+            { "family": "notdog-duo", "style": "solid" },
+            { "family": "notdog", "style": "solid" },
+            { "family": "slab-press", "style": "regular" },
+            { "family": "slab", "style": "regular" },
+            { "family": "thumbprint", "style": "light" }
+          ]
         }
       },
       {
@@ -92,7 +153,24 @@
         "label": "Add to Shopping Cart",
         "familyStylesByLicense": {
           "free": [{ "family": "classic", "style": "solid" }],
-          "pro": "ALL"
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "duotone", "style": "regular" },
+            { "family": "duotone", "style": "light" },
+            { "family": "duotone", "style": "thin" },
+            { "family": "sharp", "style": "solid" },
+            { "family": "sharp", "style": "regular" },
+            { "family": "sharp", "style": "light" },
+            { "family": "sharp", "style": "thin" },
+            { "family": "sharp-duotone", "style": "solid" },
+            { "family": "sharp-duotone", "style": "regular" },
+            { "family": "sharp-duotone", "style": "light" },
+            { "family": "sharp-duotone", "style": "thin" }
+          ]
         }
       },
       {
@@ -112,6 +190,14 @@
             { "family": "classic", "style": "regular" }
           ],
           "pro": "ALL"
+        }
+      },
+      {
+        "id": "kickstarter",
+        "label": "Kickstarter",
+        "familyStylesByLicense": {
+          "free": [{ "family": "classic", "style": "brands" }],
+          "pro": [{ "family": "classic", "style": "brands" }]
         }
       },
       {
@@ -138,7 +224,24 @@
         "label": "Download",
         "familyStylesByLicense": {
           "free": [{ "family": "classic", "style": "solid" }],
-          "pro": "ALL"
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "duotone", "style": "regular" },
+            { "family": "duotone", "style": "light" },
+            { "family": "duotone", "style": "thin" },
+            { "family": "sharp", "style": "solid" },
+            { "family": "sharp", "style": "regular" },
+            { "family": "sharp", "style": "light" },
+            { "family": "sharp", "style": "thin" },
+            { "family": "sharp-duotone", "style": "solid" },
+            { "family": "sharp-duotone", "style": "regular" },
+            { "family": "sharp-duotone", "style": "light" },
+            { "family": "sharp-duotone", "style": "thin" }
+          ]
         }
       },
       {
@@ -154,7 +257,24 @@
         "label": "Cross",
         "familyStylesByLicense": {
           "free": [{ "family": "classic", "style": "solid" }],
-          "pro": "ALL"
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "duotone", "style": "regular" },
+            { "family": "duotone", "style": "light" },
+            { "family": "duotone", "style": "thin" },
+            { "family": "sharp", "style": "solid" },
+            { "family": "sharp", "style": "regular" },
+            { "family": "sharp", "style": "light" },
+            { "family": "sharp", "style": "thin" },
+            { "family": "sharp-duotone", "style": "solid" },
+            { "family": "sharp-duotone", "style": "regular" },
+            { "family": "sharp-duotone", "style": "light" },
+            { "family": "sharp-duotone", "style": "thin" }
+          ]
         }
       },
       {
@@ -162,7 +282,24 @@
         "label": "Meteor",
         "familyStylesByLicense": {
           "free": [{ "family": "classic", "style": "solid" }],
-          "pro": "ALL"
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "duotone", "style": "regular" },
+            { "family": "duotone", "style": "light" },
+            { "family": "duotone", "style": "thin" },
+            { "family": "sharp", "style": "solid" },
+            { "family": "sharp", "style": "regular" },
+            { "family": "sharp", "style": "light" },
+            { "family": "sharp", "style": "thin" },
+            { "family": "sharp-duotone", "style": "solid" },
+            { "family": "sharp-duotone", "style": "regular" },
+            { "family": "sharp-duotone", "style": "light" },
+            { "family": "sharp-duotone", "style": "thin" }
+          ]
         }
       },
       {
@@ -190,11 +327,36 @@
         }
       },
       {
+        "id": "docker",
+        "label": "Docker",
+        "familyStylesByLicense": {
+          "free": [{ "family": "classic", "style": "brands" }],
+          "pro": [{ "family": "classic", "style": "brands" }]
+        }
+      },
+      {
         "id": "car-building",
         "label": "Car and Building",
         "familyStylesByLicense": {
           "free": [],
-          "pro": "ALL"
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "duotone", "style": "regular" },
+            { "family": "duotone", "style": "light" },
+            { "family": "duotone", "style": "thin" },
+            { "family": "sharp", "style": "solid" },
+            { "family": "sharp", "style": "regular" },
+            { "family": "sharp", "style": "light" },
+            { "family": "sharp", "style": "thin" },
+            { "family": "sharp-duotone", "style": "solid" },
+            { "family": "sharp-duotone", "style": "regular" },
+            { "family": "sharp-duotone", "style": "light" },
+            { "family": "sharp-duotone", "style": "thin" }
+          ]
         }
       },
       {
@@ -237,7 +399,24 @@
         "label": "Street View",
         "familyStylesByLicense": {
           "free": [{ "family": "classic", "style": "solid" }],
-          "pro": "ALL"
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "duotone", "style": "regular" },
+            { "family": "duotone", "style": "light" },
+            { "family": "duotone", "style": "thin" },
+            { "family": "sharp", "style": "solid" },
+            { "family": "sharp", "style": "regular" },
+            { "family": "sharp", "style": "light" },
+            { "family": "sharp", "style": "thin" },
+            { "family": "sharp-duotone", "style": "solid" },
+            { "family": "sharp-duotone", "style": "regular" },
+            { "family": "sharp-duotone", "style": "light" },
+            { "family": "sharp-duotone", "style": "thin" }
+          ]
         }
       },
       {
@@ -245,7 +424,25 @@
         "label": "Share",
         "familyStylesByLicense": {
           "free": [{ "family": "classic", "style": "solid" }],
-          "pro": "ALL"
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "duotone", "style": "regular" },
+            { "family": "duotone", "style": "light" },
+            { "family": "duotone", "style": "thin" },
+            { "family": "sharp", "style": "solid" },
+            { "family": "sharp", "style": "regular" },
+            { "family": "sharp", "style": "light" },
+            { "family": "sharp", "style": "thin" },
+            { "family": "sharp-duotone", "style": "solid" },
+            { "family": "sharp-duotone", "style": "regular" },
+            { "family": "sharp-duotone", "style": "light" },
+            { "family": "sharp-duotone", "style": "thin" },
+            { "family": "chisel", "style": "regular" }
+          ]
         }
       },
       {
@@ -280,7 +477,25 @@
         "label": "Coffee",
         "familyStylesByLicense": {
           "free": [{ "family": "classic", "style": "solid" }],
-          "pro": "ALL"
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "duotone", "style": "regular" },
+            { "family": "duotone", "style": "light" },
+            { "family": "duotone", "style": "thin" },
+            { "family": "sharp", "style": "solid" },
+            { "family": "sharp", "style": "regular" },
+            { "family": "sharp", "style": "light" },
+            { "family": "sharp", "style": "thin" },
+            { "family": "sharp-duotone", "style": "solid" },
+            { "family": "sharp-duotone", "style": "regular" },
+            { "family": "sharp-duotone", "style": "light" },
+            { "family": "sharp-duotone", "style": "thin" },
+            { "family": "whiteboard", "style": "semibold" }
+          ]
         }
       },
       {
@@ -288,7 +503,24 @@
         "label": "Computer Speaker",
         "familyStylesByLicense": {
           "free": [],
-          "pro": "ALL"
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "duotone", "style": "regular" },
+            { "family": "duotone", "style": "light" },
+            { "family": "duotone", "style": "thin" },
+            { "family": "sharp", "style": "solid" },
+            { "family": "sharp", "style": "regular" },
+            { "family": "sharp", "style": "light" },
+            { "family": "sharp", "style": "thin" },
+            { "family": "sharp-duotone", "style": "solid" },
+            { "family": "sharp-duotone", "style": "regular" },
+            { "family": "sharp-duotone", "style": "light" },
+            { "family": "sharp-duotone", "style": "thin" }
+          ]
         }
       },
       {
@@ -369,7 +601,25 @@
         "label": "Text",
         "familyStylesByLicense": {
           "free": [],
-          "pro": "ALL"
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "duotone", "style": "regular" },
+            { "family": "duotone", "style": "light" },
+            { "family": "duotone", "style": "thin" },
+            { "family": "sharp", "style": "solid" },
+            { "family": "sharp", "style": "regular" },
+            { "family": "sharp", "style": "light" },
+            { "family": "sharp", "style": "thin" },
+            { "family": "sharp-duotone", "style": "solid" },
+            { "family": "sharp-duotone", "style": "regular" },
+            { "family": "sharp-duotone", "style": "light" },
+            { "family": "sharp-duotone", "style": "thin" },
+            { "family": "whiteboard", "style": "semibold" }
+          ]
         }
       },
       {
@@ -377,7 +627,24 @@
         "label": "Umbrella Beach",
         "familyStylesByLicense": {
           "free": [{ "family": "classic", "style": "solid" }],
-          "pro": "ALL"
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "duotone", "style": "regular" },
+            { "family": "duotone", "style": "light" },
+            { "family": "duotone", "style": "thin" },
+            { "family": "sharp", "style": "solid" },
+            { "family": "sharp", "style": "regular" },
+            { "family": "sharp", "style": "light" },
+            { "family": "sharp", "style": "thin" },
+            { "family": "sharp-duotone", "style": "solid" },
+            { "family": "sharp-duotone", "style": "regular" },
+            { "family": "sharp-duotone", "style": "light" },
+            { "family": "sharp-duotone", "style": "thin" }
+          ]
         }
       },
       {
@@ -423,7 +690,24 @@
         "label": "Wired Network",
         "familyStylesByLicense": {
           "free": [{ "family": "classic", "style": "solid" }],
-          "pro": "ALL"
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "duotone", "style": "regular" },
+            { "family": "duotone", "style": "light" },
+            { "family": "duotone", "style": "thin" },
+            { "family": "sharp", "style": "solid" },
+            { "family": "sharp", "style": "regular" },
+            { "family": "sharp", "style": "light" },
+            { "family": "sharp", "style": "thin" },
+            { "family": "sharp-duotone", "style": "solid" },
+            { "family": "sharp-duotone", "style": "regular" },
+            { "family": "sharp-duotone", "style": "light" },
+            { "family": "sharp-duotone", "style": "thin" }
+          ]
         }
       },
       {
@@ -439,7 +723,24 @@
         "label": "quote-right",
         "familyStylesByLicense": {
           "free": [{ "family": "classic", "style": "solid" }],
-          "pro": "ALL"
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "duotone", "style": "regular" },
+            { "family": "duotone", "style": "light" },
+            { "family": "duotone", "style": "thin" },
+            { "family": "sharp", "style": "solid" },
+            { "family": "sharp", "style": "regular" },
+            { "family": "sharp", "style": "light" },
+            { "family": "sharp", "style": "thin" },
+            { "family": "sharp-duotone", "style": "solid" },
+            { "family": "sharp-duotone", "style": "regular" },
+            { "family": "sharp-duotone", "style": "light" },
+            { "family": "sharp-duotone", "style": "thin" }
+          ]
         }
       },
       {
@@ -455,7 +756,24 @@
         "label": "Pepper Hot",
         "familyStylesByLicense": {
           "free": [{ "family": "classic", "style": "solid" }],
-          "pro": "ALL"
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "duotone", "style": "regular" },
+            { "family": "duotone", "style": "light" },
+            { "family": "duotone", "style": "thin" },
+            { "family": "sharp", "style": "solid" },
+            { "family": "sharp", "style": "regular" },
+            { "family": "sharp", "style": "light" },
+            { "family": "sharp", "style": "thin" },
+            { "family": "sharp-duotone", "style": "solid" },
+            { "family": "sharp-duotone", "style": "regular" },
+            { "family": "sharp-duotone", "style": "light" },
+            { "family": "sharp-duotone", "style": "thin" }
+          ]
         }
       },
       {
@@ -463,7 +781,24 @@
         "label": "File Export",
         "familyStylesByLicense": {
           "free": [{ "family": "classic", "style": "solid" }],
-          "pro": "ALL"
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "duotone", "style": "regular" },
+            { "family": "duotone", "style": "light" },
+            { "family": "duotone", "style": "thin" },
+            { "family": "sharp", "style": "solid" },
+            { "family": "sharp", "style": "regular" },
+            { "family": "sharp", "style": "light" },
+            { "family": "sharp", "style": "thin" },
+            { "family": "sharp-duotone", "style": "solid" },
+            { "family": "sharp-duotone", "style": "regular" },
+            { "family": "sharp-duotone", "style": "light" },
+            { "family": "sharp-duotone", "style": "thin" }
+          ]
         }
       },
       {
@@ -471,7 +806,24 @@
         "label": "table",
         "familyStylesByLicense": {
           "free": [{ "family": "classic", "style": "solid" }],
-          "pro": "ALL"
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "duotone", "style": "regular" },
+            { "family": "duotone", "style": "light" },
+            { "family": "duotone", "style": "thin" },
+            { "family": "sharp", "style": "solid" },
+            { "family": "sharp", "style": "regular" },
+            { "family": "sharp", "style": "light" },
+            { "family": "sharp", "style": "thin" },
+            { "family": "sharp-duotone", "style": "solid" },
+            { "family": "sharp-duotone", "style": "regular" },
+            { "family": "sharp-duotone", "style": "light" },
+            { "family": "sharp-duotone", "style": "thin" }
+          ]
         }
       },
       {
@@ -479,7 +831,24 @@
         "label": "File Invoice",
         "familyStylesByLicense": {
           "free": [{ "family": "classic", "style": "solid" }],
-          "pro": "ALL"
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "duotone", "style": "regular" },
+            { "family": "duotone", "style": "light" },
+            { "family": "duotone", "style": "thin" },
+            { "family": "sharp", "style": "solid" },
+            { "family": "sharp", "style": "regular" },
+            { "family": "sharp", "style": "light" },
+            { "family": "sharp", "style": "thin" },
+            { "family": "sharp-duotone", "style": "solid" },
+            { "family": "sharp-duotone", "style": "regular" },
+            { "family": "sharp-duotone", "style": "light" },
+            { "family": "sharp-duotone", "style": "thin" }
+          ]
         }
       },
       {
@@ -487,7 +856,24 @@
         "label": "Moon with Stars",
         "familyStylesByLicense": {
           "free": [],
-          "pro": "ALL"
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "duotone", "style": "regular" },
+            { "family": "duotone", "style": "light" },
+            { "family": "duotone", "style": "thin" },
+            { "family": "sharp", "style": "solid" },
+            { "family": "sharp", "style": "regular" },
+            { "family": "sharp", "style": "light" },
+            { "family": "sharp", "style": "thin" },
+            { "family": "sharp-duotone", "style": "solid" },
+            { "family": "sharp-duotone", "style": "regular" },
+            { "family": "sharp-duotone", "style": "light" },
+            { "family": "sharp-duotone", "style": "thin" }
+          ]
         }
       },
       {
@@ -495,7 +881,24 @@
         "label": "TTY",
         "familyStylesByLicense": {
           "free": [{ "family": "classic", "style": "solid" }],
-          "pro": "ALL"
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "duotone", "style": "regular" },
+            { "family": "duotone", "style": "light" },
+            { "family": "duotone", "style": "thin" },
+            { "family": "sharp", "style": "solid" },
+            { "family": "sharp", "style": "regular" },
+            { "family": "sharp", "style": "light" },
+            { "family": "sharp", "style": "thin" },
+            { "family": "sharp-duotone", "style": "solid" },
+            { "family": "sharp-duotone", "style": "regular" },
+            { "family": "sharp-duotone", "style": "light" },
+            { "family": "sharp-duotone", "style": "thin" }
+          ]
         }
       },
       {
@@ -506,7 +909,24 @@
             { "family": "classic", "style": "solid" },
             { "family": "classic", "style": "regular" }
           ],
-          "pro": "ALL"
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "duotone", "style": "regular" },
+            { "family": "duotone", "style": "light" },
+            { "family": "duotone", "style": "thin" },
+            { "family": "sharp", "style": "solid" },
+            { "family": "sharp", "style": "regular" },
+            { "family": "sharp", "style": "light" },
+            { "family": "sharp", "style": "thin" },
+            { "family": "sharp-duotone", "style": "solid" },
+            { "family": "sharp-duotone", "style": "regular" },
+            { "family": "sharp-duotone", "style": "light" },
+            { "family": "sharp-duotone", "style": "thin" }
+          ]
         }
       },
       {
@@ -514,7 +934,24 @@
         "label": "Office Phone",
         "familyStylesByLicense": {
           "free": [],
-          "pro": "ALL"
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "duotone", "style": "regular" },
+            { "family": "duotone", "style": "light" },
+            { "family": "duotone", "style": "thin" },
+            { "family": "sharp", "style": "solid" },
+            { "family": "sharp", "style": "regular" },
+            { "family": "sharp", "style": "light" },
+            { "family": "sharp", "style": "thin" },
+            { "family": "sharp-duotone", "style": "solid" },
+            { "family": "sharp-duotone", "style": "regular" },
+            { "family": "sharp-duotone", "style": "light" },
+            { "family": "sharp-duotone", "style": "thin" }
+          ]
         }
       },
       {
@@ -530,7 +967,24 @@
         "label": "Person and Empty Dolly",
         "familyStylesByLicense": {
           "free": [],
-          "pro": "ALL"
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "duotone", "style": "regular" },
+            { "family": "duotone", "style": "light" },
+            { "family": "duotone", "style": "thin" },
+            { "family": "sharp", "style": "solid" },
+            { "family": "sharp", "style": "regular" },
+            { "family": "sharp", "style": "light" },
+            { "family": "sharp", "style": "thin" },
+            { "family": "sharp-duotone", "style": "solid" },
+            { "family": "sharp-duotone", "style": "regular" },
+            { "family": "sharp-duotone", "style": "light" },
+            { "family": "sharp-duotone", "style": "thin" }
+          ]
         }
       },
       {
@@ -538,7 +992,24 @@
         "label": "Signature",
         "familyStylesByLicense": {
           "free": [{ "family": "classic", "style": "solid" }],
-          "pro": "ALL"
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "duotone", "style": "regular" },
+            { "family": "duotone", "style": "light" },
+            { "family": "duotone", "style": "thin" },
+            { "family": "sharp", "style": "solid" },
+            { "family": "sharp", "style": "regular" },
+            { "family": "sharp", "style": "light" },
+            { "family": "sharp", "style": "thin" },
+            { "family": "sharp-duotone", "style": "solid" },
+            { "family": "sharp-duotone", "style": "regular" },
+            { "family": "sharp-duotone", "style": "light" },
+            { "family": "sharp-duotone", "style": "thin" }
+          ]
         }
       },
       {
@@ -546,7 +1017,25 @@
         "label": "Store",
         "familyStylesByLicense": {
           "free": [{ "family": "classic", "style": "solid" }],
-          "pro": "ALL"
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "duotone", "style": "regular" },
+            { "family": "duotone", "style": "light" },
+            { "family": "duotone", "style": "thin" },
+            { "family": "sharp", "style": "solid" },
+            { "family": "sharp", "style": "regular" },
+            { "family": "sharp", "style": "light" },
+            { "family": "sharp", "style": "thin" },
+            { "family": "sharp-duotone", "style": "solid" },
+            { "family": "sharp-duotone", "style": "regular" },
+            { "family": "sharp-duotone", "style": "light" },
+            { "family": "sharp-duotone", "style": "thin" },
+            { "family": "whiteboard", "style": "semibold" }
+          ]
         }
       },
       {
@@ -554,7 +1043,24 @@
         "label": "Projector",
         "familyStylesByLicense": {
           "free": [],
-          "pro": "ALL"
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "duotone", "style": "regular" },
+            { "family": "duotone", "style": "light" },
+            { "family": "duotone", "style": "thin" },
+            { "family": "sharp", "style": "solid" },
+            { "family": "sharp", "style": "regular" },
+            { "family": "sharp", "style": "light" },
+            { "family": "sharp", "style": "thin" },
+            { "family": "sharp-duotone", "style": "solid" },
+            { "family": "sharp-duotone", "style": "regular" },
+            { "family": "sharp-duotone", "style": "light" },
+            { "family": "sharp-duotone", "style": "thin" }
+          ]
         }
       },
       {
@@ -562,7 +1068,24 @@
         "label": "Loveseat",
         "familyStylesByLicense": {
           "free": [],
-          "pro": "ALL"
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "duotone", "style": "regular" },
+            { "family": "duotone", "style": "light" },
+            { "family": "duotone", "style": "thin" },
+            { "family": "sharp", "style": "solid" },
+            { "family": "sharp", "style": "regular" },
+            { "family": "sharp", "style": "light" },
+            { "family": "sharp", "style": "thin" },
+            { "family": "sharp-duotone", "style": "solid" },
+            { "family": "sharp-duotone", "style": "regular" },
+            { "family": "sharp-duotone", "style": "light" },
+            { "family": "sharp-duotone", "style": "thin" }
+          ]
         }
       },
       {
@@ -586,7 +1109,24 @@
         "label": "Icons",
         "familyStylesByLicense": {
           "free": [{ "family": "classic", "style": "solid" }],
-          "pro": "ALL"
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "duotone", "style": "regular" },
+            { "family": "duotone", "style": "light" },
+            { "family": "duotone", "style": "thin" },
+            { "family": "sharp", "style": "solid" },
+            { "family": "sharp", "style": "regular" },
+            { "family": "sharp", "style": "light" },
+            { "family": "sharp", "style": "thin" },
+            { "family": "sharp-duotone", "style": "solid" },
+            { "family": "sharp-duotone", "style": "regular" },
+            { "family": "sharp-duotone", "style": "light" },
+            { "family": "sharp-duotone", "style": "thin" }
+          ]
         }
       },
       {
@@ -594,7 +1134,24 @@
         "label": "Power Off",
         "familyStylesByLicense": {
           "free": [{ "family": "classic", "style": "solid" }],
-          "pro": "ALL"
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "duotone", "style": "regular" },
+            { "family": "duotone", "style": "light" },
+            { "family": "duotone", "style": "thin" },
+            { "family": "sharp", "style": "solid" },
+            { "family": "sharp", "style": "regular" },
+            { "family": "sharp", "style": "light" },
+            { "family": "sharp", "style": "thin" },
+            { "family": "sharp-duotone", "style": "solid" },
+            { "family": "sharp-duotone", "style": "regular" },
+            { "family": "sharp-duotone", "style": "light" },
+            { "family": "sharp-duotone", "style": "thin" }
+          ]
         }
       },
       {
@@ -610,7 +1167,24 @@
         "label": "Vials",
         "familyStylesByLicense": {
           "free": [{ "family": "classic", "style": "solid" }],
-          "pro": "ALL"
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "duotone", "style": "regular" },
+            { "family": "duotone", "style": "light" },
+            { "family": "duotone", "style": "thin" },
+            { "family": "sharp", "style": "solid" },
+            { "family": "sharp", "style": "regular" },
+            { "family": "sharp", "style": "light" },
+            { "family": "sharp", "style": "thin" },
+            { "family": "sharp-duotone", "style": "solid" },
+            { "family": "sharp-duotone", "style": "regular" },
+            { "family": "sharp-duotone", "style": "light" },
+            { "family": "sharp-duotone", "style": "thin" }
+          ]
         }
       },
       {
@@ -618,7 +1192,24 @@
         "label": "Door Open",
         "familyStylesByLicense": {
           "free": [{ "family": "classic", "style": "solid" }],
-          "pro": "ALL"
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "duotone", "style": "regular" },
+            { "family": "duotone", "style": "light" },
+            { "family": "duotone", "style": "thin" },
+            { "family": "sharp", "style": "solid" },
+            { "family": "sharp", "style": "regular" },
+            { "family": "sharp", "style": "light" },
+            { "family": "sharp", "style": "thin" },
+            { "family": "sharp-duotone", "style": "solid" },
+            { "family": "sharp-duotone", "style": "regular" },
+            { "family": "sharp-duotone", "style": "light" },
+            { "family": "sharp-duotone", "style": "thin" }
+          ]
         }
       },
       {
@@ -626,7 +1217,25 @@
         "label": "shield",
         "familyStylesByLicense": {
           "free": [],
-          "pro": "ALL"
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "duotone", "style": "regular" },
+            { "family": "duotone", "style": "light" },
+            { "family": "duotone", "style": "thin" },
+            { "family": "sharp", "style": "solid" },
+            { "family": "sharp", "style": "regular" },
+            { "family": "sharp", "style": "light" },
+            { "family": "sharp", "style": "thin" },
+            { "family": "sharp-duotone", "style": "solid" },
+            { "family": "sharp-duotone", "style": "regular" },
+            { "family": "sharp-duotone", "style": "light" },
+            { "family": "sharp-duotone", "style": "thin" },
+            { "family": "whiteboard", "style": "semibold" }
+          ]
         }
       },
       {
@@ -634,7 +1243,24 @@
         "label": "Line Height",
         "familyStylesByLicense": {
           "free": [],
-          "pro": "ALL"
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "duotone", "style": "regular" },
+            { "family": "duotone", "style": "light" },
+            { "family": "duotone", "style": "thin" },
+            { "family": "sharp", "style": "solid" },
+            { "family": "sharp", "style": "regular" },
+            { "family": "sharp", "style": "light" },
+            { "family": "sharp", "style": "thin" },
+            { "family": "sharp-duotone", "style": "solid" },
+            { "family": "sharp-duotone", "style": "regular" },
+            { "family": "sharp-duotone", "style": "light" },
+            { "family": "sharp-duotone", "style": "thin" }
+          ]
         }
       },
       {
@@ -650,7 +1276,24 @@
         "label": "Walkie Talkie",
         "familyStylesByLicense": {
           "free": [],
-          "pro": "ALL"
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "duotone", "style": "regular" },
+            { "family": "duotone", "style": "light" },
+            { "family": "duotone", "style": "thin" },
+            { "family": "sharp", "style": "solid" },
+            { "family": "sharp", "style": "regular" },
+            { "family": "sharp", "style": "light" },
+            { "family": "sharp", "style": "thin" },
+            { "family": "sharp-duotone", "style": "solid" },
+            { "family": "sharp-duotone", "style": "regular" },
+            { "family": "sharp-duotone", "style": "light" },
+            { "family": "sharp-duotone", "style": "thin" }
+          ]
         }
       },
       {
@@ -658,7 +1301,160 @@
         "label": "Mailbox",
         "familyStylesByLicense": {
           "free": [],
+          "pro": [
+            { "family": "classic", "style": "solid" },
+            { "family": "classic", "style": "regular" },
+            { "family": "classic", "style": "light" },
+            { "family": "classic", "style": "thin" },
+            { "family": "duotone", "style": "solid" },
+            { "family": "duotone", "style": "regular" },
+            { "family": "duotone", "style": "light" },
+            { "family": "duotone", "style": "thin" },
+            { "family": "sharp", "style": "solid" },
+            { "family": "sharp", "style": "regular" },
+            { "family": "sharp", "style": "light" },
+            { "family": "sharp", "style": "thin" },
+            { "family": "sharp-duotone", "style": "solid" },
+            { "family": "sharp-duotone", "style": "regular" },
+            { "family": "sharp-duotone", "style": "light" },
+            { "family": "sharp-duotone", "style": "thin" }
+          ]
+        }
+      },
+      {
+        "id": "font-awesome",
+        "label": "Font Awesome",
+        "familyStylesByLicense": {
+          "free": [{ "family": "classic", "style": "brands" }],
+          "pro": [{ "family": "classic", "style": "brands" }]
+        }
+      },
+      {
+        "id": "user-circle",
+        "label": "User Circle",
+        "familyStylesByLicense": {
+          "free": [],
           "pro": "ALL"
+        }
+      },
+      {
+        "id": "web-awesome",
+        "label": "Web Awesome",
+        "familyStylesByLicense": {
+          "free": [{ "family": "classic", "style": "brands" }],
+          "pro": [{ "family": "classic", "style": "brands" }]
+        }
+      },
+      {
+        "id": "file",
+        "label": "File",
+        "familyStylesByLicense": {
+          "free": [],
+          "pro": "ALL"
+        }
+      },
+      {
+        "id": "discord",
+        "label": "Discord",
+        "familyStylesByLicense": {
+          "free": [{ "family": "classic", "style": "brands" }],
+          "pro": [{ "family": "classic", "style": "brands" }]
+        }
+      },
+      {
+        "id": "cloud",
+        "label": "Cloud",
+        "familyStylesByLicense": {
+          "free": [],
+          "pro": "ALL"
+        }
+      },
+      {
+        "id": "slack",
+        "label": "Slack",
+        "familyStylesByLicense": {
+          "free": [{ "family": "classic", "style": "brands" }],
+          "pro": [{ "family": "classic", "style": "brands" }]
+        }
+      },
+      {
+        "id": "alarm-clock",
+        "label": "Alarm Clock",
+        "familyStylesByLicense": {
+          "free": [],
+          "pro": "ALL"
+        }
+      },
+      {
+        "id": "algolia",
+        "label": "Algolia",
+        "familyStylesByLicense": {
+          "free": [{ "family": "classic", "style": "brands" }],
+          "pro": [{ "family": "classic", "style": "brands" }]
+        }
+      },
+      {
+        "id": "thumbs-up",
+        "label": "Thumbs Up",
+        "familyStylesByLicense": {
+          "free": [],
+          "pro": "ALL"
+        }
+      },
+      {
+        "id": "figma",
+        "label": "Figma",
+        "familyStylesByLicense": {
+          "free": [{ "family": "classic", "style": "brands" }],
+          "pro": [{ "family": "classic", "style": "brands" }]
+        }
+      },
+      {
+        "id": "smile",
+        "label": "Smile",
+        "familyStylesByLicense": {
+          "free": [],
+          "pro": "ALL"
+        }
+      },
+      {
+        "id": "apple",
+        "label": "Apple",
+        "familyStylesByLicense": {
+          "free": [{ "family": "classic", "style": "brands" }],
+          "pro": [{ "family": "classic", "style": "brands" }]
+        }
+      },
+      {
+        "id": "headphones",
+        "label": "Headphones",
+        "familyStylesByLicense": {
+          "free": [],
+          "pro": "ALL"
+        }
+      },
+      {
+        "id": "bluesky",
+        "label": "Bluesky",
+        "familyStylesByLicense": {
+          "free": [{ "family": "classic", "style": "brands" }],
+          "pro": [{ "family": "classic", "style": "brands" }]
+        }
+      },
+      {
+        "id": "envelope",
+        "label": "Envelope",
+        "familyStylesByLicense": {
+          "free": [],
+          "pro": "ALL"
+        }
+      },
+      {
+        "id": "pied-piper-hat",
+        "label": "Pied Piper Hat",
+        "familyStylesByLicense": {
+          "free": [{ "family": "classic", "style": "brands" }],
+          "pro": [{ "family": "classic", "style": "brands" }]
         }
       }
     ]
