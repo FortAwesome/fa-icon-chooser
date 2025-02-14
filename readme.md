@@ -86,7 +86,7 @@ Pro license holders.
 
 SVG embedding is prohibited for [Font Awesome Pro Lite](https://fontawesome.com/support).
 
-When prohibited by the license, the icon chooser will not emit SVG data in the `IconChooserResult` object.
+When prohibited by the current user's license, the icon chooser will not emit SVG data in the `IconChooserResult` object.
 
 # Contributors
 
