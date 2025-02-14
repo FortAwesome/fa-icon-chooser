@@ -302,7 +302,16 @@ export class FaIconChooser {
 
     const kit = get(response, 'data.me.kit');
     this.kitMetadata = kit;
-    this.updateFamilyStyles(get(kit, 'release.familyStyles', []));
+    const familyStyles = get(kit, 'release.familyStyles', []);
+    this.updateFamilyStyles(familyStyles);
+
+    if (this.pro()) {
+      // For a Pro kit, only the SVGs for the permitted familyStyles may be embedded.
+      get(response, 'data.me.kit.permits.embedProSvg', []).forEach(fs => this.embedSvgPrefixes.add(fs.prefix));
+    } else {
+      // All Free SVGs in a Free kit may be embedded.
+      familyStyles.forEach(fs => this.embedSvgPrefixes.add(fs.prefix));
+    }
 
     const kitFamilyStyles = [];
     const iconUploads = get(response, 'data.me.kit.iconUploads', []);
@@ -321,14 +330,6 @@ export class FaIconChooser {
 
     if (kitFamilyStyles.length > 0) {
       this.updateFamilyStyles(kitFamilyStyles);
-
-      if (this.pro()) {
-        // For a Pro kit, only the SVGs for the permitted familyStyles may be embedded.
-        get(response, 'data.me.kit.permits.embedProSvg', []).forEach(fs => this.embedSvgPrefixes.add(fs.prefix));
-      } else {
-        // All Free SVGs in a Free kit may be embedded.
-        kitFamilyStyles.forEach(fs => this.embedSvgPrefixes.add(fs.prefix));
-      }
     }
   }
 
