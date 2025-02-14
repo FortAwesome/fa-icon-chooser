@@ -1,7 +1,7 @@
 {
   "name": "@fortawesome/fa-icon-chooser-react",
   "sideEffects": false,
-  "version": "0.8.0-6",
+  "version": "0.8.0-7",
   "license": "MIT",
   "private": false,
   "description": "React specific wrapper for @fortawesome/fa-icon-chooser",
@@ -32,7 +32,7 @@
     "typescript": "^5.7.3"
   },
   "dependencies": {
-    "@fortawesome/fa-icon-chooser": "0.8.0-6",
+    "@fortawesome/fa-icon-chooser": "0.8.0-7",
     "@stencil/react-output-target": "^0.8.2"
   },
   "peerDependencies": {
