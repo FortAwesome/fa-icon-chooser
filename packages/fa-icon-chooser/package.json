@@ -3,14 +3,34 @@
   "version": "0.8.0-5",
   "description": "Font Awesome Icon Chooser",
   "main": "dist/index.cjs.js",
-  "private": false,
   "module": "dist/index.js",
-  "es2015": "dist/esm/index.mjs",
-  "es2017": "dist/esm/index.mjs",
-  "types": "dist/types/components.d.ts",
+  "types": "dist/types/index.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
   "unpkg": "dist/fa-icon-chooser/fa-icon-chooser.esm.js",
+  "exports": {
+    ".": {
+      "import": "./dist/fa-icon-chooser/fa-icon-chooser.esm.js",
+      "require": "./dist/fa-icon-chooser/fa-icon-chooser.cjs.js"
+    },
+    "./dist/*": {
+      "import": "./dist/*",
+      "types": "./dist/*"
+    },
+    "./components/*": {
+      "import": "./dist/components/*.js",
+      "types": "./dist/components/*.d.ts"
+    },
+    "./fa-icon-chooser": {
+      "import": "./dist/components/fa-icon-chooser.js",
+      "types": "./dist/components/fa-icon-chooser.d.ts"
+    },
+    "./loader": {
+      "import": "./loader/index.js",
+      "require": "./loader/index.cjs",
+      "types": "./loader/index.d.ts"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/FortAwesome/fa-icon-chooser.git"
@@ -25,30 +45,23 @@
     "loader/"
   ],
   "scripts": {
-    "build": "stencil build --docs",
-    "start": "stencil build --config stencil.config.dev.ts --dev --watch --serve",
+    "build": "stencil build",
+    "start": "stencil build --dev --watch --serve",
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watchAll",
-    "generate": "stencil generate",
-    "format": "prettier --write .",
-    "format.check": "prettier --check ."
+    "generate": "stencil generate"
   },
-  "dependencies": {
-    "@fortawesome/fontawesome-common-types": "^6.5.2",
-    "@stencil/core": "^4.26.0",
-    "lodash": "^4.17.21",
-    "semver": "^6.3.0"
-  },
-  "license": "MIT",
   "devDependencies": {
-    "@stencil/react-output-target": "^0.8.2",
-    "@types/jest": "^29.5.14",
-    "@types/node": "^22.13.1",
-    "@types/puppeteer": "^5.4.7",
+    "@stencil/core": "^4.7.0",
+    "@types/jest": "^29.5.6",
+    "@types/node": "^16.18.11",
     "jest": "^29.7.0",
     "jest-cli": "^29.7.0",
-    "prettier": "^2.3.2",
-    "puppeteer": "^24.2.0",
-    "typescript": "^5.7.3"
-  }
+    "puppeteer": "^21.9.0",
+    "@fortawesome/fontawesome-common-types": "^6.5.2",
+    "lodash": "^4.17.21",
+    "semver": "^6.3.0",
+    "@stencil/react-output-target": "^0.8.2"
+  },
+  "license": "MIT"
 }

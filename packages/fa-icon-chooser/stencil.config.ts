@@ -5,7 +5,7 @@ export const config: Config = {
   namespace: 'fa-icon-chooser',
   outputTargets: [
     reactOutputTarget({
-      outDir: '../fa-icon-chooser-react/src/',
+      outDir: '../fa-icon-chooser-react/lib/components/stencil-generated/',
     }),
     {
       type: 'dist',
@@ -13,6 +13,7 @@ export const config: Config = {
     },
     {
       type: 'dist-custom-elements',
+      customElementsExportBehavior: 'auto-define-custom-elements',
       externalRuntime: false,
     },
     {
@@ -23,4 +24,7 @@ export const config: Config = {
       serviceWorker: null, // disable service workers
     },
   ],
+  testing: {
+    browserHeadless: 'shell',
+  },
 };

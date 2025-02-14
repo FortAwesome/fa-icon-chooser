@@ -9,39 +9,34 @@
     "type": "git",
     "url": "https://github.com/FortAwesome/fa-icon-chooser.git"
   },
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/types/index.d.ts",
+  "scripts": {
+    "test": "node ./__tests__/react-library.test.js",
+    "build": "npm run tsc",
+    "tsc": "tsc -p . --outDir ./dist"
+  },
+  "files": [
+    "dist"
+  ],
   "contributors": [
     "Mike Wilkerson <mike@fontawesome.com>",
-    "Frances Botsford <frances@fontawesome.com>"
-  ],
-  "scripts": {
-    "build": "npm run clean && npm run compile",
-    "clean": "rm -rf dist",
-    "compile": "npm run tsc",
-    "tsc": "tsc -p .",
-    "rollup": "rollup -c"
-  },
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "files": [
-    "dist/"
+    "Frances Botsford <frances@fontawesome.com>",
+    "Kelsey Jackson <kelseythej@gmail.com>"
   ],
   "devDependencies": {
-    "@types/node": "^22",
-    "@types/react": "^16 || ^17 || ^18",
-    "@types/react-dom": "^16 || ^17 || ^18",
-    "np": "^10.2.0",
-    "react": "^16 || ^17 || ^18",
-    "react-dom": "^16 || ^17 || ^18",
+    "@types/react": "^19.0.8",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "typescript": "^5.7.3"
   },
   "dependencies": {
     "@fortawesome/fa-icon-chooser": "0.8.0-5",
-    "@stencil/react-output-target": "^0.8.2",
-    "install": "^0.13.0",
-    "npm": "^11.1.0"
+    "@stencil/react-output-target": "^0.8.2"
   },
   "peerDependencies": {
-    "react": "^16 || ^17 || ^18",
-    "react-dom": "^16 || ^17 || ^18"
+    "react": "^17 || ^18",
+    "react-dom": "^17 || ^18"
   }
 }
