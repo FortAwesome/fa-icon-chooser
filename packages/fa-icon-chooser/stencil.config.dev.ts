@@ -1,12 +1,16 @@
 import { Config } from '@stencil/core';
+import { config as baseConfig } from './stencil.config';
+import { join } from 'path';
 
 export const config: Config = {
-  namespace: 'fa-icon-chooser',
-  outputTargets: [
-    {
-      type: 'www',
-      serviceWorker: null, // disable service workers
-      copy: [{ src: '../dev', dest: 'dev' }],
-    },
-  ],
+  ...baseConfig,
+  outputTargets: baseConfig.outputTargets.map(target => {
+    if (target.type === 'www') {
+      return {
+        ...target,
+        copy: [{ src: join(__dirname, 'dev'), dest: 'dev' }],
+      };
+    }
+    return target;
+  }),
 };
