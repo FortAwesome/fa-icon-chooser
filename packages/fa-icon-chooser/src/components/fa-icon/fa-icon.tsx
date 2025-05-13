@@ -99,12 +99,10 @@ export class FaIcon {
 
     const { findIconDefinition } = this.svgApi;
 
-    const iconDefinition =
-      findIconDefinition &&
-      findIconDefinition({
-        prefix: this.stylePrefix,
-        iconName: this.name,
-      });
+    const iconDefinition = findIconDefinition?.({
+      prefix: this.stylePrefix,
+      iconName: this.name,
+    });
 
     if (iconDefinition) {
       this.setIconDefinition(iconDefinition);
@@ -126,33 +124,103 @@ export class FaIcon {
       return;
     }
 
-    this.loading = true;
-
-    const iconUrl = `${this.svgFetchBaseUrl}/${this.familyStylePathSegment}/${this.name}.svg?token=${this.kitToken}`;
+    const iconUrl = `${this.svgFetchBaseUrl}/${this.familyStylePathSegment}/${this.name}${this.svgFetchBaseUrl.includes('svg-objects') ? '.json' : '.svg'}?token=${this.kitToken}`;
 
     const library = get(this, 'svgApi.library');
 
-    if ('function' !== typeof this.getUrlText) {
-      console.error(`${CONSOLE_MESSAGE_PREFIX}: fa-icon: 'getUrlText' prop is absent but is necessary for fetching icon`, this);
+    if (!library || typeof library.add !== 'function') {
+      console.error(`${CONSOLE_MESSAGE_PREFIX}: fa-icon: svgApi library is not properly initialized`, this);
       return;
     }
 
-    this.getUrlText(iconUrl)
-      .then(svg => {
-        const iconDefinition = {
-          iconName: this.name,
-          prefix: this.stylePrefix,
-          icon: parseSvgText(svg),
-        };
-        library && library.add(iconDefinition);
-        this.setIconDefinition({ ...iconDefinition });
-      })
-      .catch(e => {
-        console.error(`${CONSOLE_MESSAGE_PREFIX}: fa-icon: failed when using 'getUrlText' to fetch icon`, e, this);
-      })
-      .finally(() => {
-        this.loading = false;
-      });
+    const processIconDefinition = (response: string) => {
+      let iconDefinition;
+
+      try {
+        if (iconUrl.endsWith('.json')) {
+          // For FA7+, parse the JSON response directly
+          const parsed = JSON.parse(response);
+
+          const iconData = Array.isArray(parsed) ? parsed : parsed.icon;
+
+          if (!iconData || !Array.isArray(iconData) || iconData.length < 5) {
+            throw new Error('Invalid icon data structure in JSON response');
+          }
+
+          iconDefinition = {
+            prefix: this.stylePrefix,
+            iconName: this.name,
+            icon: iconData,
+          };
+        } else {
+          // For FA6, parse the SVG response
+          try {
+            const svgData = parseSvgText(response);
+
+            if (!Array.isArray(svgData)) {
+              throw new Error('SVG parser did not return an array');
+            }
+
+            if (svgData.length < 5) {
+              throw new Error(`SVG data array has ${svgData.length} elements, expected 5 or more`);
+            }
+
+            // Validate individual elements
+            const [width, height, ligatures, _unicode, pathData] = svgData;
+            if (typeof width !== 'number' || typeof height !== 'number') {
+              throw new Error('Invalid width/height in SVG data');
+            }
+
+            if (!Array.isArray(ligatures)) {
+              throw new Error('Invalid ligatures array in SVG data');
+            }
+
+            if (typeof pathData !== 'string' && !Array.isArray(pathData)) {
+              throw new Error('Invalid path data in SVG data');
+            }
+
+            iconDefinition = {
+              iconName: this.name,
+              prefix: this.stylePrefix,
+              icon: svgData,
+            };
+          } catch (e) {
+            console.error(`${CONSOLE_MESSAGE_PREFIX}: SVG parsing error:`, e);
+            throw new Error(`SVG parsing error: ${e.message}`);
+          }
+        }
+
+        library.add(iconDefinition);
+        this.setIconDefinition(iconDefinition);
+      } catch (e) {
+        console.error(`${CONSOLE_MESSAGE_PREFIX}: fa-icon: failed to process icon definition:`, e);
+        throw e;
+      }
+    };
+
+    const fetchIcon = (fn: UrlTextFetcher) => {
+      this.loading = true;
+      fn(iconUrl)
+        .then(processIconDefinition)
+        .catch(e => {
+          console.error(`${CONSOLE_MESSAGE_PREFIX}: fa-icon: failed when using 'getUrlText' to fetch icon`, e, this);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    };
+
+    if ('function' !== typeof this.getUrlText) {
+      const getUrlTextFn = Object.getOwnPropertyDescriptor(this, 'getUrlText')?.get?.();
+
+      if ('function' !== typeof getUrlTextFn) {
+        console.error(`${CONSOLE_MESSAGE_PREFIX}: fa-icon: 'getUrlText' prop is absent but is necessary for fetching icon`, this);
+        return;
+      }
+      fetchIcon(getUrlTextFn);
+    } else {
+      fetchIcon(this.getUrlText);
+    }
   }
 
   buildSvg(iconDefinition: IconDefinition, extraClasses?: string) {
