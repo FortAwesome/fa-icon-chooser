@@ -1,51 +1,44 @@
 // This dev-only module isn't processed by the bundler like the others,
 // so we can't use a node env var to set this. Just hardcode it in one
 // place at the top.
-const API_URL = "https://api.fontawesome.com";
+const API_URL = 'https://api-epic.fontawesome.com';
 
 const FaIconChooserDevExports = (function () {
   let showingIconChooser = false;
   let localConfig = undefined;
-  const localDevMissingMsg =
-    "DEV: your local dev config in local.json is required but has not yet been loaded.";
+  const localDevMissingMsg = 'DEV: your local dev config in local.json is required but has not yet been loaded.';
 
   function getUrlText(url) {
     // To simulate a fatal error, uncomment the following line:
     // return Promise.reject('simulated fatal error')
 
-    return fetch(url)
-      .then((response) => {
-        if (response.ok) {
-          return response.text();
-        } else {
-          throw new Error(`DEBUG: bad query for url: ${url}`);
-        }
-      });
+    return fetch(url).then(response => {
+      if (response.ok) {
+        return response.text();
+      } else {
+        throw new Error(`DEBUG: bad query for url: ${url}`);
+      }
+    });
   }
 
   function handleQuery(query, variables) {
     return new Promise((resolve, reject) => {
       const headers = {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       };
 
       getAccessToken()
-        .then((token) => {
+        .then(token => {
           if (token) {
-            headers["Authorization"] = `Bearer ${token}`;
-            console.log(
-              "handleQuery: using fresh access token to issue authorized request",
-            );
+            headers['Authorization'] = `Bearer ${token}`;
           } else {
-            console.log(
-              "handleQuery: no access token found -- sending an unauthorized request",
-            );
+            console.log('handleQuery: no access token found -- sending an unauthorized request');
           }
 
-          const cleanedQuery = query.replace(/\s+/g, " ");
+          const cleanedQuery = query.replace(/\s+/g, ' ');
 
           return fetch(API_URL, {
-            method: "POST",
+            method: 'POST',
             headers,
             body: JSON.stringify({
               query: cleanedQuery,
@@ -53,45 +46,46 @@ const FaIconChooserDevExports = (function () {
             }),
           });
         })
-        .then((response) => {
+        .then(response => {
           if (response.ok) {
-            response.json()
-              .then((json) => resolve(json))
-              .catch((e) => reject(e));
+            response
+              .json()
+              .then(json => resolve(json))
+              .catch(e => reject(e));
           } else {
-            reject("bad query");
+            reject('bad query');
           }
         })
-        .catch((e) => reject(e));
+        .catch(e => reject(e));
     });
   }
 
   function handleResult(result) {
-    const resultElement = document.querySelector("#result");
-    const preElement = document.createElement("pre");
+    const resultElement = document.querySelector('#result');
+    const preElement = document.createElement('pre');
     const text = document.createTextNode(JSON.stringify(result.detail));
     preElement.appendChild(text);
     resultElement.appendChild(preElement);
   }
 
   function clearResult() {
-    document.querySelectorAll("#result pre").forEach((child) => child.remove());
+    document.querySelectorAll('#result pre').forEach(child => child.remove());
   }
 
   function addIconChooser(props) {
-    const container = document.querySelector("#fa-icon-chooser-container");
-    const el = document.createElement("fa-icon-chooser");
+    const container = document.querySelector('#fa-icon-chooser-container');
+    const el = document.createElement('fa-icon-chooser');
     el.handleQuery = handleQuery;
     el.getUrlText = getUrlText;
-    el.addEventListener("finish", handleResult);
+    el.addEventListener('finish', handleResult);
 
-    const slotFatalErrorHeader = document.createElement("p");
-    slotFatalErrorHeader.setAttribute("slot", "fatal-error-heading");
-    const slotFatalErrorHeaderMsg = document.createTextNode("Fatal Error");
+    const slotFatalErrorHeader = document.createElement('p');
+    slotFatalErrorHeader.setAttribute('slot', 'fatal-error-heading');
+    const slotFatalErrorHeaderMsg = document.createTextNode('Fatal Error');
     slotFatalErrorHeader.appendChild(slotFatalErrorHeaderMsg);
     el.appendChild(slotFatalErrorHeader);
 
-    Object.keys(props).map((prop) => {
+    Object.keys(props).map(prop => {
       el.setAttribute(prop, props[prop]);
     });
 
@@ -99,7 +93,7 @@ const FaIconChooserDevExports = (function () {
   }
 
   function closeIconChooser() {
-    document.querySelector("fa-icon-chooser").remove();
+    document.querySelector('fa-icon-chooser').remove();
   }
 
   function maybeOverrideEmbedProSvg() {
@@ -108,10 +102,10 @@ const FaIconChooserDevExports = (function () {
     // This override is subject to the Font Awesome plan license terms
     // at https://fontawesome.com/plans and https://fontawesome.com/support.
     if (!!localConfig?.overrideEmbedProSvg) {
-      window.__FA_SVG_EMBED__ = () => true
+      window.__FA_SVG_EMBED__ = () => true;
     }
 
-    return Promise.resolve()
+    return Promise.resolve();
   }
 
   function setupHead() {
@@ -121,9 +115,9 @@ const FaIconChooserDevExports = (function () {
 
     const { head } = localConfig;
 
-    Object.keys(head).map((elementType) => {
+    Object.keys(head).map(elementType => {
       const el = document.createElement(elementType);
-      Object.keys(head[elementType]).map((attr) => {
+      Object.keys(head[elementType]).map(attr => {
         el.setAttribute(attr, head[elementType][attr]);
       });
       document.head.appendChild(el);
@@ -134,15 +128,13 @@ const FaIconChooserDevExports = (function () {
     if (showingIconChooser) {
       closeIconChooser();
 
-      const toggleIconContainer = document.querySelector(
-        "#toggle-icon-container",
-      );
+      const toggleIconContainer = document.querySelector('#toggle-icon-container');
       if (toggleIconContainer) {
         while (toggleIconContainer.firstChild) {
           toggleIconContainer.removeChild(toggleIconContainer.firstChild);
         }
-        const newIcon = document.createElement("i");
-        newIcon.setAttribute("class", "fas fa-toggle-off");
+        const newIcon = document.createElement('i');
+        newIcon.setAttribute('class', 'fas fa-toggle-off');
         toggleIconContainer.appendChild(newIcon);
       }
 
@@ -151,15 +143,13 @@ const FaIconChooserDevExports = (function () {
     } else {
       showIconChooser();
 
-      const toggleIconContainer = document.querySelector(
-        "#toggle-icon-container",
-      );
+      const toggleIconContainer = document.querySelector('#toggle-icon-container');
       if (toggleIconContainer) {
         while (toggleIconContainer.firstChild) {
           toggleIconContainer.removeChild(toggleIconContainer.firstChild);
         }
-        const newIcon = document.createElement("i");
-        newIcon.setAttribute("class", "fas fa-toggle-on");
+        const newIcon = document.createElement('i');
+        newIcon.setAttribute('class', 'fas fa-toggle-on');
         toggleIconContainer.appendChild(newIcon);
       }
 
@@ -168,20 +158,20 @@ const FaIconChooserDevExports = (function () {
   }
 
   function loadLocalConfig() {
-    const failMsg = "DEV: failed request to get local.json:";
+    const failMsg = 'DEV: failed request to get local.json:';
 
-    return fetch("/dev/local.json")
-      .then((response) => {
+    return fetch('/dev/local.json')
+      .then(response => {
         if (response.ok) {
           return response.json();
         } else {
           return Promise.reject(response);
         }
       })
-      .then((config) => {
+      .then(config => {
         localConfig = config;
       })
-      .catch((e) => {
+      .catch(e => {
         console.error(failMsg, e);
         return Promise.reject(failMsg);
       });
@@ -193,50 +183,47 @@ const FaIconChooserDevExports = (function () {
       // If there's no apiToken, then it's not an error to resolve an undefined access token.
       return Promise.resolve(undefined);
     }
-    const tokenJSON = window.localStorage.getItem("token");
+    const tokenJSON = window.localStorage.getItem('token');
     const tokenObj = tokenJSON ? JSON.parse(tokenJSON) : undefined;
-    const freshToken = (tokenObj &&
-        Math.floor(Date.now() / 1000) <= tokenObj.expiresAtEpochSeconds)
-      ? tokenObj.token
-      : undefined;
+    const freshToken = tokenObj && Math.floor(Date.now() / 1000) <= tokenObj.expiresAtEpochSeconds ? tokenObj.token : undefined;
 
     if (freshToken) return Promise.resolve(freshToken);
 
     return fetch(`${API_URL}/token`, {
-      method: "POST",
+      method: 'POST',
       headers: {
         authorization: `Bearer ${localConfig.apiToken}`,
       },
     })
-      .then((response) => {
+      .then(response => {
         if (response.ok) {
-          response.json()
-            .then((obj) => {
-              const expiresAtEpochSeconds = Math.floor(Date.now() / 1000) +
-                obj["expires_in"];
+          response
+            .json()
+            .then(obj => {
+              const expiresAtEpochSeconds = Math.floor(Date.now() / 1000) + obj['expires_in'];
 
               // WARNING: storing an access token in localStorage may not be good enough
               // security in other situations. This is a development-only situation
               // intended to run on a local development machine, so this seems like
               // good enough security for that use case.
               window.localStorage.setItem(
-                "token",
+                'token',
                 JSON.stringify({
-                  token: obj["access_token"],
+                  token: obj['access_token'],
                   expiresAtEpochSeconds,
                 }),
               );
             })
-            .catch((e) => {
+            .catch(e => {
               throw e;
             });
         } else {
-          const msg = "DEV: unexpected token endpoint response";
+          const msg = 'DEV: unexpected token endpoint response';
           console.error(msg, response);
           throw new Error(msg);
         }
       })
-      .catch((e) => {
+      .catch(e => {
         throw e;
       });
   }
@@ -244,24 +231,22 @@ const FaIconChooserDevExports = (function () {
   function showIconChooser() {
     if (!localConfig) throw new Error(localDevMissingMsg);
     if (!localConfig.props) {
-      throw new Error("DEV: missing props key in your local.json");
+      throw new Error('DEV: missing props key in your local.json');
     }
 
     const { props } = localConfig;
 
-    if (!props["kit-token"]) {
+    if (!props['kit-token']) {
       if (!props.version) {
-        throw new Error(
-          "DEV: your local.json must have a props key with either a version subkey or a kit-token subkey",
-        );
+        throw new Error('DEV: your local.json must have a props key with either a version subkey or a kit-token subkey');
       }
       addIconChooser(props);
       return;
     }
 
     getAccessToken()
-      .then((_token) => addIconChooser(props))
-      .catch((e) => {
+      .then(_token => addIconChooser(props))
+      .catch(e => {
         throw e;
       });
   }
@@ -273,15 +258,15 @@ const FaIconChooserDevExports = (function () {
   loadLocalConfig()
     .then(maybeOverrideEmbedProSvg)
     .then(setupHead)
-    .catch((e) => {
+    .catch(e => {
       throw e;
     });
 
-  document.addEventListener("DOMContentLoaded", function () {
-    const toggle = document.querySelector("#fa-icon-chooser-toggle");
+  document.addEventListener('DOMContentLoaded', function () {
+    const toggle = document.querySelector('#fa-icon-chooser-toggle');
 
     if (toggle) {
-      toggle.addEventListener("click", toggleIconChooser);
+      toggle.addEventListener('click', toggleIconChooser);
     }
   });
 
@@ -294,6 +279,6 @@ const FaIconChooserDevExports = (function () {
   };
 })();
 
-if ("undefined" !== typeof module) {
+if ('undefined' !== typeof module) {
   module.exports = FaIconChooserDevExports;
 }
