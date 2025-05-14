@@ -211,16 +211,10 @@ export class FaIcon {
     };
 
     if ('function' !== typeof this.getUrlText) {
-      const getUrlTextFn = Object.getOwnPropertyDescriptor(this, 'getUrlText')?.get?.();
-
-      if ('function' !== typeof getUrlTextFn) {
-        console.error(`${CONSOLE_MESSAGE_PREFIX}: fa-icon: 'getUrlText' prop is absent but is necessary for fetching icon`, this);
-        return;
-      }
-      fetchIcon(getUrlTextFn);
-    } else {
-      fetchIcon(this.getUrlText);
+      console.error(`${CONSOLE_MESSAGE_PREFIX}: fa-icon: 'getUrlText' prop is absent but is necessary for fetching icon`, this);
+      return;
     }
+    fetchIcon(this.getUrlText);
   }
 
   buildSvg(iconDefinition: IconDefinition, extraClasses?: string) {
