@@ -61,7 +61,7 @@ export interface IconDefinition extends IconLookup {
 
 export type IconChooserResult = IconLookup | IconDefinition;
 
-const viewBoxRe = /viewBox="0 0 ([0-9]+) ([0-9]+)"/;
+const viewBoxRe = /viewBox="([0-9]+[\s,]+[0-9]+[\s,]+[0-9]+[\s,]+[0-9]+)"/;
 const singlePathRe = /path d="([^"]+)"/;
 const duotonePathRe = [
   /path d="(?<d1>[^"]+)".*path d="(?<d2>[^"]+)"/,
@@ -77,19 +77,20 @@ export function parseSvgText(svgText) {
     throw new Error('Empty SVG text');
   }
 
-  // try to parse json
-  try {
-    const jsonData = JSON.parse(svgText);
-
-    if (jsonData && Array.isArray(jsonData.icon) && jsonData.icon.length >= 5) {
-      return jsonData.icon;
-    }
-  } catch (e) {
-    console.error('Not a JSON response', e);
-  }
-
   let val = null;
   let path = null;
+
+  // If the input starts with {, try parsing as JSON first
+  if (svgText.trim().startsWith('{')) {
+    try {
+      const jsonData = JSON.parse(svgText);
+      if (jsonData && Array.isArray(jsonData.icon) && jsonData.icon.length >= 5) {
+        return jsonData.icon;
+      }
+    } catch (e) {
+      // Silently fail JSON parsing and continue with SVG parsing
+    }
+  }
 
   // Clean up any whitespace and normalize quotes
   const cleanSvg = svgText.replace(/\s+/g, ' ').trim();
@@ -102,12 +103,14 @@ export function parseSvgText(svgText) {
   }
 
   // Parse the viewBox values
-  const [viewBoxValues] = viewBox;
+  const dimensions = viewBox[1]
+    .trim()
+    .split(/[\s,]+/)
+    .map(Number);
+  const [_x, _y, width, height] = dimensions;
 
-  const [_x, _y, width, height] = viewBoxValues.split(/[\s,]+/).map(Number);
-
-  if (isNaN(width) || isNaN(height)) {
-    console.error(`${CONSOLE_MESSAGE_PREFIX}: Invalid viewBox dimensions:`, { width, height });
+  if (dimensions.length !== 4 || isNaN(width) || isNaN(height)) {
+    console.error(`${CONSOLE_MESSAGE_PREFIX}: Invalid viewBox dimensions:`, { dimensions, width, height });
     throw new Error('Invalid viewBox dimensions');
   }
 

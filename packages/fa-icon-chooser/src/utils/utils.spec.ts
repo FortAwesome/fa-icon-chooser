@@ -49,6 +49,43 @@ describe('parseSvgText', () => {
   it('tests duotone with only secondary', () => {
     expect(parseSvgText(duotoneSvgOnlySecondary)).toEqual([640, 512, [], null, ['M2 2 h2 z', '']]);
   });
+
+  describe('JSON format', () => {
+    it('parses valid JSON icon format', () => {
+      const jsonIcon = JSON.stringify({
+        icon: [640, 512, [], null, 'M1 1 h1 z'],
+      });
+      expect(parseSvgText(jsonIcon)).toEqual([640, 512, [], null, 'M1 1 h1 z']);
+    });
+
+    it('falls back to SVG parsing when JSON is invalid', () => {
+      const invalidJson = '{ bad json }' + normalSvg;
+      expect(parseSvgText(invalidJson)).toEqual([640, 512, [], null, 'M1 1 h1 z']);
+    });
+
+    it('falls back to SVG parsing when JSON does not match icon format', () => {
+      const validJsonButNotIcon = JSON.stringify({ foo: 'bar' }) + normalSvg;
+      expect(parseSvgText(validJsonButNotIcon)).toEqual([640, 512, [], null, 'M1 1 h1 z']);
+    });
+  });
+
+  describe('viewBox formats', () => {
+    const svgWithSpaces = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0  0   640    512"><path d="M1 1 h1 z"/></svg>`;
+    const svgWithCommas = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0,0,640,512"><path d="M1 1 h1 z"/></svg>`;
+    const svgWithMixedDelimiters = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0,0 640,  512"><path d="M1 1 h1 z"/></svg>`;
+
+    it('handles multiple spaces in viewBox', () => {
+      expect(parseSvgText(svgWithSpaces)).toEqual([640, 512, [], null, 'M1 1 h1 z']);
+    });
+
+    it('handles comma-separated viewBox values', () => {
+      expect(parseSvgText(svgWithCommas)).toEqual([640, 512, [], null, 'M1 1 h1 z']);
+    });
+
+    it('handles mixed space and comma delimiters in viewBox', () => {
+      expect(parseSvgText(svgWithMixedDelimiters)).toEqual([640, 512, [], null, 'M1 1 h1 z']);
+    });
+  });
 });
 
 describe('IconChooserResult typing', () => {
