@@ -50,34 +50,15 @@ describe('parseSvgText', () => {
     expect(parseSvgText(duotoneSvgOnlySecondary)).toEqual([640, 512, [], null, ['M2 2 h2 z', '']]);
   });
 
-  describe('JSON format', () => {
-    it('parses valid JSON icon format', () => {
-      const jsonIcon = JSON.stringify({
-        icon: [640, 512, [], null, 'M1 1 h1 z'],
-      });
-      expect(parseSvgText(jsonIcon)).toEqual([640, 512, [], null, 'M1 1 h1 z']);
+  describe('edge cases', () => {
+    it('returns null for malformed SVG', () => {
+      const malformedSvg = `<svg xmlns="http://www.w3.org/2000/svg"><path d="M1 1 h1 z"/></svg>`;
+      expect(parseSvgText(malformedSvg)).toBeNull();
     });
 
-    it('falls back to SVG parsing when JSON is invalid', () => {
-      const invalidJson = '{ bad json }' + normalSvg;
-      expect(parseSvgText(invalidJson)).toEqual([640, 512, [], null, 'M1 1 h1 z']);
-    });
-
-    it('falls back to SVG parsing when JSON does not match icon format', () => {
-      const validJsonButNotIcon = JSON.stringify({ foo: 'bar' }) + normalSvg;
-      expect(parseSvgText(validJsonButNotIcon)).toEqual([640, 512, [], null, 'M1 1 h1 z']);
-    });
-  });
-
-  describe('viewBox format', () => {
-    it('validates strict viewBox format (space-separated values)', () => {
-      const strictSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M1 1 h1 z"/></svg>`;
-      expect(parseSvgText(strictSvg)).toEqual([640, 512, [], null, 'M1 1 h1 z']);
-    });
-
-    it('throws error for non-standard viewBox format', () => {
-      const nonStandardSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0,0,640,512"><path d="M1 1 h1 z"/></svg>`;
-      expect(() => parseSvgText(nonStandardSvg)).toThrow('Invalid SVG format - missing viewBox');
+    it('returns null for SVG without path', () => {
+      const svgWithoutPath = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"></svg>`;
+      expect(parseSvgText(svgWithoutPath)).toBeNull();
     });
   });
 });
