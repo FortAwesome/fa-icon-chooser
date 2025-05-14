@@ -61,7 +61,7 @@ export interface IconDefinition extends IconLookup {
 
 export type IconChooserResult = IconLookup | IconDefinition;
 
-const viewBoxRe = /viewBox="([0-9]+[\s,]+[0-9]+[\s,]+[0-9]+[\s,]+[0-9]+)"/;
+const viewBoxRe = /viewBox="0 0 ([0-9]+) ([0-9]+)"/;
 const singlePathRe = /path d="([^"]+)"/;
 const duotonePathRe = [
   /path d="(?<d1>[^"]+)".*path d="(?<d2>[^"]+)"/,
@@ -102,15 +102,15 @@ export function parseSvgText(svgText) {
     throw new Error('Invalid SVG format - missing viewBox');
   }
 
-  // Parse the viewBox values
-  const dimensions = viewBox[1]
-    .trim()
-    .split(/[\s,]+/)
-    .map(Number);
-  const [_x, _y, width, height] = dimensions;
+  // Parse the viewBox values - we know the format will be "0 0 width height"
+  const [, width, height] = viewBox;
 
-  if (dimensions.length !== 4 || isNaN(width) || isNaN(height)) {
-    console.error(`${CONSOLE_MESSAGE_PREFIX}: Invalid viewBox dimensions:`, { dimensions, width, height });
+  // Convert to numbers for validation
+  const numWidth = Number(width);
+  const numHeight = Number(height);
+
+  if (isNaN(numWidth) || isNaN(numHeight)) {
+    console.error(`${CONSOLE_MESSAGE_PREFIX}: Invalid viewBox dimensions:`, { width, height });
     throw new Error('Invalid viewBox dimensions');
   }
 
@@ -141,7 +141,7 @@ export function parseSvgText(svgText) {
   }
 
   // Create the icon array format that FontAwesome expects
-  val = [width, height, [], null, path];
+  val = [numWidth, numHeight, [], null, path];
 
   return val;
 }

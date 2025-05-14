@@ -69,21 +69,15 @@ describe('parseSvgText', () => {
     });
   });
 
-  describe('viewBox formats', () => {
-    const svgWithSpaces = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0  0   640    512"><path d="M1 1 h1 z"/></svg>`;
-    const svgWithCommas = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0,0,640,512"><path d="M1 1 h1 z"/></svg>`;
-    const svgWithMixedDelimiters = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0,0 640,  512"><path d="M1 1 h1 z"/></svg>`;
-
-    it('handles multiple spaces in viewBox', () => {
-      expect(parseSvgText(svgWithSpaces)).toEqual([640, 512, [], null, 'M1 1 h1 z']);
+  describe('viewBox format', () => {
+    it('validates strict viewBox format (space-separated values)', () => {
+      const strictSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M1 1 h1 z"/></svg>`;
+      expect(parseSvgText(strictSvg)).toEqual([640, 512, [], null, 'M1 1 h1 z']);
     });
 
-    it('handles comma-separated viewBox values', () => {
-      expect(parseSvgText(svgWithCommas)).toEqual([640, 512, [], null, 'M1 1 h1 z']);
-    });
-
-    it('handles mixed space and comma delimiters in viewBox', () => {
-      expect(parseSvgText(svgWithMixedDelimiters)).toEqual([640, 512, [], null, 'M1 1 h1 z']);
+    it('throws error for non-standard viewBox format', () => {
+      const nonStandardSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0,0,640,512"><path d="M1 1 h1 z"/></svg>`;
+      expect(() => parseSvgText(nonStandardSvg)).toThrow('Invalid SVG format - missing viewBox');
     });
   });
 });
