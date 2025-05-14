@@ -62,44 +62,52 @@ export class FaIcon {
     this.iconDefinition = iconDefinition;
     if ('function' === typeof this.emitIconDefinition) {
       this.emitIconDefinition(iconDefinition);
+    } else {
+      console.log(`${CONSOLE_MESSAGE_PREFIX}: No emitIconDefinition callback provided`);
     }
   }
 
   componentWillLoad() {
+    // Handle icon upload case
     if (this.iconUpload) {
       this.setIconDefinition({
         prefix: this.stylePrefix,
         iconName: this.iconUpload.name,
         icon: [parseInt(`${this.iconUpload.width}`), parseInt(`${this.iconUpload.height}`), [], this.iconUpload.unicode.toString(16), this.iconUpload.pathData],
       });
-
       return;
     }
 
+    // Handle pre-defined icon case
     if (this.icon) {
       this.setIconDefinition(this.icon);
-
       return;
     }
 
-    if (!this.svgApi) {
-      console.error(`${CONSOLE_MESSAGE_PREFIX}: fa-icon: svgApi prop is needed but is missing`, this);
+    // Validate required props for dynamic loading
+    const missingProps = [];
+    if (!this.svgApi) missingProps.push('svgApi');
+    if (!this.stylePrefix) missingProps.push('stylePrefix');
+    if (!this.name) missingProps.push('name');
+    if (!this.familyStylePathSegment) missingProps.push('familyStylePathSegment');
+    if (!this.svgFetchBaseUrl) missingProps.push('svgFetchBaseUrl');
+    if (!this.kitToken) missingProps.push('kitToken');
+    if (!this.getUrlText) missingProps.push('getUrlText');
+
+    if (missingProps.length > 0) {
+      console.error(`${CONSOLE_MESSAGE_PREFIX}: Missing required props:`, missingProps);
       return;
     }
 
-    if (!(this.stylePrefix && this.name)) {
-      console.error(`${CONSOLE_MESSAGE_PREFIX}: fa-icon: the 'stylePrefix' and 'name' props are needed to render this icon but not provided.`, this);
+    // Validate SVG API availability
+    const { findIconDefinition, library } = this.svgApi || {};
+    if (!findIconDefinition || !library?.add) {
+      console.error(`${CONSOLE_MESSAGE_PREFIX}: Invalid svgApi - missing findIconDefinition or library.add`);
       return;
     }
 
-    if (!this.familyStylePathSegment) {
-      console.error(`${CONSOLE_MESSAGE_PREFIX}: fa-icon: the 'familyStylePathSegment' prop is required to render this icon but not provided.`, this);
-      return;
-    }
-
-    const { findIconDefinition } = this.svgApi;
-
-    const iconDefinition = findIconDefinition?.({
+    // Try to find icon definition in existing library
+    const iconDefinition = findIconDefinition({
       prefix: this.stylePrefix,
       iconName: this.name,
     });
@@ -109,118 +117,74 @@ export class FaIcon {
       return;
     }
 
-    if (!this.pro) {
-      console.error(`${CONSOLE_MESSAGE_PREFIX}: fa-icon: 'pro' prop is false but no free icon is available`, this);
-      return;
-    }
-
-    if (!this.svgFetchBaseUrl) {
-      console.error(`${CONSOLE_MESSAGE_PREFIX}: fa-icon: 'svgFetchBaseUrl' prop is absent but is necessary for fetching icon`, this);
-      return;
-    }
-
-    if (!this.kitToken) {
-      console.error(`${CONSOLE_MESSAGE_PREFIX}: fa-icon: 'kitToken' prop is absent but is necessary for accessing icon`, this);
-      return;
-    }
-
+    // Construct the icon URL and set up processing function
     const iconUrl = `${this.svgFetchBaseUrl}/${this.familyStylePathSegment}/${this.name}${this.svgFetchBaseUrl.includes('svg-objects') ? '.json' : '.svg'}?token=${this.kitToken}`;
 
-    const library = get(this, 'svgApi.library');
-
-    if (!library || typeof library.add !== 'function') {
-      console.error(`${CONSOLE_MESSAGE_PREFIX}: fa-icon: svgApi library is not properly initialized`, this);
-      return;
-    }
-
     const processIconDefinition = (response: string) => {
+      if (!response) {
+        throw new Error('Empty response received from fetch');
+      }
       let iconDefinition;
 
       try {
-        if (iconUrl.endsWith('.json')) {
-          // For FA7+, parse the JSON response directly
-          const parsed = JSON.parse(response);
+        const parsed = this.svgFetchBaseUrl.includes('svg-objects') ? JSON.parse(response) : parseSvgText(response);
 
-          const iconData = Array.isArray(parsed) ? parsed : parsed.icon;
-
-          if (!iconData || !Array.isArray(iconData) || iconData.length < 5) {
-            throw new Error('Invalid icon data structure in JSON response');
-          }
-
-          iconDefinition = {
-            prefix: this.stylePrefix,
-            iconName: this.name,
-            icon: iconData,
-          };
-        } else {
-          // For FA6, parse the SVG response
-          try {
-            const svgData = parseSvgText(response);
-
-            if (!Array.isArray(svgData)) {
-              throw new Error('SVG parser did not return an array');
-            }
-
-            if (svgData.length < 5) {
-              throw new Error(`SVG data array has ${svgData.length} elements, expected 5 or more`);
-            }
-
-            // Validate individual elements
-            const [width, height, ligatures, _unicode, pathData] = svgData;
-            if (typeof width !== 'number' || typeof height !== 'number') {
-              throw new Error('Invalid width/height in SVG data');
-            }
-
-            if (!Array.isArray(ligatures)) {
-              throw new Error('Invalid ligatures array in SVG data');
-            }
-
-            if (typeof pathData !== 'string' && !Array.isArray(pathData)) {
-              throw new Error('Invalid path data in SVG data');
-            }
-
-            iconDefinition = {
-              iconName: this.name,
-              prefix: this.stylePrefix,
-              icon: svgData,
-            };
-          } catch (e) {
-            console.error(`${CONSOLE_MESSAGE_PREFIX}: SVG parsing error:`, e);
-            throw new Error(`SVG parsing error: ${e.message}`);
-          }
+        if (!parsed) {
+          throw new Error('Failed to parse response');
         }
 
-        library.add(iconDefinition);
+        const iconData = Array.isArray(parsed) ? parsed : parsed.icon;
+
+        if (!iconData || !Array.isArray(iconData) || iconData.length < 5) {
+          throw new Error(`Invalid icon data: ${JSON.stringify(iconData)}`);
+        }
+
+        iconDefinition = {
+          prefix: this.stylePrefix,
+          iconName: this.name,
+          icon: iconData,
+        };
+
+        this.svgApi.library.add(iconDefinition);
         this.setIconDefinition(iconDefinition);
       } catch (e) {
-        console.error(`${CONSOLE_MESSAGE_PREFIX}: fa-icon: failed to process icon definition:`, e);
+        console.error(`${CONSOLE_MESSAGE_PREFIX}: Error processing icon:`, e);
         throw e;
       }
     };
 
-    const fetchIcon = (fn: UrlTextFetcher) => {
-      this.loading = true;
-      fn(iconUrl)
-        .then(processIconDefinition)
-        .catch(e => {
-          console.error(`${CONSOLE_MESSAGE_PREFIX}: fa-icon: failed when using 'getUrlText' to fetch icon`, e, this);
-        })
-        .finally(() => {
-          this.loading = false;
-        });
-    };
-
-    if ('function' !== typeof this.getUrlText) {
-      console.error(`${CONSOLE_MESSAGE_PREFIX}: fa-icon: 'getUrlText' prop is absent but is necessary for fetching icon`, this);
+    // Call getUrlText with constructed URL
+    if (!this.getUrlText) {
+      console.error(`${CONSOLE_MESSAGE_PREFIX}: getUrlText callback is missing`);
       return;
     }
-    fetchIcon(this.getUrlText);
+
+    this.loading = true;
+    this.getUrlText(iconUrl)
+      .then(processIconDefinition)
+      .catch(e => {
+        console.error(`${CONSOLE_MESSAGE_PREFIX}: Failed to fetch icon ${iconUrl}:`, e);
+        throw e;
+      })
+      .finally(() => {
+        this.loading = false;
+      });
   }
 
   buildSvg(iconDefinition: IconDefinition, extraClasses?: string) {
-    if (!iconDefinition) return;
+    if (!iconDefinition) {
+      console.log(`${CONSOLE_MESSAGE_PREFIX}: No icon definition provided to buildSvg`);
+      return;
+    }
 
-    const [width, height, , , svgPathData] = get(iconDefinition, 'icon', []);
+    const iconData = get(iconDefinition, 'icon', []);
+
+    const [width, height, , , svgPathData] = iconData;
+
+    if (!width || !height || !svgPathData) {
+      console.log(`${CONSOLE_MESSAGE_PREFIX}: Missing required SVG properties`, { width, height, svgPathData });
+      return;
+    }
 
     const classes = ['svg-inline--fa'];
 
