@@ -99,7 +99,6 @@ export class FaIcon {
       return;
     }
 
-    // Validate SVG API availability
     const { findIconDefinition, library } = this.svgApi || {};
     if (!findIconDefinition || !library?.add) {
       console.error(`${CONSOLE_MESSAGE_PREFIX}: Invalid svgApi - missing findIconDefinition or library.add`);
@@ -153,7 +152,6 @@ export class FaIcon {
       }
     };
 
-    // Call getUrlText with constructed URL
     if (!this.getUrlText) {
       console.error(`${CONSOLE_MESSAGE_PREFIX}: getUrlText callback is missing`);
       return;
