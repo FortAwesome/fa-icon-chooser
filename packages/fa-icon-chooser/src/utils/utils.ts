@@ -72,52 +72,14 @@ const duotonePathRe = [
 export const CONSOLE_MESSAGE_PREFIX = 'Font Awesome Icon Chooser';
 
 export function parseSvgText(svgText) {
-  if (!svgText) {
-    console.error(`${CONSOLE_MESSAGE_PREFIX}: Empty SVG text received`);
-    throw new Error('Empty SVG text');
-  }
-
   let val = null;
   let path = null;
+  const viewBox = svgText.match(viewBoxRe);
+  const singlePath = svgText.match(singlePathRe);
+  const duotonePath = svgText.match(duotonePathRe[0]) || svgText.match(duotonePathRe[1]) || svgText.match(duotonePathRe[2]);
 
-  // If the input starts with {, try parsing as JSON first
-  if (svgText.trim().startsWith('{')) {
-    try {
-      const jsonData = JSON.parse(svgText);
-      if (jsonData && Array.isArray(jsonData.icon) && jsonData.icon.length >= 5) {
-        return jsonData.icon;
-      }
-    } catch (e) {
-      // Silently fail JSON parsing and continue with SVG parsing
-    }
-  }
-
-  // Clean up any whitespace and normalize quotes
-  const cleanSvg = svgText.replace(/\s+/g, ' ').trim();
-
-  const viewBox = cleanSvg.match(viewBoxRe);
-
-  if (!viewBox) {
-    console.error(`${CONSOLE_MESSAGE_PREFIX}: Invalid SVG format - missing viewBox. SVG text:`, cleanSvg);
-    throw new Error('Invalid SVG format - missing viewBox');
-  }
-
-  // Parse the viewBox values - we know the format will be "0 0 width height"
-  const [, width, height] = viewBox;
-
-  // Convert to numbers for validation
-  const numWidth = Number(width);
-  const numHeight = Number(height);
-
-  if (isNaN(numWidth) || isNaN(numHeight)) {
-    console.error(`${CONSOLE_MESSAGE_PREFIX}: Invalid viewBox dimensions:`, { width, height });
-    throw new Error('Invalid viewBox dimensions');
-  }
-
-  // try to match duotone paths
-  const duotonePath = cleanSvg.match(duotonePathRe[0]) || cleanSvg.match(duotonePathRe[1]) || cleanSvg.match(duotonePathRe[2]);
   if (duotonePath) {
-    const { cls1, d1, cls2, d2 } = duotonePath.groups || {};
+    const { cls1, d1, cls2, d2 } = duotonePath.groups;
 
     if (d1 && d2 && !cls1 && !cls2) {
       path = [d1, d2];
@@ -126,22 +88,13 @@ export function parseSvgText(svgText) {
     } else if (d1 && d2 && cls1 && cls2) {
       path = cls1.indexOf('primary') > -1 ? [d2, d1] : [d1, d2];
     }
-  } else {
-    // Try to match single path
-    const singlePath = cleanSvg.match(singlePathRe);
-
-    if (singlePath && singlePath.length === 2) {
-      path = singlePath[1];
-    }
+  } else if (singlePath && singlePath.length === 2) {
+    path = singlePath[1];
   }
 
-  if (!path) {
-    console.error(`${CONSOLE_MESSAGE_PREFIX}: Invalid SVG format - no path data found. SVG text:`, cleanSvg);
-    throw new Error('Invalid SVG format - no path data found');
+  if (viewBox && path) {
+    val = [parseInt(viewBox[1], 10), parseInt(viewBox[2], 10), [], null, path];
   }
-
-  // Create the icon array format that FontAwesome expects
-  val = [numWidth, numHeight, [], null, path];
 
   return val;
 }
