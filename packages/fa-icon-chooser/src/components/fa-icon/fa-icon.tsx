@@ -97,12 +97,14 @@ export class FaIcon {
       return;
     }
 
-    const { findIconDefinition } = this.svgApi || {};
+    const { findIconDefinition } = this.svgApi;
 
-    const iconDefinition = findIconDefinition({
-      prefix: this.stylePrefix,
-      iconName: this.name,
-    });
+    const iconDefinition =
+      findIconDefinition &&
+      findIconDefinition({
+        prefix: this.stylePrefix,
+        iconName: this.name,
+      });
 
     if (iconDefinition) {
       this.setIconDefinition(iconDefinition);
