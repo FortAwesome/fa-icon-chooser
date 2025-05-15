@@ -62,8 +62,6 @@ export class FaIcon {
     this.iconDefinition = iconDefinition;
     if ('function' === typeof this.emitIconDefinition) {
       this.emitIconDefinition(iconDefinition);
-    } else {
-      console.log(`${CONSOLE_MESSAGE_PREFIX}: No emitIconDefinition callback provided`);
     }
   }
 
