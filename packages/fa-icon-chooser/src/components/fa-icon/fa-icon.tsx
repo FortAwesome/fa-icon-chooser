@@ -97,9 +97,8 @@ export class FaIcon {
       return;
     }
 
-    const { findIconDefinition, library } = this.svgApi || {};
+    const { findIconDefinition } = this.svgApi || {};
 
-    // Try to find icon definition in existing library
     const iconDefinition = findIconDefinition({
       prefix: this.stylePrefix,
       iconName: this.name,
@@ -124,7 +123,6 @@ export class FaIcon {
       console.error(`${CONSOLE_MESSAGE_PREFIX}: fa-icon: 'kitToken' prop is absent but is necessary for accessing icon`, this);
       return;
     }
-
 
     // Construct the icon URL and set up processing function
     const iconUrl = `${this.svgFetchBaseUrl}/${this.familyStylePathSegment}/${this.name}${this.svgFetchBaseUrl.includes('svg-objects') ? '.json' : '.svg'}?token=${this.kitToken}`;
