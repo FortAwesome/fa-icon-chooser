@@ -84,26 +84,22 @@ export class FaIcon {
       return;
     }
 
-    // Validate required props for dynamic loading
-    const missingProps = [];
-    if (!this.svgApi) missingProps.push('svgApi');
-    if (!this.stylePrefix) missingProps.push('stylePrefix');
-    if (!this.name) missingProps.push('name');
-    if (!this.familyStylePathSegment) missingProps.push('familyStylePathSegment');
-    if (!this.svgFetchBaseUrl) missingProps.push('svgFetchBaseUrl');
-    if (!this.kitToken) missingProps.push('kitToken');
-    if (!this.getUrlText) missingProps.push('getUrlText');
+    if (!this.svgApi) {
+      console.error(`${CONSOLE_MESSAGE_PREFIX}: fa-icon: svgApi prop is needed but is missing`, this);
+      return;
+    }
 
-    if (missingProps.length > 0) {
-      console.error(`${CONSOLE_MESSAGE_PREFIX}: Missing required props:`, missingProps);
+    if (!(this.stylePrefix && this.name)) {
+      console.error(`${CONSOLE_MESSAGE_PREFIX}: fa-icon: the 'stylePrefix' and 'name' props are needed to render this icon but not provided.`, this);
+      return;
+    }
+
+    if (!this.familyStylePathSegment) {
+      console.error(`${CONSOLE_MESSAGE_PREFIX}: fa-icon: the 'familyStylePathSegment' prop is required to render this icon but not provided.`, this);
       return;
     }
 
     const { findIconDefinition, library } = this.svgApi || {};
-    if (!findIconDefinition || !library?.add) {
-      console.error(`${CONSOLE_MESSAGE_PREFIX}: Invalid svgApi - missing findIconDefinition or library.add`);
-      return;
-    }
 
     // Try to find icon definition in existing library
     const iconDefinition = findIconDefinition({
@@ -115,6 +111,22 @@ export class FaIcon {
       this.setIconDefinition(iconDefinition);
       return;
     }
+
+    if (!this.pro) {
+      console.error(`${CONSOLE_MESSAGE_PREFIX}: fa-icon: 'pro' prop is false but no free icon is available`, this);
+      return;
+    }
+
+    if (!this.svgFetchBaseUrl) {
+      console.error(`${CONSOLE_MESSAGE_PREFIX}: fa-icon: 'svgFetchBaseUrl' prop is absent but is necessary for fetching icon`, this);
+      return;
+    }
+
+    if (!this.kitToken) {
+      console.error(`${CONSOLE_MESSAGE_PREFIX}: fa-icon: 'kitToken' prop is absent but is necessary for accessing icon`, this);
+      return;
+    }
+
 
     // Construct the icon URL and set up processing function
     const iconUrl = `${this.svgFetchBaseUrl}/${this.familyStylePathSegment}/${this.name}${this.svgFetchBaseUrl.includes('svg-objects') ? '.json' : '.svg'}?token=${this.kitToken}`;
