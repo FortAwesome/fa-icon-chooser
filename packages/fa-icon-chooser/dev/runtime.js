@@ -1,7 +1,7 @@
 // This dev-only module isn't processed by the bundler like the others,
 // so we can't use a node env var to set this. Just hardcode it in one
 // place at the top.
-const API_URL = 'https://api.fontawesome.com';
+const API_URL = 'https://api-epic.fontawesome.com';
 
 const FaIconChooserDevExports = (function () {
   let showingIconChooser = false;
