@@ -60,7 +60,7 @@
     "jest": "^29.7.0",
     "jest-cli": "^29.7.0",
     "puppeteer": "^21.9.0",
-    "@fortawesome/fontawesome-common-types": "^6.5.2",
+    "@fortawesome/fontawesome-common-types": "file:fortawesome-fontawesome-common-types-7.0.0-alpha9.tgz",
     "lodash": "^4.17.21",
     "semver": "^6.3.0",
     "@stencil/react-output-target": "^0.8.2",
