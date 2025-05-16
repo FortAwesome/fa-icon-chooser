@@ -390,11 +390,14 @@ export class FaIconChooser {
     this.preload()
       .then(() => {
         const pro = this.pro();
-
         const baseUrl = this.kitToken ? kitAssetsBaseUrl(pro) : freeCdnBaseUrl();
+        const version = this.resolvedVersion();
 
         if (pro) {
-          this.svgFetchBaseUrl = `${baseUrl}/releases/v${this.resolvedVersion()}/svgs`;
+          // For FA7+ and newer, use svg-objects endpoint with JSON format
+          // For FA6 and older, use svgs endpoint with SVG format
+          const majorVersion = parseInt(version.split('.')[0]);
+          this.svgFetchBaseUrl = `${baseUrl}/releases/v${version}/${majorVersion >= 7 ? 'svg-objects' : 'svgs'}`;
         } else {
           // If we haven't already added prefixes for the Free familyStyles, add them now.
           if (this.embedSvgPrefixes.size === 0) {
