@@ -106,6 +106,14 @@ export class FaIconChooser {
   getUrlText: UrlTextFetcher;
 
   /**
+   * For internal use when testing. This overrides the base URL to use for fetching
+   * assets from a Kit. Under normal circumstances, this should not be set.
+   * The default values will be set appropriately using pre-configured official CDN URLs.
+   */
+  @Prop()
+  _assetsBaseUrl: string | undefined;
+
+  /**
    * Clients of the Icon Chooser should listen for this event in order to handle
    * the result of the user's interaction.
    *
@@ -390,7 +398,7 @@ export class FaIconChooser {
     this.preload()
       .then(() => {
         const pro = this.pro();
-        const baseUrl = this.kitToken ? kitAssetsBaseUrl(pro) : freeCdnBaseUrl();
+        const baseUrl = this._assetsBaseUrl || (this.kitToken ? kitAssetsBaseUrl(pro) : freeCdnBaseUrl());
         const version = this.resolvedVersion();
 
         if (pro) {

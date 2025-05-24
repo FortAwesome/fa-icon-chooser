@@ -31,6 +31,10 @@ export namespace Components {
     }
     interface FaIconChooser {
         /**
+          * For internal use when testing. This overrides the base URL to use for fetching assets from a Kit. Under normal circumstances, this should not be set. The default values will be set appropriately using pre-configured official CDN URLs.
+         */
+        "_assetsBaseUrl": string | undefined;
+        /**
           * Callback function that returns the text body of a response that corresponds to an HTTP GET request for the given URL. For example, it would be the result of [Response.text()](https://developer.mozilla.org/en-US/docs/Web/API/Response/text).
          */
         "getUrlText": UrlTextFetcher;
@@ -110,6 +114,10 @@ declare namespace LocalJSX {
         "svgFetchBaseUrl"?: string;
     }
     interface FaIconChooser {
+        /**
+          * For internal use when testing. This overrides the base URL to use for fetching assets from a Kit. Under normal circumstances, this should not be set. The default values will be set appropriately using pre-configured official CDN URLs.
+         */
+        "_assetsBaseUrl"?: string | undefined;
         /**
           * Callback function that returns the text body of a response that corresponds to an HTTP GET request for the given URL. For example, it would be the result of [Response.text()](https://developer.mozilla.org/en-US/docs/Web/API/Response/text).
          */
