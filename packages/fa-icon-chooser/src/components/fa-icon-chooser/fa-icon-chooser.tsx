@@ -202,9 +202,33 @@ export class FaIconChooser {
   }
 
   getFamilies(): string[] {
+    const kitVersion = get(this.kitMetadata, 'version');
+    const kitMajorVersion = kitVersion ? parseInt(kitVersion.split('.')[0]) : 0;
+
+    if (kitMajorVersion >= 7) {
+      // Filter out families if the styles in the families do not have any icons
+      const result = Object.keys(this.familyStyles).filter(family => this.hasMatchingSvgPrefix(family));
+      return result;
+    }
+
     return Object.keys(this.familyStyles);
   }
 
+  private hasMatchingSvgPrefix(family: string): boolean {
+    const styles = this.familyStyles[family];
+    if (!styles || typeof styles !== 'object') {
+      return false;
+    }
+    return Object.keys(styles).some(style => {
+      const styleObj = styles[style];
+      if (!styleObj || typeof styleObj !== 'object') {
+        return false;
+      }
+      const prefix = styleObj.prefix;
+      return prefix && this.embedSvgPrefixes.has(prefix);
+    });
+  }
+  
   selectFamily(e: any): void {
     const fam = e.target.value;
     if ('string' === typeof fam && 'object' === typeof this.familyStyles[fam]) {
