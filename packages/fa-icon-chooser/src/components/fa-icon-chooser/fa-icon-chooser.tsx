@@ -202,33 +202,9 @@ export class FaIconChooser {
   }
 
   getFamilies(): string[] {
-    const kitVersion = get(this.kitMetadata, 'version');
-    const kitMajorVersion = kitVersion ? parseInt(kitVersion.split('.')[0]) : 0;
-
-    if (kitMajorVersion >= 7) {
-      // Filter out families if the styles in the families do not have any icons
-      const result = Object.keys(this.familyStyles).filter(family => this.hasMatchingSvgPrefix(family));
-      return result;
-    }
-
     return Object.keys(this.familyStyles);
   }
 
-  private hasMatchingSvgPrefix(family: string): boolean {
-    const styles = this.familyStyles[family];
-    if (!styles || typeof styles !== 'object') {
-      return false;
-    }
-    return Object.keys(styles).some(style => {
-      const styleObj = styles[style];
-      if (!styleObj || typeof styleObj !== 'object') {
-        return false;
-      }
-      const prefix = styleObj.prefix;
-      return prefix && this.embedSvgPrefixes.has(prefix);
-    });
-  }
-  
   selectFamily(e: any): void {
     const fam = e.target.value;
     if ('string' === typeof fam && 'object' === typeof this.familyStyles[fam]) {
@@ -377,6 +353,14 @@ export class FaIconChooser {
     return get(this, 'kitMetadata.release.version') || this.version;
   }
 
+  kitVersion() {
+    return get(this, 'kitMetadata.version');
+  }
+
+  kitMajorVersion() {
+    return parseInt(this.kitVersion().split('.')[0]) || 0;
+  }
+
   pro(): boolean {
     return get(this, 'kitMetadata.licenseSelected') === 'pro';
   }
@@ -428,8 +412,7 @@ export class FaIconChooser {
         if (pro) {
           // For FA7+ and newer, use svg-objects endpoint with JSON format
           // For FA6 and older, use svgs endpoint with SVG format
-          const majorVersion = parseInt(version.split('.')[0]);
-          this.svgFetchBaseUrl = `${baseUrl}/releases/v${version}/${majorVersion >= 7 ? 'svg-objects' : 'svgs'}`;
+          this.svgFetchBaseUrl = `${baseUrl}/releases/v${version}/${this.kitMajorVersion() >= 7 ? 'svg-objects' : 'svgs'}`;
         } else {
           // If we haven't already added prefixes for the Free familyStyles, add them now.
           if (this.embedSvgPrefixes.size === 0) {
