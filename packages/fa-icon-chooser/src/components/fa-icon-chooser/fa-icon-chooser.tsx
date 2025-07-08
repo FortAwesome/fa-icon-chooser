@@ -106,6 +106,14 @@ export class FaIconChooser {
   getUrlText: UrlTextFetcher;
 
   /**
+   * For internal use when testing. This overrides the base URL to use for fetching
+   * assets from a Kit. Under normal circumstances, this should not be set.
+   * The default values will be set appropriately using pre-configured official CDN URLs.
+   */
+  @Prop()
+  _assetsBaseUrl: string | undefined;
+
+  /**
    * Clients of the Icon Chooser should listen for this event in order to handle
    * the result of the user's interaction.
    *
@@ -390,11 +398,14 @@ export class FaIconChooser {
     this.preload()
       .then(() => {
         const pro = this.pro();
-
-        const baseUrl = this.kitToken ? kitAssetsBaseUrl(pro) : freeCdnBaseUrl();
+        const baseUrl = this._assetsBaseUrl || (this.kitToken ? kitAssetsBaseUrl(pro) : freeCdnBaseUrl());
+        const version = this.resolvedVersion();
 
         if (pro) {
-          this.svgFetchBaseUrl = `${baseUrl}/releases/v${this.resolvedVersion()}/svgs`;
+          // For FA7+ and newer, use svg-objects endpoint with JSON format
+          // For FA6 and older, use svgs endpoint with SVG format
+          const majorVersion = parseInt(version.split('.')[0]);
+          this.svgFetchBaseUrl = `${baseUrl}/releases/v${version}/${majorVersion >= 7 ? 'svg-objects' : 'svgs'}`;
         } else {
           // If we haven't already added prefixes for the Free familyStyles, add them now.
           if (this.embedSvgPrefixes.size === 0) {
