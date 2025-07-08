@@ -280,11 +280,12 @@ export class FaIconChooser {
               }
             }
             release {
-              version
-              familyStyles {
-                family
-                style
-                prefix
+              icon(name: "user") {
+                svgs {
+                  familyStyle {
+                    prefix
+                  }
+                }
               }
             }
             iconUploads {
@@ -316,6 +317,10 @@ export class FaIconChooser {
     if (this.pro()) {
       // For a Pro kit, only the SVGs for the permitted familyStyles may be embedded.
       get(response, 'data.me.kit.permits.embedProSvg', []).forEach(fs => this.embedSvgPrefixes.add(fs.prefix));
+
+      // If the embedProSvg is empty, then fallback to the svgs field from a release query
+      get(response, 'data.me.kit.release.icon.svgs', []).forEach(fs => this.embedSvgPrefixes.add(fs.prefix));
+      // ....
     } else {
       // All Free SVGs in a Free kit may be embedded.
       familyStyles.forEach(fs => this.embedSvgPrefixes.add(fs.prefix));
