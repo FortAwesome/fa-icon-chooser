@@ -211,12 +211,7 @@ export class FaIconChooser {
       return families.sort();
     }
 
-    // For version-only configurations (no kit), use families from familyStyles
-    if (this.familyStyles && typeof this.familyStyles === 'object') {
-      return Object.keys(this.familyStyles).sort();
-    }
-
-    return [];
+    return Object.keys(this.familyStyles).sort();
   }
 
   selectFamily(e: any): void {
