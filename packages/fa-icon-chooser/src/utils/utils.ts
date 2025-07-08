@@ -1,5 +1,5 @@
 import defaultIconsSearchResultTemplate from './defaultIconsSearchResult.json';
-import { valid as validSemver } from 'semver';
+import { valid as validSemver, lt } from 'semver';
 import { cloneDeep, get, set } from 'lodash';
 
 const FREE_CDN_URL = 'https://use.fontawesome.com';
@@ -28,9 +28,8 @@ export function buildDefaultIconsSearchResult(familyStyles: object, version?: st
 
   const icons = get(defaultIconsSearchResult, 'data.search', []);
 
-  // Filter out bluesky and web-awesome icons if major version is 5
-  const majorVersion = version ? parseInt(version.split('.')[0], 10) : null;
-  const iconsToExclude = majorVersion === 5 ? ['bluesky', 'web-awesome'] : [];
+  // Filter out bluesky and web-awesome icons if version is less than 6.5.2
+  const iconsToExclude = version && isValidSemver(version) && lt(version, '6.5.2') ? ['bluesky', 'web-awesome'] : [];
 
   const filteredIcons = icons.filter(icon => !iconsToExclude.includes(icon.id));
 
