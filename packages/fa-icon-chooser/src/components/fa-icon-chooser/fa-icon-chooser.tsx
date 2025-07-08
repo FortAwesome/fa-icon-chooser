@@ -241,7 +241,7 @@ export class FaIconChooser {
 
   getStylesForSelectedFamily(): string[] {
     if ('string' === typeof this.selectedFamily && 'object' === typeof this.familyStyles[this.selectedFamily]) {
-      return Object.keys(this.familyStyles[this.selectedFamily]);
+      return Object.keys(this.familyStyles[this.selectedFamily]).sort();
     } else {
       return [];
     }
