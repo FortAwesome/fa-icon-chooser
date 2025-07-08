@@ -321,14 +321,11 @@ export class FaIconChooser {
     const kit = get(response, 'data.me.kit');
     this.kitMetadata = kit;
 
-    // Check for embedProSvg permits and set fatal error if none exist
     const embedProSvg = get(kit, 'permits.embedProSvg', []);
 
     if (embedProSvg.length === 0) {
-      console.error('FATAL ERROR: embedProSvg is empty. \nFree, Pro Lite, and Pro+ Lite users must use a version prop instead of a kit and api token in local.json.');
-      this.fatalError = true;
-      this.isInitialLoading = false;
-      return; // Exit early to prevent further processing
+      // return early so we do not update the familyStyles to include all styles in the release.familyStyles object
+      return;
     }
 
     const familyStyles = get(kit, 'release.familyStyles', []);
