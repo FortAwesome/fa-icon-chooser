@@ -202,7 +202,17 @@ export class FaIconChooser {
   }
 
   getFamilies(): string[] {
-    return Object.keys(this.familyStyles);
+    // If we have kit metadata with embedProSvg permits, use those families
+    const embedProSvg = get(this, 'kitMetadata.permits.embedProSvg', []);
+
+    if (embedProSvg.length === 0) {
+      // Return empty array if no embedProSvg permits (error handling done in loadKitMetadata)
+      return [];
+    }
+
+    // Extract unique families from embedProSvg permits and sort alphabetically
+    const families = [...new Set(embedProSvg.map(permit => permit.family).filter(family => typeof family === 'string'))] as string[];
+    return families.sort();
   }
 
   selectFamily(e: any): void {
@@ -277,6 +287,7 @@ export class FaIconChooser {
             permits {
               embedProSvg {
                 prefix
+                family
               }
             }
             release {
@@ -310,6 +321,17 @@ export class FaIconChooser {
 
     const kit = get(response, 'data.me.kit');
     this.kitMetadata = kit;
+
+    // Check for embedProSvg permits and set fatal error if none exist
+    const embedProSvg = get(kit, 'permits.embedProSvg', []);
+
+    if (embedProSvg.length === 0) {
+      console.error('FATAL ERROR: embedProSvg is empty. \nFree, Pro Lite, and Pro+ Lite users must use a version prop instead of a kit and api token in local.json.');
+      this.fatalError = true;
+      this.isInitialLoading = false;
+      return; // Exit early to prevent further processing
+    }
+
     const familyStyles = get(kit, 'release.familyStyles', []);
     this.updateFamilyStyles(familyStyles);
 
