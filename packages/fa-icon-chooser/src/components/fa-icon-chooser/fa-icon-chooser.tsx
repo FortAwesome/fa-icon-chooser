@@ -205,14 +205,18 @@ export class FaIconChooser {
     // If we have kit metadata with embedProSvg permits, use those families
     const embedProSvg = get(this, 'kitMetadata.permits.embedProSvg', []);
 
-    if (embedProSvg.length === 0) {
-      // Return empty array if no embedProSvg permits (error handling done in loadKitMetadata)
-      return [];
+    if (embedProSvg.length > 0) {
+      // Extract unique families from embedProSvg permits and sort alphabetically
+      const families = [...new Set(embedProSvg.map(permit => permit.family).filter(family => typeof family === 'string'))] as string[];
+      return families.sort();
     }
 
-    // Extract unique families from embedProSvg permits and sort alphabetically
-    const families = [...new Set(embedProSvg.map(permit => permit.family).filter(family => typeof family === 'string'))] as string[];
-    return families.sort();
+    // For version-only configurations (no kit), use families from familyStyles
+    if (this.familyStyles && typeof this.familyStyles === 'object') {
+      return Object.keys(this.familyStyles).sort();
+    }
+
+    return [];
   }
 
   selectFamily(e: any): void {
