@@ -13,7 +13,7 @@ export type UrlTextFetcher = (url: string) => Promise<string>;
 // new familyStyles, as they are released and made available via the GraphQL API.
 // It rests on the assumption that each (non-brands) icon in that static default query is
 // available in all Pro familyStyles.
-export function buildDefaultIconsSearchResult(familyStyles: object): object {
+export function buildDefaultIconsSearchResult(familyStyles: object, version?: string): object {
   const allNonBrandsFamilyStyles = [];
 
   for (const family in familyStyles) {
@@ -28,11 +28,20 @@ export function buildDefaultIconsSearchResult(familyStyles: object): object {
 
   const icons = get(defaultIconsSearchResult, 'data.search', []);
 
-  for (const i of icons) {
+  // Filter out bluesky and web-awesome icons if major version is 5
+  const majorVersion = version ? parseInt(version.split('.')[0], 10) : null;
+  const iconsToExclude = majorVersion === 5 ? ['bluesky', 'web-awesome'] : [];
+
+  const filteredIcons = icons.filter(icon => !iconsToExclude.includes(icon.id));
+
+  for (const i of filteredIcons) {
     if ('ALL' === get(i, 'familyStylesByLicense.pro')) {
       set(i, 'familyStylesByLicense.pro', allNonBrandsFamilyStyles);
     }
   }
+
+  // Update the search result with filtered icons
+  set(defaultIconsSearchResult, 'data.search', filteredIcons);
 
   return defaultIconsSearchResult;
 }
