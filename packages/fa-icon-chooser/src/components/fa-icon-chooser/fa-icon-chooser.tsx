@@ -202,7 +202,7 @@ export class FaIconChooser {
   }
 
   getFamilies(): string[] {
-    return Object.keys(this.familyStyles)
+    return Object.keys(this.familyStyles).sort();
   }
 
   selectFamily(e: any): void {
