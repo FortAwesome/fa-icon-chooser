@@ -202,15 +202,8 @@ export class FaIconChooser {
   }
 
   getFamilies(): string[] {
-    // If we have kit metadata with embedProSvg permits, use those families
-    const embedProSvg = get(this, 'kitMetadata.permits.embedProSvg', []);
-
-    if (embedProSvg.length > 0) {
-      // Extract unique families from embedProSvg permits and sort alphabetically
-      const families = [...new Set(embedProSvg.map(permit => permit.family).filter(family => typeof family === 'string'))] as string[];
-      return families.sort();
-    }
-
+    // Always return all available families from familyStyles, which includes
+    // both regular families and kit families (when icon uploads are present)
     return Object.keys(this.familyStyles).sort();
   }
 
@@ -322,21 +315,25 @@ export class FaIconChooser {
     this.kitMetadata = kit;
 
     const embedProSvg = get(kit, 'permits.embedProSvg', []);
-
-    if (embedProSvg.length === 0) {
-      // return early so we do not update the familyStyles to include all styles in the release.familyStyles object
-      return;
-    }
-
     const familyStyles = get(kit, 'release.familyStyles', []);
-    this.updateFamilyStyles(familyStyles);
 
-    if (this.pro()) {
-      // For a Pro kit, only the SVGs for the permitted familyStyles may be embedded.
-      get(response, 'data.me.kit.permits.embedProSvg', []).forEach(fs => this.embedSvgPrefixes.add(fs.prefix));
-    } else {
-      // All Free SVGs in a Free kit may be embedded.
-      familyStyles.forEach(fs => this.embedSvgPrefixes.add(fs.prefix));
+    if (embedProSvg.length > 0) {
+      // Extract unique families from embedProSvg permits
+      const families = [...new Set(embedProSvg.map(permit => permit.family).filter(family => typeof family === 'string'))] as string[];
+
+      // Filter familyStyles to only include permitted families
+      const filteredFamilyStyles = familyStyles.filter(fs => families.includes(fs.family));
+
+      // Update familyStyles with the permitted families
+      this.updateFamilyStyles(filteredFamilyStyles);
+
+      if (this.pro()) {
+        // For a Pro kit, only the SVGs for the permitted familyStyles may be embedded.
+        get(response, 'data.me.kit.permits.embedProSvg', []).forEach(fs => this.embedSvgPrefixes.add(fs.prefix));
+      } else {
+        // All Free SVGs in a Free kit may be embedded.
+        filteredFamilyStyles.forEach(fs => this.embedSvgPrefixes.add(fs.prefix));
+      }
     }
 
     const kitFamilyStyles = [];
