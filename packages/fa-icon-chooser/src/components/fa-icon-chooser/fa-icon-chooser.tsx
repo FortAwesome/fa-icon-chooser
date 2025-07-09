@@ -202,9 +202,7 @@ export class FaIconChooser {
   }
 
   getFamilies(): string[] {
-    // Always return all available families from familyStyles, which includes
-    // both regular families and kit families (when icon uploads are present)
-    return Object.keys(this.familyStyles).sort();
+    return Object.keys(this.familyStyles)
   }
 
   selectFamily(e: any): void {
