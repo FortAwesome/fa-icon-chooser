@@ -202,7 +202,7 @@ export class FaIconChooser {
   }
 
   getFamilies(): string[] {
-    return Object.keys(this.familyStyles);
+    return Object.keys(this.familyStyles).sort();
   }
 
   selectFamily(e: any): void {
@@ -231,7 +231,7 @@ export class FaIconChooser {
 
   getStylesForSelectedFamily(): string[] {
     if ('string' === typeof this.selectedFamily && 'object' === typeof this.familyStyles[this.selectedFamily]) {
-      return Object.keys(this.familyStyles[this.selectedFamily]);
+      return Object.keys(this.familyStyles[this.selectedFamily]).sort();
     } else {
       return [];
     }
@@ -277,6 +277,7 @@ export class FaIconChooser {
             permits {
               embedProSvg {
                 prefix
+                family
               }
             }
             release {
@@ -310,15 +311,34 @@ export class FaIconChooser {
 
     const kit = get(response, 'data.me.kit');
     this.kitMetadata = kit;
-    const familyStyles = get(kit, 'release.familyStyles', []);
-    this.updateFamilyStyles(familyStyles);
 
-    if (this.pro()) {
-      // For a Pro kit, only the SVGs for the permitted familyStyles may be embedded.
-      get(response, 'data.me.kit.permits.embedProSvg', []).forEach(fs => this.embedSvgPrefixes.add(fs.prefix));
-    } else {
-      // All Free SVGs in a Free kit may be embedded.
-      familyStyles.forEach(fs => this.embedSvgPrefixes.add(fs.prefix));
+    const embedProSvg = get(kit, 'permits.embedProSvg', []);
+    const familyStyles = get(kit, 'release.familyStyles', []);
+
+    if (embedProSvg.length > 0) {
+      // Extract unique families from embedProSvg permits
+      const families = [...new Set(embedProSvg.map(permit => permit.family).filter(family => typeof family === 'string'))] as string[];
+
+      // Filter familyStyles to only include permitted families
+      const filteredFamilyStyles = familyStyles.filter(fs => families.includes(fs.family));
+
+      // Update familyStyles with the permitted families
+      this.updateFamilyStyles(filteredFamilyStyles);
+
+      if (this.pro()) {
+        // For a Pro kit, only the SVGs for the permitted familyStyles may be embedded.
+        get(response, 'data.me.kit.permits.embedProSvg', []).forEach(fs => this.embedSvgPrefixes.add(fs.prefix));
+      } else {
+        // All Free SVGs in a Free kit may be embedded.
+        filteredFamilyStyles.forEach(fs => this.embedSvgPrefixes.add(fs.prefix));
+      }
+    }
+
+    // Temporary pro lite and pro lite plus handling
+    // ALL styles will be shown to pro.lite users until we have a better solution in place
+    if (kit.licenseSelected === 'pro' && embedProSvg.length === 0) {
+      const releaseFamilyStyles = get(kit, 'release.familyStyles', []);
+      this.updateFamilyStyles(releaseFamilyStyles);
     }
 
     const kitFamilyStyles = [];
@@ -647,7 +667,9 @@ export class FaIconChooser {
             <div class="column-6">
               <select name="family-select" onChange={this.selectFamily.bind(this)}>
                 {this.getFamilies().map((family: string) => (
-                  <option value={family}>{this.labelForFamilyOrStyle(family)}</option>
+                  <option selected={family === this.selectedFamily} value={family}>
+                    {this.labelForFamilyOrStyle(family)}
+                  </option>
                 ))}
               </select>
             </div>
