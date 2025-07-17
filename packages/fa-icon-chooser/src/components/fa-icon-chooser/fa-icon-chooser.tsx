@@ -667,7 +667,7 @@ export class FaIconChooser {
             <div class="column-6">
               <select name="family-select" onChange={this.selectFamily.bind(this)}>
                 {this.getFamilies().map((family: string) => (
-                  <option selected={family == this.selectedFamily} value={family}>
+                  <option selected={family === this.selectedFamily} value={family}>
                     {this.labelForFamilyOrStyle(family)}
                   </option>
                 ))}
