@@ -1,5 +1,5 @@
 import defaultIconsSearchResultTemplate from './defaultIconsSearchResult.json';
-import { valid as validSemver, lt } from 'semver';
+import { valid as validSemver } from 'semver';
 import { cloneDeep, get, set } from 'lodash';
 
 const FREE_CDN_URL = 'https://use.fontawesome.com';
@@ -13,7 +13,7 @@ export type UrlTextFetcher = (url: string) => Promise<string>;
 // new familyStyles, as they are released and made available via the GraphQL API.
 // It rests on the assumption that each (non-brands) icon in that static default query is
 // available in all Pro familyStyles.
-export function buildDefaultIconsSearchResult(familyStyles: object, version?: string): object {
+export function buildDefaultIconsSearchResult(familyStyles: object): object {
   const allNonBrandsFamilyStyles = [];
 
   for (const family in familyStyles) {
@@ -28,19 +28,11 @@ export function buildDefaultIconsSearchResult(familyStyles: object, version?: st
 
   const icons = get(defaultIconsSearchResult, 'data.search', []);
 
-  // Filter out bluesky and web-awesome icons if version is less than 6.5.2
-  const iconsToExclude = version && isValidSemver(version) && lt(version, '6.5.2') ? ['bluesky', 'web-awesome'] : [];
-
-  const filteredIcons = icons.filter(icon => !iconsToExclude.includes(icon.id));
-
-  for (const i of filteredIcons) {
+  for (const i of icons) {
     if ('ALL' === get(i, 'familyStylesByLicense.pro')) {
       set(i, 'familyStylesByLicense.pro', allNonBrandsFamilyStyles);
     }
   }
-
-  // Update the search result with filtered icons
-  set(defaultIconsSearchResult, 'data.search', filteredIcons);
 
   return defaultIconsSearchResult;
 }

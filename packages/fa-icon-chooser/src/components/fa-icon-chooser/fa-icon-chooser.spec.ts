@@ -79,22 +79,19 @@ describe('fa-icon-chooser', () => {
 
     expect(foundFaScript).toBe(true);
 
-    const defaultIcons = buildDefaultIconsSearchResult(
-      {
-        classic: {
-          solid: {
-            prefix: 'fas',
-          },
-          regular: {
-            prefix: 'far',
-          },
-          brands: {
-            prefix: 'fab',
-          },
+    const defaultIcons = buildDefaultIconsSearchResult({
+      classic: {
+        solid: {
+          prefix: 'fas',
+        },
+        regular: {
+          prefix: 'far',
+        },
+        brands: {
+          prefix: 'fab',
         },
       },
-      '7.0.0',
-    );
+    });
 
     // The initial default icons should have be shown
     get(defaultIcons, 'data.search', [])

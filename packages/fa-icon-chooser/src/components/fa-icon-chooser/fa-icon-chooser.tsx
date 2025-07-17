@@ -456,7 +456,7 @@ export class FaIconChooser {
         const css = document.createTextNode(dom.css());
         style.appendChild(css);
         this.host.shadowRoot.appendChild(style);
-        this.defaultIcons = buildDefaultIconsSearchResult(this.familyStyles, this.resolvedVersion());
+        this.defaultIcons = buildDefaultIconsSearchResult(this.familyStyles);
 
         this.setIcons(this.defaultIcons, this.iconUploadsAsIconUploadLookups());
 
