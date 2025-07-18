@@ -1,7 +1,7 @@
 // This dev-only module isn't processed by the bundler like the others,
 // so we can't use a node env var to set this. Just hardcode it in one
 // place at the top.
-const API_URL = 'https://api.fontawesome.com';
+const API_URL = 'https://api-staging.fontawesome.com';
 
 const FaIconChooserDevExports = (function () {
   let showingIconChooser = false;
@@ -72,7 +72,11 @@ const FaIconChooserDevExports = (function () {
     document.querySelectorAll('#result pre').forEach(child => child.remove());
   }
 
+  const svgEmbedOverrideCallback = (window['__FA_SVG_EMBED__'] = () => true);
+
   function addIconChooser(props) {
+    svgEmbedOverrideCallback();
+
     const container = document.querySelector('#fa-icon-chooser-container');
     const el = document.createElement('fa-icon-chooser');
     el.handleQuery = handleQuery;
