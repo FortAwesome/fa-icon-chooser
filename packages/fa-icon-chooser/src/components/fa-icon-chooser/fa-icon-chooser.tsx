@@ -614,6 +614,35 @@ export class FaIconChooser {
     return override || this.embedSvgPrefixes.has(prefix);
   }
 
+  emitIconChooserResult(iconLookup: IconLookup | IconUploadLookup, iconDefinition: IconDefinition) {
+    // Helper for emitting only prefix and iconName
+    const emitBasicLookup = () => {
+      this.finish.emit(
+        buildIconChooserResult({
+          prefix: iconLookup.prefix,
+          iconName: iconLookup.iconName,
+        }),
+      );
+    };
+
+    // Handle kit-uploaded icons
+    if ('iconUpload' in iconLookup && iconLookup.iconUpload) {
+      const embedProSvg = get(this.kitMetadata, 'permits.embedProSvg', []);
+      if (embedProSvg.length > 0) {
+        // Emit full iconLookup (including iconUpload SVG data)
+        this.finish.emit(buildIconChooserResult(iconLookup));
+        return;
+      }
+      // Emit only lookup (no SVG data)
+      emitBasicLookup();
+      return;
+    }
+
+    // Handle non-kit icons
+    const shouldEmitSvg = this.shouldEmitSvgData(iconLookup.prefix);
+    this.finish.emit(buildIconChooserResult(shouldEmitSvg ? iconDefinition : iconLookup));
+  }
+
   render() {
     if (this.fatalError) {
       return (
@@ -721,7 +750,7 @@ export class FaIconChooser {
                   <article class="wrap-icon" key={`${iconLookup.prefix}-${iconLookup.iconName}`}>
                     <button
                       class="icon subtle display-flex flex-column flex-items-center flex-content-center"
-                      onClick={() => this.finish.emit(buildIconChooserResult(this.shouldEmitSvgData(iconLookup.prefix) ? iconDefinition : iconLookup))}
+                      onClick={() => this.emitIconChooserResult(iconLookup, iconDefinition)}
                     >
                       <fa-icon
                         {...this.commonFaIconProps}
