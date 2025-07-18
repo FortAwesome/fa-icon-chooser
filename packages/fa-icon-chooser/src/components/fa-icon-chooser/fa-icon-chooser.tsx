@@ -596,7 +596,7 @@ export class FaIconChooser {
       .join(' ');
   }
 
-  shouldEmitSvgData(prefix: string): boolean {
+  shouldEmitSvgData(): boolean {
     // This override is subject to the Font Awesome plan license terms
     // at https://fontawesome.com/plans and https://fontawesome.com/support.
     // At the time of writing, only the Font Awesome official WordPress plugin is
@@ -611,7 +611,7 @@ export class FaIconChooser {
       override = !!svgEmbedOverrideCallback();
     }
 
-    return override || this.embedSvgPrefixes.has(prefix);
+    return override || [...this.embedSvgPrefixes].length > 0;
   }
 
   emitIconChooserResult(iconDefinition: IconDefinition) {
@@ -623,7 +623,7 @@ export class FaIconChooser {
     // default to the restrictive case
     let result = iconLookup;
 
-    const embedAllowed = this.shouldEmitSvgData(iconLookup.prefix) && embedProSvg.length > 0;
+    const embedAllowed = this.shouldEmitSvgData() && embedProSvg.length > 0;
 
     // upgrade it if the conditions allow. calculate `embedAllowed` using the same logic you have now.
     if (embedAllowed) {
