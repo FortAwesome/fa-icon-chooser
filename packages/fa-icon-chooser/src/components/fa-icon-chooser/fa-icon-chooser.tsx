@@ -596,7 +596,7 @@ export class FaIconChooser {
       .join(' ');
   }
 
-  shouldEmitSvgData(prefix: string): boolean {
+  shouldEmitSvgData(): boolean {
     // This override is subject to the Font Awesome plan license terms
     // at https://fontawesome.com/plans and https://fontawesome.com/support.
     // At the time of writing, only the Font Awesome official WordPress plugin is
@@ -611,7 +611,27 @@ export class FaIconChooser {
       override = !!svgEmbedOverrideCallback();
     }
 
-    return override || this.embedSvgPrefixes.has(prefix);
+    return override || [...this.embedSvgPrefixes].length > 0;
+  }
+
+  emitIconChooserResult(iconDefinition: IconDefinition) {
+    const { prefix, iconName } = iconDefinition;
+    const iconLookup = { prefix, iconName };
+
+    const embedProSvg = get(this.kitMetadata, 'permits.embedProSvg', []);
+
+    // default to the restrictive case
+    let result = iconLookup;
+
+    const embedAllowed = this.shouldEmitSvgData() && embedProSvg.length > 0;
+
+    // upgrade it if the conditions allow. calculate `embedAllowed` using the same logic you have now.
+    if (embedAllowed) {
+      result = iconDefinition;
+    }
+
+    // invoke this in one place what whatever result obtains
+    this.finish.emit(buildIconChooserResult(result));
   }
 
   render() {
@@ -719,10 +739,7 @@ export class FaIconChooser {
                 };
                 return (
                   <article class="wrap-icon" key={`${iconLookup.prefix}-${iconLookup.iconName}`}>
-                    <button
-                      class="icon subtle display-flex flex-column flex-items-center flex-content-center"
-                      onClick={() => this.finish.emit(buildIconChooserResult(this.shouldEmitSvgData(iconLookup.prefix) ? iconDefinition : iconLookup))}
-                    >
+                    <button class="icon subtle display-flex flex-column flex-items-center flex-content-center" onClick={() => this.emitIconChooserResult(iconDefinition)}>
                       <fa-icon
                         {...this.commonFaIconProps}
                         size="2x"
