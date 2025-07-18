@@ -614,33 +614,24 @@ export class FaIconChooser {
     return override || this.embedSvgPrefixes.has(prefix);
   }
 
-  emitIconChooserResult(iconLookup: IconLookup | IconUploadLookup, iconDefinition: IconDefinition) {
-    // Helper for emitting only prefix and iconName
-    const emitBasicLookup = () => {
-      this.finish.emit(
-        buildIconChooserResult({
-          prefix: iconLookup.prefix,
-          iconName: iconLookup.iconName,
-        }),
-      );
-    };
+  emitIconChooserResult(iconDefinition: IconDefinition) {
+    const { prefix, iconName } = iconDefinition;
+    const iconLookup = { prefix, iconName };
 
-    // Handle kit-uploaded icons
-    if ('iconUpload' in iconLookup && iconLookup.iconUpload) {
-      const embedProSvg = get(this.kitMetadata, 'permits.embedProSvg', []);
-      if (embedProSvg.length > 0) {
-        // Emit full iconLookup (including iconUpload SVG data)
-        this.finish.emit(buildIconChooserResult(iconLookup));
-        return;
-      }
-      // Emit only lookup (no SVG data)
-      emitBasicLookup();
-      return;
+    const embedProSvg = get(this.kitMetadata, 'permits.embedProSvg', []);
+
+    // default to the restrictive case
+    let result = iconLookup;
+
+    const embedAllowed = this.shouldEmitSvgData(iconLookup.prefix) && embedProSvg.length > 0;
+
+    // upgrade it if the conditions allow. calculate `embedAllowed` using the same logic you have now.
+    if (embedAllowed) {
+      result = iconDefinition;
     }
 
-    // Handle non-kit icons
-    const shouldEmitSvg = this.shouldEmitSvgData(iconLookup.prefix);
-    this.finish.emit(buildIconChooserResult(shouldEmitSvg ? iconDefinition : iconLookup));
+    // invoke this in one place what whatever result obtains
+    this.finish.emit(buildIconChooserResult(result));
   }
 
   render() {
@@ -748,10 +739,7 @@ export class FaIconChooser {
                 };
                 return (
                   <article class="wrap-icon" key={`${iconLookup.prefix}-${iconLookup.iconName}`}>
-                    <button
-                      class="icon subtle display-flex flex-column flex-items-center flex-content-center"
-                      onClick={() => this.emitIconChooserResult(iconLookup, iconDefinition)}
-                    >
+                    <button class="icon subtle display-flex flex-column flex-items-center flex-content-center" onClick={() => this.emitIconChooserResult(iconDefinition)}>
                       <fa-icon
                         {...this.commonFaIconProps}
                         size="2x"
