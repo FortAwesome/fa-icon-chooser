@@ -1338,14 +1338,6 @@
         }
       },
       {
-        "id": "web-awesome",
-        "label": "Web Awesome",
-        "familyStylesByLicense": {
-          "free": [{ "family": "classic", "style": "brands" }],
-          "pro": [{ "family": "classic", "style": "brands" }]
-        }
-      },
-      {
         "id": "file",
         "label": "File",
         "familyStylesByLicense": {
@@ -1431,14 +1423,6 @@
         "familyStylesByLicense": {
           "free": [],
           "pro": "ALL"
-        }
-      },
-      {
-        "id": "bluesky",
-        "label": "Bluesky",
-        "familyStylesByLicense": {
-          "free": [{ "family": "classic", "style": "brands" }],
-          "pro": [{ "family": "classic", "style": "brands" }]
         }
       },
       {

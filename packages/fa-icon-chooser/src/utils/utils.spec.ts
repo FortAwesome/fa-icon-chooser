@@ -49,6 +49,18 @@ describe('parseSvgText', () => {
   it('tests duotone with only secondary', () => {
     expect(parseSvgText(duotoneSvgOnlySecondary)).toEqual([640, 512, [], null, ['M2 2 h2 z', '']]);
   });
+
+  describe('edge cases', () => {
+    it('returns null for malformed SVG', () => {
+      const malformedSvg = `<svg xmlns="http://www.w3.org/2000/svg"><path d="M1 1 h1 z"/></svg>`;
+      expect(parseSvgText(malformedSvg)).toBeNull();
+    });
+
+    it('returns null for SVG without path', () => {
+      const svgWithoutPath = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"></svg>`;
+      expect(parseSvgText(svgWithoutPath)).toBeNull();
+    });
+  });
 });
 
 describe('IconChooserResult typing', () => {
