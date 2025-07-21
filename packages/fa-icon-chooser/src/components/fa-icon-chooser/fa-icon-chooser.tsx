@@ -625,7 +625,6 @@ export class FaIconChooser {
 
     const embedAllowed = this.shouldEmitSvgData() && embedProSvg.length > 0;
 
-    // upgrade it if the conditions allow. calculate `embedAllowed` using the same logic you have now.
     if (embedAllowed) {
       result = iconDefinition;
     }
