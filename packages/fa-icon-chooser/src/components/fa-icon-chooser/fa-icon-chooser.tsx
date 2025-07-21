@@ -629,7 +629,6 @@ export class FaIconChooser {
       result = iconDefinition;
     }
 
-    // invoke this in one place what whatever result obtains
     this.finish.emit(buildIconChooserResult(result));
   }
 
