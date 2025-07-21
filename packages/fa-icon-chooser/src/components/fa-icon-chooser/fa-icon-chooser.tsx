@@ -618,12 +618,10 @@ export class FaIconChooser {
     const { prefix, iconName } = iconDefinition;
     const iconLookup = { prefix, iconName };
 
-    const embedProSvg = get(this.kitMetadata, 'permits.embedProSvg', []);
-
     // default to the restrictive case
     let result = iconLookup;
 
-    const embedAllowed = this.shouldEmitSvgData() && embedProSvg.length > 0;
+    const embedAllowed = this.shouldEmitSvgData();
 
     if (embedAllowed) {
       result = iconDefinition;
