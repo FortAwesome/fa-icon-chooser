@@ -334,9 +334,11 @@ export class FaIconChooser {
       }
     }
 
+    const isLite = kit.licenseSelected === 'pro' && embedProSvg.length === 0;
+
     // Temporary pro lite and pro lite plus handling
-    // ALL styles will be shown to pro.lite users until we have a better solution in place
-    if (kit.licenseSelected === 'pro' && embedProSvg.length === 0) {
+    // All styles will be shown to pro.lite users until we have a better solution in place
+    if (isLite) {
       const releaseFamilyStyles = get(kit, 'release.familyStyles', []);
       this.updateFamilyStyles(releaseFamilyStyles);
     }
