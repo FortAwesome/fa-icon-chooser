@@ -334,9 +334,11 @@ export class FaIconChooser {
       }
     }
 
+    const isLite = kit.licenseSelected === 'pro' && embedProSvg.length === 0;
+
     // Temporary pro lite and pro lite plus handling
-    // ALL styles will be shown to pro.lite users until we have a better solution in place
-    if (kit.licenseSelected === 'pro' && embedProSvg.length === 0) {
+    // All styles will be shown to pro.lite users until we have a better solution in place
+    if (isLite) {
       const releaseFamilyStyles = get(kit, 'release.familyStyles', []);
       this.updateFamilyStyles(releaseFamilyStyles);
     }
@@ -596,7 +598,7 @@ export class FaIconChooser {
       .join(' ');
   }
 
-  shouldEmitSvgData(prefix: string): boolean {
+  shouldEmitSvgData(): boolean {
     // This override is subject to the Font Awesome plan license terms
     // at https://fontawesome.com/plans and https://fontawesome.com/support.
     // At the time of writing, only the Font Awesome official WordPress plugin is
@@ -611,7 +613,23 @@ export class FaIconChooser {
       override = !!svgEmbedOverrideCallback();
     }
 
-    return override || this.embedSvgPrefixes.has(prefix);
+    return override || [...this.embedSvgPrefixes].length > 0;
+  }
+
+  emitIconChooserResult(iconDefinition: IconDefinition) {
+    const { prefix, iconName } = iconDefinition;
+    const iconLookup = { prefix, iconName };
+
+    // default to the restrictive case
+    let result = iconLookup;
+
+    const embedAllowed = this.shouldEmitSvgData();
+
+    if (embedAllowed) {
+      result = iconDefinition;
+    }
+
+    this.finish.emit(buildIconChooserResult(result));
   }
 
   render() {
@@ -719,10 +737,7 @@ export class FaIconChooser {
                 };
                 return (
                   <article class="wrap-icon" key={`${iconLookup.prefix}-${iconLookup.iconName}`}>
-                    <button
-                      class="icon subtle display-flex flex-column flex-items-center flex-content-center"
-                      onClick={() => this.finish.emit(buildIconChooserResult(this.shouldEmitSvgData(iconLookup.prefix) ? iconDefinition : iconLookup))}
-                    >
+                    <button class="icon subtle display-flex flex-column flex-items-center flex-content-center" onClick={() => this.emitIconChooserResult(iconDefinition)}>
                       <fa-icon
                         {...this.commonFaIconProps}
                         size="2x"
