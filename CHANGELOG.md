@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ---
 
+## [0.9.1](https://github.com/FortAwesome/fa-icon-chooser/releases/tag/0.9.1) - 2025-07-22
+
+### Changed
+
+- Updated api urls
+
 ## [0.9.0](https://github.com/FortAwesome/fa-icon-chooser/releases/tag/0.9.0) - 2025-07-22
 
 ### Changed
