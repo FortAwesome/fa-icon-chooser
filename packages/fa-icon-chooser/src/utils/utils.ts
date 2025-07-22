@@ -2,9 +2,9 @@ import defaultIconsSearchResultTemplate from './defaultIconsSearchResult.json';
 import { valid as validSemver } from 'semver';
 import { cloneDeep, get, set } from 'lodash';
 
-const FREE_CDN_URL = 'https://use-staging.fontawesome.com';
-const PRO_KIT_ASSET_URL = 'https://ka-p-staging.fontawesome.com';
-const FREE_KIT_ASSET_URL = 'https://ka-f-staging.fontawesome.com';
+const FREE_CDN_URL = 'https://use.fontawesome.com';
+const PRO_KIT_ASSET_URL = 'https://ka-p.fontawesome.com';
+const FREE_KIT_ASSET_URL = 'https://ka-f.fontawesome.com';
 
 export type UrlTextFetcher = (url: string) => Promise<string>;
 
