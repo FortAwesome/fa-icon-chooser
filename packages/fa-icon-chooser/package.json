@@ -1,6 +1,6 @@
 {
   "name": "@fortawesome/fa-icon-chooser",
-  "version": "0.9.0-3",
+  "version": "0.9.0",
   "description": "Font Awesome Icon Chooser",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -38,7 +38,8 @@
   "contributors": [
     "Mike Wilkerson <mike@fontawesome.com>",
     "Frances Botsford <frances@fontawesome.com>",
-    "Kelsey Jackson <kelseythej@gmail.com>"
+    "Kelsey Jackson <kelseythej@gmail.com>",
+    "Jason Lundien <jason@fontawesome.com>"
   ],
   "files": [
     "dist/",
@@ -59,7 +60,7 @@
     "@types/node": "^16.18.11",
     "jest": "^29.7.0",
     "jest-cli": "^29.7.0",
-    "@fortawesome/fontawesome-common-types": "file:fortawesome-fontawesome-common-types-7.0.0-alpha9.tgz",
+    "@fortawesome/fontawesome-common-types": "^7.0.0",
     "lodash": "^4.17.21",
     "semver": "^6.3.0",
     "@stencil/react-output-target": "^0.8.2",

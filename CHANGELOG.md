@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ---
+
+## [0.9.0](https://github.com/FortAwesome/fa-icon-chooser/releases/tag/0.9.0) - 2025-07-22
+
+### Changed
+
+- Font Awesome Pro+ icons are now available with an active Pro+ subscription.
+
+- Pro Lite users with uploaded icons in their kits will no longer see the SVG data. This update reflects the intended behavior, as that access was never meant to be included with the Pro Lite plan.
+
 ## [0.8.0](https://github.com/FortAwesome/fa-icon-chooser/releases/tag/0.8.0) - 2025-02-14
 
 ### Changed
@@ -62,6 +71,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
   of Font Awesome.
 
   The following slots have been removed:
+
   - `light-requires-pro`
   - `thin-requires-pro`
   - `duotone-requires-pro`
@@ -84,6 +94,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
   (See also Breaking Changes)o
 
 ### Fixed
+
 - Duotone custom icons in kits now work correctly.
 
 ### Breaking Changes
@@ -95,25 +106,27 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
   Its type signature is now:
 
   ```typescript
-  export type QueryHandler = (document: string, variables?: object) => Promise<any>;
+  export type QueryHandler = (
+    document: string,
+    variables?: object
+  ) => Promise<any>;
   ```
 
   Suggestion:
 
   ```javascript
   async function handleQuery(query, variables) {
-    const headers = buildHeaders()
-    const url = getApiUrl()
-    const body = JSON.stringify({query, variables})
+    const headers = buildHeaders();
+    const url = getApiUrl();
+    const body = JSON.stringify({ query, variables });
 
     return fetch(url, {
       method: "POST",
       headers,
-      body
-    })
+      body,
+    });
   }
   ```
-
 
 ## [0.6.0](https://github.com/FortAwesome/fa-icon-chooser/releases/tag/0.6.0) - 2023-07-12
 

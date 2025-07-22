@@ -23,6 +23,9 @@ export namespace Components {
         "iconUpload"?: IconUpload;
         "kitToken"?: string;
         "name"?: string;
+        /**
+          * @default false
+         */
         "pro": boolean;
         "size"?: string;
         "stylePrefix"?: string;
@@ -107,6 +110,9 @@ declare namespace LocalJSX {
         "iconUpload"?: IconUpload;
         "kitToken"?: string;
         "name"?: string;
+        /**
+          * @default false
+         */
         "pro"?: boolean;
         "size"?: string;
         "stylePrefix"?: string;
