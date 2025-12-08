@@ -18,6 +18,18 @@ import { faSadTear, faTire } from '../../utils/icons';
 import { slotDefaults } from '../../utils/slots';
 import { IconDefinition } from '../../utils/utils';
 
+export interface FamilyStyle {
+  family: string;
+  style: string;
+  prefix: string;
+}
+
+const DEFAULT_FAMILY_STYLES: Array<FamilyStyle> = [
+  { family: 'classic', style: 'solid', prefix: 'fas' },
+  { family: 'classic', style: 'regular', prefix: 'far' },
+  { family: 'classic', style: 'brands', prefix: 'fab' },
+];
+
 export type QueryHandler = (document: string, variables?: object, options?: object) => Promise<any>;
 
 type KitMetadata = {
@@ -106,6 +118,19 @@ export class FaIconChooser {
   getUrlText: UrlTextFetcher;
 
   /**
+   * Callback function that allows filtering of familyStyles
+   * prior to their use in the Icon Chooser.
+   *
+   * This allows for further restricting which familyStyles
+   * are available to the end user, beyond the filtering that may already
+   * be applied according to business logic or a kit's subset.
+   * @param familyStyle
+   * @returns boolean - return true to include the familyStyle, false to exclude it.
+   */
+  @Prop()
+  includeFamilyStyle: (familyStyle: FamilyStyle) => boolean = _familyStyle => true;
+
+  /**
    * For internal use when testing. This overrides the base URL to use for fetching
    * assets from a Kit. Under normal circumstances, this should not be set.
    * The default values will be set appropriately using pre-configured official CDN URLs.
@@ -152,24 +177,12 @@ export class FaIconChooser {
   @State()
   fatalError: boolean = false;
 
-  // familyStyles starts with only the values that would be present in any
-  // release, whether Pro or Free. After resolving an initial metadata query,
-  // it will be updated to include the familyStyles appropriate for the active
-  // version and license of Font Awesome.
+  // familyStyles starts empty, because it may be filtered not only by
+  // what familyStyles are available for a given version and license of
+  // Font Awesome, but also by external filtering. So there are no familyStyles
+  // that are necessarily included.
   @State()
-  familyStyles: object = {
-    classic: {
-      solid: {
-        prefix: 'fas',
-      },
-      regular: {
-        prefix: 'far',
-      },
-      brands: {
-        prefix: 'fab',
-      },
-    },
-  };
+  familyStyles: object = {};
 
   // This should be populated as a reverse lookup when updating familyStyles.
   @State()
@@ -365,7 +378,15 @@ export class FaIconChooser {
 
   updateFamilyStyles(familyStyles: Array<any>) {
     for (const fs of familyStyles) {
-      set(this.familyStyles, [fs.family, fs.style, 'prefix'], fs.prefix);
+      let shouldInclude = true;
+
+      try {
+        shouldInclude = this.includeFamilyStyle(fs);
+      } catch {}
+
+      if (shouldInclude) {
+        set(this.familyStyles, [fs.family, fs.style, 'prefix'], fs.prefix);
+      }
     }
 
     this.buildFamilyStyleReverseLookup();
@@ -383,6 +404,7 @@ export class FaIconChooser {
     if (this.kitToken) {
       return this.loadKitMetadata();
     } else {
+      this.updateFamilyStyles(DEFAULT_FAMILY_STYLES);
       return Promise.resolve();
     }
   }
@@ -662,13 +684,7 @@ export class FaIconChooser {
           </label>
           <div class="margin-bottom-md">
             <div class="wrap-search margin-bottom-3xs with-icon-before">
-              <fa-icon
-                {...this.commonFaIconProps}
-                stylePrefix="fas"
-                familyStylePathSegment={this.prefixToFamilyStylePathSegment('fas')}
-                name="search"
-                class="icons-search-decorative"
-              ></fa-icon>
+              <fa-icon {...this.commonFaIconProps} stylePrefix="fas" familyStylePathSegment="solid" name="search" class="icons-search-decorative"></fa-icon>
               <input
                 type="text"
                 name="search"
