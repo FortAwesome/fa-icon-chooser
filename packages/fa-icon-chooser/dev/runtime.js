@@ -60,6 +60,10 @@ const FaIconChooserDevExports = (function () {
     });
   }
 
+  function includeFamilyStyle(fs) {
+    return true
+  }
+
   function handleResult(result) {
     const resultElement = document.querySelector('#result');
     const preElement = document.createElement('pre');
@@ -77,6 +81,7 @@ const FaIconChooserDevExports = (function () {
     const el = document.createElement('fa-icon-chooser');
     el.handleQuery = handleQuery;
     el.getUrlText = getUrlText;
+    el.includeFamilyStyle = includeFamilyStyle;
     el.addEventListener('finish', handleResult);
 
     const slotFatalErrorHeader = document.createElement('p');
