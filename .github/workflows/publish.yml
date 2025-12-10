@@ -21,7 +21,6 @@ jobs:
           node-version: "22"
       - name: Update npm
         run: npm install -g npm@latest
-      - run: npm ci
       - name: Prepare Main
         run: |
           cd packages/fa-icon-chooser
