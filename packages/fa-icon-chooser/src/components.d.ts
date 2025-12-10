@@ -23,6 +23,9 @@ export namespace Components {
         "iconUpload"?: IconUpload;
         "kitToken"?: string;
         "name"?: string;
+        /**
+          * @default false
+         */
         "pro": boolean;
         "size"?: string;
         "stylePrefix"?: string;
@@ -46,6 +49,7 @@ export namespace Components {
           * Callback function that allows filtering of familyStyles prior to their use in the Icon Chooser.  This allows for further restricting which familyStyles are available to the end user, beyond the filtering that may already be applied according to business logic or a kit's subset.
           * @param familyStyle
           * @returns boolean - return true to include the familyStyle, false to exclude it.
+          * @default _familyStyle => true
          */
         "includeFamilyStyle": (familyStyle: FamilyStyle) => boolean;
         /**
@@ -113,6 +117,9 @@ declare namespace LocalJSX {
         "iconUpload"?: IconUpload;
         "kitToken"?: string;
         "name"?: string;
+        /**
+          * @default false
+         */
         "pro"?: boolean;
         "size"?: string;
         "stylePrefix"?: string;
@@ -136,6 +143,7 @@ declare namespace LocalJSX {
           * Callback function that allows filtering of familyStyles prior to their use in the Icon Chooser.  This allows for further restricting which familyStyles are available to the end user, beyond the filtering that may already be applied according to business logic or a kit's subset.
           * @param familyStyle
           * @returns boolean - return true to include the familyStyle, false to exclude it.
+          * @default _familyStyle => true
          */
         "includeFamilyStyle"?: (familyStyle: FamilyStyle) => boolean;
         /**
