@@ -4,18 +4,24 @@ on:
   release:
     types: [published]
 
+permissions:
+  id-token: write # Required for OIDC
+  contents: read
+
 jobs:
   publish:
     runs-on: ubuntu-latest
     env:
       CLOUDSMITH_API_TOKEN: ${{ secrets.CLOUDSMITH_TOKEN }}
-      NPM_TOKEN: ${{ secrets.NPM_REGISTRY_ACCESS_TOKEN }}
       NPM_TAG: ${{ github.event.release.prerelease && 'pre' || 'latest' }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
           node-version: "22"
+      - name: Update npm
+        run: npm install -g npm@latest
+      - run: npm ci
       - name: Prepare Main
         run: |
           cd packages/fa-icon-chooser
@@ -26,7 +32,7 @@ jobs:
       - name: Publish Main - npmjs
         run: |
           cd packages/fa-icon-chooser
-          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+          echo "//registry.npmjs.org/" > .npmrc
           npm publish --access public --registry=https://registry.npmjs.org --tag ${NPM_TAG}
       - name: Prepare React
         run: |
@@ -36,7 +42,7 @@ jobs:
       - name: Publish React - npmjs
         run: |
           cd packages/fa-icon-chooser-react
-          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+          echo "//registry.npmjs.org/" > .npmrc
           npm publish --access public --registry=https://registry.npmjs.org --tag ${NPM_TAG}
       - name: Publish Main - Cloudsmith
         run: |
