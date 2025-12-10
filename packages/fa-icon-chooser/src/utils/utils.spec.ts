@@ -1,5 +1,4 @@
-import { parseSvgText, IconChooserResult, isValidSemver, createFontAwesomeScriptElement } from './utils';
-import { IconLookup } from '@fortawesome/fontawesome-common-types';
+import { parseSvgText, IconChooserResult, isValidSemver, createFontAwesomeScriptElement, IconLookupWithFamilyStyle } from './utils';
 
 describe('parseSvgText', () => {
   const normalSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M1 1 h1 z"/></svg>`;
@@ -65,9 +64,11 @@ describe('parseSvgText', () => {
 
 describe('IconChooserResult typing', () => {
   test('plain icon', () => {
-    const star: IconLookup = {
+    const star: IconLookupWithFamilyStyle = {
       prefix: 'fas',
       iconName: 'star',
+      family: 'classic',
+      style: 'solid',
     };
 
     const result: IconChooserResult = star;

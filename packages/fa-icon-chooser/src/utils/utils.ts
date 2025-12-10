@@ -37,9 +37,20 @@ export function buildDefaultIconsSearchResult(familyStyles: object): object {
   return defaultIconsSearchResult;
 }
 
+export interface FamilyStyle {
+  family: string;
+  style: string;
+  prefix: string;
+}
+
 export interface IconLookup {
   prefix: string;
   iconName: string;
+}
+
+export interface IconLookupWithFamilyStyle extends IconLookup {
+  family: string;
+  style: string;
 }
 
 export type IconUpload = {
@@ -59,7 +70,11 @@ export interface IconDefinition extends IconLookup {
   icon: Array<any>;
 }
 
-export type IconChooserResult = IconLookup | IconDefinition;
+export interface IconDefinitionWithFamilyStyle extends IconLookupWithFamilyStyle {
+  icon: Array<any>;
+}
+
+export type IconChooserResult = IconLookupWithFamilyStyle | IconDefinitionWithFamilyStyle;
 
 const viewBoxRe = /viewBox="0 0 ([0-9]+) ([0-9]+)"/;
 const singlePathRe = /path d="([^"]+)"/;
@@ -137,8 +152,8 @@ export async function createFontAwesomeScriptElement(
   }
 }
 
-export function buildIconChooserResult(value: IconDefinition | IconLookup): IconChooserResult {
-  return value;
+export function buildIconChooserResult(value: IconDefinition | IconLookup, familyStyle: FamilyStyle): IconChooserResult {
+  return { ...value, family: familyStyle.family, style: familyStyle.style };
 }
 
 export function isValidSemver(val: string): boolean {

@@ -6,6 +6,7 @@ import {
   CONSOLE_MESSAGE_PREFIX,
   createFontAwesomeScriptElement,
   freeCdnBaseUrl,
+  FamilyStyle,
   IconChooserResult,
   IconLookup,
   IconUpload,
@@ -17,12 +18,6 @@ import {
 import { faSadTear, faTire } from '../../utils/icons';
 import { slotDefaults } from '../../utils/slots';
 import { IconDefinition } from '../../utils/utils';
-
-export interface FamilyStyle {
-  family: string;
-  style: string;
-  prefix: string;
-}
 
 const DEFAULT_FAMILY_STYLES: Array<FamilyStyle> = [
   { family: 'classic', style: 'solid', prefix: 'fas' },
@@ -186,7 +181,7 @@ export class FaIconChooser {
 
   // This should be populated as a reverse lookup when updating familyStyles.
   @State()
-  prefixToFamilyStyle: object = {};
+  prefixToFamilyStyle: { [key: string]: FamilyStyle } = {};
 
   @State()
   selectedFamily: string = 'classic';
@@ -255,7 +250,8 @@ export class FaIconChooser {
 
     for (const family in this.familyStyles) {
       for (const style in this.familyStyles[family]) {
-        acc[this.familyStyles[family][style].prefix] = { family, style };
+        const prefix = this.familyStyles[family][style].prefix;
+        acc[prefix] = { family, style, prefix };
       }
     }
 
@@ -651,7 +647,9 @@ export class FaIconChooser {
       result = iconDefinition;
     }
 
-    this.finish.emit(buildIconChooserResult(result));
+    const familyStyle = this.prefixToFamilyStyle[prefix];
+
+    this.finish.emit(buildIconChooserResult(result, familyStyle));
   }
 
   render() {

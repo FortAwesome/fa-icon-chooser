@@ -5,10 +5,10 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { IconChooserResult, IconDefinition, IconUpload, UrlTextFetcher } from "./utils/utils";
-import { FamilyStyle, QueryHandler } from "./components/fa-icon-chooser/fa-icon-chooser";
-export { IconChooserResult, IconDefinition, IconUpload, UrlTextFetcher } from "./utils/utils";
-export { FamilyStyle, QueryHandler } from "./components/fa-icon-chooser/fa-icon-chooser";
+import { FamilyStyle, IconChooserResult, IconDefinition, IconUpload, UrlTextFetcher } from "./utils/utils";
+import { QueryHandler } from "./components/fa-icon-chooser/fa-icon-chooser";
+export { FamilyStyle, IconChooserResult, IconDefinition, IconUpload, UrlTextFetcher } from "./utils/utils";
+export { QueryHandler } from "./components/fa-icon-chooser/fa-icon-chooser";
 export namespace Components {
     /**
      * This fa-icon component isn't THE fa-icon component. It's just a convenience
