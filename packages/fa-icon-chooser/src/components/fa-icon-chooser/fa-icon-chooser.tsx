@@ -343,6 +343,10 @@ export class FaIconChooser {
       }
     }
 
+    if (!this.pro()) {
+      this.updateFamilyStyles(DEFAULT_FAMILY_STYLES);
+    }
+
     const isLite = kit.licenseSelected === 'pro' && embedProSvg.length === 0;
 
     // Temporary pro lite and pro lite plus handling
