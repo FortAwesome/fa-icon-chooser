@@ -398,19 +398,20 @@ export class FaIconChooser {
   // (or other filtering) may have removed it; without this, getSelectedPrefix would
   // return undefined and filteredIcons would render empty even when matches exist.
   ensureSelectedFamilyStyleIsValid(): void {
-    const families = Object.keys(this.familyStyles).sort();
-    if (families.length === 0) return;
+    const stylesAvailableForSelectedFamily = Object.keys(this.familyStyles[this.selectedFamily] || {});
+    const isCurrentlyValid = stylesAvailableForSelectedFamily.includes(this.selectedStyle);
 
-    if (!this.familyStyles[this.selectedFamily]) {
-      this.selectedFamily = families[0];
+    if (isCurrentlyValid) {
+      return;
     }
 
-    const styles = Object.keys(this.familyStyles[this.selectedFamily] || {}).sort();
-    if (styles.length === 0) return;
-
-    if (!this.familyStyles[this.selectedFamily][this.selectedStyle]) {
-      this.selectedStyle = styles[0];
-    }
+    const filteredFamilies = Object.keys(this.familyStyles).sort();
+    if (filteredFamilies.length === 0) return;
+    const selectedFamily = filteredFamilies[0];
+    const stylesForSelectedFamily = Object.keys(this.familyStyles[selectedFamily] || {}).sort();
+    if (stylesForSelectedFamily.length === 0) return;
+    this.selectedFamily = selectedFamily;
+    this.selectedStyle = stylesForSelectedFamily[0];
   }
 
   resolvedVersion() {
