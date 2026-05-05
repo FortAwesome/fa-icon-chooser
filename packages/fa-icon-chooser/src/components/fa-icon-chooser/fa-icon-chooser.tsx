@@ -390,6 +390,27 @@ export class FaIconChooser {
     }
 
     this.buildFamilyStyleReverseLookup();
+    this.ensureSelectedFamilyStyleIsValid();
+  }
+
+  // Reconciles selectedFamily/selectedStyle with the current familyStyles. The
+  // initial state defaults assume Classic Solid is available, but includeFamilyStyle
+  // (or other filtering) may have removed it; without this, getSelectedPrefix would
+  // return undefined and filteredIcons would render empty even when matches exist.
+  ensureSelectedFamilyStyleIsValid(): void {
+    const families = Object.keys(this.familyStyles).sort();
+    if (families.length === 0) return;
+
+    if (!this.familyStyles[this.selectedFamily]) {
+      this.selectedFamily = families[0];
+    }
+
+    const styles = Object.keys(this.familyStyles[this.selectedFamily] || {}).sort();
+    if (styles.length === 0) return;
+
+    if (!this.familyStyles[this.selectedFamily][this.selectedStyle]) {
+      this.selectedStyle = styles[0];
+    }
   }
 
   resolvedVersion() {
