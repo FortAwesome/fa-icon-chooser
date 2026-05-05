@@ -2,6 +2,7 @@ import { newSpecPage } from '@stencil/core/testing';
 import { FaIconChooser } from './fa-icon-chooser';
 import { buildDefaultIconsSearchResult } from '../../utils/utils';
 import { get } from 'lodash';
+import foodSearchResults from './food-search-results.fixture.json';
 
 // TODO: tests
 // - remove contents from query field after having had some contents: return to default state
@@ -102,5 +103,109 @@ describe('fa-icon-chooser', () => {
           expect(page.root.shadowRoot.innerHTML).toEqual(expect.stringMatching(new RegExp(`<fa-icon .*name="${id}"`)));
         }
       });
+  });
+
+  it('renders icons matching the includeFamilyStyle filter when only "far" is allowed', async () => {
+    const page = await newSpecPage({
+      components: [FaIconChooser],
+    });
+
+    const proHandleQuery = jest.fn((document: string, variables?: any) => {
+      if (document.includes('query KitMetadata')) {
+        return Promise.resolve({
+          data: {
+            me: {
+              kit: {
+                version: '7.0.0',
+                technologySelected: 'svg',
+                licenseSelected: 'pro',
+                name: 'test-kit',
+                permits: {
+                  embedProSvg: [
+                    { prefix: 'fas', family: 'classic' },
+                    { prefix: 'far', family: 'classic' },
+                    { prefix: 'fab', family: 'classic' },
+                  ],
+                },
+                release: {
+                  version: '7.0.0',
+                  familyStyles: [
+                    { family: 'classic', style: 'solid', prefix: 'fas' },
+                    { family: 'classic', style: 'regular', prefix: 'far' },
+                    { family: 'classic', style: 'brands', prefix: 'fab' },
+                    { family: 'classic', style: 'light', prefix: 'fal' },
+                    { family: 'classic', style: 'thin', prefix: 'fat' },
+                    { family: 'duotone', style: 'solid', prefix: 'fad' },
+                    { family: 'sharp', style: 'solid', prefix: 'fass' },
+                    { family: 'sharp', style: 'regular', prefix: 'fasr' },
+                  ],
+                },
+                iconUploads: [],
+              },
+            },
+          },
+        });
+      }
+      if (document.includes('query Search') && variables && variables.query === 'food') {
+        return Promise.resolve({ data: foodSearchResults });
+      }
+      return Promise.resolve({ data: { search: [] } });
+    });
+
+    const getUrlText = jest.fn(url => {
+      if (url.match(/\.js(\?|$)/)) {
+        page.win['FontAwesome'] = {
+          dom: {
+            css: () => '/* fake css */',
+          },
+        };
+        return Promise.resolve('// fake JavaScript');
+      } else {
+        return Promise.reject('fake rejection');
+      }
+    });
+
+    const el = document.createElement('fa-icon-chooser');
+    el.handleQuery = proHandleQuery;
+    el.getUrlText = getUrlText;
+    el.includeFamilyStyle = (familyStyle: { prefix: string }) => familyStyle.prefix === 'far';
+    el.setAttribute('kit-token', 'fake-kit-token');
+
+    // Override slot defaults that share JSX nodes (e.g. <strong> in start-view-detail);
+    // shared JSX nodes can't be re-rendered across tests in the same file under Stencil
+    // testing — providing user content via slots avoids the default JSX entirely.
+    for (const name of ['start-view-detail', 'suggest-icon-upload', 'get-fontawesome-pro']) {
+      const slotEl = document.createElement('span');
+      slotEl.setAttribute('slot', name);
+      slotEl.textContent = `test:${name}`;
+      el.appendChild(slotEl);
+    }
+
+    page.body.appendChild(el);
+    await page.waitForChanges();
+
+    // Sanity check: the only familyStyle that survived the filter should be classic/regular (far).
+    expect(page.rootInstance.familyStyles).toEqual({
+      classic: { regular: { prefix: 'far' } },
+    });
+
+    // Set query state so the empty-query "start view" branch (which renders shared
+    // JSX nodes from slotDefaults) is skipped on re-render. Then run the search,
+    // bypassing the input debounce.
+    page.rootInstance.query = 'food';
+    await page.rootInstance.updateQueryResults('food');
+
+    const filteredIcons = page.rootInstance.filteredIcons();
+
+    // Every icon in the food results that includes {family:"classic", style:"regular"}
+    // in its pro familyStyles list should appear under the 'far' prefix.
+    expect(filteredIcons.length).toBeGreaterThan(0);
+    filteredIcons.forEach(icon => {
+      expect(icon.prefix).toBe('far');
+    });
+
+    const iconNames = filteredIcons.map(i => i.iconName);
+    // These food entries all carry classic/regular in their pro family-styles list.
+    expect(iconNames).toEqual(expect.arrayContaining(['pot-food', 'pan-food', 'can-food', 'bowl-food', 'burger', 'utensils']));
   });
 });
