@@ -395,13 +395,14 @@ export class FaIconChooser {
 
   // Reconciles selectedFamily/selectedStyle with the current familyStyles. The
   // initial state defaults assume Classic Solid is available, but includeFamilyStyle
-  // (or other filtering) may have removed it; without this, getSelectedPrefix would
+  // (or other filtering) may have removed it from the available familyStyles.
+  // Without this, getSelectedPrefix would
   // return undefined and filteredIcons would render empty even when matches exist.
   ensureSelectedFamilyStyleIsValid(): void {
-    const stylesAvailableForSelectedFamily = Object.keys(this.familyStyles[this.selectedFamily] || {});
-    const isCurrentlyValid = stylesAvailableForSelectedFamily.includes(this.selectedStyle);
+    const stylesObjectForSelectedFamily = this.familyStyles[this.selectedFamily] || {};
+    const isSelectedFamilyStyleValid = stylesObjectForSelectedFamily.hasOwnProperty(this.selectedStyle);
 
-    if (isCurrentlyValid) {
+    if (isSelectedFamilyStyleValid) {
       return;
     }
 
