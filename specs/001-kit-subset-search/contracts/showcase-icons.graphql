@@ -1,0 +1,69 @@
+# Contract: kit-mode opening showcase (replaces defaultIconsSearchResult.json when a kit token is present)
+#
+# Status: Kit.showcaseIcons is available in staging and is a release prerequisite
+#         (not yet in production as of 2026-06-26; this component does not ship until
+#         it is). Built against the agreed definition; the component ASSUMES the field
+#         is present and includes NO fallback for its absence (see search-kit.graphql
+#         header / research D8).
+#
+#         NOTE: The shape selected below is the agreed showcase shape (`iconVariants`).
+#         If showcaseIcons ends up mirroring the `searchKit` `SearchKitResult` union
+#         when promoted to production, reconcile this selection then (see
+#         search-kit.graphql for the verified union pattern).
+#
+# Executed via the consumer-supplied handleQuery callback:
+#   handleQuery(document, variables, options)
+#
+# Variables:
+#   token:    the kit token (this.kitToken)
+#   selector: a FamilyStyleSelector @oneOf input. Provide exactly one member.
+#             This feature uses { prefix: "<prefix>" } for the one family-style being shown.
+#
+# Options (REQUIRED for caching, per FR-010):
+#   { cache: true, cacheKey: "<showcaseCacheKey>" }
+#   `showcaseCacheKey` is the single value read from the kit metadata query
+#   (Kit.showcaseCacheKey). The host's handleQuery uses it as the showcase cache
+#   identity: an unchanged kit (same showcaseCacheKey) reuses results, and a changed
+#   kit (new showcaseCacheKey) refreshes them. Because every family-style's showcase
+#   request for a kit carries this same cacheKey, the host disambiguates the specific
+#   family-style by the request `variables` (the selector) — see handle-query-options.md.
+#   Hosts that ignore cacheKey still work (they cache less precisely, or not at all).
+#
+# Loading (per Clarification Q1): called lazily — only for the currently selected
+# family-style on open, and for each other family-style the first time it is selected.
+#
+# Scope: showcaseIcons returns OFFICIAL variants only. Do NOT call this for custom
+# family-styles (fak/fakd); their opening view comes from the kit's iconUploads.
+#
+# pageSize 80 + limitPerFamilyStyle 80: one page of up to 80 icons for the selector.
+#
+# Each IconVariant maps to the internal { iconName, prefix }:
+#   iconName = name, prefix = familyStyle.prefix
+
+query ShowcaseIcons($token: String!, $selector: FamilyStyleSelector!) {
+  me {
+    kit(token: $token) {
+      showcaseIcons(selector: $selector, page: 1, pageSize: 80, limitPerFamilyStyle: 80) {
+        page
+        pageSize
+        totalIconVariantCount
+        totalPageCount
+        iconVariants {
+          name
+          unicodeHex
+          familyStyle {
+            family
+            style
+            prefix
+          }
+        }
+      }
+    }
+  }
+}
+
+# Example variables:
+# {
+#   "token": "abc123",
+#   "selector": { "prefix": "fas" }
+# }

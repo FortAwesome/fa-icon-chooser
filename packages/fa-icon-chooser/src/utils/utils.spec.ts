@@ -1,4 +1,17 @@
-import { parseSvgText, IconChooserResult, isValidSemver, createFontAwesomeScriptElement, IconLookupWithFamilyStyle } from './utils';
+import {
+  parseSvgText,
+  IconChooserResult,
+  isValidSemver,
+  createFontAwesomeScriptElement,
+  IconLookupWithFamilyStyle,
+  searchKitIconsToIconLookups,
+  showcaseIconsToIconLookups,
+  showcaseCacheKeyFromResponse,
+  kitFamilyStylesFromResponse,
+  searchModeForPrefix,
+  truncateKitName,
+} from './utils';
+import { kitMetadataResponse, searchKitOfficialResponse, searchKitCustomResponse, searchKitEmptyResponse, showcaseIconsResponse } from './__fixtures__/kitResponses';
 
 describe('parseSvgText', () => {
   const normalSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M1 1 h1 z"/></svg>`;
@@ -86,6 +99,156 @@ describe('isSemver', () => {
   test('when invalid', () => {
     expect(isValidSemver('5.x')).toBe(false);
     expect(isValidSemver('5.13.5.foo.bar')).toBe(false);
+  });
+});
+
+describe('searchModeForPrefix', () => {
+  test('custom upload prefixes map to CUSTOM', () => {
+    expect(searchModeForPrefix('fak')).toBe('CUSTOM');
+    expect(searchModeForPrefix('fakd')).toBe('CUSTOM');
+  });
+
+  test('official prefixes map to OFFICIAL', () => {
+    expect(searchModeForPrefix('fas')).toBe('OFFICIAL');
+    expect(searchModeForPrefix('far')).toBe('OFFICIAL');
+    expect(searchModeForPrefix('fab')).toBe('OFFICIAL');
+    expect(searchModeForPrefix('fad')).toBe('OFFICIAL');
+  });
+});
+
+describe('searchKitIconsToIconLookups', () => {
+  test('maps OFFICIAL IconWithVariants union members to one { iconName, prefix } per variant', () => {
+    const lookups = searchKitIconsToIconLookups(searchKitOfficialResponse);
+    expect(lookups).toEqual([
+      { iconName: 'arrow-right', prefix: 'fas' },
+      { iconName: 'arrow-right', prefix: 'far' },
+      { iconName: 'arrow-left', prefix: 'fas' },
+    ]);
+  });
+
+  test('maps CUSTOM IconUpload union members to { iconName } (prefix undefined)', () => {
+    const lookups = searchKitIconsToIconLookups(searchKitCustomResponse);
+    expect(lookups).toEqual([{ iconName: 'my-logo', prefix: undefined }]);
+  });
+
+  test('returns [] for an empty result', () => {
+    expect(searchKitIconsToIconLookups(searchKitEmptyResponse)).toEqual([]);
+  });
+
+  test('returns [] for a null/undefined response', () => {
+    expect(searchKitIconsToIconLookups(null)).toEqual([]);
+    expect(searchKitIconsToIconLookups(undefined)).toEqual([]);
+  });
+
+  test('skips variants missing a prefix and icons missing a name', () => {
+    const response = {
+      data: {
+        me: {
+          kit: {
+            searchKit: {
+              icons: [
+                {
+                  __typename: 'IconWithVariants',
+                  name: 'ok',
+                  variants: [
+                    { name: 'ok', familyStyle: { prefix: 'fas' } },
+                    { name: 'ok', familyStyle: {} },
+                  ],
+                },
+                { __typename: 'IconWithVariants', variants: [{ name: 'no-name', familyStyle: { prefix: 'fas' } }] },
+              ],
+            },
+          },
+        },
+      },
+    };
+    expect(searchKitIconsToIconLookups(response)).toEqual([{ iconName: 'ok', prefix: 'fas' }]);
+  });
+});
+
+describe('showcaseIconsToIconLookups', () => {
+  test('maps showcaseIcons variants to { iconName, prefix }', () => {
+    const response = showcaseIconsResponse('fas', ['house', 'gear']);
+    expect(showcaseIconsToIconLookups(response)).toEqual([
+      { iconName: 'house', prefix: 'fas' },
+      { iconName: 'gear', prefix: 'fas' },
+    ]);
+  });
+
+  test('returns [] for an empty result / null response', () => {
+    expect(showcaseIconsToIconLookups(showcaseIconsResponse('fas', []))).toEqual([]);
+    expect(showcaseIconsToIconLookups(null)).toEqual([]);
+  });
+});
+
+describe('showcaseCacheKeyFromResponse', () => {
+  test('reads Kit.showcaseCacheKey when present', () => {
+    expect(showcaseCacheKeyFromResponse(kitMetadataResponse)).toBe('kit:fake-kit-token:rev7');
+  });
+
+  test('returns undefined when absent', () => {
+    expect(showcaseCacheKeyFromResponse({ data: { me: { kit: {} } } })).toBeUndefined();
+    expect(showcaseCacheKeyFromResponse(null)).toBeUndefined();
+  });
+});
+
+describe('kitFamilyStylesFromResponse', () => {
+  test('reads the kit subset family-styles', () => {
+    expect(kitFamilyStylesFromResponse(kitMetadataResponse)).toEqual([
+      { family: 'classic', style: 'solid', prefix: 'fas' },
+      { family: 'classic', style: 'regular', prefix: 'far' },
+      { family: 'classic', style: 'brands', prefix: 'fab' },
+    ]);
+  });
+
+  test('returns [] when absent', () => {
+    expect(kitFamilyStylesFromResponse({ data: { me: { kit: {} } } })).toEqual([]);
+    expect(kitFamilyStylesFromResponse(null)).toEqual([]);
+  });
+
+  test('skips nodes missing family, style, or prefix', () => {
+    const partial = {
+      data: {
+        me: {
+          kit: {
+            familyStylesPaginated: {
+              familyStyles: [{ familyStyle: { family: 'classic', style: 'solid', prefix: 'fas' } }, { familyStyle: { prefix: 'far' } }, { familyStyle: null }, {}],
+            },
+          },
+        },
+      },
+    };
+
+    expect(kitFamilyStylesFromResponse(partial)).toEqual([{ family: 'classic', style: 'solid', prefix: 'fas' }]);
+  });
+});
+
+describe('truncateKitName', () => {
+  test('a name of 30 characters or fewer is returned unchanged (no ellipsis)', () => {
+    expect(truncateKitName('Marketing Site')).toBe('Marketing Site');
+    const exactly30 = 'a'.repeat(30);
+    expect(exactly30.length).toBe(30);
+    expect(truncateKitName(exactly30)).toBe(exactly30);
+  });
+
+  test('a name longer than 30 characters is truncated to its first 30 chars plus an ellipsis', () => {
+    const longName = 'This Kit Name Is Definitely Longer Than Thirty Characters';
+    expect(longName.length).toBeGreaterThan(30);
+    const result = truncateKitName(longName);
+    expect(result).toBe(`${longName.slice(0, 30)}…`);
+    // The ellipsis is not counted toward the 30-character limit.
+    expect(result.slice(0, 30)).toBe(longName.slice(0, 30));
+    expect(result.endsWith('…')).toBe(true);
+  });
+
+  test('a missing or empty name yields an empty string', () => {
+    expect(truncateKitName(undefined)).toBe('');
+    expect(truncateKitName('')).toBe('');
+  });
+
+  test('honors a custom max', () => {
+    expect(truncateKitName('abcdef', 3)).toBe('abc…');
+    expect(truncateKitName('abc', 3)).toBe('abc');
   });
 });
 

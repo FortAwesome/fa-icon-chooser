@@ -1,0 +1,78 @@
+# Contract: kit metadata (EXISTING query — additive changes for this feature)
+#
+# Changes for this feature:
+#   1. Add `showcaseCacheKey` — a single, kit-provided value used as the showcase
+#      cache identity (FR-009/FR-010). It replaces the previously planned
+#      token + kitRevision composite cache key.
+#   2. Add `familyStylesPaginated(page: 1, pageSize: 50)` — the kit's OWN subset
+#      family-styles (verified on staging 2026-06-26: the field is
+#      `familyStylesPaginated`, NOT `familyStyles`; it returns
+#      `FamilyStyleSubsetPaginated { familyStyles: [FamilyStyleSubset], page,
+#      pageSize, totalFamilyStyleCount, totalPageCount }`, and each
+#      `FamilyStyleSubset` exposes a `FamilyStyle` at `familyStyle`). In kit mode
+#      the chooser's available family-styles are driven SOLELY by THIS list (limited to
+#      the kit's subset). `familyStyle` is a full `FamilyStyle`, so `family`, `style`, and
+#      `prefix` are selected directly from it (all three are `String!`) — no release
+#      catalog lookup is involved. This replaces the prior permits/pro/lite filtering as
+#      the selector of styles (FR-008).
+#   2b. Drop the `release.familyStyles` selection. It was the whole-release catalog —
+#      broader than the kit's subset — and is no longer needed now that the subset
+#      carries family/style itself. `release { version }` IS still selected and used
+#      (see `activeVersion()`); only the `familyStyles` subselection is removed.
+#   3. Consume `name` — the kit's human-readable name (already selected). It feeds the
+#      kit-branded default copy (search-status line, start-view heading/detail), truncated
+#      to 30 chars + ellipsis for display (FR-015/FR-017). `name` is an already-live field,
+#      not part of the staging/release-prerequisite set below.
+#
+# Status: `Kit.showcaseCacheKey` and `Kit.familyStylesPaginated` are available in staging and
+#   are a release prerequisite (not yet in production as of 2026-06-26, alongside
+#   `Kit.showcaseIcons`; this component does not ship until they are). They are built
+#   against the agreed shape; the component ASSUMES they are present and includes NO
+#   fallback for their absence (no release/permits-derived family-style fallback),
+#   per FR-012.
+#
+# `familyStylesPaginated` is a paginated subfield; this feature requests only the first page
+#   (pageSize 50). Real kits contain far fewer family-styles than 50, so a single
+#   page covers them. The selection set is the family-style node; we select `family`,
+#   `style`, and `prefix`.
+#
+# Executed via handleQuery with options { cache: true } (unchanged).
+# Variables: { token: this.kitToken }
+
+query KitMetadata($token: String!) {
+  me {
+    kit(token: $token) {
+      showcaseCacheKey   # <-- ADDED: single cache identity for showcase requests
+      familyStylesPaginated(page: 1, pageSize: 50) {   # <-- ADDED: the kit's subset family-styles
+        familyStyles {
+          familyStyle {
+            family
+            style
+            prefix
+          }
+        }
+      }
+      version
+      technologySelected
+      licenseSelected
+      name               # <-- CONSUMED: kit name for kit-branded copy (FR-015)
+      permits {
+        embedProSvg {
+          prefix
+          family
+        }
+      }
+      release {
+        version          # <-- still used by activeVersion(); familyStyles selection REMOVED
+      }
+      iconUploads {
+        name
+        unicode
+        version
+        width
+        height
+        pathData
+      }
+    }
+  }
+}

@@ -1,7 +1,7 @@
 // This dev-only module isn't processed by the bundler like the others,
 // so we can't use a node env var to set this. Just hardcode it in one
 // place at the top.
-const API_URL = 'https://api.fontawesome.com';
+const API_URL = 'https://api-staging.fontawesome.com';
 
 const FaIconChooserDevExports = (function () {
   let showingIconChooser = false;
@@ -21,7 +21,23 @@ const FaIconChooserDevExports = (function () {
     });
   }
 
-  function handleQuery(query, variables) {
+  function handleQuery(query, variables, options) {
+    const {  cache, cacheKey } = options || {};
+
+    if (cache && cacheKey) {
+      const cachedResult = window.localStorage.getItem(`handleQueryCache:${cacheKey}`);
+      if (cachedResult) {
+        try {
+          const parsedResult = JSON.parse(cachedResult);
+          console.log(`handleQuery: returning cached result for cacheKey: ${cacheKey}`);
+          return Promise.resolve(parsedResult);
+        } catch (e) {
+          console.error(`handleQuery: failed to parse cached result for cacheKey: ${cacheKey}`, e);
+          // If parsing fails, we can choose to ignore the cache and proceed with the fetch.
+        }
+      }
+    }
+
     return new Promise((resolve, reject) => {
       const headers = {
         'Content-Type': 'application/json',
@@ -50,7 +66,12 @@ const FaIconChooserDevExports = (function () {
           if (response.ok) {
             response
               .json()
-              .then(json => resolve(json))
+              .then(json => {
+                if (cache && cacheKey) {
+                  window.localStorage.setItem(`handleQueryCache:${cacheKey}`, JSON.stringify(json));
+                }
+                resolve(json)
+              })
               .catch(e => reject(e));
           } else {
             reject('bad query');
