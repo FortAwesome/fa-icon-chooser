@@ -28,7 +28,7 @@ import {
   UrlTextFetcher,
 } from '../../utils/utils';
 import { faSadTear, faTire } from '../../utils/icons';
-import { slotDefaults, SlotDefaultsParams } from '../../utils/slots';
+import { slotDefaults, SlotDefaultsParams, SEARCH_FIELD_PLACEHOLDER_DEFAULT } from '../../utils/slots';
 import { IconDefinition } from '../../utils/utils';
 
 const DEFAULT_FAMILY_STYLES: Array<FamilyStyle> = [
@@ -1035,7 +1035,7 @@ export class FaIconChooser {
                 class="rounded"
                 value={this.query}
                 onInput={this.onSearchInputChange.bind(this)}
-                placeholder={this.searchInputPlaceholder || slotDefaults()['search-field-placeholder']}
+                placeholder={this.searchInputPlaceholder || SEARCH_FIELD_PLACEHOLDER_DEFAULT}
               ></input>
             </div>
           </div>

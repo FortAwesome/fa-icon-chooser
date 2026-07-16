@@ -10,6 +10,11 @@ export interface SlotDefaultsParams {
   name?: string;
 }
 
+// The search-field placeholder never varies with kit token or name, so it's hoisted to a
+// module-level constant. The component's render reads it directly (avoiding a full
+// slotDefaults() rebuild per render), and slotDefaults() reuses it for the slot map.
+export const SEARCH_FIELD_PLACEHOLDER_DEFAULT = 'Find icons by name, category, or keyword';
+
 // slotDefaults is a generator: given the (optional) kit token and name, it returns the
 // map of default slot content. In kit mode (a truthy kitToken) the search-status line,
 // the start-view heading, and the start-view detail are personalized with the kit's
@@ -48,7 +53,7 @@ export function slotDefaults(params: SlotDefaultsParams = {}) {
 
   slots['search-field-label-pro'] = 'Search Font Awesome Pro Icons in Version';
 
-  slots['search-field-placeholder'] = 'Find icons by name, category, or keyword';
+  slots['search-field-placeholder'] = SEARCH_FIELD_PLACEHOLDER_DEFAULT;
 
   // In kit mode both the free and pro search-status lines describe the kit itself
   // (name + token), independent of the license; the resolved version is appended by the
