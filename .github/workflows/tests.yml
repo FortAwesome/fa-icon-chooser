@@ -6,7 +6,7 @@ jobs:
   tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: "24"
@@ -14,12 +14,31 @@ jobs:
         run: |
           cd packages/fa-icon-chooser
           npm install
-      - name: Run Tests
-        # Spec tests only. The e2e suite (`npm run test`) launches a real browser via
-        # Puppeteer, which doesn't reliably resolve on the runner; run e2e in local dev.
+      - name: Install e2e browser
+        # The --e2e suite launches chrome-headless-shell through Puppeteer, and a plain
+        # `npm install` does not reliably leave that binary on the runner. Install it
+        # explicitly, then point the test runner at the exact binary we installed --
+        # Stencil honours PUPPETEER_EXECUTABLE_PATH, so this removes any dependence on
+        # Puppeteer's own cache lookup. The cache is cleared first because
+        # `browsers install` refuses to populate a version folder that already exists,
+        # and the check below turns a skipped or partial download into a loud failure
+        # here instead of an obscure "browser was not found" during the test run.
+        shell: bash
         run: |
           cd packages/fa-icon-chooser
-          npm run test.ci
+          rm -rf "$HOME/.cache/puppeteer"
+          out=$(npx puppeteer browsers install chrome-headless-shell)
+          echo "${out:-<no output from browsers install>}"
+          bin=${out##* }
+          if [ -z "$bin" ] || [ ! -x "$bin" ]; then
+            echo "::error::chrome-headless-shell was not installed; e2e tests cannot run"
+            exit 1
+          fi
+          echo "PUPPETEER_EXECUTABLE_PATH=$bin" >> "$GITHUB_ENV"
+      - name: Run Tests
+        run: |
+          cd packages/fa-icon-chooser
+          npm run test
       - name: Check Format
         run: |
           cd packages/fa-icon-chooser

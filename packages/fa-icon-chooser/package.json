@@ -50,7 +50,6 @@
     "start": "FA_USE_LOCAL_ENV=1 stencil build --config stencil.config.dev.ts --watch --serve",
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watchAll",
-    "test.ci": "stencil test --spec",
     "generate": "stencil generate",
     "format": "prettier --write .",
     "format.check": "prettier --check ."
