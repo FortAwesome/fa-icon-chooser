@@ -312,6 +312,11 @@ describe('fa-icon-chooser kit mode (subset-aware search & showcase)', () => {
   const showcaseCalls = (hq: any) => (hq.mock.calls as any[]).filter(c => String(c[0]).includes('query ShowcaseIcons'));
   const searchKitCalls = (hq: any) => (hq.mock.calls as any[]).filter(c => String(c[0]).includes('query SearchKit'));
 
+  // Family/style change handlers fire their re-query/refetch fire-and-forget. The mocked
+  // handleQuery resolves synchronously, so a single macrotask turn drains all the chained
+  // microtasks and lets this.icons settle before we inspect it.
+  const flushPromises = () => new Promise(resolve => setTimeout(resolve, 0));
+
   // T010 [US1]
   it('searches the kit subset via Kit.searchKit (OFFICIAL) and populates icons', async () => {
     const handleQuery = makeHandleQuery(searchKitOfficialResponse);
@@ -546,6 +551,97 @@ describe('fa-icon-chooser kit mode (subset-aware search & showcase)', () => {
     expect(filtered.map((i: any) => i.iconName)).toContain('my-logo');
     // The matched custom result carries upload path data for rendering.
     expect(get(filtered[0], 'iconUpload')).toBeTruthy();
+  });
+
+  // searchKit is mode-segregated: an OFFICIAL search never returns custom uploads and a
+  // CUSTOM search never returns official icons. So when a query is active and the user
+  // switches across the official<->custom family boundary, this.icons no longer covers
+  // the newly selected prefix. The selection change must re-run the search for the new
+  // family-style; otherwise filteredIcons() is empty and the user sees a false
+  // "we couldn't find anything" until they retype.
+
+  // An OFFICIAL searchKit response whose single match carries variants across every
+  // classic style, so filtering by any classic prefix (fas/far/fab) is non-empty.
+  const officialAcrossStylesResponse = {
+    data: {
+      me: {
+        kit: {
+          searchKit: {
+            page: 1,
+            pageSize: 50,
+            totalIconCount: 1,
+            totalPageCount: 1,
+            icons: [
+              {
+                __typename: 'IconWithVariants',
+                name: 'my-official',
+                unicodeHex: 'f000',
+                variants: [
+                  { name: 'my-official', unicodeHex: 'f000', familyStyle: { family: 'classic', style: 'solid', prefix: 'fas' } },
+                  { name: 'my-official', unicodeHex: 'f000', familyStyle: { family: 'classic', style: 'regular', prefix: 'far' } },
+                  { name: 'my-official', unicodeHex: 'f000', familyStyle: { family: 'classic', style: 'brands', prefix: 'fab' } },
+                ],
+              },
+            ],
+          },
+        },
+      },
+    },
+  };
+
+  // Serve OFFICIAL vs CUSTOM results based on the requested searchMode, mirroring the
+  // real backend's mode segregation.
+  const modeAwareSearchResponse = (variables: any) => (variables.searchMode === 'CUSTOM' ? searchKitCustomResponse : officialAcrossStylesResponse);
+
+  it('re-runs the search when switching from an official to a custom family-style with an active query', async () => {
+    const handleQuery = makeHandleQuery(modeAwareSearchResponse);
+    const { page } = await mountKit(handleQuery);
+
+    // Search on classic/solid (OFFICIAL). The official match shows under fas.
+    page.rootInstance.query = 'my';
+    await page.rootInstance.updateQueryResults('my');
+    expect(page.rootInstance.filteredIcons().map((i: any) => i.iconName)).toContain('my-official');
+
+    // Switch to the custom (kit) family while the query is still active.
+    page.rootInstance.selectFamily({ target: { value: 'kit' } });
+    await flushPromises();
+    await page.waitForChanges();
+
+    // The switch must have re-run the search in CUSTOM mode...
+    const searches = searchKitCalls(handleQuery);
+    expect(searches[searches.length - 1][1]).toEqual(expect.objectContaining({ searchMode: 'CUSTOM' }));
+
+    // ...so the kit's matching upload shows instead of an empty result.
+    const filtered = page.rootInstance.filteredIcons();
+    expect(filtered.map((i: any) => i.iconName)).toContain('my-logo');
+    filtered.forEach((i: any) => expect(i.prefix).toBe('fak'));
+  });
+
+  it('re-runs the search when switching from a custom to an official family-style with an active query', async () => {
+    const handleQuery = makeHandleQuery(modeAwareSearchResponse);
+    const { page } = await mountKit(handleQuery);
+
+    // Start on the custom (kit) family and search (CUSTOM). The upload shows under fak.
+    page.rootInstance.selectFamily({ target: { value: 'kit' } });
+    await page.waitForChanges();
+    page.rootInstance.query = 'my';
+    await page.rootInstance.updateQueryResults('my');
+    expect(page.rootInstance.filteredIcons().map((i: any) => i.iconName)).toContain('my-logo');
+
+    // Switch back to an official family while the query is still active.
+    page.rootInstance.selectFamily({ target: { value: 'classic' } });
+    await flushPromises();
+    await page.waitForChanges();
+
+    // The switch must have re-run the search in OFFICIAL mode...
+    const searches = searchKitCalls(handleQuery);
+    expect(searches[searches.length - 1][1]).toEqual(expect.objectContaining({ searchMode: 'OFFICIAL' }));
+
+    // ...so the official match shows for the newly selected official prefix.
+    const selectedPrefix = page.rootInstance.getSelectedPrefix();
+    const filtered = page.rootInstance.filteredIcons();
+    expect(filtered.map((i: any) => i.iconName)).toContain('my-official');
+    filtered.forEach((i: any) => expect(i.prefix).toBe(selectedPrefix));
   });
 
   // T026 [US4] — showcase requests carry a self-contained cacheKey hashed from the
