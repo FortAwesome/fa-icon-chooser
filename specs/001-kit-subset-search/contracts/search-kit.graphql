@@ -1,0 +1,82 @@
+# Contract: kit-mode icon search (replaces legacy `search` when a kit token is present)
+#
+# Executed via the consumer-supplied handleQuery callback:
+#   handleQuery(document, variables, options?)
+#
+# Variables:
+#   token:      the kit token (this.kitToken)
+#   query:      the user's search string
+#   searchMode: "OFFICIAL" for official family-styles,
+#               "CUSTOM"   when the selected family-style prefix is "fak" or "fakd"
+#
+# Options: none required (search results are NOT cached, matching legacy `search`).
+#
+# Schema (verified by live introspection of https://api.fontawesome.com/graphql on
+# 2026-06-26). The earlier draft of this contract was WRONG — it selected
+# `totalIconVariantCount` and `iconVariants`, which the server rejects:
+#   "Cannot query field \"totalIconVariantCount\" on type \"SearchKitResult\"."
+#   "Cannot query field \"iconVariants\" on type \"SearchKitResult\"."
+# Corrected facts:
+#   - Kit.searchKit returns `SearchKitResult`, NOT `IconVariantsPaginated`.
+#   - SearchKitResult fields: page, pageSize, totalIconCount, totalPageCount,
+#     icons: [SearchKitIcon!]!  (the count field is `totalIconCount`, not
+#     `totalIconVariantCount`; the list field is `icons`, not `iconVariants`).
+#   - `SearchKitIcon` is a UNION of:
+#       * IconWithVariants  — OFFICIAL results. Fields: name, label, unicodeHex,
+#                             unicodeInt, variants: [IconVariant!]!
+#       * IconUpload        — CUSTOM results. Fields: name, unicodeHex, unicodeInt,
+#                             version, width, height, pathData, html, iconDefinition
+#   - IconVariant { name, familyStyle { family style prefix shorthand visualTags },
+#                   svg, unicodeHex, unicodeInt }.
+#   - KitSearchMode enum: OFFICIAL | CUSTOM.
+#   - Kit.searchKit args: query: String!, searchMode: KitSearchMode!, page: Int, pageSize: Int.
+#     No `version` arg — the kit scopes the search to its subset.
+#
+# Notes:
+#   - pageSize 100 matches the legacy `search(... first: 100)` page size.
+#   - Because `icons` is a union, the selection MUST use inline fragments and
+#     should request __typename so the consumer can branch.
+#   - Mapping into the component's internal { iconName, prefix }:
+#       OFFICIAL (IconWithVariants): one { iconName, prefix } per variant ->
+#         { iconName: icon.name, prefix: variant.familyStyle.prefix }.
+#         (filteredIcons() then narrows to the selected family-style's prefix.)
+#       CUSTOM   (IconUpload): { iconName: icon.name } resolved to the kit's
+#         already-loaded IconUploadLookups for rendering (prefix is the selected
+#         custom prefix, fak/fakd).
+
+query SearchKit($token: String!, $query: String!, $searchMode: KitSearchMode!) {
+  me {
+    kit(token: $token) {
+      searchKit(query: $query, searchMode: $searchMode, page: 1, pageSize: 100) {
+        page
+        pageSize
+        totalIconCount
+        totalPageCount
+        icons {
+          __typename
+          ... on IconWithVariants {
+            name
+            label
+            unicodeHex
+            variants {
+              name
+              unicodeHex
+              familyStyle {
+                family
+                style
+                prefix
+              }
+            }
+          }
+          ... on IconUpload {
+            name
+            unicodeHex
+            width
+            height
+            pathData
+          }
+        }
+      }
+    }
+  }
+}

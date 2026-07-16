@@ -24,5 +24,6 @@ $RECYCLE.BIN/
 Thumbs.db
 UserInterfaceState.xcuserstate
 .env
+.env.local
 .npmrc
-.claude/settings.local.json
+.claude/

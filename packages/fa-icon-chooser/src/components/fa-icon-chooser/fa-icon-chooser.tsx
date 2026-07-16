@@ -8,20 +8,27 @@ import size from 'lodash/size';
 import {
   buildDefaultIconsSearchResult,
   buildIconChooserResult,
+  computeCacheKey,
   CONSOLE_MESSAGE_PREFIX,
   createFontAwesomeScriptElement,
   freeCdnBaseUrl,
   FamilyStyle,
   IconChooserResult,
+  searchKitIconsToIconLookups,
+  showcaseIconsToIconLookups,
   IconLookup,
   IconUpload,
   IconUploadLookup,
   isValidSemver,
   kitAssetsBaseUrl,
+  kitFamilyStylesFromResponse,
+  kitRevisionFromResponse,
+  showcaseCacheKeyFromResponse,
+  searchModeForPrefix,
   UrlTextFetcher,
 } from '../../utils/utils';
 import { faSadTear, faTire } from '../../utils/icons';
-import { slotDefaults } from '../../utils/slots';
+import { slotDefaults, SlotDefaultsParams, SEARCH_FIELD_PLACEHOLDER_DEFAULT } from '../../utils/slots';
 import { IconDefinition } from '../../utils/utils';
 
 const DEFAULT_FAMILY_STYLES: Array<FamilyStyle> = [
@@ -37,21 +44,151 @@ type KitMetadata = {
   technologySelected: string;
   licenseSelected: string;
   name: string;
+  kitRevision?: string | number;
+  showcaseCacheKey?: string;
   iconUploads: Array<IconUpload> | null;
 };
+
+// GraphQL query used in kit mode to search a kit's subset (replaces the legacy
+// top-level `search`). searchKit caps pageSize at 50, so to match the legacy
+// `search(... first: 100)` reach we page through it: see updateKitQueryResults.
+const SEARCH_KIT_PAGE_SIZE = 50;
+
+const SEARCH_KIT_QUERY = `
+query SearchKit($token: String!, $query: String!, $searchMode: KitSearchMode!, $page: Int!, $pageSize: Int!) {
+  me {
+    kit(token: $token) {
+      searchKit(query: $query, searchMode: $searchMode, page: $page, pageSize: $pageSize) {
+        page
+        pageSize
+        totalIconCount
+        totalPageCount
+        icons {
+          __typename
+          ... on IconWithVariants {
+            name
+            label
+            unicodeHex
+            variants {
+              name
+              unicodeHex
+              familyStyle {
+                family
+                style
+                prefix
+              }
+            }
+          }
+          ... on IconUpload {
+            name
+            unicodeHex
+            width
+            height
+            pathData
+          }
+        }
+      }
+    }
+  }
+}`;
+
+// GraphQL query used in kit mode for the opening showcase of one family-style
+// (replaces defaultIconsSearchResult.json). One page of up to 80 official icons.
+const SHOWCASE_ICONS_QUERY = `
+query ShowcaseIcons($token: String!, $selector: FamilyStyleSelector!) {
+  me {
+    kit(token: $token) {
+      showcaseIcons(selector: $selector, page: 1, pageSize: 80, limitPerFamilyStyle: 80) {
+        page
+        pageSize
+        totalIconVariantCount
+        totalPageCount
+        iconVariants {
+          name
+          unicodeHex
+          familyStyle {
+            family
+            style
+            prefix
+          }
+        }
+      }
+    }
+  }
+}`;
+
+// Lightweight kit-identity probe, run (never cached) before KIT_METADATA_QUERY. It
+// selects only the fields that determine whether cached kit data is still fresh: the
+// kit's revision and its showcase cache key. Folding these into KIT_METADATA_QUERY's
+// and the showcase queries' cache keys busts stale cached data the moment the kit
+// changes, so those larger queries can be cached without pinning a changed kit to an
+// old response.
+const KIT_REVISION_QUERY = `
+      query KitRevision($token: String!) {
+        me {
+          kit(token: $token) {
+            kitRevision
+            showcaseCacheKey
+          }
+        }
+      }
+      `;
+
+// GraphQL query used in kit mode to load a kit's metadata: its revision, showcase
+// cache key, subset family-styles, release version, and uploads.
+const KIT_METADATA_QUERY = `
+      query KitMetadata($token: String!) {
+        me {
+          kit(token: $token) {
+            kitRevision
+            showcaseCacheKey
+            familyStylesPaginated(page: 1, pageSize: 50) {
+              familyStyles {
+                familyStyle {
+                  family
+                  style
+                  prefix
+                }
+              }
+            }
+            version
+            technologySelected
+            licenseSelected
+            name
+            permits {
+              embedProSvg {
+                prefix
+                family
+              }
+            }
+            release {
+              version
+            }
+            iconUploads {
+              name
+              unicode
+              version
+              width
+              height
+              pathData
+            }
+          }
+        }
+      }
+      `;
 
 /**
  * @slot fatal-error-heading - heading for fatal error message
  * @slot fatal-error-detail - details for fatal error message
- * @slot start-view-heading - heading for message on default view before search
- * @slot start-view-detail - detail for message on default view before search
+ * @slot start-view-heading - heading for message on default view before search; in kit mode this default names the kit ("Add Icons from Your Font Awesome <kit name> Kit")
+ * @slot start-view-detail - detail for message on default view before search; in kit mode this default points to fontawesome.com/kits for editing the kit
  * @slot initial-loading-view-heading - heading for initial loading view
  * @slot initial-loading-view-detail - detail for initial loading view
  * @slot search-field-label-free - Search Font Awesome Free Icons
  * @slot search-field-label-pro - Search Font Awesome Pro Icons
  * @slot search-field-placeholder - search field placeholder
- * @slot searching-free - Searching Free
- * @slot searching-pro - Searching Pro
+ * @slot searching-free - Searching Free; in kit mode this default names the kit and token ("You're searching the icons in your <kit name> Kit (<kit token>) set to Font Awesome Version")
+ * @slot searching-pro - Searching Pro; in kit mode this default names the kit and token (same as searching-free)
  * @slot kit-has-no-uploaded-icons - message about a kit having no icon uploads
  * @slot no-search-results-heading - no search results message heading
  * @slot no-search-results-detail - no seach results message detail
@@ -105,6 +242,20 @@ export class FaIconChooser {
    * necessary to fulfill the request. For example, any time a kit is used to
    * drive the Icon Chooser, it will be necessary to authorize GraphQL API requests
    * sent to api.fontawesome.com with the [`kits_read` scope](https://fontawesome.com/v5.15/how-to-use/graphql-api/auth/scopes).
+   *
+   * An optional third `options` argument may be supplied: `{ cache?: boolean, cacheKey?: string }`.
+   * In kit mode, the component requests caching of the kit metadata and of each family-style's
+   * page of showcase icons, by passing `{ cache: true, cacheKey }`. It first runs a small,
+   * `{ cache: false }` kit-identity probe (the kit's revision and showcase cache key); those
+   * values are folded into the `cacheKey` of every cacheable kit request.
+   * The `cacheKey` is a self-contained identity already derived from everything that affects the
+   * response (the query document, its variables, and the kit's revision and showcase cache key).
+   * An implementation that caches can therefore use `cacheKey` alone as its cache key, without
+   * re-deriving identity from the query or variables — and, because the probe that supplies the
+   * revision runs with `{ cache: false }`, a changed kit always yields a new `cacheKey`, so a long
+   * TTL on the cacheable requests is safe and will not pin the component to a stale kit. Honor
+   * `cache: false` (do not serve or store those responses from cache); implementations that ignore
+   * `options` entirely still work correctly (they simply cache less, or not at all).
    */
   @Prop()
   handleQuery: QueryHandler;
@@ -165,6 +316,13 @@ export class FaIconChooser {
   @State()
   isInitialLoading: boolean = false;
 
+  // True while a network fetch for the selected family-style's showcase is in
+  // flight (kit mode, opening view). Drives the same loading view as the initial
+  // kit-metadata load so switching family-styles doesn't briefly flash the
+  // "no results" message before the new showcase arrives.
+  @State()
+  isLoadingShowcase: boolean = false;
+
   @State()
   hasQueried: boolean = false;
 
@@ -206,6 +364,30 @@ export class FaIconChooser {
 
   embedSvgPrefixes: Set<string> = new Set([]);
 
+  // Kit identity captured from the never-cached KIT_REVISION_QUERY probe. Both are folded
+  // into the cacheKeys of the (cacheable) kit-metadata and showcase requests so an unchanged
+  // kit reuses cached results and a changed kit (new revision or showcase cache key) refreshes
+  // them.
+  kitRevision?: string | number;
+  showcaseCacheKey?: string;
+
+  // In-memory, per-family-style cache of fetched showcase icons. Enables lazy
+  // loading: each family-style's showcase is fetched at most once per component
+  // lifetime (keyed by prefix), and re-selecting a style is instant.
+  showcaseIconsByPrefix: { [prefix: string]: Array<IconLookup> } = {};
+
+  // In-flight showcase fetches keyed by prefix. Concurrent requests for the same
+  // family-style (e.g. rapid re-selection) share one network call, so we never
+  // double-fetch a prefix.
+  showcaseFetchesByPrefix: { [prefix: string]: Promise<void> } = {};
+
+  // Monotonically increasing id stamped on each kit search. A search spans up to two
+  // network round-trips, so a rapid family/style switch (or a new keystroke) can leave
+  // an earlier, slower search resolving after a newer one. Each search captures its id
+  // and only commits its results if it is still the latest, so a stale in-flight search
+  // can never overwrite fresher results.
+  searchRequestId: number = 0;
+
   familyNameToLabel(name: string): string {
     return name;
   }
@@ -224,6 +406,7 @@ export class FaIconChooser {
       this.selectedFamily = fam;
       const styles = this.getStylesForSelectedFamily();
       this.selectedStyle = styles[0];
+      this.loadShowcaseForSelectionIfNeeded();
     }
   }
 
@@ -231,6 +414,25 @@ export class FaIconChooser {
     const style = e.target.value;
     if ('string' === typeof style && 'string' === typeof this.selectedFamily && 'object' === typeof this.familyStyles[this.selectedFamily]) {
       this.selectedStyle = style;
+      this.loadShowcaseForSelectionIfNeeded();
+    }
+  }
+
+  // Kit-mode reaction to a family/style change. With no active search, lazily load the
+  // newly selected family-style's opening showcase. With a search active, re-run it for
+  // the new family-style: searchKit is mode-segregated (an OFFICIAL search never returns
+  // custom uploads; a CUSTOM search never returns official icons), so a switch across the
+  // official<->custom boundary leaves this.icons without any entry for the new prefix and
+  // filteredIcons() would render empty until the user retypes. No-op in non-kit mode.
+  loadShowcaseForSelectionIfNeeded(): void {
+    if (!this.kitToken) {
+      return;
+    }
+
+    if ('' === this.query) {
+      this.fetchShowcaseForSelectedFamilyStyle().catch(e => console.error(e));
+    } else {
+      this.updateQueryResults(this.query).catch(e => console.error(e));
     }
   }
 
@@ -278,44 +480,33 @@ export class FaIconChooser {
     return 'classic' === family ? style : `${family}-${style}`;
   }
 
+  // Always run (never cached) before loadKitMetadata to capture the current kit identity.
+  // Populates this.kitRevision and this.showcaseCacheKey, which are folded into the cache
+  // keys of the (cacheable) kit-metadata and showcase queries so a changed kit busts their
+  // caches. Because this probe is never cached, a host with a long metadata TTL can never
+  // pin a stale revision/showcase cache key and starve those caches of a refresh.
+  async loadKitRevision() {
+    const response = await this.handleQuery(KIT_REVISION_QUERY, { token: this.kitToken }, { cache: false });
+
+    if (get(response, 'errors')) {
+      console.error('Font Awesome Icon Chooser GraphQL query errors', response.errors);
+      throw new Error();
+    }
+
+    this.kitRevision = kitRevisionFromResponse(response);
+    this.showcaseCacheKey = showcaseCacheKeyFromResponse(response);
+  }
+
   async loadKitMetadata() {
+    await this.loadKitRevision();
+
     const response = await this.handleQuery(
-      `
-      query KitMetadata($token: String!) {
-        me {
-          kit(token: $token) {
-            version
-            technologySelected
-            licenseSelected
-            name
-            permits {
-              embedProSvg {
-                prefix
-                family
-              }
-            }
-            release {
-              version
-              familyStyles {
-                family
-                style
-                prefix
-              }
-            }
-            iconUploads {
-              name
-              unicode
-              version
-              width
-              height
-              pathData
-            }
-          }
-        }
-      }
-      `,
+      KIT_METADATA_QUERY,
       { token: this.kitToken },
-      { cache: true },
+      {
+        cache: true,
+        cacheKey: computeCacheKey(KIT_METADATA_QUERY, this.kitToken, this.kitRevision, this.showcaseCacheKey),
+      },
     );
 
     if (get(response, 'errors')) {
@@ -325,40 +516,25 @@ export class FaIconChooser {
 
     const kit = get(response, 'data.me.kit');
     this.kitMetadata = kit;
+    // this.kitRevision and this.showcaseCacheKey come from loadKitRevision's never-cached
+    // probe, not from this (cacheable) response, whose values could be stale.
 
+    // The kit's available family-styles are its subset (Kit.familyStylesPaginated), which
+    // carries { family, style, prefix } directly. This is the authoritative selector of
+    // which styles are offered — it replaces the prior permits/pro/lite filtering, and is
+    // never widened by the release catalog, which could otherwise surface family-styles
+    // the kit's subset excludes.
+    const subsetFamilyStyles = kitFamilyStylesFromResponse(response);
+
+    this.updateFamilyStyles(subsetFamilyStyles);
+
+    // Determine which family-styles' SVGs may be embedded from the CDN. For a Pro kit
+    // that's the permitted prefixes; otherwise it's the kit's subset official styles.
     const embedProSvg = get(kit, 'permits.embedProSvg', []);
-    const familyStyles = get(kit, 'release.familyStyles', []);
-
-    if (embedProSvg.length > 0) {
-      // Extract unique families from embedProSvg permits
-      const families = [...new Set(embedProSvg.map(permit => permit.family).filter(family => typeof family === 'string'))] as string[];
-
-      // Filter familyStyles to only include permitted families
-      const filteredFamilyStyles = familyStyles.filter(fs => families.includes(fs.family));
-
-      // Update familyStyles with the permitted families
-      this.updateFamilyStyles(filteredFamilyStyles);
-
-      if (this.pro()) {
-        // For a Pro kit, only the SVGs for the permitted familyStyles may be embedded.
-        get(response, 'data.me.kit.permits.embedProSvg', []).forEach(fs => this.embedSvgPrefixes.add(fs.prefix));
-      } else {
-        // All Free SVGs in a Free kit may be embedded.
-        filteredFamilyStyles.forEach(fs => this.embedSvgPrefixes.add(fs.prefix));
-      }
-    }
-
-    if (!this.pro()) {
-      this.updateFamilyStyles(DEFAULT_FAMILY_STYLES);
-    }
-
-    const isLite = kit.licenseSelected === 'pro' && embedProSvg.length === 0;
-
-    // Temporary pro lite and pro lite plus handling
-    // All styles will be shown to pro.lite users until we have a better solution in place
-    if (isLite) {
-      const releaseFamilyStyles = get(kit, 'release.familyStyles', []);
-      this.updateFamilyStyles(releaseFamilyStyles);
+    if (this.pro()) {
+      embedProSvg.forEach(fs => this.embedSvgPrefixes.add(fs.prefix));
+    } else {
+      subsetFamilyStyles.forEach(fs => this.embedSvgPrefixes.add(fs.prefix));
     }
 
     const kitFamilyStyles = [];
@@ -438,12 +614,15 @@ export class FaIconChooser {
   }
 
   // Any slot for which the client does not provide content will be assigned
-  // a default.
-  setupSlots() {
-    for (const slotName in slotDefaults) {
+  // a default. The defaults are computed from the (optional) kit token and name so
+  // that kit-mode copy can name the kit; called with no/empty params (non-kit mode)
+  // it yields the library-wide default copy.
+  setupSlots(params: SlotDefaultsParams = {}) {
+    const defaults = slotDefaults(params);
+    for (const slotName in defaults) {
       const slotContentElement = this.host.querySelector(`[slot="${slotName}"]`);
       if (!slotContentElement) {
-        this.activeSlotDefaults[slotName] = slotDefaults[slotName];
+        this.activeSlotDefaults[slotName] = defaults[slotName];
       }
     }
   }
@@ -465,10 +644,14 @@ export class FaIconChooser {
 
     this.isInitialLoading = true;
 
-    this.setupSlots();
-
     this.preload()
       .then(() => {
+        // preload() has resolved, so kit metadata (including the kit name) is loaded.
+        // Compute the default slot copy now so kit-mode copy can include the kit's
+        // name and token; in non-kit mode these params are empty and the copy is
+        // unchanged from the library-wide defaults.
+        this.setupSlots({ kitToken: this.kitToken, name: get(this, 'kitMetadata.name') });
+
         const pro = this.pro();
         const baseUrl = this._assetsBaseUrl || (this.kitToken ? kitAssetsBaseUrl(pro) : freeCdnBaseUrl());
         const version = this.resolvedVersion();
@@ -500,7 +683,7 @@ export class FaIconChooser {
           });
         }
       })
-      .then(svgApi => {
+      .then(async svgApi => {
         this.svgApi = svgApi;
         const dom = get(window, 'FontAwesome.dom');
         const style = document.createElement('STYLE');
@@ -508,9 +691,6 @@ export class FaIconChooser {
         const css = document.createTextNode(dom.css());
         style.appendChild(css);
         this.host.shadowRoot.appendChild(style);
-        this.defaultIcons = buildDefaultIconsSearchResult(this.familyStyles);
-
-        this.setIcons(this.defaultIcons, this.iconUploadsAsIconUploadLookups());
 
         this.commonFaIconProps = {
           svgApi: get(window, 'FontAwesome'),
@@ -520,9 +700,25 @@ export class FaIconChooser {
           getUrlText: this.getUrlText,
         };
 
+        if (this.kitToken) {
+          // Kit mode: the opening view is the kit's subset-aware showcase for the
+          // currently selected family-style (loaded lazily), not the library-wide default.
+          // A showcase fetch failure here is non-fatal, matching a later style switch: a
+          // transient network blip on one family-style's showcase must not take down the
+          // whole chooser. The error is logged and the (empty) showcase view still renders.
+          await this.fetchShowcaseForSelectedFamilyStyle().catch(e => console.error(e));
+        } else {
+          this.defaultIcons = buildDefaultIconsSearchResult(this.familyStyles);
+          this.setIcons(this.defaultIcons, this.iconUploadsAsIconUploadLookups());
+        }
+
         this.isInitialLoading = false;
       })
       .catch(e => {
+        // On a preload failure the fatal-error view is shown; ensure its slot copy is
+        // populated (kit metadata may not have loaded, so kit-specific params may be
+        // empty — the fatal-error copy is not kit-specific).
+        this.setupSlots({ kitToken: this.kitToken, name: get(this, 'kitMetadata.name') });
         console.error(e);
         this.isInitialLoading = false;
         this.fatalError = true;
@@ -533,6 +729,15 @@ export class FaIconChooser {
     if (size(query) === 0) return;
 
     this.isQuerying = true;
+
+    // In kit mode, search the kit's subset via Kit.searchKit instead of the legacy
+    // top-level `search`. Non-kit mode falls through to the legacy path below.
+    if (this.kitToken) {
+      await this.updateKitQueryResults(query);
+      this.hasQueried = true;
+      this.isQuerying = false;
+      return;
+    }
 
     const response = await this.handleQuery(
       `
@@ -572,6 +777,70 @@ export class FaIconChooser {
     this.isQuerying = false;
   }
 
+  // Kit-mode search against Kit.searchKit. searchMode is CUSTOM for the kit's
+  // custom-upload styles (fak/fakd) and OFFICIAL otherwise. For CUSTOM, the matched
+  // names are resolved back to the kit's already-loaded uploads (which carry the
+  // path data needed to render custom icons); for OFFICIAL, variants map directly
+  // onto the { iconName, prefix } model.
+  async updateKitQueryResults(query: string) {
+    const requestId = ++this.searchRequestId;
+    const prefix = this.getSelectedPrefix();
+    const searchMode = searchModeForPrefix(prefix);
+
+    const firstPage = await this.handleQuery(SEARCH_KIT_QUERY, {
+      token: this.kitToken,
+      query,
+      searchMode,
+      page: 1,
+      pageSize: SEARCH_KIT_PAGE_SIZE,
+    });
+
+    const firstPageIcons = get(firstPage, 'data.me.kit.searchKit.icons');
+    if (!Array.isArray(firstPageIcons)) {
+      console.warn(`${CONSOLE_MESSAGE_PREFIX}: kit search results may be inaccurate since 'handleQuery' returned an unexpected value:`, firstPage);
+    }
+
+    const matchedIcons = searchKitIconsToIconLookups(firstPage);
+
+    // searchKit caps pageSize at 50. If the result set is larger, fetch a second
+    // page so we cover up to 100 icons (two pages), matching the legacy `search(first: 100)`.
+    // Prefer the reported totals, but fall back to a full first page as the signal that
+    // more may exist, in case those count fields are ever absent.
+    const totalIconCount = get(firstPage, 'data.me.kit.searchKit.totalIconCount', 0);
+    const totalPageCount = get(firstPage, 'data.me.kit.searchKit.totalPageCount', 0);
+    const firstPageIsFull = Array.isArray(firstPageIcons) && firstPageIcons.length >= SEARCH_KIT_PAGE_SIZE;
+    const hasMore = totalPageCount > 1 || totalIconCount > SEARCH_KIT_PAGE_SIZE || firstPageIsFull;
+
+    if (hasMore) {
+      const secondPage = await this.handleQuery(SEARCH_KIT_QUERY, {
+        token: this.kitToken,
+        query,
+        searchMode,
+        page: 2,
+        pageSize: SEARCH_KIT_PAGE_SIZE,
+      });
+
+      if (!Array.isArray(get(secondPage, 'data.me.kit.searchKit.icons'))) {
+        console.warn(`${CONSOLE_MESSAGE_PREFIX}: kit search results may be inaccurate since 'handleQuery' returned an unexpected value:`, secondPage);
+      }
+
+      matchedIcons.push(...searchKitIconsToIconLookups(secondPage));
+    }
+
+    // A newer search (family/style switch or a fresh keystroke) started while this one
+    // was in flight; its results are authoritative, so drop these to avoid clobbering them.
+    if (requestId !== this.searchRequestId) {
+      return;
+    }
+
+    if ('CUSTOM' === searchMode) {
+      const matchedNames = new Set(matchedIcons.map(({ iconName }) => iconName));
+      this.icons = this.iconUploadsAsIconUploadLookups().filter(({ iconName }) => matchedNames.has(iconName));
+    } else {
+      this.icons = matchedIcons;
+    }
+  }
+
   iconUploadsAsIconUploadLookups(): Array<IconUploadLookup> {
     return get(this, 'kitMetadata.iconUploads', []).map(i => {
       const [prefix, pathData] = i.pathData.length > 1 ? ['fakd', i.pathData] : ['fak', i.pathData[0]];
@@ -595,6 +864,79 @@ export class FaIconChooser {
 
       return acc;
     }, iconUploads);
+  }
+
+  // Rebuild this.icons (the opening showcase view) from every family-style's
+  // showcase fetched so far, plus the kit's uploaded custom icons. filteredIcons()
+  // then narrows to the selected family-style's prefix for rendering.
+  setShowcaseIcons() {
+    const showcaseIcons = [].concat(...Object.keys(this.showcaseIconsByPrefix).map(prefix => this.showcaseIconsByPrefix[prefix]));
+
+    this.icons = [...showcaseIcons, ...this.iconUploadsAsIconUploadLookups()];
+  }
+
+  // Kit-mode opening view for the currently selected family-style. Loads lazily:
+  // custom (fak/fakd) styles come from the kit's uploads (no fetch); official styles
+  // are fetched once per prefix and cached in-memory. The showcase request is cached
+  // by the host under a self-contained cacheKey hashed from the query, its variables,
+  // the kit revision, and the kit-provided showcaseCacheKey.
+  async fetchShowcaseForSelectedFamilyStyle() {
+    const prefix = this.getSelectedPrefix();
+
+    if (!prefix) {
+      return;
+    }
+
+    const isCustom = 'fak' === prefix || 'fakd' === prefix;
+
+    if (!isCustom && !this.showcaseIconsByPrefix.hasOwnProperty(prefix)) {
+      this.isLoadingShowcase = true;
+      try {
+        await this.fetchShowcaseForPrefix(prefix);
+      } finally {
+        // Only clear the loading flag if the user is still looking at this same
+        // prefix. A fetch for a previously-selected prefix must not flip the flag
+        // off while the current selection is still loading (would flash "no results").
+        if (this.getSelectedPrefix() === prefix) {
+          this.isLoadingShowcase = false;
+        }
+      }
+    }
+
+    // The showcase is the empty-query opening view. If the user has started typing
+    // while this fetch was in flight (cleared the box, then typed again), an active
+    // search now owns this.icons — committing the showcase here would clobber those
+    // results until the next debounce tick. Leave the search results in place; when
+    // the box is cleared again this runs afresh.
+    if ('' === this.query) {
+      this.setShowcaseIcons();
+    }
+  }
+
+  // Fetch (at most once) the showcase for a single prefix, de-duplicating concurrent
+  // callers: a request already in flight for the prefix is shared rather than re-issued.
+  fetchShowcaseForPrefix(prefix: string): Promise<void> {
+    if (this.showcaseIconsByPrefix.hasOwnProperty(prefix)) {
+      return Promise.resolve();
+    }
+
+    if (!this.showcaseFetchesByPrefix[prefix]) {
+      const variables = { token: this.kitToken, selector: { prefix } };
+      const cacheKey = computeCacheKey(SHOWCASE_ICONS_QUERY, variables, this.kitRevision, this.showcaseCacheKey);
+
+      this.showcaseFetchesByPrefix[prefix] = this.handleQuery(SHOWCASE_ICONS_QUERY, variables, { cache: true, cacheKey })
+        .then(response => {
+          this.showcaseIconsByPrefix = {
+            ...this.showcaseIconsByPrefix,
+            [prefix]: showcaseIconsToIconLookups(response),
+          };
+        })
+        .finally(() => {
+          delete this.showcaseFetchesByPrefix[prefix];
+        });
+    }
+
+    return this.showcaseFetchesByPrefix[prefix];
   }
 
   updateQueryResultsWithDebounce = debounce(query => {
@@ -630,7 +972,15 @@ export class FaIconChooser {
   onSearchInputChange(e: any): void {
     this.query = e.target.value;
     if (size(this.query) === 0) {
-      this.setIcons(this.defaultIcons, this.iconUploadsAsIconUploadLookups());
+      // Drop any search still pending from prior keystrokes so its results can't land
+      // (and overwrite the showcase/default view) after the box has been cleared.
+      this.updateQueryResultsWithDebounce.cancel();
+      if (this.kitToken) {
+        // Kit mode: return to the kit's curated showcase for the selected family-style.
+        this.fetchShowcaseForSelectedFamilyStyle().catch(err => console.error(err));
+      } else {
+        this.setIcons(this.defaultIcons, this.iconUploadsAsIconUploadLookups());
+      }
     } else {
       this.updateQueryResultsWithDebounce(this.query);
     }
@@ -699,9 +1049,7 @@ export class FaIconChooser {
     if (this.isInitialLoading) {
       return (
         <div class="fa-icon-chooser">
-          <div class="message-loading text-center margin-2xl">
-            <h3>Loading...</h3>
-          </div>
+          <div class="message-loading text-center margin-2xl">{this.kitToken ? <h3>Fetching your Kit...</h3> : <h3>Loading...</h3>}</div>
         </div>
       );
     }
@@ -722,7 +1070,7 @@ export class FaIconChooser {
                 class="rounded"
                 value={this.query}
                 onInput={this.onSearchInputChange.bind(this)}
-                placeholder={this.searchInputPlaceholder || slotDefaults['search-field-placeholder']}
+                placeholder={this.searchInputPlaceholder || SEARCH_FIELD_PLACEHOLDER_DEFAULT}
               ></input>
             </div>
           </div>
@@ -753,12 +1101,12 @@ export class FaIconChooser {
           {this.pro() ? this.slot('searching-pro') : this.slot('searching-free')} {this.resolvedVersion()}
         </p>
         <div class="wrap-icon-listing margin-y-lg">
-          {!this.isQuerying && this.mayHaveIconUploads() && !this.hasIconUploads() && ['kit', 'kit-duotone'].includes(this.selectedFamily) && (
+          {!this.isQuerying && !this.isLoadingShowcase && this.mayHaveIconUploads() && !this.hasIconUploads() && ['kit', 'kit-duotone'].includes(this.selectedFamily) && (
             <article class="text-center margin-2xl">
               <p class="muted size-sm">{this.slot('kit-has-no-uploaded-icons')}</p>
             </article>
           )}
-          {!this.isQuerying && this.query === '' && (
+          {!this.isQuerying && !this.isLoadingShowcase && this.query === '' && this.getFamilies().length > 0 && (
             <article class="text-center margin-y-2xl line-length-lg margin-auto">
               <h3 class="margin-bottom-md">{this.slot('start-view-heading')}</h3>
               <p class="margin-bottom-3xl">{this.slot('start-view-detail')}</p>
@@ -771,6 +1119,10 @@ export class FaIconChooser {
               <p key="a" class="margin-y-md muted">
                 {this.slot('initial-loading-view-detail')}
               </p>
+            </article>
+          ) : this.isLoadingShowcase ? (
+            <article class="message-loading text-center margin-2xl">
+              <h3>Loading...</h3>
             </article>
           ) : size(this.filteredIcons()) > 0 ? (
             <div class="icon-listing">

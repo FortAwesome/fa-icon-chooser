@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ---
+## [Unreleased]
+
+### Added
+
+- Kit subset-aware search and showcase: when the Icon Chooser is used in kit mode (a `kit-token` is provided), icon search now queries the kit's subset via the `Kit.searchKit` field (using `searchMode: CUSTOM` for the kit's custom-upload family-styles `fak`/`fakd`, and `OFFICIAL` otherwise), and the opening view presents a curated, subset-aware showcase via the kit's `Kit.showcaseIcons` field instead of the library-wide default set. The chooser's available family-styles are limited to the kit's subset (`Kit.familyStyles`), and the default-selected family-style is always one the subset contains. Showcases are loaded lazily per family-style and cached using the kit-provided `Kit.showcaseCacheKey`. Non-kit (version-only) mode behavior is unchanged.
+- Kit-branded copy in kit mode: the search-status line, the start-view heading, and the start-view detail now identify the kit by name and token. The status line reads "You're searching the icons in your `<kit name>` Kit (`<kit token>`) set to Font Awesome Version …", the heading reads "Add Icons from Your Font Awesome `<kit name>` Kit", and the detail points to fontawesome.com/kits. The kit name is truncated to 30 characters (with an ellipsis) for display. These strings remain overridable via their existing named slots, and non-kit (version-only) copy is unchanged.
+
 ## [0.10.2](https://github.com/FortAwesome/fa-icon-chooser/releases/tag/0.10.2) - 2026-05-05
 
 ### Changed
