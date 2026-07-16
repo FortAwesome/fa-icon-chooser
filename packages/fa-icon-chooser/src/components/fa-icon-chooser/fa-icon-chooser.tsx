@@ -686,7 +686,10 @@ export class FaIconChooser {
         if (this.kitToken) {
           // Kit mode: the opening view is the kit's subset-aware showcase for the
           // currently selected family-style (loaded lazily), not the library-wide default.
-          await this.fetchShowcaseForSelectedFamilyStyle();
+          // A showcase fetch failure here is non-fatal, matching a later style switch: a
+          // transient network blip on one family-style's showcase must not take down the
+          // whole chooser. The error is logged and the (empty) showcase view still renders.
+          await this.fetchShowcaseForSelectedFamilyStyle().catch(e => console.error(e));
         } else {
           this.defaultIcons = buildDefaultIconsSearchResult(this.familyStyles);
           this.setIcons(this.defaultIcons, this.iconUploadsAsIconUploadLookups());
