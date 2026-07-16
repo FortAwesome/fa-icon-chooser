@@ -411,11 +411,21 @@ export class FaIconChooser {
     }
   }
 
-  // In kit mode, lazily load the newly selected family-style's showcase for the
-  // opening (no active search) view. No-op in non-kit mode or while searching.
+  // Kit-mode reaction to a family/style change. With no active search, lazily load the
+  // newly selected family-style's opening showcase. With a search active, re-run it for
+  // the new family-style: searchKit is mode-segregated (an OFFICIAL search never returns
+  // custom uploads; a CUSTOM search never returns official icons), so a switch across the
+  // official<->custom boundary leaves this.icons without any entry for the new prefix and
+  // filteredIcons() would render empty until the user retypes. No-op in non-kit mode.
   loadShowcaseForSelectionIfNeeded(): void {
-    if (this.kitToken && '' === this.query) {
+    if (!this.kitToken) {
+      return;
+    }
+
+    if ('' === this.query) {
       this.fetchShowcaseForSelectedFamilyStyle().catch(e => console.error(e));
+    } else {
+      this.updateQueryResults(this.query).catch(e => console.error(e));
     }
   }
 
