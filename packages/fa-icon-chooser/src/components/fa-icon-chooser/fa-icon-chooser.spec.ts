@@ -385,6 +385,131 @@ describe('fa-icon-chooser kit mode (subset-aware search & showcase)', () => {
     expect(searchKitCalls(handleQuery).length).toBe(1);
   });
 
+  // Fallback: if the pagination count fields are ever absent, a full first page (icons
+  // length at the page-size cap) is itself the signal that a second page may exist.
+  it('fetches a second searchKit page when the first page is full but counts are absent', async () => {
+    const makeIcon = (name: string) => ({
+      __typename: 'IconWithVariants',
+      name,
+      variants: [{ name, familyStyle: { family: 'classic', style: 'solid', prefix: 'fas' } }],
+    });
+    const searchResponse = (variables: any) => {
+      // Page 1 is exactly full (50 icons) with no totalIconCount/totalPageCount; page 2 holds one more.
+      const names = variables.page === 1 ? Array.from({ length: 50 }, (_, i) => `icon-${i}`) : ['icon-50'];
+      return { data: { me: { kit: { searchKit: { page: variables.page, pageSize: 50, icons: names.map(makeIcon) } } } } };
+    };
+
+    const handleQuery = makeHandleQuery(searchResponse);
+    const { page } = await mountKit(handleQuery);
+
+    page.rootInstance.query = 'icon';
+    await page.rootInstance.updateQueryResults('icon');
+
+    const searches = searchKitCalls(handleQuery);
+    expect(searches.length).toBe(2);
+    expect(searches[1][1]).toEqual(expect.objectContaining({ page: 2 }));
+    expect(page.rootInstance.filteredIcons().map((i: any) => i.iconName)).toContain('icon-50');
+  });
+
+  // A kit search spans up to two round-trips, so a rapid family/style switch (or a fresh
+  // keystroke) can leave an earlier, slower search resolving after a newer one. The stale
+  // search must not clobber the newer results.
+  it('does not let a stale in-flight search overwrite a newer one', async () => {
+    const resolvers: { [query: string]: () => void } = {};
+    const responseFor = (q: string) => ({
+      data: {
+        me: {
+          kit: {
+            searchKit: {
+              page: 1,
+              pageSize: 50,
+              totalIconCount: 1,
+              totalPageCount: 1,
+              icons: [{ __typename: 'IconWithVariants', name: `${q}-icon`, variants: [{ name: `${q}-icon`, familyStyle: { family: 'classic', style: 'solid', prefix: 'fas' } }] }],
+            },
+          },
+        },
+      },
+    });
+    const handleQuery: any = jest.fn((document: string, variables: any) => {
+      if (document.includes('query KitRevision') || document.includes('query KitMetadata')) {
+        return Promise.resolve(handleQuery.__kitMetadata || kitMetadataResponse);
+      }
+      if (document.includes('query ShowcaseIcons')) {
+        return Promise.resolve(showcaseIconsResponse(get(variables, 'selector.prefix', 'fas')));
+      }
+      if (document.includes('query SearchKit')) {
+        return new Promise(resolve => {
+          resolvers[variables.query] = () => resolve(responseFor(variables.query));
+        });
+      }
+      return Promise.resolve({ data: { search: [] } });
+    });
+
+    const { page } = await mountKit(handleQuery);
+
+    page.rootInstance.query = 'old';
+    const pOld = page.rootInstance.updateQueryResults('old');
+    page.rootInstance.query = 'new';
+    const pNew = page.rootInstance.updateQueryResults('new');
+
+    // Resolve the newer search first, then the older (slower) one.
+    resolvers['new']();
+    resolvers['old']();
+    await Promise.all([pOld, pNew]);
+    await flushPromises();
+
+    // The newer search wins; the stale one is dropped rather than overwriting it.
+    expect(page.rootInstance.filteredIcons().map((i: any) => i.iconName)).toEqual(['new-icon']);
+  });
+
+  // Clearing the search box returns to the showcase, but if the user starts typing again
+  // while that showcase fetch is still in flight, an active search now owns this.icons.
+  // The late showcase must not clobber the search results.
+  it('does not let a late showcase fetch overwrite an active search', async () => {
+    let resolveShowcaseFar: () => void;
+    const handleQuery: any = jest.fn((document: string, variables: any) => {
+      if (document.includes('query KitRevision') || document.includes('query KitMetadata')) {
+        return Promise.resolve(handleQuery.__kitMetadata || kitMetadataResponse);
+      }
+      if (document.includes('query ShowcaseIcons')) {
+        const prefix = get(variables, 'selector.prefix', 'fas');
+        if ('far' === prefix) {
+          // The far showcase is deferred so it can resolve after a search has started.
+          return new Promise(resolve => {
+            resolveShowcaseFar = () => resolve(showcaseIconsResponse('far', ['far-showcase']));
+          });
+        }
+        return Promise.resolve(showcaseIconsResponse(prefix));
+      }
+      if (document.includes('query SearchKit')) {
+        return Promise.resolve(searchKitOfficialResponse);
+      }
+      return Promise.resolve({ data: { search: [] } });
+    });
+
+    const { page } = await mountKit(handleQuery);
+
+    // Switch to classic/regular (far) with an empty query: its showcase fetch starts but stays pending.
+    page.rootInstance.selectStyle({ target: { value: 'regular' } });
+    await flushPromises();
+    expect(page.rootInstance.isLoadingShowcase).toBe(true);
+
+    // The user types before the showcase arrives; the search resolves and populates icons.
+    page.rootInstance.query = 'arrow';
+    await page.rootInstance.updateQueryResults('arrow');
+    const searchNames = page.rootInstance.filteredIcons().map((i: any) => i.iconName);
+    expect(searchNames).toContain('arrow-right');
+    expect(searchNames).not.toContain('far-showcase');
+
+    // Now the late showcase resolves — it must not overwrite the active search's results.
+    resolveShowcaseFar();
+    await flushPromises();
+    const afterNames = page.rootInstance.filteredIcons().map((i: any) => i.iconName);
+    expect(afterNames).toContain('arrow-right');
+    expect(afterNames).not.toContain('far-showcase');
+  });
+
   // T010 [US1] — non-kit regression: legacy `search` is used, not `searchKit`.
   it('uses the legacy search field when no kit token is present', async () => {
     const page = await newSpecPage({ components: [FaIconChooser] });

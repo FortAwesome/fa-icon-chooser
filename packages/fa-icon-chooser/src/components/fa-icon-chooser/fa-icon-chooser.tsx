@@ -381,6 +381,13 @@ export class FaIconChooser {
   // double-fetch a prefix.
   showcaseFetchesByPrefix: { [prefix: string]: Promise<void> } = {};
 
+  // Monotonically increasing id stamped on each kit search. A search spans up to two
+  // network round-trips, so a rapid family/style switch (or a new keystroke) can leave
+  // an earlier, slower search resolving after a newer one. Each search captures its id
+  // and only commits its results if it is still the latest, so a stale in-flight search
+  // can never overwrite fresher results.
+  searchRequestId: number = 0;
+
   familyNameToLabel(name: string): string {
     return name;
   }
@@ -776,6 +783,7 @@ export class FaIconChooser {
   // path data needed to render custom icons); for OFFICIAL, variants map directly
   // onto the { iconName, prefix } model.
   async updateKitQueryResults(query: string) {
+    const requestId = ++this.searchRequestId;
     const prefix = this.getSelectedPrefix();
     const searchMode = searchModeForPrefix(prefix);
 
@@ -787,7 +795,8 @@ export class FaIconChooser {
       pageSize: SEARCH_KIT_PAGE_SIZE,
     });
 
-    if (!Array.isArray(get(firstPage, 'data.me.kit.searchKit.icons'))) {
+    const firstPageIcons = get(firstPage, 'data.me.kit.searchKit.icons');
+    if (!Array.isArray(firstPageIcons)) {
       console.warn(`${CONSOLE_MESSAGE_PREFIX}: kit search results may be inaccurate since 'handleQuery' returned an unexpected value:`, firstPage);
     }
 
@@ -795,9 +804,12 @@ export class FaIconChooser {
 
     // searchKit caps pageSize at 50. If the result set is larger, fetch a second
     // page so we cover up to 100 icons (two pages), matching the legacy `search(first: 100)`.
+    // Prefer the reported totals, but fall back to a full first page as the signal that
+    // more may exist, in case those count fields are ever absent.
     const totalIconCount = get(firstPage, 'data.me.kit.searchKit.totalIconCount', 0);
     const totalPageCount = get(firstPage, 'data.me.kit.searchKit.totalPageCount', 0);
-    const hasMore = totalPageCount > 1 || totalIconCount > SEARCH_KIT_PAGE_SIZE;
+    const firstPageIsFull = Array.isArray(firstPageIcons) && firstPageIcons.length >= SEARCH_KIT_PAGE_SIZE;
+    const hasMore = totalPageCount > 1 || totalIconCount > SEARCH_KIT_PAGE_SIZE || firstPageIsFull;
 
     if (hasMore) {
       const secondPage = await this.handleQuery(SEARCH_KIT_QUERY, {
@@ -813,6 +825,12 @@ export class FaIconChooser {
       }
 
       matchedIcons.push(...searchKitIconsToIconLookups(secondPage));
+    }
+
+    // A newer search (family/style switch or a fresh keystroke) started while this one
+    // was in flight; its results are authoritative, so drop these to avoid clobbering them.
+    if (requestId !== this.searchRequestId) {
+      return;
     }
 
     if ('CUSTOM' === searchMode) {
@@ -885,7 +903,14 @@ export class FaIconChooser {
       }
     }
 
-    this.setShowcaseIcons();
+    // The showcase is the empty-query opening view. If the user has started typing
+    // while this fetch was in flight (cleared the box, then typed again), an active
+    // search now owns this.icons — committing the showcase here would clobber those
+    // results until the next debounce tick. Leave the search results in place; when
+    // the box is cleared again this runs afresh.
+    if ('' === this.query) {
+      this.setShowcaseIcons();
+    }
   }
 
   // Fetch (at most once) the showcase for a single prefix, de-duplicating concurrent
