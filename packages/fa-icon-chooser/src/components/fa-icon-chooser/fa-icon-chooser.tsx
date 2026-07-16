@@ -1011,9 +1011,7 @@ export class FaIconChooser {
     if (this.isInitialLoading) {
       return (
         <div class="fa-icon-chooser">
-          <div class="message-loading text-center margin-2xl">
-            <h3>Loading...</h3>
-          </div>
+          <div class="message-loading text-center margin-2xl">{this.kitToken ? <h3>Fetching your Kit...</h3> : <h3>Loading...</h3>}</div>
         </div>
       );
     }
