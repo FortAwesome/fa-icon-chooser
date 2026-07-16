@@ -7,6 +7,7 @@ import {
   searchKitIconsToIconLookups,
   showcaseIconsToIconLookups,
   showcaseCacheKeyFromResponse,
+  kitRevisionFromResponse,
   kitFamilyStylesFromResponse,
   searchModeForPrefix,
   truncateKitName,
@@ -189,6 +190,21 @@ describe('showcaseCacheKeyFromResponse', () => {
   test('returns undefined when absent', () => {
     expect(showcaseCacheKeyFromResponse({ data: { me: { kit: {} } } })).toBeUndefined();
     expect(showcaseCacheKeyFromResponse(null)).toBeUndefined();
+  });
+});
+
+describe('kitRevisionFromResponse', () => {
+  test('reads Kit.kitRevision when present', () => {
+    expect(kitRevisionFromResponse(kitMetadataResponse)).toBe(7);
+  });
+
+  test('reads a string revision', () => {
+    expect(kitRevisionFromResponse({ data: { me: { kit: { kitRevision: 'abc123' } } } })).toBe('abc123');
+  });
+
+  test('returns undefined when absent', () => {
+    expect(kitRevisionFromResponse({ data: { me: { kit: {} } } })).toBeUndefined();
+    expect(kitRevisionFromResponse(null)).toBeUndefined();
   });
 });
 

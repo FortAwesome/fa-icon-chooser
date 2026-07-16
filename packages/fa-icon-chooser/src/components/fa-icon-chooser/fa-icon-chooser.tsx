@@ -22,6 +22,7 @@ import {
   isValidSemver,
   kitAssetsBaseUrl,
   kitFamilyStylesFromResponse,
+  kitRevisionFromResponse,
   showcaseCacheKeyFromResponse,
   searchModeForPrefix,
   UrlTextFetcher,
@@ -115,6 +116,23 @@ query ShowcaseIcons($token: String!, $selector: FamilyStyleSelector!) {
     }
   }
 }`;
+
+// Lightweight kit-identity probe, run (never cached) before KIT_METADATA_QUERY. It
+// selects only the fields that determine whether cached kit data is still fresh: the
+// kit's revision and its showcase cache key. Folding these into KIT_METADATA_QUERY's
+// and the showcase queries' cache keys busts stale cached data the moment the kit
+// changes, so those larger queries can be cached without pinning a changed kit to an
+// old response.
+const KIT_REVISION_QUERY = `
+      query KitRevision($token: String!) {
+        me {
+          kit(token: $token) {
+            kitRevision
+            showcaseCacheKey
+          }
+        }
+      }
+      `;
 
 // GraphQL query used in kit mode to load a kit's metadata: its revision, showcase
 // cache key, subset family-styles, release version, and uploads.
@@ -227,12 +245,17 @@ export class FaIconChooser {
    *
    * An optional third `options` argument may be supplied: `{ cache?: boolean, cacheKey?: string }`.
    * In kit mode, the component requests caching of the kit metadata and of each family-style's
-   * page of showcase icons, by passing `{ cache: true, cacheKey }`.
+   * page of showcase icons, by passing `{ cache: true, cacheKey }`. It first runs a small,
+   * `{ cache: false }` kit-identity probe (the kit's revision and showcase cache key); those
+   * values are folded into the `cacheKey` of every cacheable kit request.
    * The `cacheKey` is a self-contained identity already derived from everything that affects the
-   * response (the query document, its variables, and — for showcase requests — the kit revision and
-   * the kit's showcase cache key). An implementation that caches can therefore use `cacheKey` alone
-   * as its cache key, without re-deriving identity from the query or variables. Implementations
-   * that ignore `options` still work correctly (they simply cache less, or not at all).
+   * response (the query document, its variables, and the kit's revision and showcase cache key).
+   * An implementation that caches can therefore use `cacheKey` alone as its cache key, without
+   * re-deriving identity from the query or variables — and, because the probe that supplies the
+   * revision runs with `{ cache: false }`, a changed kit always yields a new `cacheKey`, so a long
+   * TTL on the cacheable requests is safe and will not pin the component to a stale kit. Honor
+   * `cache: false` (do not serve or store those responses from cache); implementations that ignore
+   * `options` entirely still work correctly (they simply cache less, or not at all).
    */
   @Prop()
   handleQuery: QueryHandler;
@@ -341,9 +364,11 @@ export class FaIconChooser {
 
   embedSvgPrefixes: Set<string> = new Set([]);
 
-  // The kit-provided showcase cache key, captured from kit metadata. Folded into the
-  // showcase request's computed cacheKey so an unchanged kit reuses cached results and a
-  // changed kit (new cache key) refreshes them.
+  // Kit identity captured from the never-cached KIT_REVISION_QUERY probe. Both are folded
+  // into the cacheKeys of the (cacheable) kit-metadata and showcase requests so an unchanged
+  // kit reuses cached results and a changed kit (new revision or showcase cache key) refreshes
+  // them.
+  kitRevision?: string | number;
   showcaseCacheKey?: string;
 
   // In-memory, per-family-style cache of fetched showcase icons. Enables lazy
@@ -438,13 +463,32 @@ export class FaIconChooser {
     return 'classic' === family ? style : `${family}-${style}`;
   }
 
+  // Always run (never cached) before loadKitMetadata to capture the current kit identity.
+  // Populates this.kitRevision and this.showcaseCacheKey, which are folded into the cache
+  // keys of the (cacheable) kit-metadata and showcase queries so a changed kit busts their
+  // caches. Because this probe is never cached, a host with a long metadata TTL can never
+  // pin a stale revision/showcase cache key and starve those caches of a refresh.
+  async loadKitRevision() {
+    const response = await this.handleQuery(KIT_REVISION_QUERY, { token: this.kitToken }, { cache: false });
+
+    if (get(response, 'errors')) {
+      console.error('Font Awesome Icon Chooser GraphQL query errors', response.errors);
+      throw new Error();
+    }
+
+    this.kitRevision = kitRevisionFromResponse(response);
+    this.showcaseCacheKey = showcaseCacheKeyFromResponse(response);
+  }
+
   async loadKitMetadata() {
+    await this.loadKitRevision();
+
     const response = await this.handleQuery(
       KIT_METADATA_QUERY,
       { token: this.kitToken },
       {
         cache: true,
-        cacheKey: computeCacheKey(KIT_METADATA_QUERY, this.kitToken),
+        cacheKey: computeCacheKey(KIT_METADATA_QUERY, this.kitToken, this.kitRevision, this.showcaseCacheKey),
       },
     );
 
@@ -455,7 +499,8 @@ export class FaIconChooser {
 
     const kit = get(response, 'data.me.kit');
     this.kitMetadata = kit;
-    this.showcaseCacheKey = showcaseCacheKeyFromResponse(response);
+    // this.kitRevision and this.showcaseCacheKey come from loadKitRevision's never-cached
+    // probe, not from this (cacheable) response, whose values could be stale.
 
     // The kit's available family-styles are its subset (Kit.familyStylesPaginated), which
     // carries { family, style, prefix } directly. This is the authoritative selector of
@@ -839,7 +884,7 @@ export class FaIconChooser {
 
     if (!this.showcaseFetchesByPrefix[prefix]) {
       const variables = { token: this.kitToken, selector: { prefix } };
-      const cacheKey = computeCacheKey(SHOWCASE_ICONS_QUERY, variables, this.kitMetadata?.kitRevision, this.showcaseCacheKey);
+      const cacheKey = computeCacheKey(SHOWCASE_ICONS_QUERY, variables, this.kitRevision, this.showcaseCacheKey);
 
       this.showcaseFetchesByPrefix[prefix] = this.handleQuery(SHOWCASE_ICONS_QUERY, variables, { cache: true, cacheKey })
         .then(response => {

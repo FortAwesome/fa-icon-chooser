@@ -206,6 +206,9 @@ describe('fa-icon-chooser', () => {
 
       // Minimal kit metadata + showcase + searchKit responses, keyed by query document.
       ic.handleQuery = (document: string, variables: any) => {
+        if (document.includes('query KitRevision')) {
+          return Promise.resolve({ data: { me: { kit: { kitRevision: 7, showcaseCacheKey: 'kit:fake-kit-token:rev7' } } } });
+        }
         if (document.includes('query KitMetadata')) {
           return Promise.resolve({
             data: {
@@ -319,6 +322,9 @@ describe('fa-icon-chooser', () => {
         };
 
         ic.handleQuery = (document: string, variables: any) => {
+          if (document.includes('query KitRevision')) {
+            return Promise.resolve({ data: { me: { kit: { kitRevision: 7, showcaseCacheKey: 'kit:fake-kit-token:rev7' } } } });
+          }
           if (document.includes('query KitMetadata')) {
             return Promise.resolve({
               data: {

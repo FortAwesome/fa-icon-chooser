@@ -302,6 +302,14 @@ export function showcaseCacheKeyFromResponse(response: any): string | undefined 
   return typeof cacheKey === 'string' ? cacheKey : undefined;
 }
 
+// Read Kit.kitRevision from a kit response, or undefined if absent. The revision
+// changes whenever the kit changes, so it is folded into the kit-metadata and
+// showcase cache keys to bust stale cached data.
+export function kitRevisionFromResponse(response: any): string | number | undefined {
+  const kitRevision = get(response, 'data.me.kit.kitRevision');
+  return typeof kitRevision === 'string' || typeof kitRevision === 'number' ? kitRevision : undefined;
+}
+
 // Serialize a value deterministically so the derived cache key is stable
 // regardless of object property insertion order.
 function stableSerialize(value: unknown): string {

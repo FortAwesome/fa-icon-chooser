@@ -112,6 +112,9 @@ describe('fa-icon-chooser', () => {
     });
 
     const proHandleQuery = jest.fn((document: string, variables?: any) => {
+      if (document.includes('query KitRevision')) {
+        return Promise.resolve({ data: { me: { kit: { kitRevision: 1, showcaseCacheKey: 'kit:fake-kit-token:rev1' } } } });
+      }
       if (document.includes('query KitMetadata')) {
         return Promise.resolve({
           data: {
@@ -285,6 +288,12 @@ describe('fa-icon-chooser kit mode (subset-aware search & showcase)', () => {
   // configurable SearchKit response. Records all calls for inspection.
   function makeHandleQuery(searchResponse: any = searchKitOfficialResponse) {
     const fn: any = jest.fn((document: string, variables: any) => {
+      // The never-cached kit-identity probe reads the same data.me.kit shape, so the
+      // kit-metadata fixture answers it (its kitRevision/showcaseCacheKey are what the
+      // component captures).
+      if (document.includes('query KitRevision')) {
+        return Promise.resolve(fn.__kitMetadata || kitMetadataResponse);
+      }
       if (document.includes('query KitMetadata')) {
         return Promise.resolve(fn.__kitMetadata || kitMetadataResponse);
       }
